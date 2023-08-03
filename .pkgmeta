@@ -1,0 +1,26 @@
+package-as: Datamine
+enable-nolib-creation: no
+
+license-output: LICENSE
+
+externals:
+  Datamine/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
+  Datamine/Libs/LibInventoryHelper: https://github.com/Ghostopheles/LibInventoryHelper
+  Datamine/Libs/LibDevConsole: https://github.com/Ghostopheles/LibDevConsole
+
+ignore:
+  - Datamine/Libs/*/*.rockspec
+  - Datamine/Libs/*/*.toc
+  - Datamine/Libs/*/changelog.*
+  - Datamine/Libs/*/CHANGELOG.*
+  - Datamine/Libs/*/docs
+  - Datamine/Libs/*/examples
+  - Datamine/Libs/*/README.*
+  - Datamine/Libs/*/tests
+  - Datamine/Libs/*/.pkgmeta
+  - CHANGELOG.md
+  - README.md
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
