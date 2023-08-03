@@ -1,0 +1,28 @@
+name: Package (Release)
+on:
+  push:
+    tags:
+      - '*'
+      - '!**-dev**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create Package
+        uses: BigWigsMods/packager@v2
+        env:
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send Webhook Notification
+        if: failure()
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        env:
+          JOB_STATUS: ${{ job.status }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WORKFLOW_NAME: ${{ github.workflow }}

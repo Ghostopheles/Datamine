@@ -1,17 +1,14 @@
-## Interface: 100107
+## Interface: 100105
 ## Title: |cfffc037bDatamine|r
 ## Notes: A tool for increasing data accessibility within WoW.
 ## Author: Ghost
 ## Version: 1
-## OnlyBetaAndPTR: 1
-# ## LoadWith: Blizzard_ExpansionLandingPage
 ## SavedVariables: DatamineConfig, DatamineData
 
 ## OptionalDeps: Blizzard_Console
 
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
-Libs/LibInventoryHelper/lib.xml
 
 DatamineEarlyLoad.lua
 

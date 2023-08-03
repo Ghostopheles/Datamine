@@ -5,7 +5,6 @@ license-output: LICENSE
 
 externals:
   Datamine/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
-  Datamine/Libs/LibInventoryHelper: https://github.com/Ghostopheles/LibInventoryHelper
   Datamine/Libs/LibDevConsole: https://github.com/Ghostopheles/LibDevConsole
 
 ignore:
@@ -21,6 +20,5 @@ ignore:
   - CHANGELOG.md
   - README.md
 
-manual-changelog:
-  filename: CHANGELOG.md
-  markup-type: markdown
+move-folders:
+  Datamine/Datamine: Datamine
