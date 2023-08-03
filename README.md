@@ -1,6 +1,8 @@
 # Datamine
 
 An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data.
+
+Example:
 ![image](https://github.com/Ghostopheles/Datamine/assets/10636803/0f8d6924-e516-44dc-bf86-e98be7ca9d84)
 
 ### Slash Commands
@@ -18,19 +20,25 @@ These are things I want to add, subject to change, might get scrapped, yadda-yad
 
 Things to dump with slash commands like `/dm item` and `/dm spell`.
 
-- Quest and Questline Info
-- Item appearance info 🤠
-- Transmog set info 🤠
+- [ ] Quest and Questline Info
+- [ ] Generate Wowhead links from item/spell/quest IDs
+- [ ] Item appearance info 🤠
+- [ ] Transmog set info 🤠
 
 #### Dressing Room
 
-- View model by FileDataID 🤠
-- CreatureDisplayInfo viewing 🤠
-- Try on item by itemID 🤠
-- Try on item by itemModifiedAppearanceID 🤠
-- Try on transmog set by TransmogSetID 🤠
-- Apply SpellVisualKits 🤠
+- [ ] View model by FileDataID 🤠
+- [ ] View CreatureDisplayInfo by ID 🤠
+- [ ] Try on items by itemID 🤠
+- [ ] Try on items by itemModifiedAppearanceID 🤠
+- [ ] Try on transmog set by TransmogSetID 🤠
+- [ ] Apply SpellVisualKits 🤠
 
 #### Barber Shop
 
-- Preview customization choices by optionID + choiceID 🤠
+- [ ] Preview customization choices by optionID + choiceID 🤠
+
+#### Other
+
+- [ ] Add a console command variant of every slash command
+- [ ] User configuration
