@@ -1,6 +1,7 @@
 # Datamine
 
 An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data.
+![image](https://github.com/Ghostopheles/Datamine/assets/10636803/0f8d6924-e516-44dc-bf86-e98be7ca9d84)
 
 ### Slash Commands
 
