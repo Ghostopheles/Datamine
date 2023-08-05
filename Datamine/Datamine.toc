@@ -16,6 +16,7 @@ Settings/SettingsCore.lua
 
 Core/CallbackRegistry.lua
 Core/SlashCommands.lua
+Core/Links.lua
 
 Datamine.lua
 
