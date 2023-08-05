@@ -5,12 +5,14 @@
 ## Version: @project-version@
 ## SavedVariables: DatamineConfig, DatamineData
 
-## OptionalDeps: Blizzard_Console
+## OptionalDeps: DevTool, Blizzard_Console
 
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
 
 DatamineEarlyLoad.lua
+
+Settings/SettingsCore.lua
 
 Core/CallbackRegistry.lua
 Core/SlashCommands.lua
@@ -19,5 +21,6 @@ Datamine.lua
 
 Modules/ItemData.lua
 Modules/SpellData.lua
+Modules/QuestLineData.lua
 
 DataminePostLoad.lua
