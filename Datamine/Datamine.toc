@@ -22,6 +22,7 @@ Datamine.lua
 
 Modules/ItemData.lua
 Modules/SpellData.lua
+Modules/QuestData.lua
 Modules/QuestLineData.lua
 
 DataminePostLoad.lua
