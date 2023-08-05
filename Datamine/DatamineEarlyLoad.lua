@@ -8,6 +8,11 @@ Datamine.Mixins = {};
 
 Datamine.Console = LibStub:GetLibrary("LibDevConsole");
 
+local PrintSettings = {
+    "hidecolon";
+    "addnewline";
+};
+
 -- utilities
 
 function Datamine.GetEnumValueName(enum, value)
@@ -17,21 +22,35 @@ end
 
 -- chat output
 
-local function GeneratePrintPrefix(moduleName, addNewLine)
+local function GetDefaultPrintSettings()
+    local tbl = {};
+    for _, v in pairs(PrintSettings) do
+        tbl[v] = false;
+    end
+
+    return tbl;
+end
+
+local function GeneratePrintPrefix(moduleName, settings)
     local prefix;
-    local color = "FFF542F5"
+    local color = Datamine.Constants.ChatPrefixColor;
 
-    if not moduleName then
-        prefix = "|c" .. color .. Datamine.Constants.AddonName .. "|r: ";
+    if not moduleName or moduleName == "none" then
+        prefix = color:WrapTextInColorCode(Datamine.Constants.AddonName) .. ": ";
     else
-        prefix = "|c" .. color .. Datamine.Constants.AddonName .. "|r.|c" .. color .. moduleName .. "|r: ";
+        prefix = color:WrapTextInColorCode(Datamine.Constants.AddonName) .. "." .. color:WrapTextInColorCode(moduleName) .. ": ";
     end
 
-    if addNewLine then
-        return prefix .. "\n";
-    else
-        return prefix;
+    if settings then
+        if settings.hideColon then
+            prefix = string.gsub(prefix, ":", "");
+        end
+        if settings.addNewLine then
+            prefix = prefix .. "\n";
+        end
     end
+
+    return prefix;
 end
 
 local function GenerateDumpPrefix(moduleName, tableTitle)
@@ -44,22 +63,30 @@ local function GenerateDumpPrefix(moduleName, tableTitle)
     end
 end
 
+local function IsSettingString(str)
+    str = strlower(str);
+    return tContains(PrintSettings, str);
+end
+
 function Datamine.Print(module, ...)
-    if not ... then
+    if not module and not ... then
         return;
     end
 
     local message;
+    local settings = GetDefaultPrintSettings();
     local newTable = {};
     for _, v in ipairs({...}) do
-        if v then
+        if IsSettingString(v) then
+            settings[v] = true;
+        else
             local str = tostring(v);
             table.insert(newTable, str);
         end
     end
     message = strjoin(", ", unpack(newTable));
 
-    local prefix = GeneratePrintPrefix(module);
+    local prefix = GeneratePrintPrefix(module, settings);
     print(prefix .. message);
 end
 
@@ -75,6 +102,10 @@ function Datamine.Dump(module, tableTitle, message)
 end
 
 function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message)
+    if not message then
+        return;
+    end
+
     assert(#displayKeys == #message, "DisplayKeys and Table length mismatch.");
 
     local prefix = GenerateDumpPrefix(module, tableTitle);
@@ -87,4 +118,13 @@ function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, mess
 
         print("|cff88ccff[" .. i .. "] " .. displayKeys[i] .. "|r=\"" .. v .. "\"");
     end
+end
+
+function Datamine.WrapTextInParenthesis(text, withLeadingSpace)
+    if withLeadingSpace then
+        return " (" .. text .. ")";
+    else
+        return "(" .. text .. ")";
+    end
+    
 end
