@@ -105,4 +105,8 @@ function Datamine.Spell:GetOrFetchSpellInfoByID(spellID)
 end
 
 Datamine.Spell:Init();
-Datamine.Slash:RegisterCommand("spell", function(spellID) Datamine.Spell:GetOrFetchSpellInfoByID(tonumber(spellID)) end);
+
+local helpMessage = "Retrieve information about a spell.";
+local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<spellID>", helpMessage);
+
+Datamine.Slash:RegisterCommand("spell", function(spellID) Datamine.Spell:GetOrFetchSpellInfoByID(tonumber(spellID)) end, helpString);

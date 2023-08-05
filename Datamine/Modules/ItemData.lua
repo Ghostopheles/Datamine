@@ -138,4 +138,8 @@ function Datamine.Item:GetOrFetchItemInfoByID(itemID)
 end
 
 Datamine.Item:Init();
-Datamine.Slash:RegisterCommand("item", function(itemID) Datamine.Item:GetOrFetchItemInfoByID(tonumber(itemID)) end);
+
+local helpMessage = "Retrieve information about an item.";
+local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemID>", helpMessage);
+
+Datamine.Slash:RegisterCommand("item", function(itemID) Datamine.Item:GetOrFetchItemInfoByID(tonumber(itemID)) end, helpString);
