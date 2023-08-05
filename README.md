@@ -9,8 +9,10 @@ Example:
 
 Datamine's base command is `/dm` or `/datamine`.
 
+- `help` - Gives you some help.
 - `item <itemID>` - Dumps the item info for the given `itemID` to the chat frame. Data for certain items may not be visible in-game.
 - `spell <spellID>` Same as above but for spells. Data for certain spells may not be visible in-game.
+- `questline <uiMapID> [<questID>]` Provides information about questlines on a given map ID, and optionally, the questline a quest belongs to.
 
 ### Roadmap
 
