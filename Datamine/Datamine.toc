@@ -12,7 +12,7 @@ Libs/LibDevConsole/lib.xml
 
 DatamineEarlyLoad.lua
 
-#Settings/SettingsCore.lua
+Settings/SettingsCore.lua
 
 Core/CallbackRegistry.lua
 Core/SlashCommands.lua
