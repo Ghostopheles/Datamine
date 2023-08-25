@@ -18,8 +18,7 @@ Core/CallbackRegistry.lua
 Core/SlashCommands.lua
 Core/Links.lua
 
-#Datamine.lua
-
+Modules/Sounds.lua
 Modules/ItemData.lua
 Modules/SpellData.lua
 Modules/QuestData.lua
