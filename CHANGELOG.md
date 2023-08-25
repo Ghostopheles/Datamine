@@ -1,4 +1,4 @@
-# Datamine v1.1
+# Datamine v1.2
 
 ##### Added
 * Added `/dm soundkit`, `/dm soundfile`, and `/dm mog`. Check `/dm help` for more information on these commands
