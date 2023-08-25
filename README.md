@@ -14,6 +14,8 @@ Datamine's base command is `/dm` or `/datamine`.
 - `spell <spellID>` Same as above but for spells. Data for certain spells may not be visible in-game.
 - `questline <uiMapID> [<questID>]` Provides information about questlines on a given map ID, and optionally, the questline a quest belongs to.
 
+More commands are available in-game and can be viewed with the `/dm help` command.
+
 ### Roadmap
 
 These are things I want to add, subject to change, might get scrapped, yadda-yadda. Items marked with 🤠 are things I've already built, but still need to port over to this addon.
@@ -22,17 +24,17 @@ These are things I want to add, subject to change, might get scrapped, yadda-yad
 
 Things to dump with slash commands like `/dm item` and `/dm spell`.
 
-- [ ] Quest and Questline Info
+- [x] Quest and Questline Info
 - [ ] Generate Wowhead links from item/spell/quest IDs
 - [ ] Item appearance info 🤠
 - [ ] Transmog set info 🤠
 
-#### Dressing Room
+#### Dressing Room/Model Viewer
 
 - [ ] View model by FileDataID 🤠
 - [ ] View CreatureDisplayInfo by ID 🤠
 - [ ] Try on items by itemID 🤠
-- [ ] Try on items by itemModifiedAppearanceID 🤠
+- [x] Try on items by itemModifiedAppearanceID 🤠
 - [ ] Try on transmog set by TransmogSetID 🤠
 - [ ] Apply SpellVisualKits 🤠
 
