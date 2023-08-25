@@ -9,7 +9,9 @@
 
 ## X-License: Public Domain
 ## X-Category: Development Tools
+
 ## X-Curse-Project-ID: 906564
+## X-Wago-ID: 4N2mb0GL
 
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
