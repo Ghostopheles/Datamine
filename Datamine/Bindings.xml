@@ -1,0 +1,9 @@
+<Bindings>
+    <Binding name="DATAMINE_TOGGLE_MODEL_VIEWER" header="Datamine" category="ADDONS">
+        if DatamineDressUpFrame:IsShown() then
+        DatamineDressUpFrame:Hide();
+        else
+        DatamineDressUpFrame:Show();
+        end
+    </Binding>
+</Bindings>
