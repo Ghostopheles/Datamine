@@ -25,4 +25,6 @@ Modules/SpellData.lua
 Modules/QuestData.lua
 Modules/QuestLineData.lua
 
-#Modules/ModelView/ModelView.lua
+Modules/ModelView/Mixins/ModelFrameMixin.lua
+Modules/ModelView/ModelViewFrames.xml
+Modules/ModelView/ModelView.lua
