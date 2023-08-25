@@ -29,11 +29,19 @@ function Datamine.Slash.HelpCommand()
 
     RawPrint("hideColon", preamble);
 
+    -- always print the help line first
+    local helpLine = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), "help", Datamine.Slash.HelpTextColor, self.Help["help"]);
+    RawPrint(helpLine);
+
     for cmd, _ in pairs(self.Commands) do
-        local line = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), cmd, Datamine.Slash.HelpTextColor, self.Help[cmd]);
-        RawPrint(line);
+        if cmd ~= "help" then
+            local line = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), cmd, Datamine.Slash.HelpTextColor, self.Help[cmd]);
+            RawPrint(line);
+        end
     end
 end
+
+UnitPower("player", 2);
 
 function Datamine.Slash:RegisterCommand(cmd, func, help)
     assert(self.Commands[cmd] == nil, "Attempted to register duplicate command.");
@@ -56,6 +64,10 @@ function SlashCmdList.DMINE(msg)
         return;
     end
     table.remove(args, 1);
+
+    if strtrim(cmd) == "" then
+        cmd = "help";
+    end
 
     local func = Datamine.Slash.Commands[cmd];
     if not func then
