@@ -26,7 +26,9 @@ function Datamine.Quest:OnEvent(event, ...)
     if self.LastRequestedQuestID and self.WaitingForQuestInfo then
         if event == "QUEST_DATA_LOAD_RESULT" then
             local questID, success = ...;
-            self:OnQuestInfoReceived(questID, success);
+            if questID == self.LastRequestedQuestID then
+                self:OnQuestInfoReceived(questID, success);
+            end
         end
     end
 end

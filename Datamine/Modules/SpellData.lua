@@ -42,7 +42,9 @@ function Datamine.Spell:OnEvent(event, ...)
     if self.LastRequestedSpellID and self.WaitingForSpellInfo then
         if event == "SPELL_DATA_LOAD_RESULT" then
             local spellID, success = ...;
-            self:OnSpellDataReceived(spellID, success);
+            if spellID == self.LastRequestedSpellID then
+                self:OnSpellDataReceived(spellID, success);
+            end
         end
     end
 end

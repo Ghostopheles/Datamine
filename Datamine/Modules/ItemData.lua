@@ -75,7 +75,9 @@ function Datamine.Item:OnEvent(event, ...)
     if self.LastRequestedItemID and self.WaitingForItemInfo then
         if event == "GET_ITEM_INFO_RECEIVED" then
             local itemID, success = ...;
-            self:OnItemDataReceived(itemID, success);
+            if itemID == self.LastRequestedItemID then
+                self:OnItemDataReceived(itemID, success);
+            end
         end
     end
 end
