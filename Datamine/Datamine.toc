@@ -1,4 +1,4 @@
-## Interface: 100105
+## Interface: 100107
 ## Title: |cfffc037bDatamine|r
 ## Notes: A tool for increasing data accessibility within WoW.
 ## Author: Ghost
@@ -6,6 +6,10 @@
 ## SavedVariables: DatamineConfig, DatamineData
 
 ## OptionalDeps: DevTool, Blizzard_Console
+
+## X-License: Public Domain
+## X-Category: Development Tools
+## X-Curse-Project-ID: 906564
 
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
