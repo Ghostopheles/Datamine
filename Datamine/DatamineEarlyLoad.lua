@@ -9,8 +9,9 @@ Datamine.Mixins = {};
 Datamine.Console = LibStub:GetLibrary("LibDevConsole");
 
 local PrintSettings = {
-    "hidecolon";
-    "addnewline";
+    "hidecolon",
+    "addnewline",
+    "hideprefix"
 };
 
 -- utilities
@@ -42,6 +43,9 @@ local function GeneratePrintPrefix(moduleName, settings)
     end
 
     if settings then
+        if settings.hidePrefix then
+            return "";
+        end
         if settings.hideColon then
             prefix = string.gsub(prefix, ":", "");
         end

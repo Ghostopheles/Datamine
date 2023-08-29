@@ -3,7 +3,7 @@
         if DatamineDressUpFrame:IsShown() then
         DatamineDressUpFrame:Hide();
         else
-        DatamineDressUpFrame:Show();
+        Datamine.ModelView:Show();
         end
     </Binding>
 </Bindings>

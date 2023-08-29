@@ -94,6 +94,18 @@ function Datamine.Item:OnItemDataReceived(itemID, success)
     self:PrettyDumpItemData(itemID);
 end
 
+function Datamine.Item:GetItemDataTitle(itemID, success)
+    if success == nil then
+        Print("Query for item " .. itemID .. " failed. Item does not exist.");
+        return;
+    elseif success == false then
+        Print("Query for item " .. itemID .. " failed. Item is forbidden or does not exist.");
+        return;
+    end
+
+    self:PrettyDumpItemData(itemID);
+end
+
 function Datamine.Item:PrettyDumpItemData(itemID)
     local itemData = {GetItemInfo(itemID)};
 
@@ -144,4 +156,4 @@ Datamine.Item:Init();
 local helpMessage = "Retrieve information about an item.";
 local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemID>", helpMessage);
 
-Datamine.Slash:RegisterCommand("item", function(itemID) Datamine.Item:GetOrFetchItemInfoByID(tonumber(itemID)) end, helpString);
+Datamine.Slash:RegisterCommand("item", function(itemID) Datamine.Item:GetOrFetchItemInfoByID(itemID) end, helpString, moduleName);

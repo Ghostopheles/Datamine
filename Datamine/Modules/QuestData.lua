@@ -149,4 +149,4 @@ Datamine.Quest:Init();
 local helpMessage = "Retrieve information about a quest.";
 local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<questID>", helpMessage);
 
-Datamine.Slash:RegisterCommand("quest", function(questID) Datamine.Quest:GetOrFetchQuestInfoByID(tonumber(questID)) end, helpString);
+Datamine.Slash:RegisterCommand("quest", function(questID) Datamine.Quest:GetOrFetchQuestInfoByID(tonumber(questID)) end, helpString, moduleName);

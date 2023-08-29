@@ -8,11 +8,14 @@ local RawPrint = function(...)
     Datamine.Print("none", ...);
 end
 
+local DEFAULT_MODULE_NAME = "None";
+
 Datamine.Slash = {};
 Datamine.Slash.Commands = {};
 Datamine.Slash.Help = {};
 Datamine.Slash.HelpTextColor = "FF2FF05F";
 Datamine.Slash.ArgumentColor = "FF3D90EE";
+Datamine.Slash.HeaderColor = "FF42F5AA";
 
 function Datamine.Slash.GenerateHelpStringWithArgs(args, helpText)
     local argColor = Datamine.Slash.ArgumentColor;
@@ -21,29 +24,45 @@ function Datamine.Slash.GenerateHelpStringWithArgs(args, helpText)
     return argString;
 end
 
-function Datamine.Slash.HelpCommand()
+function Datamine.Slash.HelpCommand(module)
     local self = Datamine.Slash;
     local prefixColor = Datamine.Constants.ChatPrefixColor;
     local preamble = "list of commands:";
-    local lineFormat = "%s %s |c%s%s|r";
+    local lineFormat = "    %s %s |c%s%s|r";
+    local headerFormat = "Module: |c%s%s|r ->";
 
     RawPrint("hideColon", preamble);
 
-    -- always print the help line first
-    local helpLine = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), "help", Datamine.Slash.HelpTextColor, self.Help["help"]);
-    RawPrint(helpLine);
+    for moduleName, moduleHelp in pairs(self.Help) do
+        if moduleName == DEFAULT_MODULE_NAME then
+            moduleName = "Default";
+        end
 
-    for cmd, _ in pairs(self.Commands) do
-        if cmd ~= "help" then
-            local line = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), cmd, Datamine.Slash.HelpTextColor, self.Help[cmd]);
-            RawPrint(line);
+        if (not module) or (module and (strlower(moduleName) == strlower(module))) then
+            local header = string.format(headerFormat, Datamine.Slash.HelpTextColor, moduleName);
+            RawPrint("hideColon", header);
+
+            -- always print the help line first
+            if moduleName == "Default" then
+                local helpLineText = self.Help["None"]["help"];
+                local helpLine = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), "help", Datamine.Slash.HelpTextColor, helpLineText);
+                RawPrint("hidePrefix", helpLine);
+            end
+
+            for cmd, helpText in pairs(moduleHelp) do
+                if cmd ~= "help" then
+                    local line = string.format(lineFormat, prefixColor:WrapTextInColorCode(SLASH_DMINE1), cmd, Datamine.Slash.HelpTextColor, helpText);
+                    RawPrint("hidePrefix", line);
+                end
+            end
+            --RawPrint("hidePrefix", "\n");
         end
     end
 end
 
-UnitPower("player", 2);
 
-function Datamine.Slash:RegisterCommand(cmd, func, help)
+
+function Datamine.Slash:RegisterCommand(cmd, func, help, moduleName)
     assert(self.Commands[cmd] == nil, "Attempted to register duplicate command.");
     self.Commands[cmd] = func;
 
@@ -51,10 +70,22 @@ function Datamine.Slash:RegisterCommand(cmd, func, help)
         help = "No help message provided.";
     end
 
-    self.Help[cmd] = help;
+    moduleName = moduleName or DEFAULT_MODULE_NAME;
+
+    local moduleHelp = self.Help[moduleName] or {};
+    moduleHelp[cmd] = help;
+
+    self.Help[moduleName] = moduleHelp;
 end
 
-Datamine.Slash:RegisterCommand("help", Datamine.Slash.HelpCommand, "Show this message.");
+do
+	local helpMessage = "Show this message. Optionally, provide a module name to view commands for that module.";
+	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("[<moduleName>]", helpMessage);
+
+	Datamine.Slash:RegisterCommand("help", Datamine.Slash.HelpCommand, helpString);
+end
+
+
 
 function SlashCmdList.DMINE(msg)
     local args = {strsplit(" ", msg)};

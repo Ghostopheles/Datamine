@@ -1,6 +1,6 @@
 Datamine.Questline = CreateFrame("Frame");
 
-local moduleName = "QuestLineData";
+local moduleName = "QuestData";
 
 local QuestInfoKeys = {
     "QuestLineName",
@@ -138,4 +138,4 @@ Datamine.Questline:Init();
 local helpMessage = "Retrieve all available questlines for a given uiMapID. Optionally, provide a questID to retrieve the questline it belongs to.";
 local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<uiMapID> [<questID>]", helpMessage);
 
-Datamine.Slash:RegisterCommand("questline", function(uiMapID, questID) Datamine.Questline:GetOrFetchQuestlineInfoForMap(tonumber(uiMapID), tonumber(questID)) end, helpString);
+Datamine.Slash:RegisterCommand("questline", function(uiMapID, questID) Datamine.Questline:GetOrFetchQuestlineInfoForMap(tonumber(uiMapID), tonumber(questID)) end, helpString, moduleName);

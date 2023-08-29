@@ -1,5 +1,5 @@
-local Print = function(...) Datamine.Print("Sounds", ...) end;
-
+local moduleName = "Sounds";
+local Print = function(...) Datamine.Print(moduleName, ...) end;
 
 Datamine.Sounds = CreateFrame("Frame");
 Datamine.Sounds:RegisterEvent("SOUNDKIT_FINISHED");
@@ -39,12 +39,12 @@ do
     local helpMessage = "Play a soundfile by SoundKitID.";
     local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<soundKitID>", helpMessage);
 
-    Datamine.Slash:RegisterCommand("soundkit", function(soundKitID) Datamine.Sounds:PlaySoundKit(soundKitID) end, helpString);
+    Datamine.Slash:RegisterCommand("soundkit", function(soundKitID) Datamine.Sounds:PlaySoundKit(soundKitID) end, helpString, moduleName);
 end
 
 do
     local helpMessage = "Play a soundfile by FileDataID.";
     local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<fileDataID>", helpMessage);
 
-    Datamine.Slash:RegisterCommand("soundfile", function(fileDataID) Datamine.Sounds:PlaySoundFile(fileDataID) end, helpString);
+    Datamine.Slash:RegisterCommand("soundfile", function(fileDataID) Datamine.Sounds:PlaySoundFile(fileDataID) end, helpString, moduleName);
 end
