@@ -1,43 +1,91 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-    <Frame name="DatamineModelViewFrame" mixin="TransmogAndMountDressupFrameMixin"
-        flattenRenderLayers="true" enableMouse="true" hidden="true" parent="UIParent">
-        <KeyValues>
-            <KeyValue key="hasOutfitControls" value="false" type="boolean" />
-        </KeyValues>
-        <Frames>
-            <CheckButton parentKey="ShowMountCheckButton" inherits="UICheckButtonTemplate">
-                <Size x="30" y="30" />
-                <Anchors>
-                    <Anchor point="TOP" relativePoint="BOTTOMRIGHT" x="-20" y="30" />
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-						self:GetParent():CheckButtonOnClick();
-					</OnClick>
-                </Scripts>
-            </CheckButton>
-            <ModelScene parentKey="ModelScene" inherits="ModelSceneMixinTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" x="5" y="-5" />
-                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
-                </Anchors>
-                <KeyValues>
-                    <KeyValue key="normalIntensity" value="0.75" type="number" />
-                    <KeyValue key="highlightIntensity" value="1.2" type="number" />
-                </KeyValues>
-                <Scripts>
-                    <OnDressModel>
-						self:GetParent():OnDressModel();
-					</OnDressModel>
-                </Scripts>
-            </ModelScene>
-        </Frames>
+    <EditBox name="DatamineEditBoxTemplate" inherits="SearchBoxTemplate" virtual="true"
+        autoFocus="false">
+        <!-- most of this is stolen from TextureAtlasViewer by LanceDH and Meorawr <3 -->
+        <Layers>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Checkmark" file="Interface\Scenarios\ScenarioIcon-Check"
+                    alpha="0">
+                    <Size x="16" y="16" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="RIGHT" x="-3" />
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="Failmark" file="Interface\Scenarios\ScenarioIcon-Fail"
+                    alpha="0">
+                    <Size x="16" y="16" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="RIGHT" x="-3" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Label" inherits="GameFontWhiteSmall" justifyH="LEFT"
+                    text="Unknown" hidden="true">
+                    <Size y="15" />
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Animations>
+            <AnimationGroup parentKey="CheckAnim" setToFinalAlpha="true" looping="NONE">
+                <Alpha parentKey="Checkmark" childKey="Checkmark" fromAlpha="1" toAlpha="0"
+                    duration="0.6" order="0" />
+                <Scale parentKey="Checkmark" childKey="Checkmark" fromScaleX="0.7" toScaleX="1.5"
+                    smoothing="NONE" fromScaleY="0.7" toScaleY="1.5" duration="0.6" order="0" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="FailAnim" setToFinalAlpha="true" looping="NONE">
+                <Alpha parentKey="Failmark" childKey="Failmark" fromAlpha="1" toAlpha="0"
+                    duration="0.6" order="0" />
+                <Scale parentKey="Failmark" childKey="Failmark" fromScaleX="0.7" toScaleX="1.5"
+                    smoothing="NONE" fromScaleY="0.7" toScaleY="1.5" duration="0.6" order="0" />
+            </AnimationGroup>
+        </Animations>
         <Scripts>
-            <OnLoad method="OnLoad" />
-            <OnHide method="OnHide" />
+            <OnShow inherit="prepend">
+				self.Label:SetText(self.LabelText);
+				self.Label:Show();
+			</OnShow>
+            <OnEnterPressed>
+                if not self.Callback then return end;
+                local result = self.Callback(self:GetText());
+
+                self.clearButton.texture:Hide();
+
+                PlaySound(SOUNDKIT.TUTORIAL_POPUP);
+
+                if result == true then
+                    self.CheckAnim:Stop();
+                    self.CheckAnim:Play();
+                else
+                    self.FailAnim:Stop();
+                    self.FailAnim:Play();
+                end
+
+                C_Timer.After(0.6, function() self.clearButton.texture:Show(); end);
+			</OnEnterPressed>
         </Scripts>
-    </Frame>
+    </EditBox>
+
+    <PlayerModel name="DataminePlayerModelTemplate" mixin="DataminePlayerModelMixin"
+        inherits="ModelWithControlsTemplate"
+        enableMouse="true" hidden="true" virtual="true">
+        <KeyValues>
+            <KeyValue key="maxZoom" value="1" type="number" />
+        </KeyValues>
+        <Scripts>
+            <OnLoad>
+                Model_OnLoad(self, self.maxZoom);
+            </OnLoad>
+            <OnShow>
+                self:ResetModel();
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
 
     <Frame name="DatamineDressUpFrame" mixin="DatamineModelFrameMixin" toplevel="true"
         enableMouse="true"
@@ -64,6 +112,7 @@
                 <KeyValues>
                     <KeyValue key="normalIntensity" value="0.75" type="number" />
                     <KeyValue key="highlightIntensity" value="1.2" type="number" />
+                    <KeyValue key="actorTemplate" value="DataminePlayerModelTemplate" />
                 </KeyValues>
                 <Anchors>
                     <Anchor point="TOPLEFT" x="7" y="-63" />
@@ -125,6 +174,16 @@
                         </Texture>
                     </Layer>
                 </Layers>
+                <Animations>
+                    <!-- this is stolen from TextureAtlasViewer by LanceDH and Meorawr <3 -->
+                    <AnimationGroup parentKey="CheckAnim" setToFinalAlpha="true" looping="NONE">
+                        <Alpha parentKey="Checkmark" childKey="Checkmark" fromAlpha="1" toAlpha="0"
+                            duration="0.6" order="0" />
+                        <Scale parentKey="Checkmark" childKey="Checkmark" fromScaleX="0.7"
+                            toScaleX="1.5" smoothing="NONE" fromScaleY="0.7" toScaleY="1.5"
+                            duration="0.6" order="0" />
+                    </AnimationGroup>
+                </Animations>
                 <Scripts>
                     <OnLoad method="OnLoad" />
                     <OnShow method="OnShow" />
@@ -141,25 +200,30 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad method="OnLoad" />
-                    <OnClick method="OnClick" />
+                    <OnClick>
+                        if self:GetParent().ViewingMode == 1 then
+                            local itemModifiedAppearaceIDs = nil;
+                            local forcePlayerRefresh = true;
+                            Datamine.ModelView:Show(itemModifiedAppearaceIDs, forcePlayerRefresh);
+                            PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK);
+                        elseif self:GetParent().ViewingMode == 2 then
+                            DatamineDressUpFrame:GetActor():ResetModel();
+                        end
+                    </OnClick>
                 </Scripts>
             </Button>
-            <DropDownToggleButton parentKey="LinkButton" mixin="DressUpModelFrameLinkButtonMixin"
-                inherits="UIPanelButtonTemplate" text="LINK_TRANSMOG_OUTFIT">
-                <Size x="159" y="22" />
+            <Button parentKey="ModeSwapButton" name="$parentModeSwapButton"
+                inherits="UIPanelButtonTemplate" text="Mode">
+                <Size x="80" y="22" />
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="2" y="4" />
+                    <Anchor point="RIGHT" relativeTo="$parentResetButton" relativePoint="LEFT" />
                 </Anchors>
                 <Scripts>
-                    <OnLoad method="OnLoad" />
-                    <OnShow method="OnShow" />
-                    <OnHide method="OnHide" />
-                    <OnClick method="OnClick" />
+                    <OnClick>
+                        self:GetParent():ToggleSceneMode();
+                    </OnClick>
                 </Scripts>
-                <Frames>
-                    <Frame parentKey="DropDown" inherits="UIDropDownMenuTemplate" />
-                </Frames>
-            </DropDownToggleButton>
+            </Button>
         </Frames>
         <Layers>
             <Layer level="BACKGROUND">

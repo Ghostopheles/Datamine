@@ -1,3 +1,8 @@
+local moduleName = "ModelView";
+
+local Print = function(...) Datamine.Print(moduleName, ...) end;
+local Dump = function(title, ...) Datamine.Dump(moduleName, title, ...) end;
+
 Datamine.ModelView = {};
 
 local DEBUG_ID = 191878;
@@ -23,12 +28,17 @@ local function SetupPlayerForModelScene(modelScene, overrideActorName, itemModif
 	end
 end
 
+function Datamine.ModelView:IsModelViewShown()
+	return DatamineDressUpFrame:IsShown();
+end
+
 local DRESS_UP_FRAME_MODEL_SCENE_ID = 596;
 function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
     local f = DatamineDressUpFrame;
 
     if ( forcePlayerRefresh or (not f:IsShown() or f:GetMode() ~= "player") ) then
 		f:SetMode("player");
+		--f:ResetEntryBoxes();
 
 		f:Show();
 		f.ModelScene:ClearScene();
@@ -50,23 +60,99 @@ function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
 	end
 end
 
-function Datamine.ModelView:TryOn(...)
-    self:Show();
+---@param itemModifiedAppearanceIDs table
+---@return boolean
+function Datamine.ModelView:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceIDs)
+	if not self:IsModelViewShown() then
+		self:Show();
+	end
 
-    local playerActor = DatamineDressUpFrame.ModelScene:GetPlayerActor();
-    if not playerActor then
+    local actor = DatamineDressUpFrame:GetActor();
+    if not actor then
+		Print("Actor not found.");
         return false;
     end
 
-    local result = playerActor:TryOn(...);
-    if result ~= Enum.ItemTryOnReason.Success then
-		UIErrorsFrame:AddExternalErrorMessage(ERR_NOT_EQUIPPABLE);
+	for _, itemModifiedAppearanceID in ipairs(itemModifiedAppearanceIDs) do
+		local result = actor:TryOn(itemModifiedAppearanceID);
+		if result ~= Enum.ItemTryOnReason.Success then
+			Print("ItemModifiedAppearance " .. itemModifiedAppearanceID .. " cannot be equipped.");
+		end
 	end
 	return true;
 end
 
+-- just ItemAppearanceID NOT ItemModifiedAppearanceID
+function Datamine.ModelView:TryOnByAppearanceID(appearanceID)
+	if not self:IsModelViewShown() then
+		self:Show();
+	end
 
-local helpMessage = "Try on an item in the dressing room.";
-local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemModifiedAppearanceID>", helpMessage);
+	local actor = DatamineDressUpFrame:GetActor();
+    if not actor then
+		Print("Actor not found.");
+        return false;
+    end
 
-Datamine.Slash:RegisterCommand("mog", function(itemModifiedAppearanceID) Datamine.ModelView:TryOn(tonumber(itemModifiedAppearanceID)) end, helpString);
+	local _, canCollect = C_TransmogCollection.AccountCanCollectSource(appearanceID);
+	if not canCollect then
+		Print(appearanceID .. " cannot be collected by this account.");
+	end
+
+	local GetEnumValueName = EnumUtil.GenerateNameTranslation(Enum.ItemTryOnReason);
+
+	local transmogInfo = ItemUtil.CreateItemTransmogInfo(appearanceID);
+    local appearanceInfo = C_TransmogCollection.GetSourceInfo(appearanceID);
+    local _, _, _, itemEquipLoc, _ = GetItemInfoInstant(appearanceInfo.itemID);
+
+    local _, _, _, canMainHand, canOffHand = C_TransmogCollection.GetCategoryInfo(appearanceInfo.categoryID);
+    local weaponSlotID = (canMainHand and canOffHand) and itemEquipLoc or nil;
+
+    local ignoreChildItems = true;
+    if itemEquipLoc == INVSLOT_MAINHAND then
+        local isLegionArtifact = TransmogUtil.IsCategoryLegionArtifact(appearanceInfo.categoryID);
+        transmogInfo:ConfigureSecondaryForMainHand(isLegionArtifact);
+		-- we only want child items if the appearance is from Legion Artifact category
+		if isLegionArtifact then
+			ignoreChildItems = false;
+		end
+    end
+
+    local result = actor:SetItemTransmogInfo(transmogInfo, weaponSlotID, ignoreChildItems);
+    Print("Try on result: " .. GetEnumValueName(result));
+    return true;
+end
+
+function Datamine.ModelView:TryOnTransmogSet(transmogSetID)
+    local itemModifiedAppearanceIDs = C_TransmogSets.GetAllSourceIDs(transmogSetID);
+
+	self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceIDs);
+    return true;
+end
+
+do
+	local helpString = "Show the Datamine dressing room.";
+
+	Datamine.Slash:RegisterCommand("dressup", function(...) Datamine.ModelView:Show(nil, true); end, helpString, moduleName);
+end
+
+do
+	local helpMessage = "View an ItemModifiedAppearance in the Datamine dressing room.";
+	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemModifiedAppearanceID>", helpMessage);
+
+	Datamine.Slash:RegisterCommand("modifiedappearance", function(...) Datamine.ModelView:TryOnByItemModifiedAppearanceID({...}) end, helpString, moduleName);
+end
+
+do
+	local helpMessage = "View an ItemAppearance in the Datamine dressing room.";
+	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemAppearanceID>", helpMessage);
+
+	Datamine.Slash:RegisterCommand("appearance", function(appearanceID) Datamine.ModelView:TryOnByAppearanceID(appearanceID) end, helpString, moduleName);
+end
+
+do
+	local helpMessage = "View a TransmogSet in the Datamine dressing room.";
+	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<transmogSetID>", helpMessage);
+
+	Datamine.Slash:RegisterCommand("transmogset", function(transmogSetID) Datamine.ModelView:TryOnTransmogSet(transmogSetID) end, helpString, moduleName);
+end
