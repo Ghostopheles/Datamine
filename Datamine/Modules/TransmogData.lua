@@ -74,7 +74,6 @@ function Datamine.Transmog:GetAppearanceSourceInfo(appearanceID)
     outputTable.CategoryID = sourceInfo.categoryID;
     outputTable.ItemModID = sourceInfo.itemModID;
 
-    --DumpTableWithDisplayKeys("Appearance " .. appearanceID .. "  >> ", outputTable);
     Dump("Appearance " .. appearanceID .. "  >> ", outputTable);
 
     return true;
@@ -83,4 +82,4 @@ end
 local helpMessage = "Retrieve source info for an appearanceID.";
 local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<appearanceID>", helpMessage);
 
-Datamine.Slash:RegisterCommand("source", function(appearanceID) Datamine.Transmog:GetAppearanceSourceInfo(appearanceID) end, helpString, moduleName);
+Datamine.Slash:RegisterCommand("appsource", function(appearanceID) Datamine.Transmog:GetAppearanceSourceInfo(appearanceID) end, helpString, moduleName);
