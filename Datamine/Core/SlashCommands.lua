@@ -55,7 +55,6 @@ function Datamine.Slash.HelpCommand(module)
                     RawPrint("hidePrefix", line);
                 end
             end
-            --RawPrint("hidePrefix", "\n");
         end
     end
 end
