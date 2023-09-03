@@ -99,7 +99,7 @@ function DatamineModelFrameMixin:SetCreature(creatureID, displayID)
 
     creatureID = strtrim(creatureID);
     displayID = strtrim(displayID);
-    
+
     if displayID == "" and creatureID == "" then
         actor:ResetModel();
         return;
@@ -116,6 +116,14 @@ function DatamineModelFrameMixin:ToggleSceneMode()
     elseif self.ViewingMode == MODES.PlayerModel then
         self:SetViewingMode(MODES.ModelScene);
     end
+end
+
+function DatamineModelFrameMixin:ToggleSheathed(override)
+    local actor = self:GetActor();
+    if override then
+        actor:SetSheathed(override);
+    end
+    actor:SetSheathed(not actor:GetSheathed());
 end
 
 function DatamineModelFrameMixin:SetDressState(dressed)
@@ -281,13 +289,13 @@ function DatamineModelFrameControlPanelMixin:SetupModelScenePage()
         page.ModelFileIDEntry = fileIDEntryBox;
     end
 
-    do -- set model by creatureDisplayInfo ID
+    do -- set model by Display ID
         local cdiIDEntryBox = CreateFrame("EditBox", nil, page, "DatamineEditBoxTemplate");
         cdiIDEntryBox:SetPoint("TOPLEFT", page.ModelFileIDEntry, "BOTTOMLEFT", 0, -20);
         cdiIDEntryBox:SetPoint("TOPRIGHT", page.ModelFileIDEntry, "BOTTOMRIGHT", 0, -20);
         cdiIDEntryBox:SetHeight(editBoxHeight);
-        cdiIDEntryBox.LabelText = "Set model by CreatureDisplayInfoID";
-        cdiIDEntryBox.Instructions:SetText("CreatureDisplayInfoID...");
+        cdiIDEntryBox.LabelText = "Set model by DisplayID";
+        cdiIDEntryBox.Instructions:SetText("DisplayID...");
         cdiIDEntryBox.Callback = function(...) return DatamineDressUpFrame:SetModelByCreatureDisplayID(...); end;
 
         page.CDisplayInfoIDEntry = cdiIDEntryBox;
@@ -353,13 +361,22 @@ function DatamineModelFrameControlPanelMixin:SetupPlayerModelPage()
         page.CreatureIDEntryBox = creatureIDEntryBox;
     end
 
-    do -- set displayID for said creatureID
+    do -- set displayID for said creatureID, or standalone
         local displayIDEntryBox = CreateFrame("EditBox", nil, page, "DatamineEditBoxTemplate");
         displayIDEntryBox:SetPoint("TOPLEFT", page.CreatureIDEntryBox, "BOTTOMLEFT", 0, -20);
         displayIDEntryBox:SetPoint("TOPRIGHT", page.CreatureIDEntryBox, "BOTTOMRIGHT", 0, -20);
         displayIDEntryBox:SetHeight(editBoxHeight);
         displayIDEntryBox.LabelText = "Set DisplayID";
         displayIDEntryBox.Instructions:SetText("DisplayID...");
+        displayIDEntryBox.Callback = function()
+            local creatureID = page.CreatureIDEntryBox:GetText();
+            local displayID = displayIDEntryBox:GetText();
+            if strtrim(creatureID) ~= "" then
+                return DatamineDressUpFrame:SetCreature(creatureID, displayID);
+            end
+
+            return DatamineDressUpFrame:GetActor():SetDisplayInfo(displayID);
+        end;
 
         page.DisplayIDEntryBox = displayIDEntryBox;
     end
