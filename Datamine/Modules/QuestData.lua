@@ -10,10 +10,6 @@ local Dump = function(tableTitle, ...)
     Datamine.Dump(moduleName, tableTitle, ...);
 end;
 
-local DumpTableWithDisplayKeys = function(tableTitle, ...)
-    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, ItemInfoKeys, ...);
-end;
-
 function Datamine.Quest:Init()
     self.LastRequestedQuestID = nil;
     self.WaitingForQuestInfo = false;
@@ -99,6 +95,10 @@ function Datamine.Quest:PrettyDumpQuestInfo(questID)
     questInfo.DistanceSqToQuest = distanceSq;
     questInfo.OnSameContinent = onContinent;
 
+    if #questInfo.Objectives == 0 then
+        questInfo.Objectives = "N/A";
+    end
+
     if questInfo.TagInfo then
         local worldQuestType = questInfo.TagInfo.worldQuestType;
         questInfo.TagInfo.worldQuestType = Datamine.GetEnumValueName(Enum.QuestTagType, worldQuestType);
@@ -121,7 +121,7 @@ function Datamine.Quest:GetOrFetchQuestInfoByID(questID)
     assert(questID, "GetOrFetchQuestInfoByID requires a valid questID.");
 
     if self.IsQuestCached(questID) then
-        self:GetOrFetchQuestInfoByID(questID);
+        self:PrettyDumpQuestInfo(questID);
         return;
     end
 
