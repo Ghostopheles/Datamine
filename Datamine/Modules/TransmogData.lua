@@ -82,4 +82,4 @@ end
 local helpMessage = "Retrieve source info for an appearanceID.";
 local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<appearanceID>", helpMessage);
 
-Datamine.Slash:RegisterCommand("appsource", function(appearanceID) Datamine.Transmog:GetAppearanceSourceInfo(appearanceID) end, helpString, moduleName);
+Datamine.Slash:RegisterCommand("appearanceinfo", function(appearanceID) Datamine.Transmog:GetAppearanceSourceInfo(appearanceID) end, helpString, moduleName);
