@@ -30,6 +30,7 @@ Modules/ItemData.lua
 Modules/SpellData.lua
 Modules/QuestData.lua
 Modules/QuestLineData.lua
+Modules/TransmogData.lua
 
 Modules/ModelView/Mixins/ModelFrameMixin.lua
 Modules/ModelView/Mixins/PlayerModelMixin.lua

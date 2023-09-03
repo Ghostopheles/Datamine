@@ -151,6 +151,11 @@ function Datamine.Item:GetOrFetchItemInfoByID(itemID)
     GetItemInfo(itemID);
 end
 
+function Datamine.Item.HandleLink(pattern)
+    local _, itemID = strsplit(Datamine.Links.SEPARATOR, pattern);
+    Datamine.Item:GetOrFetchItemInfoByID(itemID);
+end
+
 Datamine.Item:Init();
 
 local helpMessage = "Retrieve information about an item.";
