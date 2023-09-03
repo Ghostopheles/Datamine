@@ -102,7 +102,15 @@ function Datamine.Dump(module, tableTitle, message)
 
     local prefix = GenerateDumpPrefix(module, tableTitle);
     print(prefix);
-    DevTools_Dump(message);
+    local i = 1;
+    for k, v in pairs(message) do
+        if type(v) ~= "string" then
+            v = tostring(v);
+        end
+
+        print("|cff88ccff[" .. i .. "] " .. k .. "|r=\"" .. v .. "\"");
+        i = i + 1;
+    end
 end
 
 function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message)
