@@ -131,17 +131,8 @@ function Datamine.Quest:GetOrFetchQuestInfoByID(questID)
 end
 
 function Datamine.Quest.HandleLink(funcPattern)
-    local self = Datamine.Quest;
     local _, questID = strsplit(Datamine.Links.SEPARATOR, funcPattern);
-
-    if self.IsQuestCached(questID) then
-        self:PrettyDumpQuestInfo(questID);
-        return;
-    end
-
-    self.LastRequestedQuestID = questID;
-    self.WaitingForQuestInfo = true;
-    C_QuestLog.RequestLoadQuestByID(questID);
+    Datamine.Quest:GetOrFetchQuestInfoByID(questID)
 end
 
 Datamine.Quest:Init();
