@@ -154,6 +154,13 @@ do
 	Datamine.Slash:RegisterCommand("appearance", function(...) Datamine.ModelView:TryOnByItemModifiedAppearanceID({...}) end, helpString, moduleName);
 end
 
+--do
+--	local helpMessage = "View an ItemAppearance in the Datamine dressing room.";
+--	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemAppearanceID>", helpMessage);
+--
+--	Datamine.Slash:RegisterCommand("appearance", function(appearanceID) Datamine.ModelView:TryOnByAppearanceID(appearanceID) end, helpString, moduleName);
+--end
+
 do
 	local helpMessage = "View a TransmogSet in the Datamine dressing room.";
 	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<transmogSetID>", helpMessage);
