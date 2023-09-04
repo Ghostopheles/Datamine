@@ -26,14 +26,46 @@ end;
 Datamine.Transmog = {};
 
 local LinkPrefix = "transmogData";
+local TryOnPrefix = "tryOn";
+
+function Datamine.Transmog.HandleLink(pattern)
+    local prefix, itemModifiedAppearanceID = strsplit(Datamine.Links.SEPARATOR, pattern);
+    if prefix == "tryOn" then
+        Datamine.ModelView:Show({itemModifiedAppearanceID})
+        return;
+    end
+end
 
 function Datamine.Transmog:GetItemIDLink(itemID)
     local pattern = LinkPrefix .. Datamine.Links.SEPARATOR .. itemID;
     return Datamine.Links.GenerateLinkWithCallback(pattern, itemID, Datamine.Item.HandleLink);
 end
 
-function Datamine.Transmog:GetAppearanceSourceInfo(appearanceID)
-    local sourceInfo = C_TransmogCollection.GetSourceInfo(appearanceID)
+function Datamine.Transmog:GetTryOnLink(itemModifiedAppearanceID)
+    local pattern = TryOnPrefix .. Datamine.Links.SEPARATOR .. itemModifiedAppearanceID;
+    return Datamine.Links.GenerateLinkWithCallback(pattern, "Try On", Datamine.Transmog.HandleLink);
+end
+
+function Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID)
+    local itemModifiedAppearanceIDs = C_TransmogCollection.GetAllAppearanceSources(appearanceID);
+
+    if not itemModifiedAppearanceIDs or #itemModifiedAppearanceIDs < 1 then
+        Print("No ItemModifiedAppearances found for ItemAppearance " .. appearanceID .. ".");
+        return;
+    end
+
+    local outputTable = {}
+
+    for i, v in ipairs(itemModifiedAppearanceIDs) do
+        local tryOnLink = self:GetTryOnLink(v);
+        outputTable[i] = v .. " " .. tryOnLink;
+    end
+
+    Dump("ItemModifiedAppearances for ItemAppearance " .. appearanceID .. " >>", outputTable);
+end
+
+function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
+    local sourceInfo = C_TransmogCollection.GetSourceInfo(itemModifiedAppearanceID)
     sourceInfo.categoryID = Datamine.GetEnumValueName(Enum.TransmogCollectionType, sourceInfo.categoryID);
     local _, _, _, itemEquipLoc, _ = GetItemInfoInstant(sourceInfo.itemID);
     local outputTable = {};
@@ -74,12 +106,21 @@ function Datamine.Transmog:GetAppearanceSourceInfo(appearanceID)
     outputTable.CategoryID = sourceInfo.categoryID;
     outputTable.ItemModID = sourceInfo.itemModID;
 
-    Dump("Appearance " .. appearanceID .. "  >> ", outputTable);
+    Dump("Appearance " .. itemModifiedAppearanceID .. "  >> ", outputTable);
 
     return true;
 end
 
-local helpMessage = "Retrieve source info for an appearanceID.";
-local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<appearanceID>", helpMessage);
+do
+    local helpMessage = "Retrieve source info for an itemModifiedAppearanceID.";
+    local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemModifiedAppearanceID>", helpMessage);
 
-Datamine.Slash:RegisterCommand("appearanceinfo", function(appearanceID) Datamine.Transmog:GetAppearanceSourceInfo(appearanceID) end, helpString, moduleName);
+    Datamine.Slash:RegisterCommand("appearanceinfo", function(itemModifiedAppearanceID) Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID) end, helpString, moduleName);
+end
+
+do
+    local helpMessage = "Retrieve itemModifiedAppearanceIDs for a given itemAppearanceID.";
+    local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemAppearanceID>", helpMessage);
+
+    Datamine.Slash:RegisterCommand("appearancemods", function(appearanceID) Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID) end, helpString, moduleName);
+end
