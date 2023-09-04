@@ -71,7 +71,7 @@ function Datamine.Spell:PrettyDumpSpellData(spellID)
     if castTime == 0 then
         spellData[4] = "Instant (" .. castTime .. ")";
     else
-        spellData[4] = castTime .. " seconds";
+        spellData[4] = (castTime / 1000) .. " seconds";
     end
 
     local minRange = spellData[5];
