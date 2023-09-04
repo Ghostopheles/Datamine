@@ -1,5 +1,5 @@
 <Bindings>
-    <Binding name="DATAMINE_TOGGLE_MODEL_VIEWER" header="Datamine" category="ADDONS">
+    <Binding name="Toggle Datamine Model Viewer" header="Datamine" category="Datamine">
         if DatamineDressUpFrame:IsShown() then
         DatamineDressUpFrame:Hide();
         else
