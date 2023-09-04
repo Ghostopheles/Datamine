@@ -25,7 +25,7 @@ end;
 
 Datamine.Transmog = {};
 
-local LinkPrefix = "trasmogData";
+local LinkPrefix = "transmogData";
 
 function Datamine.Transmog:GetItemIDLink(itemID)
     local pattern = LinkPrefix .. Datamine.Links.SEPARATOR .. itemID;
