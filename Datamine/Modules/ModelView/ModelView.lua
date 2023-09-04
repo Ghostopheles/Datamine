@@ -45,7 +45,7 @@ function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
 		f.ModelScene:TransitionToModelSceneID(DRESS_UP_FRAME_MODEL_SCENE_ID, CAMERA_TRANSITION_TYPE_IMMEDIATE, CAMERA_MODIFICATION_TYPE_DISCARD, true);
 
 		local overrideActorName = nil;
-		local sheatheWeapons = false;
+		local sheatheWeapons = true;
 		local autoDress = true;
 		local hideWeapons = false;
 		local hasAlternateForm, inAlternateForm = C_PlayerInfo.GetAlternateFormInfo();
