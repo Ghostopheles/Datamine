@@ -5,8 +5,6 @@ local Dump = function(title, ...) Datamine.Dump(moduleName, title, ...) end;
 
 Datamine.ModelView = {};
 
-local DEBUG_ID = 191878;
-
 local function SetupPlayerForModelScene(modelScene, overrideActorName, itemModifiedAppearanceIDs, sheatheWeapons, autoDress, hideWeapons, useNativeForm)
 	if not modelScene then
 		return;
