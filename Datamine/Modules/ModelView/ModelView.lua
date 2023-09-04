@@ -36,7 +36,6 @@ function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
 
     if ( forcePlayerRefresh or (not f:IsShown() or f:GetMode() ~= "player") ) then
 		f:SetMode("player");
-		--f:ResetEntryBoxes();
 
 		f:Show();
 		f.ModelScene:ClearScene();
@@ -92,12 +91,12 @@ function Datamine.ModelView:TryOnByAppearanceID(appearanceID)
         return false;
     end
 
+	local GetEnumValueName = EnumUtil.GenerateNameTranslation(Enum.ItemTryOnReason);
+
 	local _, canCollect = C_TransmogCollection.AccountCanCollectSource(appearanceID);
 	if not canCollect then
-		Print(appearanceID .. " cannot be collected by this account.");
+		Print("ItemModifiedAppearance " .. appearanceID .. " cannot be collected by this account.");
 	end
-
-	local GetEnumValueName = EnumUtil.GenerateNameTranslation(Enum.ItemTryOnReason);
 
 	local transmogInfo = ItemUtil.CreateItemTransmogInfo(appearanceID);
     local appearanceInfo = C_TransmogCollection.GetSourceInfo(appearanceID);
@@ -128,6 +127,13 @@ function Datamine.ModelView:TryOnTransmogSet(transmogSetID)
     return true;
 end
 
+function Datamine.ModelView:TryOnByItemID(itemID)
+    local appearanceID, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemID);
+
+	self:TryOnByItemModifiedAppearanceID({itemModifiedAppearanceID});
+    return true;
+end
+
 do
 	local helpString = "Show the Datamine dressing room.";
 
@@ -135,17 +141,17 @@ do
 end
 
 do
-	local helpMessage = "View an ItemModifiedAppearance in the Datamine dressing room.";
-	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemModifiedAppearanceID>", helpMessage);
+	local helpMessage = "Try on an item by item ID";
+	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemID>", helpMessage);
 
-	Datamine.Slash:RegisterCommand("modifiedappearance", function(...) Datamine.ModelView:TryOnByItemModifiedAppearanceID({...}) end, helpString, moduleName);
+	Datamine.Slash:RegisterCommand("tryonitem", function(itemID) Datamine.ModelView:TryOnByItemID(itemID) end, helpString, moduleName);
 end
 
 do
-	local helpMessage = "View an ItemAppearance in the Datamine dressing room.";
-	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemAppearanceID>", helpMessage);
+	local helpMessage = "View an ItemModifiedAppearance in the Datamine dressing room.";
+	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemModifiedAppearanceID>", helpMessage);
 
-	Datamine.Slash:RegisterCommand("appearance", function(appearanceID) Datamine.ModelView:TryOnByAppearanceID(appearanceID) end, helpString, moduleName);
+	Datamine.Slash:RegisterCommand("appearance", function(...) Datamine.ModelView:TryOnByItemModifiedAppearanceID({...}) end, helpString, moduleName);
 end
 
 do
