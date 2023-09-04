@@ -25,18 +25,18 @@ These are things I want to add, subject to change, might get scrapped, yadda-yad
 Things to dump with slash commands like `/dm item` and `/dm spell`.
 
 - 🟩 Generate Wowhead links from item/spell/quest IDs
-- 🟩 Item appearance info 🤠
+- ✅ Item appearance info 🤠
 - 🟩 Transmog set info 🤠
 
 #### Dressing Room/Model Viewer
 
 - ✅ View model by FileDataID
 - ✅ View CreatureDisplayInfo by ID
-- 🟩 Try on items by itemID 🤠
+- ✅ Try on items by itemID 🤠
 - ✅ Try on items by itemModifiedAppearanceID
 - ✅ Try on transmog set by TransmogSetID
 - ✅ Apply SpellVisualKits
 
 #### Barber Shop
 
-- 🟩 Preview customization choices by optionID + choiceID 🤠
+- ✅ Preview customization choices by optionID + choiceID 🤠

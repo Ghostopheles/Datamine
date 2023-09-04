@@ -1,3 +1,20 @@
+# Datamine v1.6
+
+##### Added
+* Added two console commands that can be used while in the barber shop
+    * `PreviewCustomizationChoice` allows you to view a customization choice using a ChrCustomizationOptionID and a ChrCustomizationChoiceID
+    * `SetDressState` allows you to manually toggle your character's dress state using 1 or 0
+    * If the console is not enabled, you can enable it with `/console enable` or by launching your game with the `-console` flag
+* Added a new slash command `/dm appearanceinfo` to return some transmog data from an AppearanceID
+* Added a command `/dm tryonitem` to try on an item by itemID. Note that item IDs can have multiple appearances, so this might not be 100% what you're expecting.
+
+##### Fixed
+* Fixed an infinite loop in the `/dm quest` command
+* Various modelviewing bugs
+
+##### Removed
+* Temporarily changed the `/dm appearance` command to work with ItemModifiedAppearanceID instead of ItemAppearanceID, cause the latter was broken
+
 # Datamine v1.5
 
 ##### Added
