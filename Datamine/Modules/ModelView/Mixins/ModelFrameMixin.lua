@@ -110,6 +110,19 @@ function DatamineModelFrameMixin:SetCreature(creatureID, displayID)
     return actor:SetCreature(creatureID, displayID);
 end
 
+function DatamineModelFrameMixin:SetModelFromTarget()
+    local actor = self:GetActor();
+
+    if not actor then return end;
+
+    local unit = "target";
+    if self.ViewingMode == MODES.ModelScene then
+        return actor:SetModelByUnit(unit);
+    elseif self.ViewingMode == MODES.PlayerModel then
+        return actor:SetUnit(unit);
+    end
+end
+
 function DatamineModelFrameMixin:ToggleSceneMode()
     if self.ViewingMode == MODES.ModelScene then
         self:SetViewingMode(MODES.PlayerModel);
@@ -390,6 +403,10 @@ function DatamineModelFrameControlPanelMixin:SetupPlayerModelPage()
         a:SetScript("OnClick", function()
             local creatureID = page.CreatureIDEntryBox:GetText();
             local displayID = page.DisplayIDEntryBox:GetText();
+            if not displayID or strtrim(displayID) == "" then
+                displayID = 0;
+            end
+
             DatamineDressUpFrame:SetCreature(creatureID, displayID)
         end);
 

@@ -224,6 +224,18 @@
                     </OnClick>
                 </Scripts>
             </Button>
+            <Button parentKey="SetFromTargetButton" name="$parentSetFromTargetButton"
+                inherits="UIPanelButtonTemplate" text="Target">
+                <Size x="80" y="22" />
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentModeSwapButton" relativePoint="LEFT" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():SetModelFromTarget();
+                    </OnClick>
+                </Scripts>
+            </Button>
         </Frames>
         <Layers>
             <Layer level="BACKGROUND">
