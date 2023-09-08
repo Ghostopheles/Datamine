@@ -1,3 +1,11 @@
+# Datamine v1.6.1
+
+##### Added
+* Added a button to set model viewer model from target
+
+##### Fixed
+* Fixed support for 10.2 PTR, updated libs
+
 # Datamine v1.6
 
 ##### Added
