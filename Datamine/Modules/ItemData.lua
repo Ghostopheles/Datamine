@@ -48,7 +48,7 @@ local ExpansionNames = {
     [7] = "Battle for Azeroth",
     [8] = "Shadowlands",
     [9] = "Dragonflight",
-    [10] = "The future? wtf item is this??"
+    [10] = "Shadow of the Aspects"
 }
 
 local Print = function(...)
