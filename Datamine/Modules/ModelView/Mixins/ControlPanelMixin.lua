@@ -28,15 +28,11 @@ function DatamineModelFrameControlPanelPageMixin:GetAnchorPoint()
     local anchorPoint;
     local numFrames = #self.FrameContainer;
 
-    print(numFrames)
-
     if numFrames > 0 then
         anchorPoint = self.FrameContainer[numFrames]
     else
         anchorPoint = self;
     end
-
-    print(anchorPoint);
 
     return anchorPoint;
 end
