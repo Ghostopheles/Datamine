@@ -32,6 +32,7 @@ Modules/QuestData.lua
 Modules/QuestLineData.lua
 Modules/TransmogData.lua
 
+Modules/ModelView/Mixins/ControlPanelMixin.lua
 Modules/ModelView/Mixins/ModelFrameMixin.lua
 Modules/ModelView/Mixins/PlayerModelMixin.lua
 Modules/ModelView/ModelViewFrames.xml

@@ -1,3 +1,11 @@
+# Datamine v1.7
+
+##### Added
+* Entry box for adding ItemModifiedAppearance's to your character in the Model Viewer
+
+##### Fixed
+* Cleaned up some horrific control panel code - will make it significantly easier to add new controls
+
 # Datamine v1.6.1
 
 ##### Added

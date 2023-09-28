@@ -75,7 +75,7 @@
         inherits="ModelWithControlsTemplate"
         enableMouse="true" hidden="true" virtual="true">
         <KeyValues>
-            <KeyValue key="maxZoom" value="1" type="number" />
+            <KeyValue key="maxZoom" value="3" type="number" />
         </KeyValues>
         <Scripts>
             <OnLoad>

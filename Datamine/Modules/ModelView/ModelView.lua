@@ -53,7 +53,7 @@ function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
 	end
 
 	if DevTool then
-		DevTool:AddData(f.ModelScene:GetPlayerActor(), "PlayerActor");
+		DevTool:AddData(f.ModelScene:GetPlayerActor(), "DatamineModelSceneActor");
 	end
 end
 
