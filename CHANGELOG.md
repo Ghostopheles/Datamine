@@ -5,6 +5,7 @@
 
 ##### Fixed
 * Cleaned up some horrific control panel code - will make it significantly easier to add new controls
+* Fixed broken "Try On" links in the `/dm appearancemods` command
 
 # Datamine v1.6.1
 

@@ -64,7 +64,7 @@ function Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID
         linkTable[i] = tryOnLink;
     end
 
-    DumpTableWithDisplayKeys("ItemModifiedAppearances for ItemAppearance " .. appearanceID .. " >>", displayKeys, linkTable, true);
+    DumpTableWithDisplayKeys("ItemModifiedAppearances for ItemAppearance " .. appearanceID .. " >>", displayKeys, linkTable);
 end
 
 function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
@@ -109,7 +109,7 @@ function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
     outputTable.CategoryID = sourceInfo.categoryID;
     outputTable.ItemModID = sourceInfo.itemModID;
 
-    Dump("Appearance " .. itemModifiedAppearanceID .. "  >> ", outputTable);
+    DumpTableWithDisplayKeys("Appearance " .. itemModifiedAppearanceID .. "  >> ", nil, outputTable);
 
     return true;
 end

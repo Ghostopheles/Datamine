@@ -105,28 +105,39 @@ function Datamine.Dump(module, tableTitle, message)
     DevTools_Dump(message);
 end
 
-function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message, hideQuotes)
+function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message, showQuotes)
     if not message then
         return;
     end
 
-    assert(#displayKeys == #message, "DisplayKeys and Table length mismatch.");
+    if displayKeys then
+        assert(#displayKeys == #message, "DisplayKeys and Table length mismatch.");
+    end
 
     local prefix = GenerateDumpPrefix(module, tableTitle);
     print(prefix);
 
-    for i, v in ipairs(message) do
+    local i = 1;
+    for k, v in pairs(message) do
         if type(v) ~= "string" then
             v = tostring(v);
         end
 
         local valueString = "|r=\"" .. v .. "\"";
 
-        if hideQuotes then
+        if not showQuotes then
             valueString = string.gsub(valueString, "\"", "");
         end
 
-        print("|cff88ccff[" .. i .. "] " .. displayKeys[i] .. valueString);
+        local key;
+        if not displayKeys then
+            key = k;
+        else
+            key = displayKeys[i];
+        end
+
+        print("|cff88ccff[" .. i .. "] " .. key .. valueString);
+        i = i + 1;
     end
 end
 
