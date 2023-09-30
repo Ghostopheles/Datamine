@@ -20,7 +20,7 @@ local TransmogInfoKeys = {
 };
 
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
-    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, TransmogInfoKeys, ...);
+    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, ...);
 end;
 
 Datamine.Transmog = {};
@@ -31,7 +31,7 @@ local TryOnPrefix = "tryOn";
 function Datamine.Transmog.HandleLink(pattern)
     local prefix, itemModifiedAppearanceID = strsplit(Datamine.Links.SEPARATOR, pattern);
     if prefix == "tryOn" then
-        Datamine.ModelView:Show({itemModifiedAppearanceID})
+        Datamine.ModelView:TryOnByItemModifiedAppearanceID({itemModifiedAppearanceID})
         return;
     end
 end
@@ -54,14 +54,17 @@ function Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID
         return;
     end
 
-    local outputTable = {}
+    local linkTable = {}
+    local displayKeys = {}
 
     for i, v in ipairs(itemModifiedAppearanceIDs) do
         local tryOnLink = self:GetTryOnLink(v);
-        outputTable[i] = v .. " " .. tryOnLink;
+
+        displayKeys[i] = v;
+        linkTable[i] = tryOnLink;
     end
 
-    Dump("ItemModifiedAppearances for ItemAppearance " .. appearanceID .. " >>", outputTable);
+    DumpTableWithDisplayKeys("ItemModifiedAppearances for ItemAppearance " .. appearanceID .. " >>", displayKeys, linkTable, true);
 end
 
 function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)

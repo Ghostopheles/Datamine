@@ -105,7 +105,7 @@ function Datamine.Dump(module, tableTitle, message)
     DevTools_Dump(message);
 end
 
-function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message)
+function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message, hideQuotes)
     if not message then
         return;
     end
@@ -120,7 +120,13 @@ function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, mess
             v = tostring(v);
         end
 
-        print("|cff88ccff[" .. i .. "] " .. displayKeys[i] .. "|r=\"" .. v .. "\"");
+        local valueString = "|r=\"" .. v .. "\"";
+
+        if hideQuotes then
+            valueString = string.gsub(valueString, "\"", "");
+        end
+
+        print("|cff88ccff[" .. i .. "] " .. displayKeys[i] .. valueString);
     end
 end
 
