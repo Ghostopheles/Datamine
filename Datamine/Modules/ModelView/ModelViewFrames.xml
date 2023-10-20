@@ -90,7 +90,7 @@
     <Frame name="DatamineDressUpFrame" mixin="DatamineModelFrameMixin" toplevel="true"
         enableMouse="true"
         parent="UIParent" hidden="true" inherits="ButtonFrameTemplateMinimizable">
-        <Size x="450" y="545" />
+        <Size x="600" y="750" />
         <Anchors>
             <Anchor point="TOPLEFT" x="70" y="-104" />
         </Anchors>

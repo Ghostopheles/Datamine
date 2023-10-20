@@ -9,7 +9,7 @@ local MODES = {
 
 function DatamineModelFrameMixin:OnLoad()
     self:SetTitle("Datamine Model Viewer");
-    self:SetSize(600, 800);
+    self:SetSize(800, 1000);
     self:ClearAllPoints();
     self:SetPoint("CENTER");
 
