@@ -42,8 +42,8 @@ function DatamineModelFrameMixin:SetZoomLevels()
 
     if modelScene:HasActiveCamera() then
         local activeCamera = modelScene:GetActiveCamera();
-        activeCamera:SetMinZoomDistance(1);
-        activeCamera:SetMaxZoomDistance(10);
+        activeCamera:SetMinZoomDistance(0.5);
+        activeCamera:SetMaxZoomDistance(15);
     end
 end
 

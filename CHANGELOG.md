@@ -6,6 +6,8 @@
 ##### Fixed
 * Cleaned up some horrific control panel code - will make it significantly easier to add new controls
 * Fixed broken "Try On" links in the `/dm appearancemods` command
+* Increased the size of the model viewer frame
+* Increased max zoom level of the model viewer
 
 # Datamine v1.6.1
 
