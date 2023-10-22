@@ -1,4 +1,4 @@
-# Datamine v1.7
+# Datamine v1.6.2
 
 ##### Added
 * Entry box for adding ItemModifiedAppearance's to your character in the Model Viewer
