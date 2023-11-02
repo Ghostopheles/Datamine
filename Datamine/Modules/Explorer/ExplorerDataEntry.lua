@@ -4,16 +4,22 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
     self:SetParent(parent);
     self.KeyText = self:CreateFontString(nil, nil, "GameFontHighlight");
     self.KeyText:SetPoint("TOPLEFT");
-    self.KeyText:SetPoint("BOTTOMRIGHT", self, "CENTER");
+    self.KeyText:SetPoint("BOTTOMRIGHT", self, "BOTTOM");
     self.KeyText:SetJustifyH("LEFT");
     self.KeyText:SetText(data.key .. ":");
-    self.KeyText:SetTextScale(1.3);
+
+    self.KeyText:SetHeight(parent:GetHeight());
+    self.KeyText:SetTextScale(1.2);
+    self.KeyText:SetJustifyV("CENTER");
 
     self.ValueText = self:CreateFontString(nil, nil, "GameFontHighlight");
     self.ValueText:SetPoint("TOPRIGHT");
-    self.ValueText:SetPoint("BOTTOMLEFT", self, "CENTER");
+    self.ValueText:SetPoint("BOTTOMLEFT", self, "BOTTOM");
     self.ValueText:SetText(data.value);
-    self.ValueText:SetTextScale(1.3);
+
+    self.ValueText:SetHeight(parent:GetHeight());
+    self.ValueText:SetTextScale(1.2);
+    self.ValueText:SetJustifyV("CENTER");
 
     if data.key == "Hyperlink" then
         self:GetParent().Icon:SetItem(data.value);

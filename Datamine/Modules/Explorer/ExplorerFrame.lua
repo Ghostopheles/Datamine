@@ -171,6 +171,8 @@ function Datamine.Explorer:InitFrame()
     };
 
     self.CurrentlyDisplayedPage = nil;
+
+    self:Hide();
 end
 
 function Datamine.Explorer:PushCurrentPageToHistory()
