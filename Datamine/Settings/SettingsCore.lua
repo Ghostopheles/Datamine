@@ -1,21 +1,36 @@
+local defaultConfig = {
+    ChatPrefixColor = "FFF542F5";
+    debugTargetInfo = false;
+};
+
+local allSettings = {};
+
 local function InitSavedVariables()
     if not DatamineConfig then
-        DatamineConfig = {
-            ChatPrefixColor = "FFF542F5";
-        };
+        DatamineConfig = CopyTable(defaultConfig);
+    end
+
+    for name, setting in pairs(allSettings) do
+        local var = DatamineConfig[name];
+
+        if not var then
+            DatamineConfig[name] = setting:GetValue();
+        else
+            setting:SetValue(DatamineConfig[name]);
+        end
     end
 
     Datamine.Constants.ChatPrefixColor = CreateColorFromHexString(DatamineConfig.ChatPrefixColor);
 end
 
-EventUtil.RegisterOnceFrameEventAndCallback("ADDON_LOADED", InitSavedVariables, "Datamine");
+EventUtil.ContinueOnAddOnLoaded("Datamine", InitSavedVariables);
 
 local function OnSettingChanged(_, setting, value)
 	local variable = setting:GetVariable()
 	DatamineConfig[variable] = value
 end
 
-function ShowColorPicker(r, g, b, a, callback)
+local function ShowColorPicker(r, g, b, a, callback)
     assert(r and g and b, "Invalid RGB values passes to ShowColorPicker");
     local colorPicker = ColorPickerFrame;
     local selectedColor = CreateColor(r, g, b, a);
