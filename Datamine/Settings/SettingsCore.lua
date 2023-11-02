@@ -50,6 +50,46 @@ local function ShowColorPicker(r, g, b, a, callback)
     colorPicker:Show();
 end
 
+local function CreateCVarSetting(category, name, variable, variableType, defaultValue)
+    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
+
+    local cvarAccessor = CreateCVarAccessor(variable, variableType);
+    setting.GetValueInternal = function(self)
+		return cvarAccessor:GetValue();
+	end;
+
+	setting.SetValueInternal = function(self, value)
+		assert(type(value) == variableType);
+		self.pendingValue = value;
+		cvarAccessor:SetValue(value);
+		self.pendingValue = nil;
+		return value;
+	end
+
+	setting.GetDefaultValueInternal = function(self)
+		return cvarAccessor:GetDefaultValue();
+	end
+
+	setting.ConvertValueInternal = function(self, value)
+		return cvarAccessor:ConvertValue(value);
+	end
+
+    return setting;
+end
+
 local category = Settings.RegisterVerticalLayoutCategory(Datamine.Constants.AddonName);
+
+do
+    local variable = "debugTargetInfo";
+    local variableType = Settings.VarType.Boolean;
+    local name = "Enable barber shop debug tooltips";
+    local tooltip = "Enables the display of debug tooltips in the barber shop and on character customization screens.";
+
+    local setting = CreateCVarSetting(category, name, variable, variableType, defaultConfig[variable]);
+    Settings.CreateCheckBox(category, setting, tooltip);
+    Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
+
+    allSettings[variable] = setting;
+end
 
 Settings.RegisterAddOnCategory(category)
