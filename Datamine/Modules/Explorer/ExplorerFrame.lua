@@ -3,10 +3,9 @@ local Print = function(...)
     Datamine.Print(moduleName, ...);
 end;
 
-local DatamineExplorerItemDataProvider = CreateDataProvider();
 local DatamineExplorerInfoPageMixin = {};
 
-function DatamineExplorerInfoPageMixin:Init(dataProvider, title)
+function DatamineExplorerInfoPageMixin:Init(title)
     self:SetAllPoints();
 
     self.Title = title;
@@ -21,6 +20,12 @@ function DatamineExplorerInfoPageMixin:Init(dataProvider, title)
     self.TitleText:SetScale(2);
     self.TitleText:SetText(self.Title);
 
+    self.Icon = CreateFrame("ItemButton", nil, self);
+    self.Icon:SetPoint("CENTER", self.TitleText, "CENTER", -120, 0);
+    self.Icon:EnableMouse(false);
+
+    self:SetHyperlinksEnabled(true);
+
     self.ScrollFrame = CreateFrame("ScrollFrame", nil, self, "WowScrollBoxList");
     self.ScrollFrame:SetPoint("BOTTOMRIGHT");
     self.ScrollFrame:SetPoint("TOPLEFT", self.TitleText, "BOTTOMLEFT");
@@ -34,14 +39,21 @@ function DatamineExplorerInfoPageMixin:Init(dataProvider, title)
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollFrame, self.ScrollBar, self.ScrollView);
 
+    local i = 0;
+
     self.ScrollView:SetElementInitializer("DatamineExplorerDataEntryTemplate", function(frame, data)
-        frame.Text = frame:CreateFontString(nil, nil, "GameFontHighlight");
-        frame.Text:SetAllPoints();
-        frame.Text:SetJustifyH("LEFT");
-        frame.Text:SetText(data.key .. ": " .. data.value);
+        frame:Init(data, self);
+
+        if i % 2 == 0 then
+            frame:SetDefaultAlpha(0.15);
+        end
+
+        i = i + 1;
     end)
 
-    self.ScrollFrame:SetDataProvider(dataProvider);
+    self.DataProvider = CreateDataProvider();
+
+    self.ScrollFrame:SetDataProvider(self.DataProvider);
 
     self.LoadingSpinner = CreateFrame("Frame", nil, self, "OutlineLoadingSpinnerTemplate");
     self.LoadingSpinner:SetPoint("CENTER");
@@ -51,6 +63,24 @@ function DatamineExplorerInfoPageMixin:Init(dataProvider, title)
     self.LoadingSpinner:Hide();
 
     self.Loading = false;
+
+    self:SetScript("OnHyperlinkClick", self.OnHyperlinkClick);
+    self:SetScript("OnHyperlinkEnter", self.OnHyperlinkEnter);
+    self:SetScript("OnHyperlinkLeave", self.OnHyperlinkLeave);
+end
+
+function DatamineExplorerInfoPageMixin:OnHyperlinkClick(link, text, button)
+    SetItemRef(link, text, button);
+end
+
+function DatamineExplorerInfoPageMixin:OnHyperlinkEnter(link, _)
+    GameTooltip:SetOwner(self, "ANCHOR_CURSOR");
+    GameTooltip:SetHyperlink(link);
+    GameTooltip:Show();
+end
+
+function DatamineExplorerInfoPageMixin:OnHyperlinkLeave()
+    GameTooltip:Hide();
 end
 
 function DatamineExplorerInfoPageMixin:SetLoading(isLoading)
@@ -73,9 +103,9 @@ function DatamineExplorerInfoPageMixin:IsLoading()
 end
 
 function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(itemData)
-    DatamineExplorerItemDataProvider:Flush();
+    self.DataProvider:Flush();
 
-    if itemData == false then
+    if not itemData then
         self:SetLoading(false);
         return;
     end
@@ -91,16 +121,16 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(itemData
             key = Datamine.Item.ItemInfoKeys[i],
             value = value;
         };
-        DatamineExplorerItemDataProvider:Insert(data);
+        self.DataProvider:Insert(data);
     end
     self:SetLoading(false);
 end
 
-local function CreateInfoPage(parent, dataProvider, title)
+local function CreateInfoPage(parent, title)
     local f = CreateFrame("Frame", "DatamineInfoPage" .. title, parent);
 
     Mixin(f, DatamineExplorerInfoPageMixin);
-    f:Init(dataProvider, title);
+    f:Init(title);
 
     return f;
 end
@@ -109,8 +139,6 @@ Datamine.Explorer = CreateFrame("Frame", "DatamineExplorerFrame", UIParent, "Por
 Datamine.Explorer.Events = CreateFromMixins(CallbackRegistryMixin);
 Datamine.Explorer.Events:OnLoad();
 Datamine.Explorer.Events:SetUndefinedEventsAllowed(true);
-
-
 
 function Datamine.Explorer:InitFrame()
     self:SetSize(1280, 720);
@@ -137,14 +165,33 @@ function Datamine.Explorer:InitFrame()
     self.InfoContainer:SetPoint("TOPLEFT", self.SearchBox, "BOTTOMLEFT", 0, -10);
     self.InfoContainer:SetPoint("BOTTOMRIGHT", self.Bg, "BOTTOM", 0, 10);
 
-    self:Show();
+    self.History = {
+        Back = {};
+        Forward = {};
+    };
+
+    self.CurrentlyDisplayedPage = nil;
+end
+
+function Datamine.Explorer:PushCurrentPageToHistory()
+    if self.CurrentlyDisplayedPage then
+        self.CurrentlyDisplayedPage:Hide();
+        tinsert(self.History.Back, self.CurrentlyDisplayedPage);
+    end
+
+    if #self.History.Back > 4 then
+        tremove(self.History.Back, 1);
+    end
 end
 
 function Datamine.Explorer:AddPageForItemID(itemID)
-    local page = CreateInfoPage(self.InfoContainer, DatamineExplorerItemDataProvider, "Item: " .. itemID);
+    self:PushCurrentPageToHistory();
+
+    local page = CreateInfoPage(self.InfoContainer, "Item: " .. itemID);
     page:SetLoading(true);
 
     Datamine.Item:GetOrFetchItemInfoByID(itemID, function(itemData) page:PopulateDataProviderFromCallback(itemData) end);
+    self.CurrentlyDisplayedPage = page;
 end
 
 Datamine.Explorer:InitFrame()
