@@ -28,6 +28,7 @@ local ItemInfoKeys = {
     "IsDressable",
     "IsAnimaItem",
 };
+Datamine.Item.ItemInfoKeys = ItemInfoKeys;
 
 local ItemBindTypes = {
     [0] = "None",
@@ -35,7 +36,8 @@ local ItemBindTypes = {
     [2] = "Bind on Equip",
     [3] = "Bind on Use",
     [4] = "Bind on Account",
-}
+};
+Datamine.Item.ItemBindTypes = ItemBindTypes;
 
 local ExpansionNames = {
     [0] = "Classic",
@@ -49,7 +51,8 @@ local ExpansionNames = {
     [8] = "Shadowlands",
     [9] = "Dragonflight",
     [10] = "The future? wtf item is this??"
-}
+};
+Datamine.Item.ExpansionNames = ExpansionNames;
 
 local Print = function(...)
     Datamine.Print(moduleName, ...);
@@ -87,26 +90,26 @@ function Datamine.Item:OnItemDataReceived(itemID, success)
         Print("Query for item " .. itemID .. " failed. Item does not exist.");
         return;
     elseif success == false then
+        if self.ItemInfoCallback then
+            self.ItemInfoCallback(false);
+            return;
+        end
+
         Print("Query for item " .. itemID .. " failed. Item is forbidden or does not exist.");
         return;
     end
 
-    self:PrettyDumpItemData(itemID);
-end
-
-function Datamine.Item:GetItemDataTitle(itemID, success)
-    if success == nil then
-        Print("Query for item " .. itemID .. " failed. Item does not exist.");
-        return;
-    elseif success == false then
-        Print("Query for item " .. itemID .. " failed. Item is forbidden or does not exist.");
-        return;
+    local itemData = self:GetFormattedItemData(itemID);
+    if self.ItemInfoCallback then
+        self.ItemInfoCallback(itemData);
+    else
+        self:PrettyDumpItemData(itemID, itemData);
     end
 
-    self:PrettyDumpItemData(itemID);
+    self.ItemInfoCallback = nil;
 end
 
-function Datamine.Item:PrettyDumpItemData(itemID)
+function Datamine.Item:GetFormattedItemData(itemID)
     local itemData = {GetItemInfo(itemID)};
 
     if not itemData[16] then
@@ -133,13 +136,18 @@ function Datamine.Item:PrettyDumpItemData(itemID)
     tinsert(itemData, tostring(C_Item.IsDressableItemByID(itemID)));
     tinsert(itemData, tostring(C_Item.IsAnimaItemByID(itemID)));
 
-    DumpTableWithDisplayKeys("Item " .. itemID .. "  >> ", itemData);
-    self.LastItem = itemData;
+    return itemData;
 end
 
-function Datamine.Item:GetOrFetchItemInfoByID(itemID)
+function Datamine.Item:PrettyDumpItemData(itemID, itemData)
+    DumpTableWithDisplayKeys("Item " .. itemID .. "  >> ", itemData);
+end
+
+function Datamine.Item:GetOrFetchItemInfoByID(itemID, callback)
     itemID = tonumber(itemID);
     assert(itemID, "GetOrFetchItemInfoByID requires a valid itemID.");
+
+    self.ItemInfoCallback = callback;
 
     if C_Item.IsItemDataCachedByID(itemID) then
         self:OnItemDataReceived(itemID, true);

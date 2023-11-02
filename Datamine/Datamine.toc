@@ -37,3 +37,6 @@ Modules/ModelView/Mixins/ModelFrameMixin.lua
 Modules/ModelView/Mixins/PlayerModelMixin.lua
 Modules/ModelView/ModelViewFrames.xml
 Modules/ModelView/ModelView.lua
+
+Modules/Explorer/ExplorerDataEntry.xml
+Modules/Explorer/ExplorerFrame.lua
