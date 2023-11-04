@@ -178,7 +178,7 @@ function Datamine.Explorer:InitFrame()
 
     self.CurrentlyDisplayedPage = nil;
 
-    self:Show();
+    self:Hide();
 end
 
 function Datamine.Explorer:InitSearchBox()
