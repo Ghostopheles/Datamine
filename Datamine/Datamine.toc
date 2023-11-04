@@ -39,4 +39,5 @@ Modules/ModelView/ModelViewFrames.xml
 Modules/ModelView/ModelView.lua
 
 Modules/Explorer/ExplorerDataEntry.xml
+Modules/Explorer/ExplorerFrame.xml
 Modules/Explorer/ExplorerFrame.lua

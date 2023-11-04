@@ -3,12 +3,27 @@ local Print = function(...)
     Datamine.Print(moduleName, ...);
 end;
 
+DatamineExplorerEventRegistry = CreateFromMixins(CallbackRegistryMixin);
+DatamineExplorerEventRegistry:OnLoad();
+DatamineExplorerEventRegistry:GenerateCallbackEvents(
+    {
+        "Minimized",
+        "Expanded",
+        "ItemDataLoadStart",
+        "ItemDataLoadComplete",
+        "DisplayedPageChanged",
+        "HistoryChanged",
+        "SearchTypeChanged",
+    }
+);
+
 local DatamineExplorerInfoPageMixin = {};
 
-function DatamineExplorerInfoPageMixin:Init(title)
+function DatamineExplorerInfoPageMixin:Init(itemID)
     self:SetAllPoints();
 
-    self.Title = title;
+    self.Title = "Item: " .. itemID;
+    self.ItemID = itemID;
 
     self.TitleText = self:CreateFontString(nil, nil, "GameFontHighlight");
     self.TitleText:ClearAllPoints();
@@ -28,7 +43,7 @@ function DatamineExplorerInfoPageMixin:Init(title)
 
     self.ScrollFrame = CreateFrame("ScrollFrame", nil, self, "WowScrollBoxList");
     self.ScrollFrame:SetPoint("BOTTOMRIGHT");
-    self.ScrollFrame:SetPoint("TOPLEFT", self.TitleText, "BOTTOMLEFT");
+    self.ScrollFrame:SetPoint("TOPLEFT", self.TitleText, "BOTTOMLEFT", 0, -10);
 
     self.ScrollBar = CreateFrame("EventFrame", nil, self, "MinimalScrollBar");
     self.ScrollBar:SetPoint("TOPLEFT", self.ScrollFrame, "TOPRIGHT", -20, -8);
@@ -90,11 +105,13 @@ function DatamineExplorerInfoPageMixin:SetLoading(isLoading)
         self.LoadingSpinner.Text:SetText("Loading " .. self.Title .. "...");
         Datamine.Explorer.SearchBox:Disable();
         self.Loading = true;
+        DatamineExplorerEventRegistry:TriggerEvent("ItemDataLoadStart", self.ItemID);
     else
         self.ScrollFrame:Show();
         self.LoadingSpinner:Hide();
         Datamine.Explorer.SearchBox:Enable();
         self.Loading = false;
+        DatamineExplorerEventRegistry:TriggerEvent("ItemDataLoadComplete", self.ItemID);
     end
 end
 
@@ -102,11 +119,17 @@ function DatamineExplorerInfoPageMixin:IsLoading()
     return self.Loading;
 end
 
+function DatamineExplorerInfoPageMixin:OnFail()
+    self.Icon:Hide();
+    self.TitleText:SetText("Item is forbidden or does not exist.");
+end
+
 function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(itemData)
     self.DataProvider:Flush();
 
     if not itemData then
         self:SetLoading(false);
+        self:OnFail();
         return;
     end
 
@@ -136,64 +159,155 @@ local function CreateInfoPage(parent, title)
 end
 
 Datamine.Explorer = CreateFrame("Frame", "DatamineExplorerFrame", UIParent, "PortraitFrameFlatTemplate");
-Datamine.Explorer.Events = CreateFromMixins(CallbackRegistryMixin);
-Datamine.Explorer.Events:OnLoad();
-Datamine.Explorer.Events:SetUndefinedEventsAllowed(true);
 
 function Datamine.Explorer:InitFrame()
-    self:SetSize(1280, 720);
+    self:SetSize(640, 720);
     self:SetPoint("TOP", 0, -200);
     self:SetTitle("Datamine Explorer");
     self:SetToplevel(true);
 
     ButtonFrameTemplate_HidePortrait(self);
 
-    self.SearchBox = CreateFrame("EditBox", nil, self, "SearchBoxTemplate");
-    self.SearchBox:SetNumeric(true);
-    self.SearchBox:SetAutoFocus(false);
-    self.SearchBox:SetHeight(20);
-    self.SearchBox:SetPoint("TOPLEFT", self.Bg, 13, -8);
-    self.SearchBox:SetPoint("RIGHT", self.Bg, "TOP");
-    self.SearchBox:HookScript("OnEscapePressed", function() self:Hide() end);
-    self.SearchBox:HookScript("OnKeyDown", function(_, key)
-        if key == "ENTER" then
-            Datamine.Explorer:AddPageForItemID(self.SearchBox:GetNumber());
-        end
-    end)
+    self:InitSearchBox();
 
     self.InfoContainer = CreateFrame("Frame", nil, self);
-    self.InfoContainer:SetPoint("TOPLEFT", self.SearchBox, "BOTTOMLEFT", 0, -10);
-    self.InfoContainer:SetPoint("BOTTOMRIGHT", self.Bg, "BOTTOM", 0, 10);
 
-    self.History = {
-        Back = {};
-        Forward = {};
-    };
+    self:Minimize();
+    self:InitHistory();
+    self:InitInfoTypeDropdown();
 
     self.CurrentlyDisplayedPage = nil;
 
-    self:Hide();
+    self:Show();
+end
+
+function Datamine.Explorer:InitSearchBox()
+    self.SearchBox = CreateFrame("EditBox", nil, self, "SearchBoxTemplate");
+    self.SearchBox:SetNumeric(true);
+    self.SearchBox:SetAutoFocus(false);
+    self.SearchBox:SetHeight(25);
+    self.SearchBox:HookScript("OnEscapePressed", function() self:Hide() end);
+    self.SearchBox:HookScript("OnEnterPressed", function()
+        Datamine.Explorer:AddPageForItemID(self.SearchBox:GetNumber());
+    end);
+    self.SearchBox.Instructions:SetText("Enter an ItemID...");
+    self.SearchBox:SetNumber(163800);
+end
+
+function Datamine.Explorer:InitInfoTypeDropdown()
+    self.InfoTypeDropdown = CreateFrame("DropDownToggleButton", nil, self, "UIMenuButtonStretchTemplate");
+    self.InfoTypeDropdown:SetSize(120, 21);
+    self.InfoTypeDropdown:SetPoint("LEFT", self.SearchBox, "RIGHT", 10, 0);
+    self.InfoTypeDropdown:SetText("Search Type");
+
+    self.InfoTypeDropdown.Icon = self.InfoTypeDropdown:CreateTexture(nil, "ARTWORK");
+    self.InfoTypeDropdown.Icon:SetTexture([[Interface\ChatFrame\ChatFrameExpandArrow]]);
+    self.InfoTypeDropdown.Icon:SetSize(10, 12);
+    self.InfoTypeDropdown.Icon:SetPoint("RIGHT", -5, 0);
+end
+
+function Datamine.Explorer:InitHistory()
+    self.HistoryNavigation = CreateFrame("Frame", nil, self, "DatamineExplorerHistoryNavigationTemplate");
+    self.HistoryNavigation:SetPoint("RIGHT", self.SearchBox, "LEFT", -10, 0);
+
+    self.HistoryNavigation.BackButton:Disable();
+    self.HistoryNavigation.ForwardButton:Disable();
+
+    self.HistoryNavigation.BackButton:SetScript("OnClick", function() self:GoBack() end);
+    self.HistoryNavigation.ForwardButton:SetScript("OnClick", function() self:GoForward() end);
+
+    DatamineExplorerEventRegistry:RegisterCallback("HistoryChanged", function(direction)
+        Print(direction);
+        if direction == self.HistoryDirection.BACK then
+            if self.History.LastPageBack then
+                self.HistoryNavigation.BackButton:Enable();
+            else
+                self.HistoryNavigation.BackButton:Disable();
+            end
+        end
+
+        if direction == self.HistoryDirection.FORWARD then
+            if self.History.LastPageForward then
+                self.HistoryNavigation.ForwardButton:Enable();
+            else
+                self.HistoryNavigation.ForwardButton:Disable();
+            end
+        end
+    end)
+
+    self.History = {
+        LastPageBack = nil;
+        LastPageForward = nil;
+    };
+
+    self.HistoryDirection = {
+        BACK = "BACK",
+        FORWARD = "FORWARD",
+    };
 end
 
 function Datamine.Explorer:PushCurrentPageToHistory()
     if self.CurrentlyDisplayedPage then
+        self.History.LastPageBack = self.CurrentlyDisplayedPage;
         self.CurrentlyDisplayedPage:Hide();
-        tinsert(self.History.Back, self.CurrentlyDisplayedPage);
+        DatamineExplorerEventRegistry:TriggerEvent("HistoryChanged", self.HistoryDirection.BACK);
     end
+end
 
-    if #self.History.Back > 4 then
-        tremove(self.History.Back, 1);
+function Datamine.Explorer:PushCurrentPageToForwardHistory()
+    if self.CurrentlyDisplayedPage then
+        self.History.LastPageForward = self.CurrentlyDisplayedPage;
+        self.CurrentlyDisplayedPage:Hide();
+        DatamineExplorerEventRegistry:TriggerEvent("HistoryChanged", self.HistoryDirection.FORWARD);
     end
+end
+
+function Datamine.Explorer:GoBack()
+    self:PushCurrentPageToForwardHistory();
+    self.CurrentlyDisplayedPage = self.History.LastPageBack;
+    self.CurrentlyDisplayedPage:Show();
+
+    self.History.LastPageBack = nil;
+    DatamineExplorerEventRegistry:TriggerEvent("HistoryChanged", self.HistoryDirection.BACK);
+    DatamineExplorerEventRegistry:TriggerEvent("DisplayedPageChanged", self.CurrentlyDisplayedPage);
+end
+
+function Datamine.Explorer:GoForward()
+    self:PushCurrentPageToHistory();
+    self.CurrentlyDisplayedPage = self.History.LastPageForward;
+    self.CurrentlyDisplayedPage:Show();
+
+    self.History.LastPageForward = nil;
+    DatamineExplorerEventRegistry:TriggerEvent("HistoryChanged", self.HistoryDirection.FORWARD);
+    DatamineExplorerEventRegistry:TriggerEvent("DisplayedPageChanged", self.CurrentlyDisplayedPage);
+end
+
+function Datamine.Explorer:Minimize()
+    local searchBoxWidth = self:GetWidth() / 2
+
+    self.SearchBox:ClearAllPoints();
+    self.SearchBox:SetPoint("TOP", self.Bg, 0, -8);
+    self.SearchBox:SetWidth(searchBoxWidth);
+
+    self.InfoContainer:ClearAllPoints();
+    self.InfoContainer:SetPoint("TOPLEFT", self.Bg, 7, -35);
+    self.InfoContainer:SetPoint("BOTTOMRIGHT", self.Bg, -7, 10);
+
+    DatamineExplorerEventRegistry:TriggerEvent("Minimized");
+end
+
+function Datamine.Explorer:Expand()
 end
 
 function Datamine.Explorer:AddPageForItemID(itemID)
     self:PushCurrentPageToHistory();
 
-    local page = CreateInfoPage(self.InfoContainer, "Item: " .. itemID);
+    local page = CreateInfoPage(self.InfoContainer, itemID);
     page:SetLoading(true);
 
     Datamine.Item:GetOrFetchItemInfoByID(itemID, function(itemData) page:PopulateDataProviderFromCallback(itemData) end);
     self.CurrentlyDisplayedPage = page;
+    DatamineExplorerEventRegistry:TriggerEvent("DisplayedPageChanged", page);
 end
 
 Datamine.Explorer:InitFrame()
