@@ -87,6 +87,11 @@ end
 
 function Datamine.Item:OnItemDataReceived(itemID, success)
     if success == nil then
+        if self.ItemInfoCallback then
+            self.ItemInfoCallback(false);
+            return;
+        end
+
         Print("Query for item " .. itemID .. " failed. Item does not exist.");
         return;
     elseif success == false then

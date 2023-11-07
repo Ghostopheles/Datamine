@@ -3,8 +3,6 @@ local Print = function(...)
     Datamine.Print(moduleName, ...);
 end;
 
-local MSA = LibStub:GetLibrary("MSA-DropDownMenu-1.0");
-
 DatamineExplorerEventRegistry = CreateFromMixins(CallbackRegistryMixin);
 DatamineExplorerEventRegistry:OnLoad();
 DatamineExplorerEventRegistry:GenerateCallbackEvents(
@@ -89,7 +87,7 @@ function DatamineExplorerInfoPageMixin:Init(dataID, dataType)
         end
 
         i = i + 1;
-    end)
+    end);
 
     self.DataProvider = CreateDataProvider();
 
@@ -243,7 +241,7 @@ function Datamine.Explorer:InitInfoTypeDropdown()
 
     self.InfoTypeDropdownToggle.DropDown = MSA_DropDownMenu_Create("DatamineExplorerSearchTypeDropDown", self.InfoTypeDropdownToggle);
 
-    local function DropDownInit(self)
+    local function DropDownInit()
         for k, _ in pairs(DataTypes) do
             local info = MSA_DropDownMenu_CreateInfo();
             info.text = k;
@@ -261,9 +259,7 @@ function Datamine.Explorer:InitInfoTypeDropdown()
         local level = 1
         local value = nil
         MSA_ToggleDropDownMenu(level, value, self.InfoTypeDropdownToggle.DropDown, self.InfoTypeDropdownToggle, 5, -2);
-    end)
-
-    --self.InfoTypeDropdown:Disable(); -- until this works, disabling it for release
+    end);
 end
 
 function Datamine.Explorer:InitHistory()

@@ -52,9 +52,19 @@ end
 
 function Datamine.Spell:OnSpellDataReceived(spellID, success)
     if success == nil then
+        if self.SpellDataCallback then
+            self.SpellDataCallback(false);
+            return;
+        end
+
         Print("Query for spell " .. spellID .. " failed. Spell does not exist.");
         return;
     elseif success == false then
+        if self.SpellDataCallback then
+            self.SpellDataCallback(false);
+            return;
+        end
+
         Print("Query for spell " .. spellID .. " failed. Spell is forbidden or does not exist.");
         return;
     end
