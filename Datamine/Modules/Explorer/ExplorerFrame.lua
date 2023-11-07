@@ -144,7 +144,7 @@ end
 
 function DatamineExplorerInfoPageMixin:OnFail()
     self.Icon:Hide();
-    self.TitleText:SetText("Item is forbidden or does not exist.");
+    self.TitleText:SetText(GetStringFromDataType(self.DataType) .. " is forbidden or does not exist.");
 end
 
 function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
