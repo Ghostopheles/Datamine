@@ -24,7 +24,7 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
     if self.ValueText:IsTruncated() then
         self.ValueText:SetScript("OnEnter", function()
             GameTooltip:SetOwner(self.ValueText, "ANCHOR_CURSOR");
-            GameTooltip:SetText(self.ValueText:GetText());
+            GameTooltip:SetText(self.ValueText:GetText(), 1, 1, 1);
             GameTooltip:Show();
         end);
 
@@ -33,8 +33,12 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
         end);
     end
 
-    if data.key == "Hyperlink" then
+    if data.key == "Hyperlink" and data.type == DatamineExplorerDataTypes.Item then
         self:GetParent().Icon:SetItem(data.value);
+    end
+
+    if data.key == "Icon" and data.type == DatamineExplorerDataTypes.Spell then
+        self:GetParent().Icon.icon:SetTexture(data.value);
     end
 
     self:SetScript("OnEnter", self.OnEnter);

@@ -23,6 +23,7 @@ local DataTypes = {
     Item = 1;
     Spell = 2;
 };
+DatamineExplorerDataTypes = DataTypes;
 
 local function GetStringFromDataType(dataType)
     if dataType == DataTypes.Item then
@@ -167,7 +168,8 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
 
         local _data = {
             key = keys[i],
-            value = value;
+            value = value,
+            type = self.DataType
         };
         self.DataProvider:Insert(_data);
     end
@@ -390,3 +392,7 @@ function Datamine.Explorer:Toggle()
 end
 
 Datamine.Explorer:InitFrame();
+
+Datamine.Slash:RegisterCommand("explorer", function ()
+    Datamine.Explorer:Toggle();
+end, "Toggles the Datamine Explorer", moduleName);
