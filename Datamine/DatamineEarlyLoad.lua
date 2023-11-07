@@ -151,7 +151,7 @@ end
 
 function Datamine.IsInDanger()
     local inInstance, instanceType = IsInInstance();
-    local inMythicKeystone = C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()
+    local inMythicKeystone = C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive();
     local inCombat = InCombatLockdown();
 
     if inInstance then
