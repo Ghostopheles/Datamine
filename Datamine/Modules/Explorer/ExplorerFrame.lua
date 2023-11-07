@@ -3,6 +3,8 @@ local Print = function(...)
     Datamine.Print(moduleName, ...);
 end;
 
+local MSA = LibStub:GetLibrary("MSA-DropDownMenu-1.0");
+
 DatamineExplorerEventRegistry = CreateFromMixins(CallbackRegistryMixin);
 DatamineExplorerEventRegistry:OnLoad();
 DatamineExplorerEventRegistry:GenerateCallbackEvents(
@@ -22,7 +24,23 @@ local DatamineExplorerInfoPageMixin = {};
 local DataTypes = {
     Item = 1;
     Spell = 2;
-}
+};
+
+local function GetStringFromDataType(dataType)
+    if dataType == DataTypes.Item then
+        return "Item";
+    elseif dataType == DataTypes.Spell then
+        return "Spell";
+    end
+end
+
+local function GetDataKeys(dataType)
+    if dataType == DataTypes.Item then
+        return Datamine.Item.ItemInfoKeys;
+    elseif dataType == DataTypes.Spell then
+        return Datamine.Spell.SpellInfoKeys;
+    end
+end
 
 function DatamineExplorerInfoPageMixin:Init(dataID, dataType)
     self:SetAllPoints();
@@ -30,7 +48,7 @@ function DatamineExplorerInfoPageMixin:Init(dataID, dataType)
     self.DataID = dataID;
     self.DataType = dataType;
 
-    self.Title = self:GetTitleFromDataType() .. ": " .. dataID;
+    self.Title = GetStringFromDataType(dataType) .. ": " .. dataID;
 
     self.TitleText = self:CreateFontString(nil, nil, "GameFontHighlight");
     self.TitleText:ClearAllPoints();
@@ -131,22 +149,6 @@ function DatamineExplorerInfoPageMixin:OnFail()
     self.TitleText:SetText("Item is forbidden or does not exist.");
 end
 
-function DatamineExplorerInfoPageMixin:GetDataKeys()
-    if self.DataType == DataTypes.Item then
-        return Datamine.Item.ItemInfoKeys;
-    elseif self.DataType == DataTypes.Spell then
-        return Datamine.Spell.SpellInfoKeys;
-    end
-end
-
-function DatamineExplorerInfoPageMixin:GetTitleFromDataType()
-    if self.DataType == DataTypes.Item then
-        return "Item";
-    elseif self.DataType == DataTypes.Spell then
-        return "Spell";
-    end
-end
-
 function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
     self.DataProvider:Flush();
 
@@ -156,7 +158,7 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
         return;
     end
 
-    local keys = self:GetDataKeys();
+    local keys = GetDataKeys(self.DataType);
 
     for i, value in ipairs(data) do
         if not value or value == "" then
@@ -194,6 +196,7 @@ function Datamine.Explorer:InitFrame()
     ButtonFrameTemplate_HidePortrait(self);
 
     self:InitSearchBox();
+    self:SetSearchType(DataTypes.Item);
 
     self.InfoContainer = CreateFrame("Frame", nil, self);
 
@@ -213,29 +216,53 @@ function Datamine.Explorer:InitSearchBox()
     self.SearchBox:SetHeight(25);
     self.SearchBox:HookScript("OnEscapePressed", function() self:Hide() end);
     self.SearchBox:HookScript("OnEnterPressed", function()
+        local value = self.SearchBox:GetNumber();
         if self.SearchType == DataTypes.Item then
-            Datamine.Explorer:AddPageForItemID(self.SearchBox:GetNumber());
+            Datamine.Explorer:AddPageForItemID(value);
         elseif self.SearchType == DataTypes.Spell then
-            Datamine.Explorer:AddPageForSpellID(self.SearchBox:GetNumber());
+            Datamine.Explorer:AddPageForSpellID(value);
         end
     end);
-    self.SearchBox.Instructions:SetText("Enter an ItemID...");
+
+    DatamineExplorerEventRegistry:RegisterCallback("SearchTypeChanged", function(_, searchType)
+        self.SearchBox.Instructions:SetText("Enter " .. GetStringFromDataType(searchType) .. "ID...");
+    end);
 end
 
 function Datamine.Explorer:InitInfoTypeDropdown()
-    self.InfoTypeDropdown = CreateFrame("DropDownToggleButton", nil, self, "UIMenuButtonStretchTemplate");
-    self.InfoTypeDropdown:SetSize(120, 21);
-    self.InfoTypeDropdown:SetPoint("LEFT", self.SearchBox, "RIGHT", 10, 0);
-    self.InfoTypeDropdown:SetText("Search Type");
+    self.InfoTypeDropdownToggle = CreateFrame("DropDownToggleButton", nil, self, "UIMenuButtonStretchTemplate");
+    self.InfoTypeDropdownToggle:SetSize(120, 21);
+    self.InfoTypeDropdownToggle:SetPoint("LEFT", self.SearchBox, "RIGHT", 10, 0);
+    self.InfoTypeDropdownToggle:SetText("Search Type");
 
-    self.InfoTypeDropdown.Icon = self.InfoTypeDropdown:CreateTexture(nil, "ARTWORK");
-    self.InfoTypeDropdown.Icon:SetTexture([[Interface\ChatFrame\ChatFrameExpandArrow]]);
-    self.InfoTypeDropdown.Icon:SetSize(10, 12);
-    self.InfoTypeDropdown.Icon:SetPoint("RIGHT", -5, 0);
+    self.InfoTypeDropdownToggle.Icon = self.InfoTypeDropdownToggle:CreateTexture(nil, "ARTWORK");
+    self.InfoTypeDropdownToggle.Icon:SetTexture([[Interface\ChatFrame\ChatFrameExpandArrow]]);
+    self.InfoTypeDropdownToggle.Icon:SetSize(10, 12);
+    self.InfoTypeDropdownToggle.Icon:SetPoint("RIGHT", -5, 0);
 
-    self.SearchType = DataTypes.Spell;
+    self.InfoTypeDropdownToggle.DropDown = MSA_DropDownMenu_Create("DatamineExplorerSearchTypeDropDown", self.InfoTypeDropdownToggle);
 
-    self.InfoTypeDropdown:Disable(); -- until this works, disabling it for release
+    local function DropDownInit(self)
+        for k, _ in pairs(DataTypes) do
+            local info = MSA_DropDownMenu_CreateInfo();
+            info.text = k;
+            info.func = function() Datamine.Explorer:SetSearchType(DataTypes[k]) end;
+            if DataTypes[k] == Datamine.Explorer.SearchType then
+                info.checked = true;
+            end
+            MSA_DropDownMenu_AddButton(info);
+        end
+    end
+
+    MSA_DropDownMenu_Initialize(self.InfoTypeDropdownToggle.DropDown, DropDownInit, "MENU");
+
+    self.InfoTypeDropdownToggle:SetScript("OnClick", function()
+        local level = 1
+        local value = nil
+        MSA_ToggleDropDownMenu(level, value, self.InfoTypeDropdownToggle.DropDown, self.InfoTypeDropdownToggle, 5, -2);
+    end)
+
+    --self.InfoTypeDropdown:Disable(); -- until this works, disabling it for release
 end
 
 function Datamine.Explorer:InitHistory()
@@ -275,6 +302,11 @@ function Datamine.Explorer:InitHistory()
         BACK = "BACK",
         FORWARD = "FORWARD",
     };
+end
+
+function Datamine.Explorer:SetSearchType(searchType)
+    self.SearchType = searchType;
+    DatamineExplorerEventRegistry:TriggerEvent("SearchTypeChanged", searchType);
 end
 
 function Datamine.Explorer:PushCurrentPageToHistory()
