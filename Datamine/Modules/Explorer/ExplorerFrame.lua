@@ -226,6 +226,7 @@ function Datamine.Explorer:InitSearchBox()
 
     DatamineExplorerEventRegistry:RegisterCallback("SearchTypeChanged", function(_, searchType)
         self.SearchBox.Instructions:SetText("Enter " .. GetStringFromDataType(searchType) .. "ID...");
+        self.SearchBox:SetText("");
     end);
 end
 
@@ -392,7 +393,4 @@ function Datamine.Explorer:Toggle()
     end
 end
 
-Datamine.Explorer:InitFrame()
-
-
-
+Datamine.Explorer:InitFrame();
