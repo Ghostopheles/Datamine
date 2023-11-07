@@ -7,6 +7,9 @@ externals:
   Datamine/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   Datamine/Libs/LibDevConsole: https://github.com/Ghostopheles/LibDevConsole
 
+embedded-libraries:
+  - msa-dropdownmenu-10
+
 ignore:
   - Datamine/Libs/*/*.rockspec
   - Datamine/Libs/*/*.toc
