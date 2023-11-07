@@ -134,12 +134,16 @@ end
 function DatamineExplorerInfoPageMixin:GetDataKeys()
     if self.DataType == DataTypes.Item then
         return Datamine.Item.ItemInfoKeys;
+    elseif self.DataType == DataTypes.Spell then
+        return Datamine.Spell.SpellInfoKeys;
     end
 end
 
 function DatamineExplorerInfoPageMixin:GetTitleFromDataType()
     if self.DataType == DataTypes.Item then
         return "Item";
+    elseif self.DataType == DataTypes.Spell then
+        return "Spell";
     end
 end
 
@@ -152,6 +156,8 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
         return;
     end
 
+    local keys = self:GetDataKeys();
+
     for i, value in ipairs(data) do
         if not value or value == "" then
             value = "N/A";
@@ -159,11 +165,11 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
             value = tostring(value);
         end
 
-        local data = {
-            key = Datamine.Item.ItemInfoKeys[i],
+        local _data = {
+            key = keys[i],
             value = value;
         };
-        self.DataProvider:Insert(data);
+        self.DataProvider:Insert(_data);
     end
     self:SetLoading(false);
 end
@@ -207,7 +213,11 @@ function Datamine.Explorer:InitSearchBox()
     self.SearchBox:SetHeight(25);
     self.SearchBox:HookScript("OnEscapePressed", function() self:Hide() end);
     self.SearchBox:HookScript("OnEnterPressed", function()
-        Datamine.Explorer:AddPageForItemID(self.SearchBox:GetNumber());
+        if self.SearchType == DataTypes.Item then
+            Datamine.Explorer:AddPageForItemID(self.SearchBox:GetNumber());
+        elseif self.SearchType == DataTypes.Spell then
+            Datamine.Explorer:AddPageForSpellID(self.SearchBox:GetNumber());
+        end
     end);
     self.SearchBox.Instructions:SetText("Enter an ItemID...");
 end
@@ -222,6 +232,8 @@ function Datamine.Explorer:InitInfoTypeDropdown()
     self.InfoTypeDropdown.Icon:SetTexture([[Interface\ChatFrame\ChatFrameExpandArrow]]);
     self.InfoTypeDropdown.Icon:SetSize(10, 12);
     self.InfoTypeDropdown.Icon:SetPoint("RIGHT", -5, 0);
+
+    self.SearchType = DataTypes.Spell;
 
     self.InfoTypeDropdown:Disable(); -- until this works, disabling it for release
 end
@@ -325,6 +337,17 @@ function Datamine.Explorer:AddPageForItemID(itemID)
     page:SetLoading(true);
 
     Datamine.Item:GetOrFetchItemInfoByID(itemID, function(itemData) page:PopulateDataProviderFromCallback(itemData) end);
+    self.CurrentlyDisplayedPage = page;
+    DatamineExplorerEventRegistry:TriggerEvent("DisplayedPageChanged", page);
+end
+
+function Datamine.Explorer:AddPageForSpellID(spellID)
+    self:PushCurrentPageToHistory();
+
+    local page = CreateInfoPage(self.InfoContainer, spellID, DataTypes.Spell);
+    page:SetLoading(true);
+
+    Datamine.Spell:GetOrFetchSpellInfoByID(spellID, function(spellData) page:PopulateDataProviderFromCallback(spellData) end);
     self.CurrentlyDisplayedPage = page;
     DatamineExplorerEventRegistry:TriggerEvent("DisplayedPageChanged", page);
 end

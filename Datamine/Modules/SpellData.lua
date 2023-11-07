@@ -59,10 +59,17 @@ function Datamine.Spell:OnSpellDataReceived(spellID, success)
         return;
     end
 
-    self:PrettyDumpSpellData(spellID);
+    local spellData = self:GetFormattedSpellData(spellID);
+    if self.SpellDataCallback then
+        self.SpellDataCallback(spellData)
+    else
+        self:PrettyDumpSpellData(spellID, spellData);
+    end
+
+    self.SpellDataCallback = nil;
 end
 
-function Datamine.Spell:PrettyDumpSpellData(spellID)
+function Datamine.Spell:GetFormattedSpellData(spellID)
     local spellData = {GetSpellInfo(spellID)};
 
     -- remove stupid dumb toxic no-good zero-diggity nil
@@ -89,13 +96,19 @@ function Datamine.Spell:PrettyDumpSpellData(spellID)
     local spellLink, _ = GetSpellLink(spellID);
     tinsert(spellData, spellLink);
 
+    return spellData;
+end
+
+function Datamine.Spell:PrettyDumpSpellData(spellID, spellData)
     DumpTableWithDisplayKeys("Spell " .. spellID .. "  >> ", spellData);
     self.LastSpell = spellData;
 end
 
-function Datamine.Spell:GetOrFetchSpellInfoByID(spellID)
+function Datamine.Spell:GetOrFetchSpellInfoByID(spellID, callback)
     spellID = tonumber(spellID);
     assert(spellID, "GetOrFetchSpellInfoByID requires a valid spellID.");
+
+    self.SpellDataCallback = callback;
 
     if C_Spell.IsSpellDataCached(spellID) then
         self:OnSpellDataReceived(spellID, true);
