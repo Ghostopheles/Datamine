@@ -1,3 +1,22 @@
+# Datamine v1.7
+
+##### Added
+* Datamine Explorer - a UI for searching up ItemIDs
+    * In the future, this will be expanded to allow searching for all the different things Datamine currently supports (spells, quests, etc)
+    * This is still very much a work-in-progress, so feedback is welcomed! ❤️
+
+* A setting for the `debugTargetInfo` CVar, which enables debug tooltips in the barber shop and on character customization screens. **This is disabled by default**
+    * In the barber shop, this will display IDs for the following:
+        * ChrCustomizationOption
+        * ChrCustomizationChoice
+        * ChrCustomizationCategory
+    * On character customization screens, it will also display IDs for:
+        * ChrRaces
+        * ChrClasses
+
+##### Fixed
+* Accidentally overwriting the `ShowColorPicker` function globally. Whoopsies.
+
 # Datamine v1.6.2
 
 ##### Added
