@@ -150,7 +150,7 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(itemData
 end
 
 local function CreateInfoPage(parent, title)
-    local f = CreateFrame("Frame", "DatamineInfoPage" .. title, parent);
+    local f = CreateFrame("Frame", nil, parent);
 
     Mixin(f, DatamineExplorerInfoPageMixin);
     f:Init(title);
@@ -191,7 +191,6 @@ function Datamine.Explorer:InitSearchBox()
         Datamine.Explorer:AddPageForItemID(self.SearchBox:GetNumber());
     end);
     self.SearchBox.Instructions:SetText("Enter an ItemID...");
-    self.SearchBox:SetNumber(163800);
 end
 
 function Datamine.Explorer:InitInfoTypeDropdown()
@@ -204,6 +203,8 @@ function Datamine.Explorer:InitInfoTypeDropdown()
     self.InfoTypeDropdown.Icon:SetTexture([[Interface\ChatFrame\ChatFrameExpandArrow]]);
     self.InfoTypeDropdown.Icon:SetSize(10, 12);
     self.InfoTypeDropdown.Icon:SetPoint("RIGHT", -5, 0);
+
+    self.InfoTypeDropdown:Disable(); -- until this works, disabling it for release
 end
 
 function Datamine.Explorer:InitHistory()
@@ -216,8 +217,7 @@ function Datamine.Explorer:InitHistory()
     self.HistoryNavigation.BackButton:SetScript("OnClick", function() self:GoBack() end);
     self.HistoryNavigation.ForwardButton:SetScript("OnClick", function() self:GoForward() end);
 
-    DatamineExplorerEventRegistry:RegisterCallback("HistoryChanged", function(direction)
-        Print(direction);
+    DatamineExplorerEventRegistry:RegisterCallback("HistoryChanged", function(_, direction)
         if direction == self.HistoryDirection.BACK then
             if self.History.LastPageBack then
                 self.HistoryNavigation.BackButton:Enable();
@@ -233,7 +233,7 @@ function Datamine.Explorer:InitHistory()
                 self.HistoryNavigation.ForwardButton:Disable();
             end
         end
-    end)
+    end);
 
     self.History = {
         LastPageBack = nil;
@@ -283,7 +283,7 @@ function Datamine.Explorer:GoForward()
 end
 
 function Datamine.Explorer:Minimize()
-    local searchBoxWidth = self:GetWidth() / 2
+    local searchBoxWidth = self:GetWidth() / 2;
 
     self.SearchBox:ClearAllPoints();
     self.SearchBox:SetPoint("TOP", self.Bg, 0, -8);
@@ -308,6 +308,14 @@ function Datamine.Explorer:AddPageForItemID(itemID)
     Datamine.Item:GetOrFetchItemInfoByID(itemID, function(itemData) page:PopulateDataProviderFromCallback(itemData) end);
     self.CurrentlyDisplayedPage = page;
     DatamineExplorerEventRegistry:TriggerEvent("DisplayedPageChanged", page);
+end
+
+function Datamine.Explorer:Toggle()
+    if self:IsShown() then
+        self:Hide();
+    else
+        self:Show();
+    end
 end
 
 Datamine.Explorer:InitFrame()
