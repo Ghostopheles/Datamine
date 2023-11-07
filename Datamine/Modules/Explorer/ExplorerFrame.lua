@@ -9,8 +9,8 @@ DatamineExplorerEventRegistry:GenerateCallbackEvents(
     {
         "Minimized",
         "Expanded",
-        "ItemDataLoadStart",
-        "ItemDataLoadComplete",
+        "DataLoadStart",
+        "DataLoadComplete",
         "DisplayedPageChanged",
         "HistoryChanged",
         "SearchTypeChanged",
@@ -19,11 +19,18 @@ DatamineExplorerEventRegistry:GenerateCallbackEvents(
 
 local DatamineExplorerInfoPageMixin = {};
 
-function DatamineExplorerInfoPageMixin:Init(itemID)
+local DataTypes = {
+    Item = 1;
+    Spell = 2;
+}
+
+function DatamineExplorerInfoPageMixin:Init(dataID, dataType)
     self:SetAllPoints();
 
-    self.Title = "Item: " .. itemID;
-    self.ItemID = itemID;
+    self.DataID = dataID;
+    self.DataType = dataType;
+
+    self.Title = self:GetTitleFromDataType() .. ": " .. dataID;
 
     self.TitleText = self:CreateFontString(nil, nil, "GameFontHighlight");
     self.TitleText:ClearAllPoints();
@@ -105,13 +112,13 @@ function DatamineExplorerInfoPageMixin:SetLoading(isLoading)
         self.LoadingSpinner.Text:SetText("Loading " .. self.Title .. "...");
         Datamine.Explorer.SearchBox:Disable();
         self.Loading = true;
-        DatamineExplorerEventRegistry:TriggerEvent("ItemDataLoadStart", self.ItemID);
+        DatamineExplorerEventRegistry:TriggerEvent("DataLoadStart", self.DataID);
     else
         self.ScrollFrame:Show();
         self.LoadingSpinner:Hide();
         Datamine.Explorer.SearchBox:Enable();
         self.Loading = false;
-        DatamineExplorerEventRegistry:TriggerEvent("ItemDataLoadComplete", self.ItemID);
+        DatamineExplorerEventRegistry:TriggerEvent("DataLoadComplete", self.DataID);
     end
 end
 
@@ -124,16 +131,28 @@ function DatamineExplorerInfoPageMixin:OnFail()
     self.TitleText:SetText("Item is forbidden or does not exist.");
 end
 
-function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(itemData)
+function DatamineExplorerInfoPageMixin:GetDataKeys()
+    if self.DataType == DataTypes.Item then
+        return Datamine.Item.ItemInfoKeys;
+    end
+end
+
+function DatamineExplorerInfoPageMixin:GetTitleFromDataType()
+    if self.DataType == DataTypes.Item then
+        return "Item";
+    end
+end
+
+function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(data)
     self.DataProvider:Flush();
 
-    if not itemData then
+    if not data then
         self:SetLoading(false);
         self:OnFail();
         return;
     end
 
-    for i, value in ipairs(itemData) do
+    for i, value in ipairs(data) do
         if not value or value == "" then
             value = "N/A";
         elseif type(value) == "boolean" then
@@ -149,11 +168,11 @@ function DatamineExplorerInfoPageMixin:PopulateDataProviderFromCallback(itemData
     self:SetLoading(false);
 end
 
-local function CreateInfoPage(parent, title)
+local function CreateInfoPage(parent, title, dataType)
     local f = CreateFrame("Frame", nil, parent);
 
     Mixin(f, DatamineExplorerInfoPageMixin);
-    f:Init(title);
+    f:Init(title, dataType);
 
     return f;
 end
@@ -302,7 +321,7 @@ end
 function Datamine.Explorer:AddPageForItemID(itemID)
     self:PushCurrentPageToHistory();
 
-    local page = CreateInfoPage(self.InfoContainer, itemID);
+    local page = CreateInfoPage(self.InfoContainer, itemID, DataTypes.Item);
     page:SetLoading(true);
 
     Datamine.Item:GetOrFetchItemInfoByID(itemID, function(itemData) page:PopulateDataProviderFromCallback(itemData) end);

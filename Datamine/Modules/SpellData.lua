@@ -2,7 +2,7 @@ Datamine.Spell = CreateFrame("Frame");
 
 local moduleName = "SpellData"
 
-local SpellInfoKeys = {
+Datamine.Spell.SpellInfoKeys = {
     "Name",
     "Rank",
     "Icon",
@@ -17,6 +17,7 @@ local SpellInfoKeys = {
     "Description",
     "Hyperlink"
 };
+local SpellInfoKeys = Datamine.Spell.SpellInfoKeys;
 
 local Print = function(...)
     Datamine.Print(moduleName, ...);
