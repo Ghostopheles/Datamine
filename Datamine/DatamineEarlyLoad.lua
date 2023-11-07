@@ -147,5 +147,41 @@ function Datamine.WrapTextInParenthesis(text, withLeadingSpace)
     else
         return "(" .. text .. ")";
     end
-    
+end
+
+function Datamine.IsInDanger()
+    local inInstance, instanceType = IsInInstance();
+    local inMythicKeystone = C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive()
+    local inCombat = InCombatLockdown();
+
+    if inInstance then
+        if instanceType == "raid" and IsInRaid() then
+            if inCombat then
+                return true;
+            end
+        elseif inMythicKeystone then
+            return true;
+        end
+    end
+
+    return false;
+end
+
+StaticPopupDialogs["DATAMINE_CONFIRM_RELOAD"] = {
+	text = "Are you sure you want to reload?",
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function(self) C_UI.Reload() end,
+	hideOnEscape = true,
+	timeout = 0,
+	exclusive = true,
+	showAlert = true,
+};
+
+function Datamine.QuickReload()
+    if Datamine.IsInDanger() then
+        StaticPopup_Show("DATAMINE_CONFIRM_RELOAD");
+    else
+        C_UI.Reload();
+    end
 end
