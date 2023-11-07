@@ -21,6 +21,18 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
     self.ValueText:SetTextScale(1.2);
     self.ValueText:SetJustifyV("CENTER");
 
+    if self.ValueText:IsTruncated() then
+        self.ValueText:SetScript("OnEnter", function()
+            GameTooltip:SetOwner(self.ValueText, "ANCHOR_CURSOR");
+            GameTooltip:SetText(self.ValueText:GetText());
+            GameTooltip:Show();
+        end);
+
+        self.ValueText:SetScript("OnLeave", function()
+            GameTooltip:Hide();
+        end);
+    end
+
     if data.key == "Hyperlink" then
         self:GetParent().Icon:SetItem(data.value);
     end
