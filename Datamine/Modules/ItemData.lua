@@ -50,7 +50,9 @@ local ExpansionNames = {
     [7] = "Battle for Azeroth",
     [8] = "Shadowlands",
     [9] = "Dragonflight",
-    [10] = "The future? wtf item is this??"
+    [10] = "The War Within",
+    [11] = "Midnight",
+    [12] = "The Last Titan"
 };
 Datamine.Item.ExpansionNames = ExpansionNames;
 
