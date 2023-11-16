@@ -15,7 +15,7 @@
 
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
-Libs/MSA-DropDownMenu-1.0/MSA-DropDownMenu-1.0.xml
+Embeds/MSA-DropDownMenu-1.0/MSA-DropDownMenu-1.0.xml
 
 DatamineEarlyLoad.lua
 
