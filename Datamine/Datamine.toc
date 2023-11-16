@@ -7,6 +7,8 @@
 
 ## OptionalDeps: DevTool
 
+## AddonCompartmentFunc: Datamine_OnAddonCompartmentClick
+
 ## X-License: Public Domain
 ## X-Category: Development Tools
 
@@ -18,6 +20,8 @@ Libs/LibDevConsole/lib.xml
 Embeds/MSA-DropDownMenu-1.0/MSA-DropDownMenu-1.0.xml
 
 DatamineEarlyLoad.lua
+
+Datamine.lua
 
 Settings/SettingsCore.lua
 
