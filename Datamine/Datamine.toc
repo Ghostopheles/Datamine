@@ -7,6 +7,7 @@
 
 ## OptionalDeps: DevTool
 
+## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
 ## AddonCompartmentFunc: Datamine_OnAddonCompartmentClick
 
 ## X-License: Public Domain
