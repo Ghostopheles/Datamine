@@ -1,9 +1,10 @@
 # Datamine v1.7
 
 ##### Added
-* Datamine Explorer - a UI for searching up ItemIDs
-    * In the future, this will be expanded to allow searching for all the different things Datamine currently supports (spells, quests, etc)
+* Datamine Explorer - a UI for searching up item and spell info
+    * In the future, this will be expanded to allow searching for all the different things Datamine currently supports (quests, transmog, etc)
     * This is still very much a work-in-progress, so feedback is welcomed! ❤️
+    * You can open this either via the addon compartment button or through a binding
 
 * A setting for the `debugTargetInfo` CVar, which enables debug tooltips in the barber shop and on character customization screens. **This is disabled by default**
     * In the barber shop, this will display IDs for the following:
