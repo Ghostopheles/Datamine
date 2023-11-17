@@ -52,7 +52,12 @@
 			</OnShow>
             <OnEnterPressed>
                 if not self.Callback then return end;
-                local result = self.Callback(self:GetText());
+                local result;
+                if self:IsNumeric() then
+                    result = self.Callback(self:GetNumber());
+                else
+                    result = self.Callback(self:GetText());
+                end
 
                 self.clearButton.texture:Hide();
 
