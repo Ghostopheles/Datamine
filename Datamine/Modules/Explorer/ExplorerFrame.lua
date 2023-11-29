@@ -203,6 +203,7 @@ function Datamine.Explorer:InitFrame()
     self:Minimize();
     self:InitHistory();
     self:InitInfoTypeDropdown();
+    --self:InitTooltipFrame();
 
     self.CurrentlyDisplayedPage = nil;
 
@@ -213,6 +214,7 @@ function Datamine.Explorer:InitSearchBox()
     self.SearchBox = CreateFrame("EditBox", nil, self, "SearchBoxTemplate");
     self.SearchBox:SetNumeric(true);
     self.SearchBox:SetAutoFocus(false);
+    self.SearchBox:SetNumber(163800);
     self.SearchBox:SetHeight(25);
     self.SearchBox:HookScript("OnEscapePressed", function() self:Hide() end);
     self.SearchBox:HookScript("OnEnterPressed", function()
@@ -301,6 +303,10 @@ function Datamine.Explorer:InitHistory()
         BACK = "BACK",
         FORWARD = "FORWARD",
     };
+end
+
+function Datamine.Explorer:InitTooltipFrame()
+    self.TooltipFrame = CreateFrame("Frame", "DatamineExplorerTooltipFrame", self, "DatamineExplorerTooltipFrameTemplate");
 end
 
 function Datamine.Explorer:SetSearchType(searchType)

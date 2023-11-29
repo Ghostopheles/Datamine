@@ -34,11 +34,12 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
     end
 
     if data.key == "Hyperlink" and data.type == DatamineExplorerDataTypes.Item then
-        self:GetParent().Icon:SetItem(data.value);
+        parent.Icon:SetItem(data.value);
+        DatamineExplorerTooltipFrame:SetHyperlink(data.value);
     end
 
     if data.key == "Icon" and data.type == DatamineExplorerDataTypes.Spell then
-        self:GetParent().Icon.icon:SetTexture(data.value);
+        parent.Icon.icon:SetTexture(data.value);
     end
 
     self:SetScript("OnEnter", self.OnEnter);
