@@ -23,14 +23,14 @@ function DatamineModelFrameMixin:OnLoad()
     end);
 
     if DevTool then
-        C_Timer.After(1, function() DevTool:AddData(DatamineDressUpFrame.ModelScene, "DatamineModelScene"); end);
+        C_Timer.After(1, function() DevTool:AddData(DatamineModelViewFrame.ModelScene, "DatamineModelScene"); end);
     end
 
     self.ViewingMode = MODES.ModelScene;
 end
 
 function DatamineModelFrameMixin:OnShow()
-    SetPortraitTexture(DatamineDressUpFramePortrait, "player");
+    SetPortraitTexture(DatamineModelViewFramePortrait, "player");
 	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
     self:SetupPlayerModel();
     self:SetViewingMode(MODES.ModelScene);

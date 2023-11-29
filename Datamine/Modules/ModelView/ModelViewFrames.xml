@@ -92,7 +92,7 @@
         </Scripts>
     </PlayerModel>
 
-    <Frame name="DatamineDressUpFrame" mixin="DatamineModelFrameMixin" toplevel="true"
+    <Frame name="DatamineModelViewFrame" mixin="DatamineModelFrameMixin" toplevel="true"
         enableMouse="true"
         parent="UIParent" hidden="true" inherits="ButtonFrameTemplateMinimizable">
         <Size x="600" y="750" />
@@ -117,7 +117,6 @@
                 <KeyValues>
                     <KeyValue key="normalIntensity" value="0.75" type="number" />
                     <KeyValue key="highlightIntensity" value="1.2" type="number" />
-                    <KeyValue key="actorTemplate" value="DataminePlayerModelTemplate" />
                 </KeyValues>
                 <Anchors>
                     <Anchor point="TOPLEFT" x="7" y="-63" />
@@ -212,7 +211,7 @@
                             Datamine.ModelView:Show(itemModifiedAppearaceIDs, forcePlayerRefresh);
                             PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK);
                         elseif self:GetParent().ViewingMode == 2 then
-                            DatamineDressUpFrame:GetActor():ResetModel();
+                            DatamineModelViewFrame:GetActor():ResetModel();
                         end
                     </OnClick>
                 </Scripts>

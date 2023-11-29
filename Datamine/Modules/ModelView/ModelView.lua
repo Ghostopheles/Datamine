@@ -27,12 +27,12 @@ local function SetupPlayerForModelScene(modelScene, overrideActorName, itemModif
 end
 
 function Datamine.ModelView:IsModelViewShown()
-	return DatamineDressUpFrame:IsShown();
+	return DatamineModelViewFrame:IsShown();
 end
 
 local DRESS_UP_FRAME_MODEL_SCENE_ID = 596;
 function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
-    local f = DatamineDressUpFrame;
+    local f = DatamineModelViewFrame;
 
     if ( forcePlayerRefresh or (not f:IsShown() or f:GetMode() ~= "player") ) then
 		f:SetMode("player");
@@ -64,7 +64,7 @@ function Datamine.ModelView:TryOnByItemModifiedAppearanceID(itemModifiedAppearan
 		self:Show();
 	end
 
-    local actor = DatamineDressUpFrame:GetActor();
+    local actor = DatamineModelViewFrame:GetActor();
     if not actor then
 		Print("Actor not found.");
         return false;
@@ -85,7 +85,7 @@ function Datamine.ModelView:TryOnByAppearanceID(appearanceID)
 		self:Show();
 	end
 
-	local actor = DatamineDressUpFrame:GetActor();
+	local actor = DatamineModelViewFrame:GetActor();
     if not actor then
 		Print("Actor not found.");
         return false;
@@ -128,16 +128,16 @@ function Datamine.ModelView:TryOnTransmogSet(transmogSetID)
 end
 
 function Datamine.ModelView:TryOnByItemID(itemID)
-    local appearanceID, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemID);
+    local _, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemID);
 
 	self:TryOnByItemModifiedAppearanceID({itemModifiedAppearanceID});
     return true;
 end
 
 do
-	local helpString = "Show the Datamine dressing room.";
+	local helpString = "Show the Datamine model viewer.";
 
-	Datamine.Slash:RegisterCommand("dressup", function(...) Datamine.ModelView:Show(nil, true); end, helpString, moduleName);
+	Datamine.Slash:RegisterCommand("modelview", function(...) Datamine.ModelView:Show(nil, true); end, helpString, moduleName);
 end
 
 do
@@ -153,13 +153,6 @@ do
 
 	Datamine.Slash:RegisterCommand("appearance", function(...) Datamine.ModelView:TryOnByItemModifiedAppearanceID({...}) end, helpString, moduleName);
 end
-
---do
---	local helpMessage = "View an ItemAppearance in the Datamine dressing room.";
---	local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemAppearanceID>", helpMessage);
---
---	Datamine.Slash:RegisterCommand("appearance", function(appearanceID) Datamine.ModelView:TryOnByAppearanceID(appearanceID) end, helpString, moduleName);
---end
 
 do
 	local helpMessage = "View a TransmogSet in the Datamine dressing room.";

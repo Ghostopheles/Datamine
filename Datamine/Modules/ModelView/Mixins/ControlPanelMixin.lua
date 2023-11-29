@@ -174,22 +174,22 @@ function DatamineModelFrameControlPanelMixin:SetupModelScenePage()
 
     page:AddLabel("Dress State");
     page:AddButtonPair({
-        ["Dress"] = function() DatamineDressUpFrame:SetDressState(true) end,
-        ["Undress"] = function() DatamineDressUpFrame:SetDressState(false) end
+        ["Dress"] = function() DatamineModelViewFrame:SetDressState(true) end,
+        ["Undress"] = function() DatamineModelViewFrame:SetDressState(false) end
     }, "DressButtonContainer");
 
     page:AddLabel("Model");
 
-    local fdidEntryBoxCallback = function(...) return DatamineDressUpFrame:SetModelByFileID(...); end;
+    local fdidEntryBoxCallback = function(...) return DatamineModelViewFrame:SetModelByFileID(...); end;
     page:AddEntryBox("Set model by FileDataID", "FileDataID...", fdidEntryBoxCallback, nil, true);
 
-    local displayIDEntryBoxCallback = function(...) return DatamineDressUpFrame:SetModelByCreatureDisplayID(...); end;
+    local displayIDEntryBoxCallback = function(...) return DatamineModelViewFrame:SetModelByCreatureDisplayID(...); end;
     page:AddEntryBox("Set model by DisplayID", "DisplayID...", displayIDEntryBoxCallback, nil, true);
 
-    local spellVisualKitEntryBoxCallback = function(...) return DatamineDressUpFrame:ApplySpellVisualKit(...); end;
+    local spellVisualKitEntryBoxCallback = function(...) return DatamineModelViewFrame:ApplySpellVisualKit(...); end;
     page:AddEntryBox("Apply a looping SpellVisualKitID", "SpellVisualKitID...", spellVisualKitEntryBoxCallback, nil, true);
 
-    local animationKitEntryBoxCallback = function(...) return DatamineDressUpFrame:PlayAnimationKit(...); end;
+    local animationKitEntryBoxCallback = function(...) return DatamineModelViewFrame:PlayAnimationKit(...); end;
     page:AddEntryBox("Play a looping AnimKitID", "AnimKitID...", animationKitEntryBoxCallback, nil, true);
 
     local itemEntryBoxCallback = function(...) return Datamine.ModelView:TryOnByItemID(...) end;
@@ -214,20 +214,20 @@ function DatamineModelFrameControlPanelMixin:SetupPlayerModelPage()
         end
 
         if strtrim(creatureID) ~= "" then
-            return DatamineDressUpFrame:SetCreature(creatureID, displayID);
+            return DatamineModelViewFrame:SetCreature(creatureID, displayID);
         end
 
-        return DatamineDressUpFrame:GetActor():SetDisplayInfo(displayID);
+        return DatamineModelViewFrame:GetActor():SetDisplayInfo(displayID);
     end;
     page:AddEntryBox("Set CreatureID", "CreatureID...", creatureAndDisplayIDEntryBoxCallback, "CreatureIDEntryBox", true);
     page:AddEntryBox("Set DisplayID", "DisplayID...", creatureAndDisplayIDEntryBoxCallback, "DisplayIDEntryBox", true);
 
     local itemIDEntryBoxCallback = function(...)
-        return DatamineDressUpFrame:GetActor():SetItem(...);
+        return DatamineModelViewFrame:GetActor():SetItem(...);
     end;
     page:AddEntryBox("Set model by ItemID", "ItemID...", itemIDEntryBoxCallback, nil, true);
 
-    local animationKitEntryBoxCallback = function(...) return DatamineDressUpFrame:PlayAnimationKit(...); end;
+    local animationKitEntryBoxCallback = function(...) return DatamineModelViewFrame:PlayAnimationKit(...); end;
     page:AddEntryBox("Play a looping AnimKitID", "AnimKitID...", animationKitEntryBoxCallback, nil, true);
 
     self.Pages.PlayerModelPage = page;
