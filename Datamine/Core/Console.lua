@@ -1,3 +1,4 @@
+---@type LibDevConsole
 local console = Datamine.Console;
 
 local commandType = Enum.ConsoleCommandType;
@@ -39,8 +40,6 @@ local customCommandInfo = {
         help = "Preview a customization option in the barber shop.\n<optionID> <choiceID>",
         category = commandCategory.Game,
         command = "PreviewCustomizationChoice",
-        scriptParameters = "",
-        scriptContents = "",
         commandType = commandType.Script,
         commandFunc = PreviewCustomizationChoice,
     },
@@ -48,13 +47,11 @@ local customCommandInfo = {
         help = "Set the dress state of your character in the barber shop.",
         category = commandCategory.Game,
         command = "SetDressState",
-        scriptParameters = "",
-        scriptContents = "",
         commandType = commandType.Script,
         commandFunc = SetDressState,
     },
 }
 
 for _, command in ipairs(customCommandInfo) do
-    console:RegisterCommand(command);
+    console.RegisterCommand(command);
 end
