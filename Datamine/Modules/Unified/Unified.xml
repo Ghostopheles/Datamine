@@ -1,0 +1,371 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+    <Script file="UnifiedUIMixins.lua" />
+
+    <Font name="DatamineCleanFont" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Proxima_Nova_Regular.ttf" height="15">
+        <Color r="1" g="1" b="1" />
+        <Shadow x="1.5" y="-1.5" />
+    </Font>
+
+    <Font name="DatamineCleanFontSmall" virtual="true" inherits="DatamineCleanFont" height="10" />
+
+    <Font name="DatamineCleanFontNoShadow" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Proxima_Nova_Regular.ttf" height="15">
+        <Color r="1" g="1" b="1" />
+    </Font>
+
+    <Button name="DatamineGenericButtonTemplate" virtual="true"
+        registerForClicks="LeftButtonUp">
+        <Size x="35" y="35" />
+        <HighlightTexture atlas="uitools-icon-highlight" />
+    </Button>
+
+    <Button name="DatamineCloseButtonTemplate" virtual="true"
+        inherits="DatamineGenericButtonTemplate" registerForClicks="LeftButtonUp"
+        mixin="DatamineCloseButtonMixin">
+        <NormalTexture atlas="uitools-icon-close" />
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
+    </Button>
+
+    <Frame name="DatamineTitleContainerTemplate" virtual="true"
+        mixin="DatamineTitleContainerMixin">
+        <!-- Add a .TitleText keyValue to set text from XML -->
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Text" font="DatamineCleanFont"
+                    text="TITLE">
+                    <FontHeight val="18" />
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
+    <Frame name="DatamineMovableTitleContainerTemplate" virtual="true" enableMouse="true"
+        inherits="DatamineTitleContainerTemplate"
+        mixin="DatamineMovableTitleContainerMixin">
+        <Scripts>
+            <OnMouseDown method="OnMouseDown" />
+            <OnMouseUp method="OnMouseUp" />
+        </Scripts>
+    </Frame>
+
+    <Frame name="DatamineDataFrameElementTemplate" virtual="true" hyperlinksEnabled="true"
+        mixin="DatamineDataFrameElementMixin">
+        <Size y="25" />
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="KeyText" font="DatamineCleanFontNoShadow" justifyH="LEFT"
+                    justifyV="MIDDLE">
+                    <FontHeight val="5" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="ValueText" font="DatamineCleanFontNoShadow" justifyH="LEFT"
+                    justifyV="MIDDLE">
+                    <FontHeight val="5" />
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background">
+                    <Color r="0.25" g="0.25" b="0.25" a="0.35" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnHyperlinkEnter method="OnHyperlinkEnter" />
+            <OnHyperlinkLeave method="OnHyperlinkLeave" />
+            <OnHyperlinkClick method="OnHyperlinkClick" />
+        </Scripts>
+    </Frame>
+
+    <Frame name="DatamineScrollableDataFrameTemplate" virtual="true"
+        mixin="DatamineScrollableDataFrameMixin">
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Title" font="DatamineCleanFont" text="TITLE" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOP" y="-15" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background">
+                    <Color r="0.1" g="0.1" b="0.1" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <ItemButton parentKey="Icon" enableMouse="false" hidden="true">
+                <Anchors>
+                    <Anchor point="RIGHT" relativeKey="$parent.Title" relativePoint="LEFT" x="-8" />
+                </Anchors>
+            </ItemButton>
+            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+                <Anchors>
+                    <Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" y="-15" />
+                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
+                    <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
+                </Anchors>
+            </Frame>
+            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-13" y="-4" />
+                    <Anchor point="BOTTOMRIGHT" x="-13" y="7" />
+                </Anchors>
+            </EventFrame>
+            <Frame parentKey="LoadingSpinner" inherits="OutlineLoadingSpinnerTemplate" hidden="true">
+                <Anchors>
+                    <Anchor point="CENTER" y="10" />
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString parentKey="Text" font="DatamineCleanFontSmall" text="Loading...">
+                            <Anchors>
+                                <Anchor point="TOP" relativePoint="BOTTOM" y="-8" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
+    <ModelScene name="DatamineModelSceneTemplate" inherits="PanningModelSceneMixinTemplate"
+        mixin="DatamineModelSceneMixin" virtual="true" />
+
+    <PlayerModel name="DataminePlayerModelTemplate2" mixin="DataminePlayerModelMixin"
+        inherits="ModelWithControlsTemplate" enableMouse="true" virtual="true">
+        <KeyValues>
+            <KeyValue key="maxZoom" value="3" type="number" />
+        </KeyValues>
+        <Scripts>
+            <OnLoad>
+                Model_OnLoad(self, self.maxZoom);
+            </OnLoad>
+            <OnShow>
+                self:ResetModel();
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+
+    <Frame name="DatamineWorkspaceTemplate" virtual="true">
+        <Frames>
+            <Frame parentKey="ExplorerTab" mixin="DatamineUnifiedExplorerTabMixin">
+                <Size x="300" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-5" />
+                    <Anchor point="BOTTOMLEFT" x="5" y="5" />
+                </Anchors>
+                <Frames>
+                    <Frame parentKey="Header" inherits="DatamineTitleContainerTemplate">
+                        <Size y="20" />
+                        <KeyValues>
+                            <KeyValue key="TitleText" value="Explorer" />
+                        </KeyValues>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="5" y="-5" />
+                            <Anchor point="TOPRIGHT" y="-5" />
+                        </Anchors>
+                    </Frame>
+                    <EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" numeric="true"
+                        autoFocus="false" historyLines="5" mixin="DatamineSearchBoxMixin">
+                        <Size y="25" />
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.Header"
+                                relativePoint="BOTTOMLEFT" x="5" />
+                            <Anchor point="TOPRIGHT" relativeKey="$parent.Header"
+                                relativePoint="BOTTOMRIGHT" x="-5" />
+                        </Anchors>
+                        <Scripts>
+                            <OnEnterPressed method="OnEnterPressed" />
+                        </Scripts>
+                    </EditBox>
+                    <Frame parentKey="DataFrame" inherits="DatamineScrollableDataFrameTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.SearchBox"
+                                relativePoint="BOTTOMLEFT" x="-4" />
+                            <Anchor point="TOPRIGHT" relativeKey="$parent.SearchBox"
+                                relativePoint="BOTTOMRIGHT" />
+                            <Anchor point="BOTTOMLEFT" y="4" />
+                            <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
+                        </Anchors>
+                        <Frames>
+                            <Button parentKey="PreviewItemButton"
+                                inherits="DatamineGenericButtonTemplate"
+                                mixin="DataminePreviewItemButtonMixin" hidden="true">
+                                <Size x="25" y="25" />
+                                <Anchors>
+                                    <Anchor point="TOPRIGHT" y="-10" />
+                                </Anchors>
+                                <NormalTexture atlas="uitools-icon-chevron-right" />
+                                <Scripts>
+                                    <OnClick method="OnClick" />
+                                    <OnEnter method="OnEnter" />
+                                    <OnLeave method="OnLeave" />
+                                </Scripts>
+                            </Button>
+                        </Frames>
+                    </Frame>
+                </Frames>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background" setAllPoints="true">
+                            <Color r="0.18" g="0.18" b="0.18" />
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad method="OnLoad" />
+                </Scripts>
+            </Frame>
+            <Frame parentKey="DetailsTab">
+                <Size x="300" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-5" y="-5" />
+                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="ModelViewTab" mixin="DatamineUnifiedModelViewTabMixin">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.ExplorerTab"
+                        relativePoint="TOPRIGHT" x="5" />
+                    <Anchor point="BOTTOMLEFT" relativeKey="$parent.ExplorerTab"
+                        relativePoint="BOTTOMLEFT" x="5" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.DetailsTab"
+                        relativePoint="TOPLEFT" x="-5" />
+                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.DetailsTab"
+                        relativePoint="BOTTOMLEFT" x="-5" />
+                </Anchors>
+                <Frames>
+                    <ModelScene parentKey="ModelScene" inherits="DatamineModelSceneTemplate">
+                        <KeyValues>
+                            <KeyValue key="normalIntensity" value="0.75" type="number" />
+                            <KeyValue key="highlightIntensity" value="1.2" type="number" />
+                        </KeyValues>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="5" y="-5" />
+                            <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                        </Anchors>
+                        <Frames>
+                            <Frame parentKey="ControlFrame"
+                                inherits="ModelSceneControlFrameTemplate">
+                                <Anchors>
+                                    <Anchor point="TOP" x="0" y="-10" />
+                                </Anchors>
+                            </Frame>
+                            <Button parentKey="AlternateFormButton">
+                                <Size x="50" y="50" />
+                                <Anchors>
+                                    <Anchor point="TOPRIGHT" x="-10" y="-10" />
+                                </Anchors>
+                            </Button>
+                        </Frames>
+                        <Scripts>
+                            <OnLoad method="OnLoadCustom" inherit="prepend" />
+                            <OnShow method="OnShow" inherit="prepend" />
+                        </Scripts>
+                    </ModelScene>
+                    <PlayerModel parentKey="PlayerModel" inherits="DataminePlayerModelTemplate2"
+                        hidden="true">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="5" y="-5" />
+                            <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                        </Anchors>
+                    </PlayerModel>
+                </Frames>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background">
+                            <Color r="0.4" g="0.4" b="0.4" a="1" />
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background">
+                    <Color r="0.1" g="0.1" b="0.1" />
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
+
+    <Frame name="DatamineUnifiedFrame" parent="UIParent" toplevel="true" movable="true"
+        resizable="true" hidden="true">
+        <Size x="1920" y="1080" />
+        <Anchors>
+            <Anchor point="CENTER" />
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" setAllPoints="true">
+                    <Color r="0.18" g="0.18" b="0.18" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame parentKey="TitleContainer" inherits="DatamineMovableTitleContainerTemplate">
+                <Size y="20" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" />
+                    <Anchor point="TOPRIGHT" />
+                </Anchors>
+                <HitRectInsets>
+                    <AbsInset left="0" right="40" bottom="0" top="0" />
+                </HitRectInsets>
+            </Frame>
+            <Frame parentKey="Toolbar">
+                <Size y="30" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.TitleContainer"
+                        relativePoint="BOTTOMLEFT" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.TitleContainer"
+                        relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+            </Frame>
+            <Button parentKey="CloseButton" inherits="DatamineCloseButtonTemplate">
+                <Size x="20" y="20" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" />
+                </Anchors>
+            </Button>
+            <Button parentKey="PHButton" inherits="DatamineGenericButtonTemplate">
+                <Size x="20" y="20" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.CloseButton"
+                        relativePoint="TOPLEFT" />
+                </Anchors>
+                <NormalTexture atlas="uitools-icon-minimize" />
+            </Button>
+            <Frame parentKey="Workspace" inherits="DatamineWorkspaceTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.Toolbar"
+                        relativePoint="BOTTOMLEFT" x="5" y="-5" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.Toolbar"
+                        relativePoint="BOTTOMRIGHT" x="-5" y="-5" />
+                    <Anchor point="BOTTOMLEFT" x="5" y="5" />
+                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+                <Frames>
+
+                </Frames>
+            </Frame>
+        </Frames>
+    </Frame>
+</Ui>

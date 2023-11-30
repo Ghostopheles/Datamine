@@ -1,6 +1,6 @@
 local Print = function(...) Datamine.Print("ModelView", ...) end;
 
-DatamineModelFrameMixin = CreateFromMixins(DressUpModelFrameMixin, CallbackRegistryMixin);
+DatamineModelFrameMixin = CreateFromMixins(DressUpModelFrameMixin);
 
 local MODES = {
     ModelScene = 1,
@@ -108,14 +108,9 @@ function DatamineModelFrameMixin:SetCreature(creatureID, displayID)
 
     if not actor then return end;
 
-    creatureID = strtrim(creatureID);
-    displayID = strtrim(displayID);
-
-    if displayID == "" and creatureID == "" then
+    if not displayID and not creatureID then
         actor:ResetModel();
         return;
-    elseif displayID == "" then
-        displayID = nil;
     end
 
     return actor:SetCreature(creatureID, displayID);

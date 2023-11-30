@@ -48,3 +48,7 @@ Modules/Explorer/ExplorerTooltipFrame.lua
 Modules/Explorer/ExplorerTooltipFrame.xml
 Modules/Explorer/ExplorerFrame.xml
 Modules/Explorer/ExplorerFrame.lua
+
+Modules/Unified/UnifiedRegistry.lua
+Modules/Unified/Unified.xml
+Modules/Unified/UnifiedUI.lua

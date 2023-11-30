@@ -59,19 +59,21 @@
                     result = self.Callback(self:GetText());
                 end
 
-                self.clearButton.texture:Hide();
-
                 PlaySound(SOUNDKIT.TUTORIAL_POPUP);
 
-                if result == true then
-                    self.CheckAnim:Stop();
-                    self.CheckAnim:Play();
-                else
-                    self.FailAnim:Stop();
-                    self.FailAnim:Play();
-                end
+                if result ~= nil then
+                    self.clearButton.texture:Hide();
 
-                C_Timer.After(0.6, function() self.clearButton.texture:Show(); end);
+                    if result == true then
+                        self.CheckAnim:Stop();
+                        self.CheckAnim:Play();
+                    else
+                        self.FailAnim:Stop();
+                        self.FailAnim:Play();
+                    end
+
+                    C_Timer.After(0.6, function() self.clearButton.texture:Show(); end);
+                end
 			</OnEnterPressed>
         </Scripts>
     </EditBox>

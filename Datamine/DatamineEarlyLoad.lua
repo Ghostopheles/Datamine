@@ -1,11 +1,16 @@
+local addonName, Datamine_Internal = ...;
+
 Datamine = {};
 
-Datamine.Constants = {
-    AddonName = "Datamine",
+Datamine.Constants = {};
+Datamine.Constants.AddonName = addonName;
+Datamine.Constants.DataTypes = {
+    Item = 1,
+    Spell = 2,
 };
 
 Datamine.Mixins = {};
-
+Datamine.Utils = {};
 Datamine.Console = LibStub:GetLibrary("LibDevConsole");
 
 local PrintSettings = {
@@ -19,6 +24,11 @@ local PrintSettings = {
 function Datamine.GetEnumValueName(enum, value)
     local GetName = EnumUtil.GenerateNameTranslation(enum);
     return GetName(value);
+end
+
+function Datamine.Utils.GetStringFromDataType(dataType)
+    local rev = tInvert(Datamine.Constants.DataTypes);
+    return rev[dataType];
 end
 
 -- chat output
