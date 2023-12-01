@@ -1,5 +1,5 @@
 Datamine.Events = {
-    VIEW_MODE_CHANGED = "ViewModeChanged",
+    MODEL_VIEW_MODE_CHANGED = "ModelViewModeChanged",
     SEARCH_MODE_CHANGED = "SearchModeChanged",
     SEARCH_RESULT = "SearchResult",
     SEARCH_BEGIN = "SearchBegin",

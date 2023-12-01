@@ -9,6 +9,9 @@
     <Binding name="Toggle Datamine Explorer" category="Datamine">
         Datamine.Explorer:Toggle();
     </Binding>
+    <Binding name="Toggle Datamine UI" category="Datamine">
+        DatamineUnifiedFrame:Toggle();
+    </Binding>
     <Binding name="Quick Reload" category="Datamine">
         Datamine.QuickReload();
     </Binding>
