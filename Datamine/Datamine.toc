@@ -50,5 +50,9 @@ Modules/Explorer/ExplorerFrame.xml
 Modules/Explorer/ExplorerFrame.lua
 
 Modules/Unified/UnifiedRegistry.lua
+Modules/Unified/Templates/ModelScene/ControlFrame.lua
+Modules/Unified/Templates/ModelScene/ControlFrame.xml
+Modules/Unified/Templates/ModelScene/ModelScene.lua
+Modules/Unified/Templates/ModelScene/ModelScene.xml
 Modules/Unified/Unified.xml
 Modules/Unified/UnifiedUI.lua

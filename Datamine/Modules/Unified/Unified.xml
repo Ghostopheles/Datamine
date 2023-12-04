@@ -148,139 +148,6 @@
         </Scripts>
     </Frame>
 
-    <EditBox name="DatamineModelControlsEditBoxTemplate" inherits="InputBoxTemplate"
-        mixin="DatamineModelControlsEditBoxMixin" autoFocus="false" historyLines="3"
-        virtual="true">
-        <Scripts>
-            <OnLoad method="OnLoad" inherit="prepend" />
-            <OnChar method="OnChar" inherit="prepend" />
-            <OnEditFocusGained method="OnEditFocusGained" inherit="prepend" />
-            <OnEditFocusLost method="OnEditFocusLost" inherit="prepend" />
-            <OnEnterPressed method="OnEnterPressed" inherit="prepend" />
-        </Scripts>
-    </EditBox>
-
-    <Frame name="DatamineModelControlsLabelledEditBoxRowTemplate"
-        mixin="DatamineModelControlsLabelledEditBoxRowMixin" virtual="true">
-        <Size y="20" />
-        <Frames>
-            <Button parentKey="ResetButton" inherits="DatamineGenericButtonTemplate" hidden="true">
-                <Size x="20" y="20" />
-                <Anchors>
-                    <Anchor point="TOPRIGHT" x="-3" />
-                </Anchors>
-                <NormalTexture atlas="uitools-icon-refresh" />
-                <Scripts>
-                    <OnClick>
-                        CallMethodOnNearestAncestor(self, "ResetEditBoxes");
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <EditBox parentKey="Z" inherits="DatamineModelControlsEditBoxTemplate">
-                <Size x="60" y="20" />
-                <Anchors>
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.ResetButton"
-                        relativePoint="TOPLEFT" x="-2" />
-                </Anchors>
-            </EditBox>
-            <EditBox parentKey="Y" inherits="DatamineModelControlsEditBoxTemplate">
-                <Size x="60" y="20" />
-                <Anchors>
-                    <Anchor point="RIGHT" relativeKey="$parent.Z" relativePoint="LEFT"
-                        x="-7" />
-                </Anchors>
-            </EditBox>
-            <EditBox parentKey="X" inherits="DatamineModelControlsEditBoxTemplate">
-                <Size x="60" y="20" />
-                <Anchors>
-                    <Anchor point="RIGHT" relativeKey="$parent.Y" relativePoint="LEFT"
-                        x="-7" />
-                </Anchors>
-            </EditBox>
-        </Frames>
-        <Layers>
-            <Layer level="OVERLAY">
-                <FontString parentKey="Title" font="DatamineCleanFontLabelSmall" text="NONE"
-                    justifyH="LEFT" justifyV="MIDDLE">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" />
-                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.X"
-                            relativePoint="BOTTOMLEFT" />
-                    </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
-        <Scripts>
-            <OnLoad method="OnLoad" />
-        </Scripts>
-    </Frame>
-
-    <Frame name="DatamineModelControlsExternalTemplate"
-        mixin="DatamineModelControlsExternalMixin"
-        virtual="true">
-        <Layers>
-            <Layer level="OVERLAY">
-                <FontString parentKey="ViewHeader" font="DatamineCleanFontSmall" text="View">
-                    <Size y="15" />
-                    <Anchors>
-                        <Anchor point="TOPLEFT" />
-                        <Anchor point="TOPRIGHT" />
-                    </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
-        <Frames>
-            <Frame parentKey="Transform" inherits="DatamineModelControlsLabelledEditBoxRowTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.ViewHeader"
-                        relativePoint="BOTTOMLEFT" y="-5" />
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.ViewHeader"
-                        relativePoint="BOTTOMRIGHT" y="-5" />
-                </Anchors>
-            </Frame>
-            <Frame parentKey="Rotation" inherits="DatamineModelControlsLabelledEditBoxRowTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.Transform"
-                        relativePoint="BOTTOMLEFT" y="-3" />
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.Transform"
-                        relativePoint="BOTTOMRIGHT" y="-3" />
-                </Anchors>
-            </Frame>
-        </Frames>
-        <Scripts>
-            <OnLoad method="OnLoad" inherit="prepend" />
-            <OnShow method="OnShow" inherit="prepend" />
-            <OnUpdate method="OnUpdate" inherit="prepend" />
-        </Scripts>
-    </Frame>
-
-    <Actor name="DatamineModelSceneActorTemplate" mixin="DatamineModelSceneActorMixin"
-        virtual="true">
-        <Scripts>
-            <OnModelCleared method="OnModelCleared" />
-            <OnModelLoaded method="OnModelLoaded" />
-            <OnUpdate method="OnUpdate" />
-        </Scripts>
-    </Actor>
-
-    <ModelScene name="DatamineModelSceneTemplate" inherits="PanningModelSceneMixinTemplate"
-        mixin="DatamineModelSceneMixin" virtual="true">
-        <Frames>
-            <Button parentKey="NativeFormToggleButton" inherits="DatamineGenericButtonTemplate">
-                <Size x="50" y="50" />
-                <Anchors>
-                    <Anchor point="TOPRIGHT" x="-15" y="-15" />
-                </Anchors>
-            </Button>
-        </Frames>
-        <Scripts>
-            <OnLoad method="OnLoadCustom" inherit="prepend" />
-            <OnShow method="OnShow" inherit="prepend" />
-            <OnMouseDown method="OnCameraMoveStart" inherit="prepend" />
-            <OnMouseUp method="OnCameraMoveStop" inherit="prepend" />
-        </Scripts>
-    </ModelScene>
-
     <PlayerModel name="DataminePlayerModelTemplate2" mixin="DataminePlayerModelMixin"
         inherits="ModelWithControlsTemplate" enableMouse="true" virtual="true">
         <KeyValues>
@@ -376,7 +243,7 @@
                     <Frame parentKey="Header" inherits="DatamineTitleContainerTemplate">
                         <Size y="20" />
                         <KeyValues>
-                            <KeyValue key="TitleText" value="Details" />
+                            <KeyValue key="TitleText" value="Model Controls" />
                         </KeyValues>
                         <Anchors>
                             <Anchor point="TOPLEFT" x="5" y="-5" />
@@ -525,9 +392,11 @@
                     <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
                 </Anchors>
                 <Frames>
-
                 </Frames>
             </Frame>
         </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
     </Frame>
 </Ui>
