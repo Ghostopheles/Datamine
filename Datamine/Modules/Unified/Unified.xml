@@ -62,6 +62,13 @@
         </KeyValues>
     </Texture>
 
+    <Texture name="DatamineColorHighlightTextureTemplate"
+        mixin="DatamineColorHighlightBackgroundMixin" virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineLightGray" />
+        </KeyValues>
+    </Texture>
+
     <Frame name="DatamineTitleContainerTemplate" virtual="true"
         mixin="DatamineTitleContainerMixin">
         <!-- Add a .TitleText keyValue to set text from XML -->
@@ -290,6 +297,19 @@
                         </Anchors>
                     </Frame>
                     -->
+                    <Frame parentKey="Controls" inherits="DatamineTabTreeViewTemplate"
+                        mixin="DatamineModelControlsTreeMixin">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.Header"
+                                relativePoint="BOTTOMLEFT" />
+                            <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                        </Anchors>
+                        <Scripts>
+                            <OnUpdate method="OnUpdate" />
+                            <OnShow method="OnShow" />
+                            <OnLoad method="OnLoad" inherit="prepend" />
+                        </Scripts>
+                    </Frame>
                 </Frames>
                 <Layers>
                     <Layer level="BACKGROUND">

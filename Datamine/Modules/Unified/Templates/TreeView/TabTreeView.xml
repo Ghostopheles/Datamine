@@ -5,6 +5,10 @@
     <Button name="DatamineTabTreeViewCategoryHeaderTemplate" virtual="true"
         mixin="DatamineTabTreeViewCategoryHeaderMixin">
         <Layers>
+            <Layer level="HIGHLIGHT">
+                <Texture parentKey="HighlightTexture"
+                    atlas="GarrMissionLocation-Maw-ButtonHighlight" alpha="0.35" />
+            </Layer>
             <Layer level="BACKGROUND">
                 <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
             </Layer>
@@ -24,22 +28,27 @@
         </Layers>
     </Button>
 
-    <Button name="DatamineTabTreeViewSubCategoryTemplate" virtual="true"
-        mixin="DatamineTabTreeViewCategoryHeaderMixin">
+    <Button name="DatamineTabTreeViewChildKeyValueTemplate" virtual="true"
+        mixin="DatamineTabTreeViewChildKeyValueMixin" hyperlinksEnabled="true"
+        propagateHyperlinksToParent="true">
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Background" inherits="DatamineLightGrayBackgroundTemplate" />
+                <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
             </Layer>
             <Layer level="OVERLAY">
-                <Texture parentKey="Chevron" hidden="true">
-                    <Size x="20" y="20" />
+                <FontString parentKey="Key" font="DatamineCleanFont" text="KEY">
                     <Anchors>
-                        <Anchor point="TOPLEFT" />
+                        <Anchor point="LEFT" x="5" />
                     </Anchors>
-                </Texture>
-                <FontString parentKey="Text" font="DatamineCleanFont" text="TITLE">
+                </FontString>
+                <FontString parentKey="Separator" font="DatamineCleanFontNoShadow" text=" | ">
                     <Anchors>
-                        <Anchor point="LEFT" relativeKey="$parent.Chevron" relativePoint="RIGHT" />
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="Value" font="DatamineCleanFont" text="VALUE">
+                    <Anchors>
+                        <Anchor point="LEFT" relativePoint="CENTER" x="5" />
                     </Anchors>
                 </FontString>
             </Layer>
@@ -54,22 +63,23 @@
             </Layer>
         </Layers>
         <Frames>
-            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
-                <Anchors>
-                    <Anchor point="TOP" y="-15" />
-                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
-                    <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
-                </Anchors>
-            </Frame>
             <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-13" y="-4" />
                     <Anchor point="BOTTOMRIGHT" x="-13" y="7" />
                 </Anchors>
             </EventFrame>
+            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+                <Anchors>
+                    <Anchor point="TOP" y="-4" />
+                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
+                    <Anchor point="BOTTOMRIGHT" x="-6" y="4" relativeKey="$parent.ScrollBar"
+                        relativePoint="BOTTOMLEFT" />
+                </Anchors>
+            </Frame>
         </Frames>
         <Scripts>
-            <OnLoad method="OnLoad" />
+            <OnLoad method="OnLoad_Base" />
         </Scripts>
     </Frame>
 </Ui>

@@ -4,6 +4,11 @@
 ---@field IsTopLevel? boolean
 ---@field ShowChevron? boolean
 ---@field RequestedExtent? number
+---@field ControlID? string
+---@field DataFetch? function
+---@field Callback? function
+---@field DefaultsFunc? function
+---@field OverlordFrame? frame
 
 DatamineTabTreeViewCategoryHeaderMixin = {};
 
@@ -37,7 +42,7 @@ end
 
 DatamineTabTreeViewMixin = {};
 
-function DatamineTabTreeViewMixin:OnLoad()
+function DatamineTabTreeViewMixin:OnLoad_Base()
     self.DataProvider = CreateTreeDataProvider();
 
     --[[
@@ -51,11 +56,6 @@ function DatamineTabTreeViewMixin:OnLoad()
             ShowChevron = false,
         };
         local level1 = self.DataProvider:Insert(l1Data);
-        level1:Insert({
-            Text = "TEXT",
-            Template = "DatamineTreeModelControlsLabelledEditBoxRowTemplate",
-            RequestedExtent = 20,
-        });
         for j = 1, fastrandom(3, 6) do
             local l2Data = {
                 Text = format("Node %d.%d", i, j),
@@ -80,7 +80,13 @@ function DatamineTabTreeViewMixin:OnLoad()
 
     local TOP_LEVEL_EXTENT = 20;
     local DEFAULT_EXTENT = 20;
+    local f = false;
     self.ScrollView:SetElementExtentCalculator(function(_, elementData)
+        if not f then
+            C_Timer.After(0, function() DevTool:AddData(elementData) end);
+            f = true;
+        end
+   
         local extent;
         local data = elementData:GetData();
         if data.RequestedExtent then
@@ -104,8 +110,8 @@ function DatamineTabTreeViewMixin:OnLoad()
 		factory(template, Initializer);
 	end);
 
-    self.ScrollBox:SetInterpolateScroll(true);
-    self.ScrollBar:SetInterpolateScroll(true);
+    --self.ScrollBox:SetInterpolateScroll(true);
+    --self.ScrollBar:SetInterpolateScroll(true);
     self.ScrollBar:SetHideIfUnscrollable(true);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
@@ -117,7 +123,30 @@ function DatamineTabTreeViewMixin:OnLoad()
 end
 
 function DatamineTabTreeViewMixin:AddTopLevelItem(data)
+    if not data.Template then
+        data.Template = "DatamineTabTreeViewCategoryHeaderTemplate";
+    end
+
     return self.DataProvider:Insert(data);
 end
 
 -------------
+
+DatamineTabTreeViewChildKeyValueMixin = {}
+
+function DatamineTabTreeViewChildKeyValueMixin:Init(node)
+    local data = node:GetData();
+
+    if data.KeyValue then
+        self.Key:SetText(data.KeyValue.Key);
+        self.Value:SetText(data.KeyValue.Value);
+
+        self.Key:SetTextScale(0.85);
+        self.Value:SetTextScale(0.85);
+
+        self.Separator:SetTextColor(DatamineLightGray.r, DatamineLightGray.g, DatamineLightGray.b, DatamineLightGray.a);
+        self.Separator:SetTextScale(1.5);
+    else
+        node:Remove();
+    end
+end

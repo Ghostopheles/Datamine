@@ -5,7 +5,6 @@
         mixin="DatamineModelControlsEditBoxMixin" autoFocus="false" historyLines="3"
         virtual="true">
         <Scripts>
-            <OnLoad method="OnLoad" inherit="prepend" />
             <OnChar method="OnChar" inherit="prepend" />
             <OnEditFocusGained method="OnEditFocusGained" inherit="prepend" />
             <OnEditFocusLost method="OnEditFocusLost" inherit="prepend" />
@@ -30,21 +29,21 @@
                 </Scripts>
             </Button>
             <EditBox parentKey="Z" inherits="DatamineModelControlsEditBoxTemplate">
-                <Size x="60" y="20" />
+                <Size x="40" y="20" />
                 <Anchors>
                     <Anchor point="TOPRIGHT" relativeKey="$parent.ResetButton"
                         relativePoint="TOPLEFT" x="-2" />
                 </Anchors>
             </EditBox>
             <EditBox parentKey="Y" inherits="DatamineModelControlsEditBoxTemplate">
-                <Size x="60" y="20" />
+                <Size x="40" y="20" />
                 <Anchors>
                     <Anchor point="RIGHT" relativeKey="$parent.Z" relativePoint="LEFT"
                         x="-7" />
                 </Anchors>
             </EditBox>
             <EditBox parentKey="X" inherits="DatamineModelControlsEditBoxTemplate">
-                <Size x="60" y="20" />
+                <Size x="40" y="20" />
                 <Anchors>
                     <Anchor point="RIGHT" relativeKey="$parent.Y" relativePoint="LEFT"
                         x="-7" />
@@ -52,11 +51,14 @@
             </EditBox>
         </Frames>
         <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
+            </Layer>
             <Layer level="OVERLAY">
                 <FontString parentKey="Title" font="DatamineCleanFontLabelSmall" text="NONE"
                     justifyH="LEFT" justifyV="MIDDLE">
                     <Anchors>
-                        <Anchor point="TOPLEFT" />
+                        <Anchor point="TOPLEFT" x="5" />
                         <Anchor point="BOTTOMRIGHT" relativeKey="$parent.X"
                             relativePoint="BOTTOMLEFT" />
                     </Anchors>
@@ -65,13 +67,14 @@
         </Layers>
         <Scripts>
             <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
+            <OnHide method="OnHide" />
         </Scripts>
     </Frame>
 
     <Frame name="DatamineModelControlsOutfitPanelEntryTemplate"
         mixin="DatamineModelControlsOutfitPanelEntryMixin" virtual="true"
-        propagateHyperlinksToParent="true" hyperlinksEnabled="true">
-        <Size y="32" />
+        hyperlinksEnabled="true" enableMouseClicks="true">
         <Frames>
             <ItemButton parentKey="Icon" scale="0.65">
                 <Anchors>
@@ -95,6 +98,9 @@
             </Button>
         </Frames>
         <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
+            </Layer>
             <Layer level="OVERLAY">
                 <FontString parentKey="Text" font="DatamineCleanFontSmall" justifyH="LEFT"
                     wordwrap="false">
@@ -106,94 +112,34 @@
                 </FontString>
             </Layer>
         </Layers>
+        <Scripts>
+            <OnMouseUp method="OnMouseUp" />
+        </Scripts>
     </Frame>
 
-    <Frame name="DatamineModelControlsOutfitPanelTemplate"
-        mixin="DatamineModelControlsOutfitPanelMixin" virtual="true" hyperlinksEnabled="true">
+    <Frame name="DatamineModelControlsAdvancedPanelEntryTemplate"
+        mixin="DatamineModelControlsAdvancedPanelEntryMixin" virtual="true">
+        <Frames>
+            <EditBox parentKey="EntryBox" inherits="DatamineEditBoxTemplate" numeric="true">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" x="10" y="4" />
+                    <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
+                </Anchors>
+            </EditBox>
+        </Frames>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Background" setAllPoints="true">
-                    <Color r="0.1" g="0.1" b="0.1" />
-                </Texture>
+                <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
             </Layer>
-        </Layers>
-        <Frames>
-            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList" setAllPoints="true" />
-            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
-                <Anchors>
-                    <Anchor point="TOPRIGHT" x="-13" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" x="-13" y="7" />
-                </Anchors>
-            </EventFrame>
-        </Frames>
-        <Scripts>
-            <OnLoad method="OnLoad" />
-        </Scripts>
-    </Frame>
-
-    <Frame name="DatamineModelControlsExternalTemplate"
-        mixin="DatamineModelControlsExternalMixin"
-        virtual="true">
-        <Layers>
             <Layer level="OVERLAY">
-                <FontString parentKey="ViewHeader" font="DatamineCleanFontSmall"
-                    text="View">
-                    <Size y="15" />
+                <FontString parentKey="Title" font="DatamineCleanFontSmall" justifyH="LEFT"
+                    wordwrap="false">
                     <Anchors>
-                        <Anchor point="TOPLEFT" y="-5" />
-                        <Anchor point="TOPRIGHT" y="-5" />
+                        <Anchor point="BOTTOM" relativeKey="$parent.EntryBox" relativePoint="TOP" />
                     </Anchors>
                 </FontString>
             </Layer>
         </Layers>
-        <Frames>
-            <Frame parentKey="Transform" inherits="DatamineModelControlsLabelledEditBoxRowTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.ViewHeader"
-                        relativePoint="BOTTOMLEFT" y="-5" />
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.ViewHeader"
-                        relativePoint="BOTTOMRIGHT" y="-5" />
-                </Anchors>
-            </Frame>
-            <Frame parentKey="Rotation" inherits="DatamineModelControlsLabelledEditBoxRowTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.Transform"
-                        relativePoint="BOTTOMLEFT" y="-3" />
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.Transform"
-                        relativePoint="BOTTOMRIGHT" y="-3" />
-                </Anchors>
-            </Frame>
-        </Frames>
-        <Layers>
-            <Layer level="OVERLAY">
-                <FontString parentKey="OutfitHeader" font="DatamineCleanFontSmall"
-                    text="Outfit">
-                    <Size y="15" />
-                    <Anchors>
-                        <Anchor point="TOPLEFT" relativeKey="$parent.Rotation"
-                            relativePoint="BOTTOMLEFT" y="-5" />
-                        <Anchor point="TOPRIGHT" relativeKey="$parent.Rotation"
-                            relativePoint="BOTTOMRIGHT" y="-5" />
-                    </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
-        <Frames>
-            <Frame parentKey="OutfitPanel" inherits="DatamineModelControlsOutfitPanelTemplate">
-                <Size y="400" />
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.OutfitHeader"
-                        relativePoint="BOTTOMLEFT" y="-5" />
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.OutfitHeader"
-                        relativePoint="BOTTOMRIGHT" x="-5" y="-5" />
-                </Anchors>
-            </Frame>
-        </Frames>
-        <Scripts>
-            <OnLoad method="OnLoad" inherit="prepend" />
-            <OnShow method="OnShow" inherit="prepend" />
-            <OnUpdate method="OnUpdate" inherit="prepend" />
-        </Scripts>
     </Frame>
 
     <Actor name="DatamineModelSceneActorTemplate" mixin="DatamineModelSceneActorMixin"
