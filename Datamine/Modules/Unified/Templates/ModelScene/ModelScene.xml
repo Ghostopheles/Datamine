@@ -208,6 +208,11 @@
     <ModelScene name="DatamineModelSceneTemplate" inherits="PanningModelSceneMixinTemplate"
         mixin="DatamineModelSceneMixin" virtual="true">
         <Frames>
+            <Frame parentKey="ControlFrame" inherits="DatamineModelSceneControlFrameTemplate">
+                <Anchors>
+                    <Anchor point="TOP" y="-10" />
+                </Anchors>
+            </Frame>
             <Button parentKey="NativeFormToggleButton" inherits="DatamineGenericButtonTemplate">
                 <Size x="50" y="50" />
                 <Anchors>

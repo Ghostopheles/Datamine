@@ -33,6 +33,35 @@
         </Scripts>
     </Button>
 
+    <Texture name="DatamineColorBackgroundTemplate" mixin="DatamineColorBackgroundMixin"
+        virtual="true">
+        <!-- Add a .ColorName keyValue to set background color to a global color -->
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Texture>
+
+    <Texture name="DatamineLightGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
+        virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineLightGray" />
+        </KeyValues>
+    </Texture>
+
+    <Texture name="DatamineMediumGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
+        virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineMediumGray" />
+        </KeyValues>
+    </Texture>
+
+    <Texture name="DatamineDarkGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
+        virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineDarkGray" />
+        </KeyValues>
+    </Texture>
+
     <Frame name="DatamineTitleContainerTemplate" virtual="true"
         mixin="DatamineTitleContainerMixin">
         <!-- Add a .TitleText keyValue to set text from XML -->
@@ -250,6 +279,7 @@
                             <Anchor point="TOPRIGHT" y="-5" />
                         </Anchors>
                     </Frame>
+                    <!--
                     <Frame parentKey="Controls" inherits="DatamineModelControlsExternalTemplate">
                         <Size y="50" />
                         <Anchors>
@@ -259,6 +289,7 @@
                                 relativePoint="BOTTOMRIGHT" />
                         </Anchors>
                     </Frame>
+                    -->
                 </Frames>
                 <Layers>
                     <Layer level="BACKGROUND">
@@ -290,12 +321,6 @@
                             <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
                         </Anchors>
                         <Frames>
-                            <Frame parentKey="ControlFrame"
-                                inherits="ModelSceneControlFrameTemplate">
-                                <Anchors>
-                                    <Anchor point="TOP" x="0" y="-10" />
-                                </Anchors>
-                            </Frame>
                             <Button parentKey="AlternateFormButton">
                                 <Size x="50" y="50" />
                                 <Anchors>

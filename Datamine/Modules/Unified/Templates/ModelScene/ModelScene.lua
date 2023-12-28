@@ -123,15 +123,12 @@ end
 DatamineModelSceneMixin = {};
 
 function DatamineModelSceneMixin:OnLoadCustom()
-    self.ControlFrame = nil;
-    self.ControlFrame = CreateFrame("Frame", nil, self, "DatamineModelSceneControlFrameTemplate");
-    self.ControlFrame:SetPoint("TOP", 0, -10);
     self.ControlFrame:SetModelScene(self);
-
     self.FirstShow = true;
 
     self:ClearScene();
     self:SetViewInsets(0, 0, 0, 0);
+    self:ReleaseAllActors();
     EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function() self:SetFromModelSceneID(596) end);
 
     self.NativeFormToggleButton:SetScript("OnClick", function()
@@ -236,7 +233,7 @@ function DatamineModelSceneMixin:UpdateOutfitPanel(itemTransmogInfoList)
 end
 
 function DatamineModelSceneMixin:SetupPlayerActor(force)
-    if self.ActiveActor or (not self.FirstShow and not force) then
+    if not force and (self.ActiveActor or not self.FirstShow) then
         return;
     end
 

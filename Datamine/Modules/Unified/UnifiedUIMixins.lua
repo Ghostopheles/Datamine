@@ -1,9 +1,6 @@
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
-DatamineLightGray = CreateColor(0.18, 0.18, 0.18, 1);
-DatamineDarkGray = CreateColor(0.1, 0.1, 0.1, 1);
-
 local DataTypes = Datamine.Constants.DataTypes;
 local DataKeys = {
     [DataTypes.Item] = Datamine.Item.ItemInfoKeys,
@@ -30,6 +27,22 @@ function DatamineCloseButtonMixin:OnClick()
             parent:Hide();
         end
     end
+end
+
+-------------
+
+DatamineLightGray = CreateColor(0.25, 0.25, 0.25, 1);
+DatamineMediumGray = CreateColor(0.18, 0.18, 0.18, 1);
+DatamineDarkGray = CreateColor(0.1, 0.1, 0.1, 1);
+DatamineDefaultBackgroundColor = DatamineDarkGray;
+
+-------------
+
+DatamineColorBackgroundMixin = {};
+
+function DatamineColorBackgroundMixin:OnLoad()
+    local color = _G[self.ColorName] or DatamineDefaultBackgroundColor;
+    self:SetColorTexture(color.r, color.g, color.b, color.a);
 end
 
 -------------
@@ -140,7 +153,7 @@ function DatamineScrollableDataFrameMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_RESULT, self.OnSearchResult, self);
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
 
-    --self:SetLoading(false);
+    self:SetLoading(true);
 end
 
 function DatamineScrollableDataFrameMixin:OnSearchBegin(dataID)
