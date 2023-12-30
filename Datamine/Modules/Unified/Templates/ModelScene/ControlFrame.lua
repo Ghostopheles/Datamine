@@ -43,8 +43,8 @@ DatamineModelSceneControlButtonMixin = CreateFromMixins(ModelSceneControlButtonM
 
 function DatamineModelSceneControlButtonMixin:Init(clickTypes, atlas, tooltip, tooltipText)
 	self:RegisterForClicks(clickTypes);
-	if atlas then
-		self.Icon:SetAtlas(atlas);
+	if atlas and self.Icon.SetCustomAtlas then
+		self.Icon:SetCustomAtlas(atlas);
 	end
 	self.tooltip = tooltip;
 	self.tooltipText = tooltipText;
@@ -53,6 +53,7 @@ end
 -------------
 
 DatamineModelSceneZoomButtonMixin = CreateFromMixins(ModelSceneZoomButtonMixin);
+
 
 function DatamineModelSceneZoomButtonMixin:Init()
 	if self.zoomAmount < 0 then
@@ -82,5 +83,5 @@ DatamineModelSceneResetButtonMixin = CreateFromMixins(ModelSceneResetButtonMixin
 
 function DatamineModelSceneResetButtonMixin:Init()
 	local tooltipText = nil;
-	ModelSceneControlButtonMixin.Init(self, "AnyUp", "uitools-icon-refresh", RESET_POSITION, tooltipText);
+	DatamineModelSceneControlButtonMixin.Init(self, "AnyUp", "uitools-icon-refresh", RESET_POSITION, tooltipText);
 end

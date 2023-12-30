@@ -51,6 +51,8 @@ Modules/Explorer/ExplorerFrame.lua
 
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedRegistry.lua
+Modules/Unified/UnifiedUIMixins.lua
+Modules/Unified/Templates/CustomAtlas.xml
 Modules/Unified/Templates/ModelScene/ControlFrame.lua
 Modules/Unified/Templates/ModelScene/ControlFrame.xml
 Modules/Unified/Templates/ModelScene/ModelScene.lua

@@ -9,15 +9,16 @@
                 <Texture parentKey="HighlightTexture"
                     atlas="GarrMissionLocation-Maw-ButtonHighlight" alpha="0.35" />
             </Layer>
-            <Layer level="BACKGROUND">
-                <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
-            </Layer>
             <Layer level="OVERLAY">
-                <Texture parentKey="Chevron">
+                <Texture parentKey="Chevron" inherits="DatamineCustomAtlasTemplate">
                     <Size x="20" y="20" />
                     <Anchors>
                         <Anchor point="TOPLEFT" />
                     </Anchors>
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-chevron-right" />
+                    </KeyValues>
                 </Texture>
                 <FontString parentKey="Text" font="DatamineCleanFont" text="TITLE">
                     <Anchors>
@@ -25,7 +26,13 @@
                     </Anchors>
                 </FontString>
             </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
+            </Layer>
         </Layers>
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
     </Button>
 
     <Button name="DatamineTabTreeViewChildKeyValueTemplate" virtual="true"

@@ -17,21 +17,26 @@ function DatamineTabTreeViewCategoryHeaderMixin:Init(node)
     local data = node:GetData();
 
     self:SetText(data.Text);
-    self:SetScript("OnClick", function() node:ToggleCollapsed(); end);
 
-    if data.ShowChevron then
-        self:SetupChevron();
-    end
+    self.CollapsedChevronAtlas = "uitools-icon-chevron-right";
+    self.UncollapsedChevronAtlas = "uitools-icon-chevron-down";
+    self:UpdateChevron();
 
     self:Show();
 end
 
-function DatamineTabTreeViewCategoryHeaderMixin:SetupChevron()
-    local fileName = Datamine.Unified.AtlasInfo:GetAtlasFileName("UITools");
-    local atlas = Datamine.Unified.AtlasInfo:GetAtlasInfo("UITools", "uitools-icon-chevron-right");
-    self.Chevron:SetTexture(fileName);
-    self.Chevron:SetTexCoord(atlas.left, atlas.right, atlas.top, atlas.bottom);
-    self.Chevron:Show();
+function DatamineTabTreeViewCategoryHeaderMixin:OnClick()
+    local node = self:GetElementData();
+    node:ToggleCollapsed();
+    self:UpdateChevron();
+end
+
+function DatamineTabTreeViewCategoryHeaderMixin:UpdateChevron()
+    if self:GetElementData():IsCollapsed() then
+        self.Chevron:SetCustomAtlas(self.CollapsedChevronAtlas);
+    else
+        self.Chevron:SetCustomAtlas(self.UncollapsedChevronAtlas);
+    end
 end
 
 function DatamineTabTreeViewCategoryHeaderMixin:SetText(text)

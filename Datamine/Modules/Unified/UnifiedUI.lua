@@ -1,11 +1,20 @@
 Datamine.Unified = {};
 
+---@class CustomAtlasInfo
+---@field width number
+---@field height number
+---@field left number
+---@field right number
+---@field top number
+---@field bottom number
+
 ---@param w number
 ---@param h number
 ---@param l number
 ---@param r number
 ---@param t number
 ---@param b number
+---@return CustomAtlasInfo
 local function CreateAtlasInfo(w, h, l, r, t, b)
     return {
         width = w,
@@ -17,7 +26,7 @@ local function CreateAtlasInfo(w, h, l, r, t, b)
     };
 end
 
-local UIToolsFileName = [[Interface\AddOns\Datamine\Assets\Blizzard_UITools.blp]];
+local UIToolsFileName = "Blizzard_UITools.blp";
 
 -- need to manually copy over the fucking atlas info because Blizzard decided to remove these textures from the game
 local UIToolsAtlasInfo = {
@@ -78,18 +87,78 @@ local UIToolsAtlasInfo = {
     ["uitools-search-background"] = CreateAtlasInfo(24, 24, 0.1337890625, 0.1572265625, 0.7421875, 0.9296875),
 };
 
-Datamine.Unified.AtlasInfo = {};
-Datamine.Unified.AtlasInfo.Categories = {
-    UITools = UIToolsAtlasInfo
-};
-Datamine.Unified.AtlasInfo.FileNames = {
-    UITools = UIToolsFileName
+Datamine.CustomAtlas = {};
+Datamine.CustomAtlas.BasePath = [[Interface\AddOns\Datamine\Assets\CustomAtlas\]];
+Datamine.CustomAtlas.AtlasInfo = {
+    [UIToolsFileName] = UIToolsAtlasInfo,
 };
 
-function Datamine.Unified.AtlasInfo:GetAtlasFileName(category)
-    return self.FileNames[category];
+---@param fileName string
+---@param search? boolean Search existing filenames for the extension
+---@return string? fileExtension
+function Datamine.CustomAtlas:GetFileExtension(fileName, search)
+    local pattern = "%.%w+$";
+    local extension = fileName:match(pattern);
+
+    -- if the file has no extension, then we check our existing files for the file with the given name
+    if extension then
+        return extension
+    elseif search then
+        for fileNameWithExtension, _ in pairs(self.AtlasInfo) do
+            local searchPattern = fileName .. pattern;
+            if fileNameWithExtension:match(searchPattern) then
+                return fileNameWithExtension:match(pattern);
+            end
+        end
+    end
 end
 
-function Datamine.Unified.AtlasInfo:GetAtlasInfo(category, atlasName)
-    return self.Categories[category] and self.Categories[category][atlasName];
+---@param fileNameOrPath string
+---@return boolean isFilePath
+function Datamine.CustomAtlas:IsFilePath(fileNameOrPath)
+    local pattern = "[\\/]";
+    return fileNameOrPath:find(pattern) ~= nil;
+end
+
+---@param fileName string
+---@return string? filePath
+function Datamine.CustomAtlas:GetAtlasFilePath(fileName)
+    if self:GetFileExtension(fileName) then
+        return self.BasePath .. fileName;
+    end
+end
+
+---@param filePath string
+---@return string? fileName
+function Datamine.CustomAtlas:GetAtlasFileName(filePath)
+    return self.FilePathsRev[filePath];
+end
+
+---@param fileNameOrPath string
+---@param atlasName string
+---@return CustomAtlasInfo? atlasInfo
+function Datamine.CustomAtlas:GetAtlasInfo(fileNameOrPath, atlasName)
+    assert(fileNameOrPath, "Missing FileName or FilePath");
+    assert(atlasName, "Missing atlas name.");
+
+    local fileName;
+    if self:IsFilePath(fileNameOrPath) then
+        fileName = self:GetAtlasFileName(fileNameOrPath);
+        if not fileName then
+            return;
+        end
+    else
+        fileName = fileNameOrPath;
+    end
+
+    local extension = self:GetFileExtension(fileName, true);
+    local atlas = self.AtlasInfo[fileName];
+    if (not atlas) and (extension ~= nil) then
+        atlas = self.AtlasInfo[fileName .. extension];
+    end
+
+    return atlas[atlasName];
+end
+
+function Datamine.CustomAtlas:GetFileTextureObject(fileNameOrPath)
 end

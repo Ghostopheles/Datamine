@@ -7,14 +7,16 @@
         <HitRectInsets left="4" right="4" top="4" bottom="4" />
         <Layers>
             <Layer level="OVERLAY">
-                <Texture parentKey="Icon">
-                    <Size x="16" y="16" />
+                <Texture parentKey="Icon" inherits="DatamineCustomAtlasTemplate">
+                    <Size x="18" y="18" />
                     <Anchors>
                         <Anchor point="CENTER" />
                     </Anchors>
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-highlight" />
+                    </KeyValues>
                 </Texture>
-                <!--<Texture
-                parentKey="Icon" setAllPoints="true" />-->
             </Layer>
         </Layers>
         <Scripts>
@@ -38,6 +40,7 @@
             </Anchors>
         </PushedTexture>
     </Button>
+
     <Frame name="DatamineModelSceneControlFrameTemplate" virtual="true"
         mixin="DatamineModelSceneControlFrameMixin"
         alpha="0.5" hidden="true">

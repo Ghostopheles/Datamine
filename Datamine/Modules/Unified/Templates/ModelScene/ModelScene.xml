@@ -21,7 +21,16 @@
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-3" />
                 </Anchors>
-                <NormalTexture atlas="uitools-icon-refresh" />
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate">
+                            <KeyValues>
+                                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                                <KeyValue key="AtlasName" value="uitools-icon-refresh" />
+                            </KeyValues>
+                        </Texture>
+                    </Layer>
+                </Layers>
                 <Scripts>
                     <OnClick>
                         CallMethodOnNearestAncestor(self, "ResetEditBoxes");
@@ -86,7 +95,16 @@
                 <Anchors>
                     <Anchor point="RIGHT" x="-5" />
                 </Anchors>
-                <NormalTexture atlas="uitools-icon-search" />
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate">
+                            <KeyValues>
+                                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                                <KeyValue key="AtlasName" value="uitools-icon-search" />
+                            </KeyValues>
+                        </Texture>
+                    </Layer>
+                </Layers>
             </Button>
             <Button parentKey="HideButton" inherits="DatamineGenericButtonTemplate">
                 <Size x="20" y="20" />
@@ -94,7 +112,16 @@
                     <Anchor point="RIGHT" relativeKey="$parent.SearchButton"
                         relativePoint="LEFT" x="-5" />
                 </Anchors>
-                <NormalTexture atlas="uitools-icon-close" />
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate">
+                            <KeyValues>
+                                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                                <KeyValue key="AtlasName" value="uitools-icon-close" />
+                            </KeyValues>
+                        </Texture>
+                    </Layer>
+                </Layers>
             </Button>
         </Frames>
         <Layers>
@@ -167,10 +194,11 @@
             </Button>
         </Frames>
         <Scripts>
-            <OnLoad method="OnLoadCustom" inherit="prepend" />
+            <OnLoad method="OnLoad_Custom" inherit="prepend" />
             <OnShow method="OnShow" inherit="prepend" />
-            <OnMouseDown method="OnCameraMoveStart" inherit="prepend" />
-            <OnMouseUp method="OnCameraMoveStop" inherit="prepend" />
+            <OnUpdate method="OnUpdate_Custom" inherit="prepend" />
+            <OnMouseDown method="OnMouseDown_Custom" inherit="prepend" />
+            <OnMouseUp method="OnMouseUp_Custom" inherit="prepend" />
         </Scripts>
     </ModelScene>
 </Ui>

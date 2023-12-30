@@ -13,6 +13,42 @@ local FetchFuncs = {
 
 -------------
 
+DatamineCustomAtlasMixin = {};
+
+function DatamineCustomAtlasMixin:OnLoad_Base()
+    assert((self.FileName or self.FilePath) and self.AtlasName, "Missing FileName, FilePath, or AtlasName");
+
+    if self.FileName and not self.FilePath then
+        self.FilePath = Datamine.CustomAtlas:GetAtlasFilePath(self.FileName);
+    elseif self.FilePath and not self.FileName then
+        self.FileName = Datamine.CustomAtlas:GetAtlasFileName(self.FilePath);
+    end
+
+    self:SetTexture(self.FilePath);
+    self:ApplyAtlas();
+end
+
+function DatamineCustomAtlasMixin:ApplyAtlas()
+    local atlasInfo = Datamine.CustomAtlas:GetAtlasInfo(self.FileName, self.AtlasName);
+    if not atlasInfo then
+        print("no atlasInfo for " .. self.AtlasName);
+        return;
+    end
+
+    self:SetTexCoord(atlasInfo.left, atlasInfo.right, atlasInfo.top, atlasInfo.bottom);
+
+    if self.UseAtlasSize then
+        self:SetSize(atlasInfo.width, atlasInfo.height);
+    end
+end
+
+function DatamineCustomAtlasMixin:SetCustomAtlas(atlasName)
+    self.AtlasName = atlasName;
+    self:ApplyAtlas();
+end
+
+-------------
+
 DatamineCloseButtonMixin = {};
 
 function DatamineCloseButtonMixin:OnClick()

@@ -195,3 +195,14 @@ function Datamine.QuickReload()
         C_UI.Reload();
     end
 end
+
+-- print-dependent utils
+
+function Datamine.Utils.Profile(func, ...)
+    local start = debugprofilestop();
+    local output = func(...);
+    local stop = debugprofilestop();
+    local outString = format("Executed in %dms.", stop - start);
+    Datamine.Print("Profiling", outString);
+    return output;
+end
