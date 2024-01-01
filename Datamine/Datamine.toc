@@ -52,7 +52,12 @@ Modules/Explorer/ExplorerFrame.lua
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedRegistry.lua
 Modules/Unified/UnifiedUIMixins.lua
+Modules/Unified/Templates/Fonts.xml
 Modules/Unified/Templates/CustomAtlas.xml
+Modules/Unified/Templates/Buttons.xml
+Modules/Unified/Templates/BackgroundTextures.xml
+Modules/Unified/Templates/ContextMenu/ContextMenu.lua
+Modules/Unified/Templates/ContextMenu/ContextMenu.xml
 Modules/Unified/Templates/ModelScene/ControlFrame.lua
 Modules/Unified/Templates/ModelScene/ControlFrame.xml
 Modules/Unified/Templates/ModelScene/ModelScene.lua

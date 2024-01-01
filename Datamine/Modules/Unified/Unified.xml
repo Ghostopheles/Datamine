@@ -1,93 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-    <Font name="DatamineCleanFontBase" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Proxima_Nova_Regular.ttf" height="15">
-        <Color r="1" g="1" b="1" />
-    </Font>
-
-    <Font name="DatamineCleanFont" inherits="DatamineCleanFontBase">
-        <Shadow x="1.5" y="-1.5" />
-    </Font>
-    <Font name="DatamineCleanFontNoShadow" inherits="DatamineCleanFontBase" />
-
-    <Font name="DatamineCleanFontSmall" inherits="DatamineCleanFont" height="10" />
-    <Font name="DatamineCleanFontSmallNoShadow" inherits="DatamineCleanFontNoShadow"
-        height="10" />
-
-    <Font name="DatamineCleanFontLabelSmall" inherits="DatamineCleanFont" height="5" />
-
-    <Button name="DatamineGenericButtonTemplate" virtual="true"
-        registerForClicks="LeftButtonUp">
-        <Size x="35" y="35" />
-        <Layers>
-            <Layer level="HIGHLIGHT">
-                <Texture parentKey="HighlightTexture" inherits="DatamineCustomAtlasTemplate"
-                    setAllPoints="true">
-                    <KeyValues>
-                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
-                        <KeyValue key="AtlasName" value="uitools-icon-highlight" />
-                    </KeyValues>
-                </Texture>
-            </Layer>
-        </Layers>
-    </Button>
-
-    <Button name="DatamineCloseButtonTemplate" virtual="true"
-        inherits="DatamineGenericButtonTemplate" registerForClicks="LeftButtonUp"
-        mixin="DatamineCloseButtonMixin">
-        <Layers>
-            <Layer level="ARTWORK">
-                <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate"
-                    setAllPoints="true">
-                    <KeyValues>
-                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
-                        <KeyValue key="AtlasName" value="uitools-icon-close" />
-                    </KeyValues>
-                </Texture>
-            </Layer>
-        </Layers>
-        <Scripts>
-            <OnClick method="OnClick" />
-        </Scripts>
-    </Button>
-
-    <Texture name="DatamineColorBackgroundTemplate" mixin="DatamineColorBackgroundMixin"
-        virtual="true">
-        <!-- Add a .ColorName keyValue to set background color to a global color -->
-        <Scripts>
-            <OnLoad method="OnLoad" />
-        </Scripts>
-    </Texture>
-
-    <Texture name="DatamineLightGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
-        virtual="true">
-        <KeyValues>
-            <KeyValue key="ColorName" value="DatamineLightGray" />
-        </KeyValues>
-    </Texture>
-
-    <Texture name="DatamineMediumGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
-        virtual="true">
-        <KeyValues>
-            <KeyValue key="ColorName" value="DatamineMediumGray" />
-        </KeyValues>
-    </Texture>
-
-    <Texture name="DatamineDarkGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
-        virtual="true">
-        <KeyValues>
-            <KeyValue key="ColorName" value="DatamineDarkGray" />
-        </KeyValues>
-    </Texture>
-
-    <Texture name="DatamineColorHighlightTextureTemplate"
-        mixin="DatamineColorHighlightBackgroundMixin" virtual="true">
-        <KeyValues>
-            <KeyValue key="ColorName" value="DatamineLightGray" />
-        </KeyValues>
-    </Texture>
-
     <Frame name="DatamineTitleContainerTemplate" virtual="true"
         mixin="DatamineTitleContainerMixin">
         <!-- Add a .TitleText keyValue to set text from XML -->
@@ -120,18 +33,16 @@
             <Layer level="OVERLAY">
                 <FontString parentKey="KeyText" font="DatamineCleanFontNoShadow" justifyH="LEFT"
                     justifyV="MIDDLE">
-                    <FontHeight val="5" />
                     <Anchors>
                         <Anchor point="TOPLEFT" />
                         <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
                     </Anchors>
                 </FontString>
-                <FontString parentKey="ValueText" font="DatamineCleanFontNoShadow" justifyH="LEFT"
-                    justifyV="MIDDLE">
-                    <FontHeight val="5" />
+                <FontString parentKey="ValueText" font="DatamineCleanFontNoShadow" justifyH="RIGHT"
+                    justifyV="MIDDLE" maxLines="2">
                     <Anchors>
                         <Anchor point="TOPRIGHT" />
-                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
+                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOM" />
                     </Anchors>
                 </FontString>
             </Layer>
@@ -218,6 +129,12 @@
         </Scripts>
     </PlayerModel>
 
+    <Frame name="DatamineToolbarTemplate" mixin="DatamineToolbarMixin" virtual="true">
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
     <Frame name="DatamineWorkspaceTemplate" virtual="true">
         <Frames>
             <Frame parentKey="ExplorerTab" mixin="DatamineUnifiedExplorerTabMixin">
@@ -282,6 +199,7 @@
                                     </Layer>
                                 </Layers>
                                 <Scripts>
+                                    <OnLoad method="OnLoad" />
                                     <OnClick method="OnClick" />
                                     <OnEnter method="OnEnter" />
                                     <OnLeave method="OnLeave" />
@@ -318,17 +236,6 @@
                             <Anchor point="TOPRIGHT" y="-5" />
                         </Anchors>
                     </Frame>
-                    <!--
-                    <Frame parentKey="Controls" inherits="DatamineModelControlsExternalTemplate">
-                        <Size y="50" />
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeKey="$parent.Header"
-                                relativePoint="BOTTOMLEFT" />
-                            <Anchor point="TOPRIGHT" relativeKey="$parent.Header"
-                                relativePoint="BOTTOMRIGHT" />
-                        </Anchors>
-                    </Frame>
-                    -->
                     <Frame parentKey="Controls" inherits="DatamineTabTreeViewTemplate"
                         mixin="DatamineModelControlsTreeMixin">
                         <Anchors>
@@ -431,7 +338,7 @@
                     <AbsInset left="0" right="40" bottom="0" top="0" />
                 </HitRectInsets>
             </Frame>
-            <Frame parentKey="Toolbar">
+            <Frame parentKey="Toolbar" inherits="DatamineToolbarTemplate">
                 <Size y="30" />
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.TitleContainer"

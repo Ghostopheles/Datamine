@@ -1,0 +1,38 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+    <Texture name="DatamineColorBackgroundTemplate" mixin="DatamineColorBackgroundMixin"
+        virtual="true">
+        <!-- Add a .ColorName keyValue to set background color to a global color -->
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Texture>
+
+    <Texture name="DatamineLightGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
+        virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineLightGray" />
+        </KeyValues>
+    </Texture>
+
+    <Texture name="DatamineMediumGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
+        virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineMediumGray" />
+        </KeyValues>
+    </Texture>
+
+    <Texture name="DatamineDarkGrayBackgroundTemplate" inherits="DatamineColorBackgroundTemplate"
+        virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineDarkGray" />
+        </KeyValues>
+    </Texture>
+
+    <Texture name="DatamineColorHighlightTextureTemplate"
+        mixin="DatamineColorHighlightBackgroundMixin" virtual="true">
+        <KeyValues>
+            <KeyValue key="ColorName" value="DatamineLightGray" />
+        </KeyValues>
+    </Texture>
+</Ui>

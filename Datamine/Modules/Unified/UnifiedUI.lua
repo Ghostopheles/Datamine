@@ -8,6 +8,9 @@ Datamine.Unified = {};
 ---@field top number
 ---@field bottom number
 
+---@class CustomAtlasTexture : Texture
+---@field OnLoad_Base function
+
 ---@param w number
 ---@param h number
 ---@param l number
@@ -87,10 +90,24 @@ local UIToolsAtlasInfo = {
     ["uitools-search-background"] = CreateAtlasInfo(24, 24, 0.1337890625, 0.1572265625, 0.7421875, 0.9296875),
 };
 
+local ToolbarFileName = "Toolbar.png";
+local ToolbarAtlasInfo = {
+    ["custom-toolbar-select"] = CreateAtlasInfo(30, 30, 0, 0.125, 0, 0.125),
+    ["custom-toolbar-rotate"] = CreateAtlasInfo(30, 30, 0.25, 0.375, 0, 0.125),
+    ["custom-toolbar-localpivot"] = CreateAtlasInfo(30, 30, 0.625, 0.75, 0, 0.125),
+    ["custom-toolbar-worldpivot"] = CreateAtlasInfo(30, 30, 0.5, 0.625, 0, 0.125),
+    ["custom-toolbar-basepivot"] = CreateAtlasInfo(30, 30, 0.875, 1, 0, 0.125),
+    ["custom-toolbar-centerpivot"] = CreateAtlasInfo(30, 30, 0.75, 0.875, 0, 0.125),
+    ["custom-toolbar-projects"] = CreateAtlasInfo(30, 30, 0, 0.125, 0.125, 0.25),
+    ["custom-toolbar-scale"] = CreateAtlasInfo(30, 30, 0.375, 0.5, 0, 0.125),
+    ["custom-toolbar-move"] = CreateAtlasInfo(30, 30, 0.125, 0.25, 0, 0.125)
+};
+
 Datamine.CustomAtlas = {};
 Datamine.CustomAtlas.BasePath = [[Interface\AddOns\Datamine\Assets\CustomAtlas\]];
 Datamine.CustomAtlas.AtlasInfo = {
     [UIToolsFileName] = UIToolsAtlasInfo,
+    [ToolbarFileName] = ToolbarAtlasInfo,
 };
 
 ---@param fileName string
@@ -160,5 +177,34 @@ function Datamine.CustomAtlas:GetAtlasInfo(fileNameOrPath, atlasName)
     return atlas[atlasName];
 end
 
-function Datamine.CustomAtlas:GetFileTextureObject(fileNameOrPath)
+---@param fileNameOrPath string
+---@param atlasName string
+---@param useAtlasSize? boolean
+---@param parent? any
+---@param name? string
+---@param drawLayer? string
+---@return CustomAtlasTexture Texture
+function Datamine.CustomAtlas:CreateCustomAtlasTexture(fileNameOrPath, atlasName, useAtlasSize, parent, name, drawLayer)
+    parent = parent or UIParent;
+
+    ---@type CustomAtlasTexture
+    ---@diagnostic disable-next-line: assign-type-mismatch
+    local tex = parent:CreateTexture(name, drawLayer, "DatamineCustomAtlasTemplate");
+    if self:IsFilePath(fileNameOrPath) then
+        tex.FilePath = fileNameOrPath;
+    else
+        tex.FileName = fileNameOrPath;
+    end
+
+    tex.AtlasName = atlasName;
+    tex.UseAtlasSize = useAtlasSize;
+    tex:OnLoad_Base();
+    return tex;
+end
+
+-------------
+
+function Datamine.Unified.AddToolbarButton(atlasName, callback)
+    local toolbar = DatamineUnifiedFrame.Toolbar;
+    toolbar:AddButton(atlasName, callback);
 end

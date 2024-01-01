@@ -1,0 +1,71 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Button name="DatamineContextMenuEntryTemplate" mixin="DatamineContextMenuEntryMixin"
+        inherits="DatamineGenericButtonTemplate" virtual="true">
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="ExpandChevron" inherits="DatamineCustomAtlasTemplate"
+                    hidden="true">
+                    <Size x="15" y="15" />
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-chevron-right" />
+                    </KeyValues>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" x="-2" />
+                        <Anchor point="BOTTOMRIGHT" x="-2" />
+                    </Anchors>
+                </Texture>
+                <FontString parentKey="Text" font="DatamineCleanFontSmallNoShadow" justifyH="LEFT"
+                    justifyV="MIDDLE" maxLines="1" wordwrap="false"
+                    text="NONE">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="2" y="-2" />
+                        <Anchor point="BOTTOMLEFT" x="2" y="2" />
+                        <Anchor point="TOPRIGHT" relativeKey="$parent.ExpandChevron"
+                            relativePoint="TOPLEFT" x="-2" y="-2" />
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.ExpandChevron"
+                            relativePoint="BOTTOMLEFT" x="-2" y="2" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnClick method="OnClick" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+        </Scripts>
+    </Button>
+
+    <Frame name="DatamineContextMenuTemplate" mixin="DatamineContextMenuMixin" virtual="true"
+        toplevel="true" parent="UIParent" hidden="true">
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" inherits="DatamineLightGrayBackgroundTemplate" />
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="2" y="-2" />
+                    <Anchor point="BOTTOMRIGHT" x="-2" y="2" />
+                </Anchors>
+            </Frame>
+            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar" hidden="true">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-13" y="-4" />
+                    <Anchor point="BOTTOMRIGHT" x="-13" y="7" />
+                </Anchors>
+            </EventFrame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnShow method="OnShow" />
+            <OnHide method="OnHide" />
+        </Scripts>
+    </Frame>
+
+</Ui>

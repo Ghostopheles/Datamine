@@ -18,6 +18,12 @@ function DatamineTabTreeViewCategoryHeaderMixin:Init(node)
 
     self:SetText(data.Text);
 
+    if data.Callback then
+        self.Callback = data.Callback;
+    else
+        self.Callback = nil;
+    end
+
     self.CollapsedChevronAtlas = "uitools-icon-chevron-right";
     self.UncollapsedChevronAtlas = "uitools-icon-chevron-down";
     self:UpdateChevron();
@@ -29,6 +35,10 @@ function DatamineTabTreeViewCategoryHeaderMixin:OnClick()
     local node = self:GetElementData();
     node:ToggleCollapsed();
     self:UpdateChevron();
+
+    if self.Callback then
+        self:Callback();
+    end
 end
 
 function DatamineTabTreeViewCategoryHeaderMixin:UpdateChevron()
@@ -50,48 +60,13 @@ DatamineTabTreeViewMixin = {};
 function DatamineTabTreeViewMixin:OnLoad_Base()
     self.DataProvider = CreateTreeDataProvider();
 
-    --[[
-    for i = 1, 10 do
-        -- The data supplied to the insert calls is arbitrary; it can be accessed
-        -- from the 'node:GetData()' call later in the element initializer.
-        local l1Data = {
-            Text = format("Node %d", i),
-            Template = "DatamineTabTreeViewCategoryHeaderTemplate",
-            IsTopLevel = true,
-            ShowChevron = false,
-        };
-        local level1 = self.DataProvider:Insert(l1Data);
-        for j = 1, fastrandom(3, 6) do
-            local l2Data = {
-                Text = format("Node %d.%d", i, j),
-                Template = "DatamineTabTreeViewSubCategoryTemplate",
-            };
-
-            local level2 = level1:Insert(l2Data);
-            for k = 1, fastrandom(1, 3) do
-                local l3Data = {
-                    Text = format("Node %d.%d.%d", i, j, k),
-                    Template = "DatamineTabTreeViewSubCategoryTemplate",
-                };
-                level2:Insert(l3Data)
-            end
-        end
-    end
-    ]]--
-
     self.ScrollView = CreateScrollBoxListTreeListView();
     self.ScrollView:SetDataProvider(self.DataProvider);
     self.ScrollView:SetPanExtent(20);
 
     local TOP_LEVEL_EXTENT = 20;
     local DEFAULT_EXTENT = 20;
-    local f = false;
     self.ScrollView:SetElementExtentCalculator(function(_, elementData)
-        if not f then
-            C_Timer.After(0, function() DevTool:AddData(elementData) end);
-            f = true;
-        end
-   
         local extent;
         local data = elementData:GetData();
         if data.RequestedExtent then
@@ -115,14 +90,9 @@ function DatamineTabTreeViewMixin:OnLoad_Base()
 		factory(template, Initializer);
 	end);
 
-    --self.ScrollBox:SetInterpolateScroll(true);
-    --self.ScrollBar:SetInterpolateScroll(true);
     self.ScrollBar:SetHideIfUnscrollable(true);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
-
-    --self.SelectionBehavior = ScrollUtil.AddSelectionBehavior(self.ScrollBox);
-    --self.SelectionBehavior:RegisterCallback(SelectionBehaviorMixin.Event.OnSelectionChanged, self.OnSelectionChanged, self);
 
     self.DataProvider:CollapseAll();
 end

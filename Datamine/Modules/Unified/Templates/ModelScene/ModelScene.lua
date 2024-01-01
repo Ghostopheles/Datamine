@@ -6,14 +6,13 @@ local Registry = Datamine.EventRegistry;
 DatamineModelSceneActorMixin = CreateFromMixins(ModelSceneActorMixin);
 
 function DatamineModelSceneActorMixin:ResetModel()
+    self:SetPosition(0, 0, 0);
     self:MarkScaleDirty();
 end
 
 function DatamineModelSceneActorMixin:OnModelLoaded()
-    self:MarkScaleDirty();
-    self:SetPosition(0, 0, 0);
-
-    Registry:TriggerEvent(Datamine.Events.MODEL_LOADED_INTERNAL, self);
+    self:ResetModel();
+    Registry:TriggerEvent(Events.MODEL_LOADED_INTERNAL, self);
 end
 
 function DatamineModelSceneActorMixin:GetScaledActiveBoundingBox()
@@ -155,6 +154,11 @@ DatamineModelSceneMixin.DefaultRaceActorOffsets = {
     },
 };
 
+DatamineModelSceneMixin.ActorInfoID = {
+    MOUNT = 1,
+    PET = 7,
+};
+
 function DatamineModelSceneMixin:OnLoad_Custom()
     self.ControlFrame:SetModelScene(self);
     self.FirstShow = true;
@@ -171,8 +175,8 @@ function DatamineModelSceneMixin:OnLoad_Custom()
 
     self.actorTemplate = "DatamineModelSceneActorTemplate";
 
-    Registry:RegisterCallback(Datamine.Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
-    Registry:RegisterCallback(Datamine.Events.MODEL_OUTFIT_UPDATED, self.OnModelOutfitUpdated, self);
+    Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
+    Registry:RegisterCallback(Events.MODEL_OUTFIT_UPDATED, self.OnModelOutfitUpdated, self);
 end
 
 function DatamineModelSceneMixin:OnFirstShow()
@@ -227,7 +231,10 @@ function DatamineModelSceneMixin:OnUpdate_Custom()
         local cameraZoom = camera:GetZoomPercent() or camera:GetMinZoomPercent();
         local cameraZoomModifier = 2;
 
-        local transformationRatio = 52 * 2 ^ (cameraZoom * cameraZoomModifier) * scale / actorScale;
+        --local scaleModifier = actorScale < 1 and (scale * actorScale) or (scale / actorScale);
+        local scaleModifier = (scale * actorScale);
+
+        local transformationRatio = 52 * 2 ^ (cameraZoom * cameraZoomModifier) * scaleModifier;
 
         local dx = (cursorX - self.CursorX) / transformationRatio;
 		local dy = (cursorY - self.CursorY) / transformationRatio;
@@ -243,7 +250,7 @@ end
 function DatamineModelSceneMixin:OnModelLoaded_Internal(actor)
     self.ActiveActor = actor;
 
-    Registry:TriggerEvent(Datamine.Events.MODEL_LOADED, actor);
+    Registry:TriggerEvent(Events.MODEL_LOADED, actor);
 end
 
 function DatamineModelSceneMixin:OnModelOutfitUpdated()
@@ -383,6 +390,21 @@ function DatamineModelSceneMixin:SetupTranslateGizmo()
     end
 
     return gizmo;
+end
+
+function DatamineModelSceneMixin:ViewMount(mountID)
+    local actorInfo = C_ModelInfo.GetModelSceneActorInfoByID(self.ActorInfoID.MOUNT);
+    local actor = self:GetActiveActor();
+    local displayID = C_MountJournal.GetMountInfoExtraByID(mountID);
+    actor:ApplyFromModelSceneActorInfo(actorInfo);
+    actor:SetModelByCreatureDisplayID(displayID);
+end
+
+function DatamineModelSceneMixin:ViewPet(displayID)
+    local actorInfo = C_ModelInfo.GetModelSceneActorInfoByID(self.ActorInfoID.PET);
+    local actor = self:GetActiveActor();
+    actor:ApplyFromModelSceneActorInfo(actorInfo);
+    actor:SetModelByCreatureDisplayID(displayID);
 end
 
 -------------
@@ -545,7 +567,7 @@ function DatamineModelControlsLabelledEditBoxRowMixin:OnLoad()
 
     self.Title:SetTextScale(0.85);
 
-    Registry:RegisterCallback(Datamine.Events.MODEL_CONTROLS_DEFAULTS_UPDATED, self.OnModelControlsDefaultsUpdated, self);
+    Registry:RegisterCallback(Events.MODEL_CONTROLS_DEFAULTS_UPDATED, self.OnModelControlsDefaultsUpdated, self);
 end
 
 function DatamineModelControlsLabelledEditBoxRowMixin:OnModelControlsDefaultsUpdated()
@@ -722,6 +744,7 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self.OutfitTab = self:AddTopLevelItem({
         Text = "Outfit",
         IsTopLevel = true,
+        Callback = function() Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED) end,
     });
 
     self.AdvancedTab = self:AddTopLevelItem({
@@ -737,7 +760,20 @@ function DatamineModelControlsTreeMixin:OnLoad()
 
     self.DataProvider:CollapseAll();
 
-    Registry:RegisterCallback(Datamine.Events.MODEL_LOADED, self.OnModelSceneModelLoaded, self);
+    local anchorsWithScrollBar = {
+        CreateAnchor("TOP", self, "TOP", 0, -4),
+        CreateAnchor("BOTTOMLEFT", self, "BOTTOMLEFT", 4, 4),
+        CreateAnchor("BOTTOMRIGHT", self.ScrollBar, "BOTTOMLEFT", -6, 4),
+    };
+
+    local anchorsWithoutScrollBar = {
+        CreateAnchor("TOP", self, "TOP", 0, -4),
+        CreateAnchor("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 4);
+    };
+
+    ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
+
+    Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelSceneModelLoaded, self);
 end
 
 function DatamineModelControlsTreeMixin:OnShow()
@@ -864,7 +900,7 @@ function DatamineModelControlsTreeMixin:ViewItemModifiedAppearance(itemModifiedA
     local success = actor:TryOn(itemModifiedAppearanceID);
 
     if success then
-        Registry:TriggerEvent(Datamine.Events.MODEL_OUTFIT_UPDATED);
+        Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
     end
 
     return success;
@@ -885,7 +921,7 @@ function DatamineModelControlsTreeMixin:RemoveAppearance(appearanceID, secondary
     local transmogInfo = ItemUtil.CreateItemTransmogInfo(hiddenAppearanceID);
     self.ModelScene:GetActiveActor():SetItemTransmogInfo(transmogInfo);
 
-    Registry:TriggerEvent(Datamine.Events.MODEL_OUTFIT_UPDATED);
+    Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
 end
 
 function DatamineModelControlsTreeMixin:SearchItemByAppearanceID(itemModifiedAppearanceID)
@@ -982,7 +1018,7 @@ function DatamineModelControlsTreeMixin:SetEditBoxDefaults()
         },
     };
 
-    Registry:TriggerEvent(Datamine.Events.MODEL_CONTROLS_DEFAULTS_UPDATED);
+    Registry:TriggerEvent(Events.MODEL_CONTROLS_DEFAULTS_UPDATED);
 end
 
 function DatamineModelControlsTreeMixin:GetEditBoxDefaults(controlID)
@@ -1010,7 +1046,6 @@ end
 DatamineModelControlsOutfitPanelEntryMixin = {};
 
 function DatamineModelControlsOutfitPanelEntryMixin:Init(node)
-    --C_Timer.After(0, function() DevTool:AddData(self) end);
     local data = node:GetData();
     node:Flush();
     self.Overlord = data.OverlordFrame;
@@ -1058,6 +1093,8 @@ function DatamineModelControlsOutfitPanelEntryMixin:OnHideButtonClick()
     local appearanceID = self:GetData().AppearanceID;
     if appearanceID then
         self.Overlord:RemoveAppearance(appearanceID);
+        local node = self:GetElementData();
+        node:GetParent():Remove(node);
     end
 end
 

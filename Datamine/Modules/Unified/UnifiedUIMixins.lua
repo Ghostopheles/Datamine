@@ -11,17 +11,19 @@ local FetchFuncs = {
     [DataTypes.Spell] = function(...) Datamine.Spell:GetOrFetchSpellInfoByID(...) end,
 };
 
+local UI_MAIN = Datamine.Unified;
+
 -------------
 
 DatamineCustomAtlasMixin = {};
 
 function DatamineCustomAtlasMixin:OnLoad_Base()
-    assert((self.FileName or self.FilePath) and self.AtlasName, "Missing FileName, FilePath, or AtlasName");
-
     if self.FileName and not self.FilePath then
         self.FilePath = Datamine.CustomAtlas:GetAtlasFilePath(self.FileName);
     elseif self.FilePath and not self.FileName then
         self.FileName = Datamine.CustomAtlas:GetAtlasFileName(self.FilePath);
+    else
+        return;
     end
 
     self:SetTexture(self.FilePath);
@@ -109,6 +111,49 @@ end
 
 -------------
 
+DatamineToolbarMixin = {};
+
+function DatamineToolbarMixin:OnLoad()
+    self.Buttons = {};
+
+    self:AddButton("custom-toolbar-projects");
+end
+
+function DatamineToolbarMixin:AddButton(atlasName, callback)
+    local button = CreateFrame("Button", nil, self, "DatamineGenericButtonTemplate");
+
+    local anchorPoint;
+    local relativePoint;
+    if #self.Buttons == 0 then
+        anchorPoint = self;
+        relativePoint = "TOPLEFT";
+    else
+        anchorPoint = self.Buttons[#self.Buttons];
+        relativePoint = "TOPRIGHT";
+    end
+
+    local xOffset = 5;
+    local yOffset = 0;
+
+    button:SetPoint("TOPLEFT", anchorPoint, relativePoint, xOffset, yOffset);
+    button:SetSize(30, 30);
+
+    button.Icon = Datamine.CustomAtlas:CreateCustomAtlasTexture("Toolbar.png", atlasName, true, button);
+    button.Icon:ClearAllPoints();
+    button.Icon:SetPoint("TOPLEFT");
+    button.Icon:Show();
+
+    if callback then
+        button:SetScript("OnClick", callback);
+    end
+
+    tinsert(self.Buttons, button);
+
+    return button;
+end
+
+-------------
+
 DatamineSearchBoxMixin = {};
 
 function DatamineSearchBoxMixin:OnEnterPressed()
@@ -126,6 +171,9 @@ DatamineDataFrameElementMixin = {};
 function DatamineDataFrameElementMixin:Init(data)
     self.KeyText:SetText(data.key .. ":");
     self.ValueText:SetText(data.value);
+
+    self.KeyText:SetTextScale(0.85);
+    self.ValueText:SetTextScale(0.85);
 
     if self.KeyText:IsTruncated() then
         self.KeyText:SetScript("OnEnter", function()
@@ -175,8 +223,17 @@ function DatamineScrollableDataFrameMixin:OnLoad()
 
     self.ScrollView = CreateScrollBoxListLinearView();
     self.ScrollView:SetDataProvider(self.DataProvider);
+
+    self.i = 0;
     self.ScrollView:SetElementInitializer("DatamineDataFrameElementTemplate", function(frame, data)
         frame:Init(data, self);
+
+        if self.i % 2 == 0 then
+            frame.Background:SetAlpha(0.15);
+        else
+            frame.Background:SetAlpha(0.35);
+        end
+        self.i = self.i + 1;
     end);
 
     self.ScrollBox:SetInterpolateScroll(true);
@@ -227,6 +284,8 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
     end
 
     local keys = self:GetDataKeys();
+    self.CurrentData = {};
+    self.i = 0;
 
     for i, value in ipairs(data) do
         if value == nil or value == "" then
@@ -249,7 +308,13 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
             key = keys[i],
             value = value
         };
-        self.DataProvider:Insert(_data);
+
+        self.CurrentData[keys[i]] = value;
+
+        -- skip the "name" entry because Hyperlink covers that
+        if _data.key ~= "Name" then
+            self.DataProvider:Insert(_data);
+        end
     end
 
     self:SetLoading(false);
@@ -280,10 +345,34 @@ end
 
 DataminePreviewItemButtonMixin = {};
 
+function DataminePreviewItemButtonMixin:OnLoad()
+    Registry:RegisterCallback(Events.SEARCH_RESULT, self.OnSearchResult, self);
+end
+
 function DataminePreviewItemButtonMixin:OnClick()
-    local dataID = self:GetParent().DataID;
-    DatamineUnifiedFrame.Workspace.ModelViewTab:SetMode("playerModel");
-    DatamineUnifiedFrame.Workspace.ModelViewTab.PlayerModel:SetItem(dataID);
+    local dataID = self.dataID;
+    local searchMode = self.searchMode;
+    local data = self.data;
+
+    if searchMode ~= DataTypes.Item then
+        return;
+    end
+
+    if data.IsDressable == "true" then
+        self:TryOnItem(dataID);
+    elseif data.ItemSubType == "Companion Pets" then
+        self:ViewCompanion(dataID);
+    elseif data.ItemSubType == "Mount" then
+        self:ViewMount(dataID);
+    end
+
+end
+
+function DataminePreviewItemButtonMixin:OnSearchResult(dataID)
+    local parent = self:GetParent();
+    self.dataID = dataID;
+    self.searchMode = parent.SearchMode;
+    self.data = parent.CurrentData;
 end
 
 function DataminePreviewItemButtonMixin:OnEnter()
@@ -292,14 +381,52 @@ end
 function DataminePreviewItemButtonMixin:OnLeave()
 end
 
+function DataminePreviewItemButtonMixin:GetModelScene()
+    return DatamineUnifiedFrame.Workspace.ModelViewTab.ModelScene;
+end
+
+function DataminePreviewItemButtonMixin:TryOnItem(id)
+    local scene = self:GetModelScene();
+    local controls = scene:GetExternalControls();
+    controls:ViewItemID(id);
+end
+
+function DataminePreviewItemButtonMixin:ViewCompanion(id)
+    local scene = self:GetModelScene();
+    local _, _, _, _, _, _, _, _, _, _, _, displayID, _ = C_PetJournal.GetPetInfoByItemID(id);
+    scene:ViewPet(displayID);
+end
+
+function DataminePreviewItemButtonMixin:ViewMount(id)
+    local scene = self:GetModelScene();
+    local mountID = C_MountJournal.GetMountFromItem(id);
+
+    if not mountID then return end;
+    scene:ViewMount(mountID);
+end
+
 -------------
 
 DatamineUnifiedExplorerTabMixin = {};
 
 function DatamineUnifiedExplorerTabMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
-
     self:SetSearchMode(DataTypes.Item);
+
+    local function SearchModeMenu(button)
+        local elements = {};
+        for k, v in pairs(DataTypes) do
+            local element = {
+                Text = k,
+                Callback = function() self:SetSearchMode(v) end,
+            };
+            tinsert(elements, element);
+        end
+
+        UI_MAIN.ShowContextMenu(elements, button);
+    end
+
+    UI_MAIN.AddToolbarButton("custom-toolbar-select", SearchModeMenu);
 end
 
 function DatamineUnifiedExplorerTabMixin:GetSearchMode()

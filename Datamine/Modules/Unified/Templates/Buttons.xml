@@ -1,0 +1,39 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Button name="DatamineGenericButtonTemplate" virtual="true"
+        registerForClicks="LeftButtonUp">
+        <Size x="35" y="35" />
+        <Layers>
+            <Layer level="HIGHLIGHT">
+                <Texture parentKey="HighlightTexture" inherits="DatamineCustomAtlasTemplate"
+                    setAllPoints="true">
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-highlight" />
+                    </KeyValues>
+                </Texture>
+            </Layer>
+        </Layers>
+    </Button>
+
+    <Button name="DatamineCloseButtonTemplate" virtual="true"
+        inherits="DatamineGenericButtonTemplate" registerForClicks="LeftButtonUp"
+        mixin="DatamineCloseButtonMixin">
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate"
+                    setAllPoints="true">
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-close" />
+                    </KeyValues>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
+    </Button>
+
+</Ui>
