@@ -1,3 +1,3 @@
 function Datamine_OnAddonCompartmentClick()
-    Datamine.Explorer:Toggle();
+    DatamineUnifiedFrame:Toggle();
 end
