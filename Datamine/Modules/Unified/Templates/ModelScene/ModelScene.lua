@@ -173,24 +173,11 @@ function DatamineModelSceneMixin:OnLoad_Custom()
     self:ReleaseAllActors();
     EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function() self:SetFromModelSceneID(596) end);
 
-    self.NativeFormToggleButton:SetScript("OnClick", function()
-        local useNativeForm = self:GetUseNativeForm();
-        self:SetUseNativeForm(not useNativeForm);
-    end);
-
     self.actorTemplate = "DatamineModelSceneActorTemplate";
 
     Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
 
-    self.NativeFormToggleButton:SetScript("OnEnter", function()
-        GameTooltip:SetOwner(self.NativeFormToggleButton, "ANCHOR_TOP");
-        GameTooltip:SetText("Toggle Alternate Form", 1, 1, 1);
-        GameTooltip:Show();
-    end);
-
-    self.NativeFormToggleButton:SetScript("OnLeave", function()
-        GameTooltip:Hide();
-    end);
+    self:UpdateNativeFormButton();
 end
 
 function DatamineModelSceneMixin:OnFirstShow()
@@ -261,6 +248,32 @@ function DatamineModelSceneMixin:OnModelLoaded_Internal(actor)
 
     Registry:TriggerEvent(Events.MODEL_LOADED, actor);
     Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
+end
+
+function DatamineModelSceneMixin:UpdateNativeFormButton()
+    local _, raceFileName = UnitRace("player");
+    if raceFileName == "Dracthyr" or raceFileName == "Worgen" then
+        self.NativeFormToggleButton:SetScript("OnClick", function()
+            local useNativeForm = self:GetUseNativeForm();
+            self:SetUseNativeForm(not useNativeForm);
+        end);
+
+        self.NativeFormToggleButton:SetScript("OnEnter", function()
+            GameTooltip:SetOwner(self.NativeFormToggleButton, "ANCHOR_TOP");
+            GameTooltip:SetText("Toggle Alternate Form", 1, 1, 1);
+            GameTooltip:Show();
+        end);
+
+        self.NativeFormToggleButton:SetScript("OnLeave", function()
+            GameTooltip:Hide();
+        end);
+
+        self.NativeFormToggleButton:Show();
+        self.NativeFormToggleButton:Enable();
+    else
+        self.NativeFormToggleButton:Hide();
+        self.NativeFormToggleButton:Disable();
+    end
 end
 
 function DatamineModelSceneMixin:StartPanning()
