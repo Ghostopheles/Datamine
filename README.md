@@ -1,9 +1,9 @@
 # Datamine
 
-An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data.
+An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data. Features an advanced and (hopefully) intuitive UI, allowing customization of outfits and models, enables the searching of items and spells, and lets you view models by ID, CreatureDisplayInfoID, and more.
 
 Example:
-![image](https://github.com/Ghostopheles/Datamine/assets/10636803/0f8d6924-e516-44dc-bf86-e98be7ca9d84)
+![image](https://github.com/Ghostopheles/Datamine/assets/10636803/ef439691-0d64-49a5-918f-bc980cafffce)
 
 ### Slash Commands
 
