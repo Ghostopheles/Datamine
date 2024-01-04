@@ -1,12 +1,12 @@
 <Bindings>
-    <Binding name="Toggle Datamine Model Viewer" header="Datamine" category="Datamine">
+    <Binding name="Toggle Datamine Model Viewer (DEP)" header="Datamine" category="Datamine">
         if DatamineModelViewFrame:IsShown() then
         DatamineModelViewFrame:Hide();
         else
         Datamine.ModelView:Show();
         end
     </Binding>
-    <Binding name="Toggle Datamine Explorer" category="Datamine">
+    <Binding name="Toggle Datamine Explorer (DEP)" category="Datamine">
         Datamine.Explorer:Toggle();
     </Binding>
     <Binding name="Toggle Datamine UI" category="Datamine">
