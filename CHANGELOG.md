@@ -1,3 +1,14 @@
+# Datamine v2.0
+
+##### Added
+* Datamine UI - a fully-featured interface for all of your datamining needs
+    * You can open the UI with the command `/dm ui`, or bind a key to toggle it in your settings.
+    * Features model viewing, item and spell lookups, advanced model controls, and more.
+    * All existing functionality has been migrated to the new UI. Old panels will be kept around but should be considered deprecated.
+    * If you have any feedback on the new UI, please let me know! ❤️
+
+Will be adding more and more features to the new UI as time goes on. If you have any questions or suggestions, don't hesitate to reach out.
+
 # Datamine v1.7
 
 ##### Added
