@@ -11,9 +11,9 @@
             </Layer>
             <Layer level="OVERLAY">
                 <Texture parentKey="Chevron" inherits="DatamineCustomAtlasTemplate">
-                    <Size x="20" y="20" />
+                    <Size x="15" y="15" />
                     <Anchors>
-                        <Anchor point="TOPLEFT" />
+                        <Anchor point="LEFT" />
                     </Anchors>
                     <KeyValues>
                         <KeyValue key="FileName" value="Blizzard_UITools.blp" />

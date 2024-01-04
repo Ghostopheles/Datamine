@@ -130,7 +130,7 @@
             </Layer>
             <Layer level="OVERLAY">
                 <FontString parentKey="Text" font="DatamineCleanFontSmall" justifyH="LEFT"
-                    wordwrap="false">
+                    wordwrap="true" maxLines="2">
                     <Anchors>
                         <Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5" />
                         <Anchor point="RIGHT" relativeKey="$parent.HideButton" relativePoint="LEFT"

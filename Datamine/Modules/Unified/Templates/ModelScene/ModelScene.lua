@@ -1,5 +1,6 @@
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
+local Transmog = Datamine.Transmog;
 
 -------------
 
@@ -42,10 +43,9 @@ function DatamineCameraMixin:OnAdded()
 
 	self:SetTargetSpline(targetSpline);
 
-	self:SetMinZoomDistance(6);
-	self:SetMaxZoomDistance(10);
-
-	self:SetZoomDistance(8);
+    self:SetMinZoomDistance(1);
+    self:SetMaxZoomDistance(25);
+    self:SetZoomDistance(6.8);
 
 	self:SetYaw(math.pi);
 	self:SetPitch(0);
@@ -154,6 +154,11 @@ DatamineModelSceneMixin.DefaultRaceActorOffsets = {
     },
 };
 
+DatamineModelSceneMixin.PlayerActorDefaults = {
+    Scale = 1.05,
+    Yaw = -1
+};
+
 DatamineModelSceneMixin.ActorInfoID = {
     MOUNT = 1,
     PET = 7,
@@ -176,20 +181,16 @@ function DatamineModelSceneMixin:OnLoad_Custom()
     self.actorTemplate = "DatamineModelSceneActorTemplate";
 
     Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
-    Registry:RegisterCallback(Events.MODEL_OUTFIT_UPDATED, self.OnModelOutfitUpdated, self);
+
+    DATAMINE_MODELSCENE = self;
 end
 
 function DatamineModelSceneMixin:OnFirstShow()
     self:SetupPlayerActor();
     self:SetupCamera();
-    DatamineUnifiedFrame.Workspace.DetailsTab.Controls:SetEditBoxDefaults();
+    self:SetupCameraDefaults();
+    self:GetExternalControls():SetEditBoxDefaults();
     self.FirstShow = false;
-
-    self:UpdateOutfitPanel(self.ActiveActor:GetItemTransmogInfoList());
-
-    if DevTool then
-        DevTool:AddData(self, "DatamineNewModelScene");
-    end
 end
 
 function DatamineModelSceneMixin:OnShow()
@@ -251,10 +252,7 @@ function DatamineModelSceneMixin:OnModelLoaded_Internal(actor)
     self.ActiveActor = actor;
 
     Registry:TriggerEvent(Events.MODEL_LOADED, actor);
-end
-
-function DatamineModelSceneMixin:OnModelOutfitUpdated()
-    self:UpdateOutfitPanel(self:GetActiveActor():GetItemTransmogInfoList());
+    Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
 end
 
 function DatamineModelSceneMixin:StartPanning()
@@ -274,6 +272,9 @@ end
 
 function DatamineModelSceneMixin:Reset()
     self:SetupPlayerActor(true);
+    self:ResetCamera();
+
+    Registry:TriggerEvent(Events.MODEL_RESET);
 end
 
 function DatamineModelSceneMixin:GetExternalControls()
@@ -297,13 +298,51 @@ end
 
 function DatamineModelSceneMixin:SetupCamera()
     self:ReleaseAllCameras();
-    local camera = self:CreateCamera();
+    self:CreateCamera();
+end
 
-    if not camera then return end;
+function DatamineModelSceneMixin:SetupCameraDefaults()
+    self.CameraDefaults = self:GetCameraPosition();
+end
 
-    camera:SetMinZoomDistance(1);
-    camera:SetMaxZoomDistance(25);
-    camera:SetZoomDistance(6.8);
+function DatamineModelSceneMixin:GetCameraPosition()
+    local forwardX, forwardY, forwardZ = self:GetCameraForward();
+    local rightX, rightY, rightZ = self:GetCameraRight();
+    local upX, upY, upZ = self:GetCameraUp();
+
+    local camera = self:GetActiveCamera();
+    local targetX, targetY, targetZ = camera:GetTarget();
+    local panningXOffset, panningYOffset = camera.panningXOffset, camera.panningYOffset;
+    local zoom = camera:GetZoomDistance();
+
+    return {
+        forward = CreateVector3D(forwardX, forwardY, forwardZ),
+        right = CreateVector3D(rightX, rightY, rightZ),
+        up = CreateVector3D(upX, upY, upZ),
+        target = CreateVector3D(targetX, targetY, targetZ),
+        panning = CreateVector2D(panningXOffset, panningYOffset),
+        zoom = zoom
+    };
+end
+
+function DatamineModelSceneMixin:ResetCamera()
+    local cameraInfo = C_ModelInfo.GetModelSceneCameraInfoByID(1);
+    local camera = self:GetActiveCamera();
+
+    CAMERA_INFO = cameraInfo;
+
+    local cameraDefaults = self.CameraDefaults;
+    camera:SetTarget(cameraDefaults.target.x, cameraDefaults.target.y, cameraDefaults.target.z);
+
+    camera:SetYaw(cameraInfo.yaw);
+    camera:SetPitch(cameraInfo.pitch);
+    camera:SetRoll(cameraInfo.roll);
+
+    camera.panningXOffset = cameraDefaults.panning.x;
+    camera.panningYOffset = cameraDefaults.panning.y;
+
+    camera:SnapAllInterpolatedValues();
+    camera:UpdateCameraOrientationAndPosition();
 end
 
 --- native form refers to the 'default' form for a race, i.e. worgen form or dracthyr form
@@ -332,11 +371,6 @@ function DatamineModelSceneMixin:GetPlayerActorPositionOffsets()
     end
 end
 
-function DatamineModelSceneMixin:UpdateOutfitPanel(itemTransmogInfoList)
-    local controls = self:GetExternalControls();
-    controls:LoadOutfit(itemTransmogInfoList);
-end
-
 function DatamineModelSceneMixin:SetupPlayerActor(force)
     if not force and (self.ActiveActor or not self.FirstShow) then
         return;
@@ -355,41 +389,13 @@ function DatamineModelSceneMixin:SetupPlayerActor(force)
 
     actor:SetModelByUnit("player", sheatheWeapons, autoDress, hideWeapons, useNativeForm, holdBowString);
     actor:SetAnimationBlendOperation(Enum.ModelBlendOperation.None);
+    actor:SetUseCenterForOrigin(true, false, false);
+    actor:SetYaw(self.PlayerActorDefaults.Yaw);
+    actor:SetScale(self.PlayerActorDefaults.Scale);
     actor:ResetModel();
 
     local actorOffsets = self:GetPlayerActorPositionOffsets();
     actor:SetPosition(actorOffsets.x, actorOffsets.y, actorOffsets.z);
-end
-
-function DatamineModelSceneMixin:GetTranslateGizmo()
-    return self.TranslateGizmo or self:SetupTranslateGizmo();
-end
-
-function DatamineModelSceneMixin:SetupTranslateGizmo()
-    local gizmo = self.TranslateGizmo;
-    if not gizmo then
-        gizmo = self:CreateActor();
-        gizmo:SetModelByFileID(189077);
-        local actor = self:GetActiveActor();
-        local actorX, actorY, actorZ = actor:GetPosition();
-        gizmo:SetPosition(actorX, actorY, actorZ);
-
-        local function UpdatePosition()
-            local actor = self:GetActiveActor();
-            local actorPitch, actorYaw, actorRoll = actor:GetPitch(), actor:GetYaw(), actor:GetRoll();
-            gizmo:SetPitch(actorPitch);
-            gizmo:SetYaw(actorYaw);
-            gizmo:SetRoll(actorRoll);
-        end
-
-        self:HookScript("OnUpdate", UpdatePosition);
-
-        gizmo:Show();
-
-        self.TranslateGizmo = gizmo;
-    end
-
-    return gizmo;
 end
 
 function DatamineModelSceneMixin:ViewMount(mountID)
@@ -662,7 +668,7 @@ end
 
 DatamineModelControlsTreeMixin = {};
 
-DatamineModelControlsTreeMixin.ArmorSlots = {
+DatamineModelControlsTreeMixin.ArmorSlotNames = {
     HEAD = HEADSLOT,
     NECK = NECKSLOT,
     SHOULDER = SHOULDERSLOT,
@@ -682,25 +688,6 @@ DatamineModelControlsTreeMixin.ArmorSlots = {
     SECONDARYHAND = SECONDARYHANDSLOT,
     RANGED = RANGEDSLOT
 };
-
-local HiddenVisualItemIDs = {
-    [INVSLOT_HEAD] = 134110,
-    [INVSLOT_SHOULDER] = 134112,
-    [INVSLOT_BACK] = 134111,
-    [INVSLOT_BODY] = 142503,
-    [INVSLOT_TABARD] = 142504,
-    [INVSLOT_CHEST] = 168659,
-    [INVSLOT_WAIST] = 143539,
-    [INVSLOT_FEET] = 168664,
-    [INVSLOT_WRIST] = 168665,
-    [INVSLOT_HAND] = 158329,
-};
-
-DatamineModelControlsTreeMixin.HiddenVisualAppearanceIDs = {};
-for slot, itemID in pairs(HiddenVisualItemIDs) do
-    local _, sourceID = C_TransmogCollection.GetItemInfo(itemID);
-    DatamineModelControlsTreeMixin.HiddenVisualAppearanceIDs[slot] = sourceID;
-end
 
 function DatamineModelControlsTreeMixin:GetScene()
     return DatamineUnifiedFrame.Workspace.ModelViewTab.ModelScene;
@@ -741,15 +728,19 @@ function DatamineModelControlsTreeMixin:OnLoad()
         IsTopLevel = true,
     });
 
+    local function OutfitSort(a, b)
+        local idxA = tIndexOf(Transmog.ArmorSlotVisualOrder, a.data.SlotID);
+        local idxB = tIndexOf(Transmog.ArmorSlotVisualOrder, b.data.SlotID);
+        return idxA < idxB;
+    end
+
     self.OutfitTab = self:AddTopLevelItem({
         Text = "Outfit",
-        IsTopLevel = true,
-        Callback = function() Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED) end,
+        SortFunc = OutfitSort,
     });
 
     self.AdvancedTab = self:AddTopLevelItem({
         Text = "Advanced",
-        IsTopLevel = true,
     });
 
     self:SetupLocationControls();
@@ -757,6 +748,7 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self:SetupAdvancedPanel();
 
     self:SetDoUpdate(false);
+    self:MarkOutfitDirty();
 
     self.DataProvider:CollapseAll();
 
@@ -773,7 +765,9 @@ function DatamineModelControlsTreeMixin:OnLoad()
 
     ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
 
-    Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelSceneModelLoaded, self);
+    Registry:RegisterCallback(Events.MODEL_RESET, self.OnModelReset, self);
+    Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelLoaded, self);
+    Registry:RegisterCallback(Events.MODEL_OUTFIT_UPDATED, self.OnOutfitUpdated, self);
 end
 
 function DatamineModelControlsTreeMixin:OnShow()
@@ -781,18 +775,32 @@ function DatamineModelControlsTreeMixin:OnShow()
 end
 
 function DatamineModelControlsTreeMixin:OnUpdate()
-    if not self:IsShown() or not self.DoUpdate then
+    if not self:IsShown() then
         return;
     end
 
+    if self.DoUpdate then
+        self:UpdateLocationControls();
+        self:UpdateCameraControls();
+    end
+
+    if self.OutfitDirty then
+        self:UpdateOutfit();
+    end
+end
+
+function DatamineModelControlsTreeMixin:OnModelLoaded()
+    self:SetEditBoxDefaults();
     self:UpdateLocationControls();
     self:UpdateCameraControls();
 end
 
-function DatamineModelControlsTreeMixin:OnModelSceneModelLoaded()
-    self:SetEditBoxDefaults();
-    self:UpdateLocationControls();
-    self:UpdateCameraControls();
+function DatamineModelControlsTreeMixin:OnModelReset()
+    self:OnModelLoaded();
+end
+
+function DatamineModelControlsTreeMixin:OnOutfitUpdated()
+    self:MarkOutfitDirty();
 end
 
 function DatamineModelControlsTreeMixin:SetupLocationControls()
@@ -850,7 +858,11 @@ function DatamineModelControlsTreeMixin:SetupCameraControls()
     });
 end
 
-function DatamineModelControlsTreeMixin:ResetOutfitPanel()
+function DatamineModelControlsTreeMixin:MarkOutfitDirty()
+    self.OutfitDirty = true;
+end
+
+function DatamineModelControlsTreeMixin:FlushOutfitPanel()
     for _, node in pairs(self.OutfitTab:GetNodes()) do
         node:Flush();
         node:Invalidate();
@@ -860,8 +872,20 @@ function DatamineModelControlsTreeMixin:ResetOutfitPanel()
     self.OutfitTab:Invalidate();
 end
 
+function DatamineModelControlsTreeMixin:UpdateOutfit()
+    if not self.OutfitDirty then
+        return;
+    end
+
+    local actor = self.ModelScene:GetActiveActor();
+    local itemTransmogInfoList = actor:GetItemTransmogInfoList();
+    self:LoadOutfit(itemTransmogInfoList);
+
+    self.OutfitDirty = false;
+end
+
 function DatamineModelControlsTreeMixin:LoadOutfit(itemTransmogInfoList)
-    self:ResetOutfitPanel();
+    self:FlushOutfitPanel();
 
     local mainHandInfo = itemTransmogInfoList[INVSLOT_MAINHAND];
     if mainHandInfo.secondaryAppearanceID == Constants.Transmog.MainHandTransmogIsPairedWeapon then
@@ -871,15 +895,16 @@ function DatamineModelControlsTreeMixin:LoadOutfit(itemTransmogInfoList)
         end
     end
 
-    for _, slotID in ipairs(TransmogSlotOrder) do
+    for _, slotID in ipairs(Transmog.ArmorSlotVisualOrder) do
         local transmogInfo = itemTransmogInfoList[slotID];
-        if transmogInfo then
-            local data = {
-                OverlordFrame = self,
-                Template = "DatamineModelControlsOutfitPanelEntryTemplate",
-                RequestedExtent = 32,
-            };
+        local data = {
+            OverlordFrame = self,
+            Template = "DatamineModelControlsOutfitPanelEntryTemplate",
+            RequestedExtent = 32,
+            SlotID = slotID,
+        };
 
+        if transmogInfo then
             if transmogInfo.appearanceID and transmogInfo.appearanceID ~= Constants.Transmog.NoTransmogID then
                 data.AppearanceID = transmogInfo.appearanceID;
             end
@@ -887,11 +912,9 @@ function DatamineModelControlsTreeMixin:LoadOutfit(itemTransmogInfoList)
             if transmogInfo.secondaryAppearanceID and transmogInfo.secondaryAppearanceID ~= Constants.Transmog.NoTransmogID then
                 data.SecondaryAppearanceID = transmogInfo.secondaryAppearanceID;
             end
-
-            if data.AppearanceID and not C_TransmogCollection.IsAppearanceHiddenVisual(data.AppearanceID) then
-                self.OutfitTab:Insert(data);
-            end
         end
+
+        self.OutfitTab:Insert(data);
     end
 end
 
@@ -915,18 +938,19 @@ function DatamineModelControlsTreeMixin:RemoveAppearance(appearanceID, secondary
     secondaryAppearanceID = secondaryAppearanceID or Constants.Transmog.NoTransmogID;
     illusionID = illusionID or Constants.Transmog.NoTransmogID;
 
-    local sourceInfo = C_TransmogCollection.GetSourceInfo(appearanceID);
-    local invSlot = C_Transmog.GetSlotForInventoryType(sourceInfo.invType);
-    local hiddenAppearanceID = self.HiddenVisualAppearanceIDs[invSlot];
-    local transmogInfo = ItemUtil.CreateItemTransmogInfo(hiddenAppearanceID);
-    self.ModelScene:GetActiveActor():SetItemTransmogInfo(transmogInfo);
+    local hiddenAppearanceID = Transmog:GetHiddenAppearanceForAppearanceID(appearanceID);
 
-    Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
+    if hiddenAppearanceID then
+        local transmogInfo = ItemUtil.CreateItemTransmogInfo(hiddenAppearanceID);
+        local slotType = Transmog:GetSlotTypeForAppearanceID(hiddenAppearanceID);
+        self.ModelScene:GetActiveActor():SetItemTransmogInfo(transmogInfo, slotType);
+
+        Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
+    end
 end
 
 function DatamineModelControlsTreeMixin:SearchItemByAppearanceID(itemModifiedAppearanceID)
-    local sourceInfo = C_TransmogCollection.GetSourceInfo(itemModifiedAppearanceID);
-    local itemID = sourceInfo.itemID;
+    local itemID = Transmog:GetItemIDForAppearanceID(itemModifiedAppearanceID);
     local explorer = self:GetParent():GetParent().ExplorerTab;
 
     explorer:SetSearchMode(Datamine.Constants.DataTypes.Item);
@@ -1046,11 +1070,49 @@ end
 DatamineModelControlsOutfitPanelEntryMixin = {};
 
 function DatamineModelControlsOutfitPanelEntryMixin:Init(node)
-    local data = node:GetData();
+    self.data = node:GetData();
     node:Flush();
-    self.Overlord = data.OverlordFrame;
+    self.Overlord = self.data.OverlordFrame;
 
-    local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(data.AppearanceID);
+    self.Text:SetTextScale(0.80);
+    node:SetCollapsed(true);
+
+    self.IsEmpty = false;
+    self.IsHidden = false;
+
+    if not self.data.AppearanceID or self.data.AppearanceID == Constants.Transmog.NoTransmogID then
+        self:SetupEmptySlot();
+        self.IsEmpty = true;
+    elseif Transmog:IsHiddenAppearance(self.data.AppearanceID) then
+        self:SetupHiddenSlot();
+        self.IsHidden = true;
+        self.IsEmpty = false;
+    else
+        self:SetupPopulatedSlot();
+        self.IsEmpty = false;
+    end
+
+    self:UpdateButtonVisiblity();
+end
+
+function DatamineModelControlsOutfitPanelEntryMixin:SetupEmptySlot()
+    self.Icon:Reset();
+    self.Icon:SetItemButtonTexture(134400); -- question mark icon
+
+    self.Text:SetText("Empty");
+end
+
+function DatamineModelControlsOutfitPanelEntryMixin:SetupHiddenSlot()
+    self.Icon:Reset();
+    self.Icon.icon:SetAtlas("transmog-icon-hidden");
+    self.Icon.icon:Show();
+
+    self.Text:SetText("Hidden");
+end
+
+function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
+    local node = self:GetElementData();
+    local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(self.data.AppearanceID);
     local transmogInfo = {
         CategoryID = categoryID,
         VisualID = visualID,
@@ -1073,7 +1135,6 @@ function DatamineModelControlsOutfitPanelEntryMixin:Init(node)
         end
     end
 
-    self.Text:SetTextScale(0.80);
     self.Text:SetText(itemLink);
 
     self.Icon:SetItem(itemLink);
@@ -1085,8 +1146,6 @@ function DatamineModelControlsOutfitPanelEntryMixin:Init(node)
 
     self.HideButton:SetScript("OnClick", function() self:OnHideButtonClick() end);
     self.SearchButton:SetScript("OnClick", function() self:OnSearchButtonClick() end);
-
-    node:SetCollapsed(true);
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:OnHideButtonClick()
@@ -1124,7 +1183,25 @@ function DatamineModelControlsOutfitPanelEntryMixin:OnHyperlinkLeave()
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:OnMouseUp()
-    self:GetElementData():ToggleCollapsed();
+    if not (self.IsEmpty or self.IsHidden) then
+        self:GetElementData():ToggleCollapsed();
+    end
+end
+
+function DatamineModelControlsOutfitPanelEntryMixin:UpdateButtonVisiblity()
+    if not self.IsEmpty and Transmog:AppearanceCanBeHidden(self.data.AppearanceID) then
+        self.HideButton:Show();
+        self.HideButton:Enable();
+
+        self.SearchButton:Show();
+        self.SearchButton:Enable();
+    else
+        self.HideButton:Hide();
+        self.HideButton:Disable();
+
+        self.SearchButton:Hide();
+        self.SearchButton:Disable();
+    end
 end
 
 -------------

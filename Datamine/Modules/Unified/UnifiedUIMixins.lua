@@ -115,8 +115,6 @@ DatamineToolbarMixin = {};
 
 function DatamineToolbarMixin:OnLoad()
     self.Buttons = {};
-
-    self:AddButton("custom-toolbar-projects");
 end
 
 function DatamineToolbarMixin:AddButton(atlasName, callback)
@@ -218,6 +216,12 @@ end
 
 DatamineScrollableDataFrameMixin = {};
 
+local SEARCH_HELP_HEADER = "Explorer";
+local SEARCH_HELP_DETAILS = [[Enter %s %s ID in the search box above|nto get started.]];
+
+local SEARCH_FAIL_HEADER = "Search failed";
+local SEARCH_FAIL_DETAILS = [[%s %d is forbidden or does not exist.]];
+
 function DatamineScrollableDataFrameMixin:OnLoad()
     self.DataProvider = CreateDataProvider();
 
@@ -246,41 +250,122 @@ function DatamineScrollableDataFrameMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_RESULT, self.OnSearchResult, self);
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
 
-    self:SetLoading(true);
+    self.HelpTextDetails:SetTextScale(0.75);
+end
+
+function DatamineScrollableDataFrameMixin:OnShow()
+    if not self.Failed then
+        self:ShowHelpText();
+    else
+        self:ShowFailText();
+    end
 end
 
 function DatamineScrollableDataFrameMixin:OnSearchBegin(dataID)
+    self:SetLoading(true);
     self.DataID = dataID;
+
+    self.HelpText:Hide();
+    self.HelpTextDetails:Hide();
+
+    self.Failed = false;
 end
 
 function DatamineScrollableDataFrameMixin:OnSearchModeChanged(searchMode)
+    if searchMode == self.SearchMode then
+        return;
+    end
+
+    self:RefreshDataProvider();
+
+    if searchMode ~= DataTypes.Item then
+        self.PreviewItemButton:Hide();
+    end
+
     self.SearchMode = searchMode;
+    self:ShowHelpText();
 end
 
 function DatamineScrollableDataFrameMixin:OnSearchResult(dataID)
     local modeText = Datamine.GetEnumValueName(DataTypes, self.SearchMode);
     self.Title:SetText(modeText .. " " .. dataID);
     self.Title:Show();
-    self.PreviewItemButton:Show();
+
+    if self.SearchMode == DataTypes.Item then
+        self.PreviewItemButton:Show();
+    end
+
+    self:SetLoading(false);
 end
 
 function DatamineScrollableDataFrameMixin:OnFail()
+    self:SetLoading(false);
+    self:ShowFailText();
+
+    self.Icon:Hide();
+    self.Title:Hide();
+
+    self.Failed = true;
 end
 
 function DatamineScrollableDataFrameMixin:RefreshDataProvider()
     self.ScrollView:FlushDataProvider();
+    self.Icon:Hide();
+    self.Title:Hide();
+end
+
+function DatamineScrollableDataFrameMixin:ShowHelpText()
+    self.HelpText:SetText(SEARCH_HELP_HEADER);
+
+    local detailsText = self:GetFormattedHelpDetailsText();
+    self.HelpTextDetails:SetText(detailsText);
+
+    self.HelpText:Show();
+    self.HelpTextDetails:Show();
+end
+
+function DatamineScrollableDataFrameMixin:ShowFailText()
+    self.HelpText:SetText(SEARCH_FAIL_HEADER);
+
+    local detailsText = self:GetFormattedHelpDetailsText(true);
+    self.HelpTextDetails:SetText(detailsText);
+
+    self.HelpText:Show();
+    self.HelpTextDetails:Show();
 end
 
 function DatamineScrollableDataFrameMixin:GetDataKeys()
     return DataKeys[self.SearchMode];
 end
 
+function DatamineScrollableDataFrameMixin:GetSearchModeText()
+    if self.SearchMode then
+        return Datamine.GetEnumValueName(DataTypes, self.SearchMode);
+    else
+        return Datamine.GetEnumValueName(DataTypes, DataTypes.Item);
+    end
+end
+
+-- 'a' or 'an'?
+function DatamineScrollableDataFrameMixin:GetFormattedHelpDetailsText(fail)
+    local modeText = self:GetSearchModeText();
+    local vowels = {"a", "e", "i", "o", "u"};
+    local prefix = tContains(vowels, (modeText:lower():sub(1, 1))) and "an" or "a";
+    if modeText then
+        if fail then
+            return format(SEARCH_FAIL_DETAILS, modeText, self.DataID);
+        else
+            return format(SEARCH_HELP_DETAILS, prefix, modeText);
+        end
+    end
+end
+
 function DatamineScrollableDataFrameMixin:Populate(data, dataID)
     self:RefreshDataProvider();
 
     if not data then
-        self:SetLoading(false);
         self:OnFail();
+        return;
     end
 
     local keys = self:GetDataKeys();
@@ -317,7 +402,6 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
         end
     end
 
-    self:SetLoading(false);
     Registry:TriggerEvent(Events.SEARCH_RESULT, dataID);
 end
 
@@ -426,7 +510,9 @@ function DatamineUnifiedExplorerTabMixin:OnLoad()
         UI_MAIN.ShowContextMenu(elements, button);
     end
 
-    UI_MAIN.AddToolbarButton("custom-toolbar-select", SearchModeMenu);
+    local modeButton = self.Header.SearchModeButton;
+    modeButton.Text:SetTextScale(0.85);
+    modeButton:SetScript("OnClick", SearchModeMenu);
 end
 
 function DatamineUnifiedExplorerTabMixin:GetSearchMode()

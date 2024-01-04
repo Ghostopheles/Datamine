@@ -1,4 +1,5 @@
 Datamine.Events = {
+    MODEL_RESET = "ModelReset",
     MODEL_LOADED = "ModelLoaded",
     MODEL_LOADED_INTERNAL = "ModelLoadedInternal",
     MODEL_VIEW_MODE_CHANGED = "ModelViewModeChanged",

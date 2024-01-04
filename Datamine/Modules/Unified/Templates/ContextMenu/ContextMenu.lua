@@ -47,6 +47,12 @@ end
 DatamineContextMenuMixin = {};
 
 function DatamineContextMenuMixin:OnLoad()
+    self.MinWidth = 150;
+    self.MaxWidth = 300;
+    self.MinHeight = 200;
+    self.MaxHeight = 500;
+    self.MaxEntries = 20;
+
     self.DataProvider = CreateDataProvider();
 
     self.ScrollView = CreateScrollBoxListLinearView();
@@ -62,36 +68,37 @@ function DatamineContextMenuMixin:OnLoad()
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 
-    self.MinWidth = 150;
-    self.MaxWidth = 300;
-    self.MinHeight = 200;
-    self.MaxHeight = 500;
-    self.MaxEntries = 20;
-
-    self.DataProvider:RegisterCallback("OnInsert", self.UpdateSize, self);
-    self.DataProvider:RegisterCallback("OnRemove", self.UpdateSize, self);
+    self.DataProvider:RegisterCallback("OnSizeChanged", self.OnDataProviderSizeChanged, self);
 
     self:UpdateSize();
 end
 
 function DatamineContextMenuMixin:OnShow()
-    self.HasEntered = false;
 end
 
 function DatamineContextMenuMixin:OnHide()
     self:Clear();
 end
 
-function DatamineContextMenuMixin:CheckShouldClose()
-    if not self:IsMouseOver() then
-        self:Hide();
-    end
+function DatamineContextMenuMixin:OnDataProviderSizeChanged()
+    self:UpdateSize();
 end
 
 function DatamineContextMenuMixin:Clear()
+    self:SetOwner(nil);
+    self:ClearAllPoints();
+
     self.ScrollView:Flush();
-    self.DataProvider:Flush();
+    self.DataProvider = CreateDataProvider();
     self.ScrollView:SetDataProvider(self.DataProvider);
+end
+
+function DatamineContextMenuMixin:SetOwner(owner)
+    self.Owner = owner;
+end
+
+function DatamineContextMenuMixin:GetOwner()
+    return self.Owner;
 end
 
 function DatamineContextMenuMixin:UpdateSize()
@@ -127,10 +134,19 @@ function Datamine.Unified.GetContextMenu(doNotCreate)
     return menu;
 end
 
-function Datamine.Unified.ShowContextMenu(elements, frame, frameAnchor, menuAnchor)
+---@param elements table
+---@param anchorTargetFrame frame
+---@param parentAnchorPoint? AnchorPoint
+---@param menuAnchorPoint? AnchorPoint
+---@param owner? frame
+function Datamine.Unified.ShowContextMenu(elements, anchorTargetFrame, parentAnchorPoint, menuAnchorPoint, owner)
     local menu = Datamine.Unified.GetContextMenu();
 
-    if menu:IsShown() then
+    owner = owner or anchorTargetFrame;
+    parentAnchorPoint = parentAnchorPoint or "BOTTOMLEFT";
+    menuAnchorPoint = menuAnchorPoint or "TOPLEFT";
+
+    if menu:IsShown() and menu:GetOwner() == owner then
         menu:Hide();
         return;
     end
@@ -139,10 +155,8 @@ function Datamine.Unified.ShowContextMenu(elements, frame, frameAnchor, menuAnch
         menu:AddMenuEntry(element);
     end
 
-    frameAnchor = frameAnchor or "BOTTOMLEFT";
-    menuAnchor = menuAnchor or "TOPLEFT";
-
-    menu:SetPoint(menuAnchor, frame, frameAnchor);
+    menu:SetOwner(owner);
+    menu:SetPoint(menuAnchorPoint, anchorTargetFrame, parentAnchorPoint);
     menu:Show();
 end
 

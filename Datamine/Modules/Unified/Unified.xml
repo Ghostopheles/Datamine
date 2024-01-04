@@ -74,6 +74,28 @@
                     <Color r="0.1" g="0.1" b="0.1" />
                 </Texture>
             </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="HelpText" font="DatamineCleanFont"
+                    wordwrap="false"
+                    justifyH="CENTER" justifyV="MIDDLE" text="TEXT HERE"
+                    outline="THICK">
+                    <Anchors>
+                        <Anchor point="CENTER" y="20" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+                <FontString parentKey="HelpTextDetails"
+                    font="DatamineCleanFontSmall"
+                    wordwrap="true"
+                    justifyH="CENTER" justifyV="MIDDLE" text="DETAILS"
+                    outline="THICK">
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent.HelpText"
+                            relativePoint="BOTTOM" y="-3" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+            </Layer>
         </Layers>
         <Frames>
             <ItemButton parentKey="Icon" enableMouse="false" hidden="true">
@@ -111,6 +133,7 @@
         </Frames>
         <Scripts>
             <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
         </Scripts>
     </Frame>
 
@@ -153,6 +176,30 @@
                             <Anchor point="TOPLEFT" x="5" y="-5" />
                             <Anchor point="TOPRIGHT" y="-5" />
                         </Anchors>
+                        <Frames>
+                            <Button parentKey="SearchModeButton"
+                                inherits="DatamineGenericButtonTemplate">
+                                <Size x="40" />
+                                <Anchors>
+                                    <Anchor point="TOPRIGHT" x="-5" />
+                                    <Anchor point="BOTTOMRIGHT" y="3" />
+                                </Anchors>
+                                <Layers>
+                                    <Layer level="ARTWORK">
+                                        <FontString parentKey="Text"
+                                            font="DatamineCleanFontSmallNoShadow"
+                                            wordwrap="false" text="Mode"
+                                            justifyV="MIDDLE" justifyH="CENTER">
+                                        </FontString>
+                                    </Layer>
+                                    <Layer level="BACKGROUND">
+                                        <Texture parentKey="Background"
+                                            inherits="DatamineDarkGrayBackgroundTemplate"
+                                            alpha="0.3" />
+                                    </Layer>
+                                </Layers>
+                            </Button>
+                        </Frames>
                     </Frame>
                     <EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" numeric="true"
                         autoFocus="false" historyLines="5" mixin="DatamineSearchBoxMixin">

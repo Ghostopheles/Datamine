@@ -23,6 +23,7 @@ local DumpTableWithDisplayKeys = function(tableTitle, ...)
     Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, ...);
 end;
 
+---@class DatamineTransmog
 Datamine.Transmog = {};
 
 local LinkPrefix = "transmogData";
@@ -113,6 +114,110 @@ function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
 
     return true;
 end
+
+Datamine.Transmog.ArmorSlotVisualOrder = TransmogSlotOrder;
+--    INVSLOT_HEAD
+--    INVSLOT_SHOULDER
+--    INVSLOT_BACK
+--    INVSLOT_BODY
+--    INVSLOT_CHEST
+--    INVSLOT_TABARD
+--    INVSLOT_WRIST
+--    INVSLOT_HAND
+--    INVSLOT_WAIST
+--    INVSLOT_FEET
+--    INVSLOT_MAINHAND
+--    INVSLOT_OFFHAND
+
+-- generating tables for hidden appearances to be retrieved later
+
+Datamine.Transmog.HiddenVisualItemIDs = {
+    [INVSLOT_HEAD] = 134110,
+    [INVSLOT_SHOULDER] = 134112,
+    [INVSLOT_BACK] = 134111,
+    [INVSLOT_BODY] = 142503,
+    [INVSLOT_CHEST] = 168659,
+    [INVSLOT_TABARD] = 142504,
+    [INVSLOT_WRIST] = 168665,
+    [INVSLOT_HAND] = 158329,
+    [INVSLOT_WAIST] = 143539,
+    [INVSLOT_FEET] = 168664,
+};
+
+Datamine.Transmog.HiddenVisualAppearanceIDs = {};
+for slot, itemID in pairs(Datamine.Transmog.HiddenVisualItemIDs) do
+    local _, sourceID = C_TransmogCollection.GetItemInfo(itemID);
+    Datamine.Transmog.HiddenVisualAppearanceIDs[slot] = sourceID;
+end
+
+-- some utility functions
+
+---@param itemModifiedAppearanceID number
+---@return number invType
+function Datamine.Transmog:GetSlotTypeForAppearanceID(itemModifiedAppearanceID)
+    local sourceInfo = C_TransmogCollection.GetSourceInfo(itemModifiedAppearanceID);
+
+    return sourceInfo.invType;
+end
+
+---@param itemModifiedAppearanceID number
+---@return number invSlotID
+function Datamine.Transmog:GetSlotIDForAppearanceID(itemModifiedAppearanceID)
+    local invType = self:GetSlotTypeForAppearanceID(itemModifiedAppearanceID);
+    local invSlot = C_Transmog.GetSlotForInventoryType(invType);
+
+    return invSlot;
+end
+
+---@param slotID number
+---@return number itemID
+function Datamine.Transmog:GetHiddenAppearanceItemIDForSlotID(slotID)
+    return self.HiddenVisualItemIDs[slotID];
+end
+
+---@param slotID number
+---@return number itemModifiedAppearanceID
+function Datamine.Transmog:GetHiddenAppearanceForSlotID(slotID)
+    return self.HiddenVisualAppearanceIDs[slotID];
+end
+
+---@param itemModifiedAppearanceID number
+---@return number itemModifiedAppearanceID
+function Datamine.Transmog:GetHiddenAppearanceForAppearanceID(itemModifiedAppearanceID)
+    local slotID = self:GetSlotIDForAppearanceID(itemModifiedAppearanceID);
+    local hiddenAppearanceID = self:GetHiddenAppearanceForSlotID(slotID);
+
+    return hiddenAppearanceID;
+end
+
+---@param itemModifiedAppearanceID number
+---@return boolean
+function Datamine.Transmog:IsHiddenAppearance(itemModifiedAppearanceID)
+    return C_TransmogCollection.IsAppearanceHiddenVisual(itemModifiedAppearanceID);
+end
+
+---@param itemModifiedAppearanceID number
+---@return boolean
+function Datamine.Transmog:AppearanceCanBeHidden(itemModifiedAppearanceID)
+    if self:IsHiddenAppearance(itemModifiedAppearanceID) then
+        return false;
+    elseif self:GetHiddenAppearanceForAppearanceID(itemModifiedAppearanceID) then
+        return true;
+    elseif self:GetSlotIDForAppearanceID(itemModifiedAppearanceID) == INVSLOT_MAINHAND or self:GetSlotIDForAppearanceID(itemModifiedAppearanceID) == INVSLOT_OFFHAND then
+        return true;
+    else
+        return false;
+    end
+end
+
+---@param itemModifiedAppearanceID number
+---@return number itemID
+function Datamine.Transmog:GetItemIDForAppearanceID(itemModifiedAppearanceID)
+    local sourceInfo = C_TransmogCollection.GetSourceInfo(itemModifiedAppearanceID);
+    return sourceInfo.itemID;
+end
+
+-- Registering our slash commands
 
 do
     local helpMessage = "Retrieve source info for an itemModifiedAppearanceID.";

@@ -9,6 +9,8 @@
 ---@field Callback? function
 ---@field DefaultsFunc? function
 ---@field OverlordFrame? frame
+---@field SortFunc? function
+---@field SortChildren? boolean
 
 DatamineTabTreeViewCategoryHeaderMixin = {};
 
@@ -102,7 +104,16 @@ function DatamineTabTreeViewMixin:AddTopLevelItem(data)
         data.Template = "DatamineTabTreeViewCategoryHeaderTemplate";
     end
 
-    return self.DataProvider:Insert(data);
+    if data.IsTopLevel == nil then
+        data.IsTopLevel = true;
+    end
+
+    local node = self.DataProvider:Insert(data);
+    if data.SortFunc then
+        node:SetSortComparator(data.SortFunc, data.SortChildren);
+    end
+
+    return node;
 end
 
 -------------
