@@ -382,7 +382,7 @@
                     <Anchor point="TOPRIGHT" />
                 </Anchors>
                 <HitRectInsets>
-                    <AbsInset left="0" right="40" bottom="0" top="0" />
+                    <AbsInset left="0" right="20" bottom="0" top="0" />
                 </HitRectInsets>
             </Frame>
             <Frame parentKey="Toolbar" inherits="DatamineToolbarTemplate">
@@ -400,7 +400,7 @@
                     <Anchor point="TOPRIGHT" />
                 </Anchors>
             </Button>
-            <Button parentKey="PHButton" inherits="DatamineGenericButtonTemplate">
+            <Button parentKey="PHButton" inherits="DatamineGenericButtonTemplate" hidden="true">
                 <Size x="20" y="20" />
                 <Anchors>
                     <Anchor point="TOPRIGHT" relativeKey="$parent.CloseButton"
