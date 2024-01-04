@@ -182,7 +182,15 @@ function DatamineModelSceneMixin:OnLoad_Custom()
 
     Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
 
-    DATAMINE_MODELSCENE = self;
+    self.NativeFormToggleButton:SetScript("OnEnter", function()
+        GameTooltip:SetOwner(self.NativeFormToggleButton, "ANCHOR_TOP");
+        GameTooltip:SetText("Toggle Alternate Form", 1, 1, 1);
+        GameTooltip:Show();
+    end);
+
+    self.NativeFormToggleButton:SetScript("OnLeave", function()
+        GameTooltip:Hide();
+    end);
 end
 
 function DatamineModelSceneMixin:OnFirstShow()
@@ -298,7 +306,11 @@ end
 
 function DatamineModelSceneMixin:SetupCamera()
     self:ReleaseAllCameras();
-    self:CreateCamera();
+    local camera = self:CreateCamera();
+
+    camera:SetMinZoomDistance(1);
+    camera:SetMaxZoomDistance(25);
+    camera:SetZoomDistance(6.8);
 end
 
 function DatamineModelSceneMixin:SetupCameraDefaults()
@@ -750,20 +762,8 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self:SetDoUpdate(false);
     self:MarkOutfitDirty();
 
-    self.DataProvider:CollapseAll();
-
-    local anchorsWithScrollBar = {
-        CreateAnchor("TOP", self, "TOP", 0, -4),
-        CreateAnchor("BOTTOMLEFT", self, "BOTTOMLEFT", 4, 4),
-        CreateAnchor("BOTTOMRIGHT", self.ScrollBar, "BOTTOMLEFT", -6, 4),
-    };
-
-    local anchorsWithoutScrollBar = {
-        CreateAnchor("TOP", self, "TOP", 0, -4),
-        CreateAnchor("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 4);
-    };
-
-    ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
+    self.TransformTab:SetCollapsed(true);
+    self.AdvancedTab:SetCollapsed(true);
 
     Registry:RegisterCallback(Events.MODEL_RESET, self.OnModelReset, self);
     Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelLoaded, self);
@@ -922,7 +922,7 @@ function DatamineModelControlsTreeMixin:ViewItemModifiedAppearance(itemModifiedA
     local actor = self.ModelScene:GetActiveActor();
     local success = actor:TryOn(itemModifiedAppearanceID);
 
-    if success then
+    if success == 0 then
         Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
     end
 
@@ -941,11 +941,7 @@ function DatamineModelControlsTreeMixin:RemoveAppearance(appearanceID, secondary
     local hiddenAppearanceID = Transmog:GetHiddenAppearanceForAppearanceID(appearanceID);
 
     if hiddenAppearanceID then
-        local transmogInfo = ItemUtil.CreateItemTransmogInfo(hiddenAppearanceID);
-        local slotType = Transmog:GetSlotTypeForAppearanceID(hiddenAppearanceID);
-        self.ModelScene:GetActiveActor():SetItemTransmogInfo(transmogInfo, slotType);
-
-        Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
+        self:ViewItemModifiedAppearance(hiddenAppearanceID);
     end
 end
 
@@ -960,7 +956,7 @@ end
 function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
     local fdidCallback = function(fdid)
         local actor = self.ModelScene:GetPlayerActor();
-        return actor:SetModelByFileID(tonumber(fdid), true);
+        return actor:SetModelByFileID(fdid, true);
     end;
 
     self.AdvancedTab:Insert({
@@ -973,7 +969,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
 
     local creatureDisplayCallback = function(id)
         local actor = self.ModelScene:GetPlayerActor();
-        return actor:SetModelByCreatureDisplayID(tonumber(id));
+        return actor:SetModelByCreatureDisplayID(id);
     end;
 
     self.AdvancedTab:Insert({
@@ -1004,6 +1000,34 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Text = "Try on ItemModifiedAppearanceID",
         Instructions = "Enter an ItemModifiedAppearanceID...",
         Callback = itemModAppearanceCallback,
+        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        RequestedExtent = 40,
+    });
+
+    local spellVisualCallback = function(id)
+        id = id or 0;
+        local actor = self.ModelScene:GetActiveActor();
+        return actor:SetSpellVisualKit(id);
+    end;
+
+    self.AdvancedTab:Insert({
+        Text = "Apply SpellVisualKit",
+        Instructions = "Enter a SpellVisualKitID...",
+        Callback = spellVisualCallback,
+        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        RequestedExtent = 40,
+    });
+
+    local animKitCallback = function(id)
+        id = id or 0;
+        local actor = self.ModelScene:GetActiveActor();
+        return actor:PlayAnimationKit(id);
+    end;
+
+    self.AdvancedTab:Insert({
+        Text = "Play AnimationKit",
+        Instructions = "Enter an AnimKitID...",
+        Callback = animKitCallback,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
@@ -1215,6 +1239,7 @@ function DatamineModelControlsAdvancedPanelEntryMixin:Init(node)
     self.Title:SetTextScale(0.85);
 
     self.EntryBox:SetHeight(self:GetHeight() / 2);
-    self.EntryBox.Callback = data.Callback;
     self.EntryBox.Instructions:SetText(data.Instructions);
+    self.EntryBox:SetNumeric(true);
+    self.EntryBox.Callback = function() data.Callback(self.EntryBox:GetNumber()); end;
 end

@@ -1,3 +1,5 @@
+local moduleName = "UIMain";
+
 Datamine.Unified = {};
 
 ---@class CustomAtlasInfo
@@ -207,4 +209,9 @@ end
 function Datamine.Unified.AddToolbarButton(atlasName, callback)
     local toolbar = DatamineUnifiedFrame.Toolbar;
     toolbar:AddButton(atlasName, callback);
+end
+
+do
+    local helpString = "Toggle the Datamine UI.";
+    Datamine.Slash:RegisterCommand("ui", function() DatamineUnifiedFrame:Toggle(); end, helpString, moduleName);
 end

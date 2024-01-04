@@ -162,7 +162,8 @@
                 <FontString parentKey="Title" font="DatamineCleanFontSmall" justifyH="LEFT"
                     wordwrap="false">
                     <Anchors>
-                        <Anchor point="BOTTOM" relativeKey="$parent.EntryBox" relativePoint="TOP" />
+                        <Anchor point="BOTTOM" relativeKey="$parent.EntryBox" relativePoint="TOP"
+                            y="2" />
                     </Anchors>
                 </FontString>
             </Layer>
@@ -191,6 +192,12 @@
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-15" y="-15" />
                 </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="Icon" setAllPoints="true"
+                            file="interface/icons/ability_racial_visage.blp" />
+                    </Layer>
+                </Layers>
             </Button>
         </Frames>
         <Scripts>

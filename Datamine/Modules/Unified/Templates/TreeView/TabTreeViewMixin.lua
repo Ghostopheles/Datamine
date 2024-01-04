@@ -92,9 +92,19 @@ function DatamineTabTreeViewMixin:OnLoad_Base()
 		factory(template, Initializer);
 	end);
 
-    self.ScrollBar:SetHideIfUnscrollable(true);
-
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
+
+    local anchorsWithScrollBar = {
+        CreateAnchor("TOPLEFT", 4, -4);
+        CreateAnchor("BOTTOMRIGHT", self.ScrollBar, -13, 4),
+    };
+
+    local anchorsWithoutScrollBar = {
+        CreateAnchor("TOPLEFT", 4, -4),
+        CreateAnchor("BOTTOMRIGHT", -4, 4);
+    };
+
+    ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
 
     self.DataProvider:CollapseAll();
 end

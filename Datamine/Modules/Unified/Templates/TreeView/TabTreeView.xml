@@ -72,8 +72,8 @@
         <Frames>
             <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" x="-13" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" x="-13" y="7" />
+                    <Anchor point="TOPRIGHT" x="-7" y="-4" />
+                    <Anchor point="BOTTOMRIGHT" x="-7" y="7" />
                 </Anchors>
             </EventFrame>
             <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
