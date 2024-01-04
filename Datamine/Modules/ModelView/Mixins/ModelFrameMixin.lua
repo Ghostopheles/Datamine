@@ -22,10 +22,6 @@ function DatamineModelFrameMixin:OnLoad()
         self:StopMovingOrSizing();
     end);
 
-    if DevTool then
-        C_Timer.After(1, function() DevTool:AddData(DatamineModelViewFrame.ModelScene, "DatamineModelScene"); end);
-    end
-
     self.ViewingMode = MODES.ModelScene;
 end
 
@@ -97,10 +93,6 @@ function DatamineModelFrameMixin:SetupPlayerModel()
     end
 
     self.PlayerModel = playerModel;
-
-    if DevTool then
-        C_Timer.After(0, function() DevTool:AddData(self.PlayerModel, "DataminePlayerModel") end);
-    end
 end
 
 function DatamineModelFrameMixin:SetCreature(creatureID, displayID)

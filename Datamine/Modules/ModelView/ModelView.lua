@@ -51,10 +51,6 @@ function Datamine.ModelView:Show(itemModifiedAppearanceIDs, forcePlayerRefresh)
 		local useNativeForm = not inAlternateForm;
 		SetupPlayerForModelScene(f.ModelScene, overrideActorName, itemModifiedAppearanceIDs, sheatheWeapons, autoDress, hideWeapons, useNativeForm);
 	end
-
-	if DevTool then
-		DevTool:AddData(f.ModelScene:GetPlayerActor(), "DatamineModelSceneActor");
-	end
 end
 
 ---@param itemModifiedAppearanceIDs table
