@@ -206,10 +206,24 @@ end
 
 -------------
 
+function Datamine.Unified.GetExplorerSearchMode()
+    return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+end
+
+function Datamine.Unified.GetExplorerDataID()
+    return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+end
+
+function Datamine.Unified.GetExplorerData()
+    return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+end
+
 function Datamine.Unified.AddToolbarButton(atlasName, callback)
     local toolbar = DatamineUnifiedFrame.Toolbar;
     toolbar:AddButton(atlasName, callback);
 end
+
+-------------
 
 do
     local helpString = "Toggle the Datamine UI.";
