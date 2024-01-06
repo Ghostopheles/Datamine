@@ -222,7 +222,6 @@ function Datamine.Unified.GetModelView()
     return Datamine.Unified.GetUI().Workspace.ModelViewTab;
 end
 
-
 function Datamine.Unified.GetExplorerDefaultSearchMode()
     return DEFAULT_SEARCH_MODE;
 end

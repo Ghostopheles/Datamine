@@ -615,7 +615,7 @@ end
 
 DatamineUnifiedExplorerTabMixin = {};
 
-local DEFAULT_SEARCH_MODE = DataTypes.Item;
+local DEFAULT_SEARCH_MODE = UI_MAIN.GetExplorerDefaultSearchMode();
 
 function DatamineUnifiedExplorerTabMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
