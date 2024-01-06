@@ -4,6 +4,7 @@
 * You can now drag items from your bag onto the Datamine Explorer tab to search for that item
 * Added additional entry boxes under the 'Advanced' model controls tab
 * Added some tooltips to ambiguous buttons (will get better icons eventually!)
+* You can now hide pants
 
 ##### Fixed
 * Fixed errors being thrown by LibDevConsole
