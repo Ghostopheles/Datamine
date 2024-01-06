@@ -231,7 +231,7 @@
                         </Anchors>
                         <Frames>
                             <Button parentKey="PreviewButton"
-                                inherits="DatamineGenericButtonTemplate"
+                                inherits="DatamineTooltipButtonTemplate"
                                 mixin="DataminePreviewButtonMixin" hidden="true">
                                 <Size x="25" y="25" />
                                 <Anchors>
@@ -254,8 +254,6 @@
                                 <Scripts>
                                     <OnLoad method="OnLoad" />
                                     <OnClick method="OnClick" />
-                                    <OnEnter method="OnEnter" />
-                                    <OnLeave method="OnLeave" />
                                 </Scripts>
                             </Button>
                         </Frames>

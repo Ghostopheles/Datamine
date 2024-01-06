@@ -36,22 +36,17 @@
         </Scripts>
     </Button>
 
+    <!-- Add a .TooltipText keyValue to set your tooltip text OR provide a :GetTooltipText func -->
+    <!-- Add a .TooltipTextColor keyValue to set your tooltip text color -->
+    <!-- Add a .TooltipAnchorPoint keyValue to set your tooltip anchor point -->
+    <!-- Add a .TooltipOffset(X|Y) keyValue to set your tooltip anchor offsets -->
+    <!-- Add a .TooltipDeferShowFor keyValue to set a delay before showing the tooltip -->
     <Button name="DatamineTooltipButtonTemplate" virtual="true"
-        inherits="DatamineGenericButtonTemplate" registerForClicks="LeftButtonUp"
-        mixin="DatamineCloseButtonMixin">
-        <Layers>
-            <Layer level="ARTWORK">
-                <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate"
-                    setAllPoints="true">
-                    <KeyValues>
-                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
-                        <KeyValue key="AtlasName" value="uitools-icon-close" />
-                    </KeyValues>
-                </Texture>
-            </Layer>
-        </Layers>
+        inherits="DatamineGenericButtonTemplate" enableMouse="true"
+        mixin="DatamineTooltipButtonMixin">
         <Scripts>
-            <OnClick method="OnClick" />
+            <OnEnter method="OnEnter_Base" />
+            <OnLeave method="OnLeave_Base" />
         </Scripts>
     </Button>
 

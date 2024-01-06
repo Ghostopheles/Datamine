@@ -50,6 +50,47 @@ end
 
 -------------
 
+DatamineTooltipButtonMixin = {};
+
+function DatamineTooltipButtonMixin:OnEnter_Base()
+    if not self.TooltipText and not self.GetTooltipText then
+        return;
+    end
+
+    if self.TooltipDeferShowFor then
+        local showFunc = function()
+            if MouseIsOver(self) then
+                self:ShowTooltip();
+            end
+        end
+        C_Timer.After(self.TooltipDeferShowFor, showFunc);
+    else
+        self:ShowTooltip();
+    end
+end
+
+function DatamineTooltipButtonMixin:OnLeave_Base()
+    self:HideTooltip();
+end
+
+function DatamineTooltipButtonMixin:ShowTooltip()
+    local text = self.TooltipText or self:GetTooltipText();
+    local anchor = self.TooltipAnchorPoint or "ANCHOR_TOP";
+    local offsetX = self.TooltipOffsetX or 0;
+    local offsetY = self.TooltipOffsetY or 0;
+    local textColor = self.TooltipTextColor or CreateColor(1, 1, 1, 1);
+
+    GameTooltip:SetOwner(self, anchor, offsetX, offsetY);
+    GameTooltip:SetText(text, textColor.r, textColor.g, textColor.b, textColor.a, self.TooltipWrapText);
+    GameTooltip:Show();
+end
+
+function DatamineTooltipButtonMixin:HideTooltip()
+    GameTooltip:Hide();
+end
+
+-------------
+
 DatamineCloseButtonMixin = {};
 
 function DatamineCloseButtonMixin:OnClick()
