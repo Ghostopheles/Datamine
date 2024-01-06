@@ -125,6 +125,7 @@ Datamine.Transmog.ArmorSlotVisualOrder = TransmogSlotOrder;
 --    INVSLOT_WRIST
 --    INVSLOT_HAND
 --    INVSLOT_WAIST
+--    INVSLOT_LEGS
 --    INVSLOT_FEET
 --    INVSLOT_MAINHAND
 --    INVSLOT_OFFHAND

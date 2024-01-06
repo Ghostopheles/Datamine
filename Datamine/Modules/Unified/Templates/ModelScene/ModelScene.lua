@@ -184,7 +184,6 @@ function DatamineModelSceneMixin:OnFirstShow()
     self:SetupPlayerActor();
     self:SetupCamera();
     self:SetupCameraDefaults();
-    self:GetExternalControls():SetEditBoxDefaults();
     self.FirstShow = false;
 end
 
@@ -248,6 +247,10 @@ function DatamineModelSceneMixin:OnModelLoaded_Internal(actor)
 
     Registry:TriggerEvent(Events.MODEL_LOADED, actor);
     Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
+end
+
+function DatamineModelSceneMixin:OnDressModel()
+    Registry:TriggerEvent(Events.MODEL_DRESSED);
 end
 
 function DatamineModelSceneMixin:UpdateNativeFormButton()
@@ -773,13 +776,13 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self:SetupAdvancedPanel();
 
     self:SetDoUpdate(false);
-    self:MarkOutfitDirty();
 
     self.TransformTab:SetCollapsed(true);
     self.AdvancedTab:SetCollapsed(true);
 
     Registry:RegisterCallback(Events.MODEL_RESET, self.OnModelReset, self);
     Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelLoaded, self);
+    Registry:RegisterCallback(Events.MODEL_DRESSED, self.OnOutfitUpdated, self);
     Registry:RegisterCallback(Events.MODEL_OUTFIT_UPDATED, self.OnOutfitUpdated, self);
 end
 
@@ -893,7 +896,6 @@ function DatamineModelControlsTreeMixin:UpdateOutfit()
     local actor = self.ModelScene:GetActiveActor();
     local itemTransmogInfoList = actor:GetItemTransmogInfoList();
     self:LoadOutfit(itemTransmogInfoList);
-
     self.OutfitDirty = false;
 end
 

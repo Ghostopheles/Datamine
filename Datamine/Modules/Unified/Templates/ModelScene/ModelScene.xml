@@ -205,6 +205,7 @@
             <OnLoad method="OnLoad_Custom" inherit="prepend" />
             <OnShow method="OnShow" inherit="prepend" />
             <OnUpdate method="OnUpdate_Custom" inherit="prepend" />
+            <OnDressModel method="OnDressModel" inherit="prepend" />
             <OnMouseDown method="OnMouseDown_Custom" inherit="prepend" />
             <OnMouseUp method="OnMouseUp_Custom" inherit="prepend" />
         </Scripts>
