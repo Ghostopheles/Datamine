@@ -837,7 +837,7 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self:SetDoUpdate(false);
 
     self.TransformTab:SetCollapsed(true);
-    self.AdvancedTab:SetCollapsed(true);
+    self.OutfitTab:SetCollapsed(true);
 
     Registry:RegisterCallback(Events.MODEL_RESET, self.OnModelReset, self);
     Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelLoaded, self);
@@ -1210,12 +1210,7 @@ function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:OnHideButtonClick()
-    local appearanceID = self:GetData().AppearanceID;
-    if appearanceID then
-        self.Overlord:RemoveAppearance(appearanceID);
-        local node = self:GetElementData();
-        node:GetParent():Remove(node);
-    end
+    UI_MAIN.GetModelView().ModelScene:GetActiveActor():UndressSlot(self.data.SlotID);
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:OnSearchButtonClick()
@@ -1250,7 +1245,7 @@ function DatamineModelControlsOutfitPanelEntryMixin:OnMouseUp()
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:UpdateButtonVisiblity()
-    if not self.IsEmpty and Transmog:AppearanceCanBeHidden(self.data.AppearanceID) then
+    if not self.IsEmpty and not self.IsHidden then
         self.HideButton:Show();
         self.HideButton:Enable();
 
