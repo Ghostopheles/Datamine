@@ -1,3 +1,15 @@
+# Datamine v2.1
+
+##### Added
+* You can now drag items from your bag onto the Datamine Explorer tab to search for that item
+* Added additional entry boxes under the 'Advanced' model controls tab
+* Added some tooltips to ambiguous buttons (will get better icons eventually!)
+
+##### Fixed
+* Fixed errors being thrown by LibDevConsole
+* Fixed outfits and player actors misbehaving if you open the UI too quickly after loading in
+* Unified some UI state handling and added a couple of easy accessors to the `Datamine.Unified` namespace
+
 # Datamine v2.0
 
 ##### Added
