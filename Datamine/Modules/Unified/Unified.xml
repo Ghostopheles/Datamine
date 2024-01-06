@@ -60,7 +60,7 @@
     </Frame>
 
     <Frame name="DatamineScrollableDataFrameTemplate" virtual="true"
-        mixin="DatamineScrollableDataFrameMixin">
+        mixin="DatamineScrollableDataFrameMixin" enableMouse="true">
         <Layers>
             <Layer level="OVERLAY">
                 <FontString parentKey="Title" font="DatamineCleanFont" text="TITLE" hidden="true">
@@ -129,6 +129,12 @@
                         </FontString>
                     </Layer>
                 </Layers>
+            </Frame>
+            <Frame parentKey="DragDropNineSlice"
+                inherits="NineSlicePanelTemplate" hidden="true">
+                <KeyValues>
+                    <KeyValue key="layoutType" value="DatamineBlueHighlight" />
+                </KeyValues>
             </Frame>
         </Frames>
         <Scripts>
@@ -224,9 +230,9 @@
                             <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
                         </Anchors>
                         <Frames>
-                            <Button parentKey="PreviewItemButton"
+                            <Button parentKey="PreviewButton"
                                 inherits="DatamineGenericButtonTemplate"
-                                mixin="DataminePreviewItemButtonMixin" hidden="true">
+                                mixin="DataminePreviewButtonMixin" hidden="true">
                                 <Size x="25" y="25" />
                                 <Anchors>
                                     <Anchor point="TOPRIGHT" y="-10" />

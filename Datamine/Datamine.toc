@@ -50,6 +50,7 @@ Modules/Explorer/ExplorerFrame.xml
 Modules/Explorer/ExplorerFrame.lua
 
 Modules/Unified/UnifiedUI.lua
+Modules/Unified/UnifiedNineSliceLayouts.lua
 Modules/Unified/UnifiedRegistry.lua
 Modules/Unified/UnifiedUIMixins.lua
 Modules/Unified/Templates/Fonts.xml

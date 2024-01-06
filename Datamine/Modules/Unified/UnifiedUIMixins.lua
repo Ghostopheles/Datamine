@@ -216,11 +216,42 @@ end
 
 DatamineScrollableDataFrameMixin = {};
 
-local SEARCH_HELP_HEADER = "Explorer";
-local SEARCH_HELP_DETAILS = [[Enter %s %s ID in the search box above|nto get started.]];
+local SEARCH_HELP_TYPE = {
+    HELP = 1,
+    FAIL = 2,
+    DRAGDROP = 3,
+};
 
-local SEARCH_FAIL_HEADER = "Search failed";
-local SEARCH_FAIL_DETAILS = [[%s %d is forbidden or does not exist.]];
+local SEARCH_HELP_FORMAT = {
+    [SEARCH_HELP_TYPE.HELP] = {
+        Header = "Explorer",
+        Details = [[Enter %s %s ID in the search box above|nto get started.]],
+    },
+    [SEARCH_HELP_TYPE.FAIL] = {
+        Header = "Search failed",
+        Details = [[%s %d is forbidden or does not exist.]],
+    },
+    [SEARCH_HELP_TYPE.DRAGDROP] = {
+        Header = "Explorer",
+        Details = [[Drop %s %s here to search for it.]],
+    },
+};
+
+local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
+    INVTYPE_FINGER,
+    INVTYPE_BAG,
+    INVTYPE_TRINKET,
+    INVTYPE_AMMO,
+    INVTYPE_QUIVER,
+    INVTYPE_RELIC,
+    INVTYPE_THROWN,
+    INVTYPE_WEAPONMAINHAND_PET,
+    INVTYPE_NON_EQUIP,
+    INVTYPE_EQUIPABLESPELL_DEFENSIVE,
+    INVTYPE_EQUIPABLESPELL_UTILITY,
+    INVTYPE_EQUIPABLESPELL_OFFENSIVE,
+    INVTYPE_EQUIPABLESPELL_WEAPON,
+}
 
 function DatamineScrollableDataFrameMixin:OnLoad()
     self.DataProvider = CreateDataProvider();
@@ -251,13 +282,44 @@ function DatamineScrollableDataFrameMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
 
     self.HelpTextDetails:SetTextScale(0.75);
+    self:RegisterEvent("GLOBAL_MOUSE_UP");
+    self:RegisterEvent("CURSOR_CHANGED");
+    self:SetScript("OnEvent", function(self, event, ...)
+        if self[event] then
+            self[event](self, ...);
+        end
+    end);
+
+    self.DragDropNineSlice.Center:SetAlpha(0.25);
 end
 
 function DatamineScrollableDataFrameMixin:OnShow()
-    if not self.Failed then
-        self:ShowHelpText();
+    local textType = self.Failed and SEARCH_HELP_TYPE.FAIL or SEARCH_HELP_TYPE.HELP;
+    self:ShowHelpText(textType);
+end
+
+function DatamineScrollableDataFrameMixin:GLOBAL_MOUSE_UP()
+    if MouseIsOver(self) and self:IsShown() then
+        local item = C_Cursor.GetCursorItem();
+        if item and item:IsValid() then
+            local itemID = C_Item.GetItemID(item);
+            if self.SearchMode ~= DataTypes.Item then
+                self:GetParent():SetSearchMode(DataTypes.Item);
+            end
+            self:GetParent():Search(itemID);
+            self:SetExplorerHighlightShown(false);
+            ClearCursor();
+        end
+    end
+end
+
+function DatamineScrollableDataFrameMixin:CURSOR_CHANGED(...)
+    local _, newCursorType, _ = ...;
+    print("new cursor type: " .. Datamine.GetEnumValueName(Enum.UICursorType, newCursorType));
+    if newCursorType == Enum.UICursorType.Item then
+        self:SetExplorerHighlightShown(true);
     else
-        self:ShowFailText();
+        self:SetExplorerHighlightShown(false);
     end
 end
 
@@ -279,11 +341,11 @@ function DatamineScrollableDataFrameMixin:OnSearchModeChanged(searchMode)
     self:RefreshDataProvider();
 
     if searchMode ~= DataTypes.Item then
-        self.PreviewItemButton:Hide();
+        self.PreviewButton:Hide();
     end
 
     self.SearchMode = searchMode;
-    self:ShowHelpText();
+    self:ShowHelpText(SEARCH_HELP_TYPE.HELP);
 end
 
 function DatamineScrollableDataFrameMixin:OnSearchResult(dataID)
@@ -291,9 +353,7 @@ function DatamineScrollableDataFrameMixin:OnSearchResult(dataID)
     self.Title:SetText(modeText .. " " .. dataID);
     self.Title:Show();
 
-    if self.SearchMode == DataTypes.Item then
-        self.PreviewItemButton:Show();
-    end
+    self.PreviewButton:SetShown(self:ShouldShowPreviewButton());
 
     self:SetLoading(false);
 end
@@ -308,26 +368,64 @@ function DatamineScrollableDataFrameMixin:OnFail()
     self.Failed = true;
 end
 
+function DatamineScrollableDataFrameMixin:ShouldShowPreviewButton()
+    if self.SearchMode ~= DataTypes.Item or not self:IsPopulated() then
+        return;
+    end
+
+    -- we only wanna show the button for things we can actually preview
+    -- this means armor (not jewelry), pets, and mounts only
+
+    local itemType = self.CurrentData.ItemClassID;
+    local itemSubType = self.CurrentData.ItemSubclassID;
+    if itemType == Enum.ItemClass.Armor then
+        if not tContains(ITEM_SLOTS_THAT_CANT_BE_MOGGED, itemType) then
+            return true;
+        end
+    elseif itemType == Enum.ItemClass.Miscellaneous then
+        local miscSubType = Enum.ItemMiscellaneousSubclass;
+        if itemSubType == miscSubType.CompanionPet or itemSubType == miscSubType.Mount then
+            return true;
+        end
+    end
+
+    return false;
+end
+
+function DatamineScrollableDataFrameMixin:IsPopulated()
+    return self.DataProvider:GetSize() > 0;
+end
+
+function DatamineScrollableDataFrameMixin:SetExplorerHighlightShown(shouldShow)
+    if self:IsShown() then
+        self.DragDropNineSlice:SetShown(shouldShow);
+
+        if shouldShow then
+            self:ShowHelpText(SEARCH_HELP_TYPE.DRAGDROP);
+        else
+            self:ShowHelpText(SEARCH_HELP_TYPE.HELP);
+        end
+    end
+end
+
 function DatamineScrollableDataFrameMixin:RefreshDataProvider()
     self.ScrollView:FlushDataProvider();
     self.Icon:Hide();
     self.Title:Hide();
 end
 
-function DatamineScrollableDataFrameMixin:ShowHelpText()
-    self.HelpText:SetText(SEARCH_HELP_HEADER);
+function DatamineScrollableDataFrameMixin:ShowHelpText(textType, lowerHeader, lowerDetails)
+    if self:IsPopulated() then
+        return;
+    end
 
-    local detailsText = self:GetFormattedHelpDetailsText();
-    self.HelpTextDetails:SetText(detailsText);
+    local headerText = SEARCH_HELP_FORMAT[textType].Header;
+    headerText = lowerHeader and headerText:lower() or headerText;
 
-    self.HelpText:Show();
-    self.HelpTextDetails:Show();
-end
+    self.HelpText:SetText(headerText);
 
-function DatamineScrollableDataFrameMixin:ShowFailText()
-    self.HelpText:SetText(SEARCH_FAIL_HEADER);
-
-    local detailsText = self:GetFormattedHelpDetailsText(true);
+    local detailsText = self:GetFormattedHelpDetailsText(textType);
+    detailsText = lowerDetails and detailsText:lower() or detailsText;
     self.HelpTextDetails:SetText(detailsText);
 
     self.HelpText:Show();
@@ -347,15 +445,16 @@ function DatamineScrollableDataFrameMixin:GetSearchModeText()
 end
 
 -- 'a' or 'an'?
-function DatamineScrollableDataFrameMixin:GetFormattedHelpDetailsText(fail)
+function DatamineScrollableDataFrameMixin:GetFormattedHelpDetailsText(textType)
     local modeText = self:GetSearchModeText();
     local vowels = {"a", "e", "i", "o", "u"};
     local prefix = tContains(vowels, (modeText:lower():sub(1, 1))) and "an" or "a";
     if modeText then
-        if fail then
-            return format(SEARCH_FAIL_DETAILS, modeText, self.DataID);
-        else
-            return format(SEARCH_HELP_DETAILS, prefix, modeText);
+        local fmt = SEARCH_HELP_FORMAT[textType].Details;
+        if textType == SEARCH_HELP_TYPE.FAIL then
+            return format(fmt, modeText, self.DataID);
+        elseif textType == SEARCH_HELP_TYPE.HELP or textType == SEARCH_HELP_TYPE.DRAGDROP then
+            return format(fmt, prefix, modeText);
         end
     end
 end
@@ -427,13 +526,13 @@ end
 
 -------------
 
-DataminePreviewItemButtonMixin = {};
+DataminePreviewButtonMixin = {};
 
-function DataminePreviewItemButtonMixin:OnLoad()
+function DataminePreviewButtonMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_RESULT, self.OnSearchResult, self);
 end
 
-function DataminePreviewItemButtonMixin:OnClick()
+function DataminePreviewButtonMixin:OnClick()
     local dataID = self.dataID;
     local searchMode = self.searchMode;
     local data = self.data;
@@ -452,36 +551,36 @@ function DataminePreviewItemButtonMixin:OnClick()
 
 end
 
-function DataminePreviewItemButtonMixin:OnSearchResult(dataID)
+function DataminePreviewButtonMixin:OnSearchResult(dataID)
     local parent = self:GetParent();
     self.dataID = dataID;
     self.searchMode = parent.SearchMode;
     self.data = parent.CurrentData;
 end
 
-function DataminePreviewItemButtonMixin:OnEnter()
+function DataminePreviewButtonMixin:OnEnter()
 end
 
-function DataminePreviewItemButtonMixin:OnLeave()
+function DataminePreviewButtonMixin:OnLeave()
 end
 
-function DataminePreviewItemButtonMixin:GetModelScene()
+function DataminePreviewButtonMixin:GetModelScene()
     return DatamineUnifiedFrame.Workspace.ModelViewTab.ModelScene;
 end
 
-function DataminePreviewItemButtonMixin:TryOnItem(id)
+function DataminePreviewButtonMixin:TryOnItem(id)
     local scene = self:GetModelScene();
     local controls = scene:GetExternalControls();
     controls:ViewItemID(id);
 end
 
-function DataminePreviewItemButtonMixin:ViewCompanion(id)
+function DataminePreviewButtonMixin:ViewCompanion(id)
     local scene = self:GetModelScene();
     local _, _, _, _, _, _, _, _, _, _, _, displayID, _ = C_PetJournal.GetPetInfoByItemID(id);
     scene:ViewPet(displayID);
 end
 
-function DataminePreviewItemButtonMixin:ViewMount(id)
+function DataminePreviewButtonMixin:ViewMount(id)
     local scene = self:GetModelScene();
     local mountID = C_MountJournal.GetMountFromItem(id);
 
@@ -493,9 +592,11 @@ end
 
 DatamineUnifiedExplorerTabMixin = {};
 
+local DEFAULT_SEARCH_MODE = DataTypes.Item;
+
 function DatamineUnifiedExplorerTabMixin:OnLoad()
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
-    self:SetSearchMode(DataTypes.Item);
+    self:SetSearchMode(DEFAULT_SEARCH_MODE);
 
     local function SearchModeMenu(button)
         local elements = {};

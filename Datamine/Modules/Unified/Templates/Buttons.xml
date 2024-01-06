@@ -36,4 +36,23 @@
         </Scripts>
     </Button>
 
+    <Button name="DatamineTooltipButtonTemplate" virtual="true"
+        inherits="DatamineGenericButtonTemplate" registerForClicks="LeftButtonUp"
+        mixin="DatamineCloseButtonMixin">
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate"
+                    setAllPoints="true">
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-close" />
+                    </KeyValues>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
+    </Button>
+
 </Ui>
