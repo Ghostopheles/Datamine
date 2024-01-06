@@ -578,7 +578,6 @@ function DataminePreviewButtonMixin:OnClick()
     elseif data.ItemSubType == "Mount" then
         self:ViewMount(dataID);
     end
-
 end
 
 function DataminePreviewButtonMixin:GetTooltipText()
@@ -676,6 +675,7 @@ end
 
 function DatamineUnifiedExplorerTabMixin:Search(number)
     Registry:TriggerEvent(Events.SEARCH_BEGIN, number);
+    self:SetCurrentDataID(number);
     self:GetDataFetchFunc()(number, function(data) self.DataFrame:Populate(data, number) end);
 end
 
