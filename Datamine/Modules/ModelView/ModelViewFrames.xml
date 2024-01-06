@@ -49,6 +49,7 @@
             <OnShow inherit="prepend">
 				self.Label:SetText(self.LabelText);
 				self.Label:Show();
+                self:SetText("");
 			</OnShow>
             <OnEnterPressed>
                 if not self.Callback then return end;

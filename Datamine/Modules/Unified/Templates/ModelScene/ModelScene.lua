@@ -2,6 +2,8 @@ local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 local Transmog = Datamine.Transmog;
 
+local UI_MAIN = Datamine.Unified;
+
 -------------
 
 DatamineModelSceneActorMixin = CreateFromMixins(ModelSceneActorMixin);
@@ -439,6 +441,63 @@ function DatamineModelSceneMixin:ViewPet(displayID)
     local actor = self:GetActiveActor();
     actor:ApplyFromModelSceneActorInfo(actorInfo);
     actor:SetModelByCreatureDisplayID(displayID);
+end
+
+function DatamineModelSceneMixin:TryOnByItemModifiedAppearanceID(appearanceIDs)
+    local actor = self:GetActiveActor();
+    if type(appearanceIDs) == "table" then
+        for _, appearanceID in pairs(appearanceIDs) do
+            actor:TryOn(appearanceID);
+        end
+    else
+        actor:TryOn(appearanceIDs);
+    end
+
+    Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
+end
+
+function DatamineModelSceneMixin:TryOnByItemID(itemID)
+    local _, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemID);
+    return self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceID);
+end
+
+function DatamineModelSceneMixin:TryOnByTransmogSetID(transmogSetID)
+    local actor = self:GetActiveActor();
+    local itemModifiedAppearanceIDs = C_TransmogSets.GetAllSourceIDs(transmogSetID);
+    if itemModifiedAppearanceIDs and #itemModifiedAppearanceIDs > 0 then
+        actor:Undress();
+    end
+
+    return self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceIDs);
+end
+
+function DatamineModelSceneMixin:SetModelByFileID(fdid)
+    local actor = self:GetActiveActor();
+    return actor:SetModelByFileID(fdid);
+end
+
+function DatamineModelSceneMixin:SetModelByCreatureDisplayID(cdid)
+    local actor = self:GetActiveActor();
+    return actor:SetModelByCreatureDisplayID(cdid);
+end
+
+function DatamineModelSceneMixin:ApplySpellVisualKit(svkid)
+    if svkid == 0 then svkid = nil; end;
+    local actor = self:GetActiveActor();
+    return actor:SetSpellVisualKit(svkid);
+end
+
+function DatamineModelSceneMixin:PlayAnimKit(akid)
+    local actor = self:GetActiveActor();
+    if akid == nil or akid == 0 then
+        return actor:StopAnimationKit();
+    end
+    return actor:PlayAnimationKit(akid);
+end
+
+function DatamineModelSceneMixin:TryOnTransmogSet()
+    local actor = self:GetActiveActor();
+    local itemModifiedAppearanceIDs = C_TransmogSets.GetAllSourceIDs(transmogSetID);
 end
 
 -------------
@@ -933,22 +992,6 @@ function DatamineModelControlsTreeMixin:LoadOutfit(itemTransmogInfoList)
     end
 end
 
-function DatamineModelControlsTreeMixin:ViewItemModifiedAppearance(itemModifiedAppearanceID)
-    local actor = self.ModelScene:GetActiveActor();
-    local success = actor:TryOn(itemModifiedAppearanceID);
-
-    if success == 0 then
-        Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
-    end
-
-    return success;
-end
-
-function DatamineModelControlsTreeMixin:ViewItemID(itemID)
-    local _, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemID);
-    return self:ViewItemModifiedAppearance(itemModifiedAppearanceID);
-end
-
 function DatamineModelControlsTreeMixin:RemoveAppearance(appearanceID, secondaryAppearanceID, illusionID)
     secondaryAppearanceID = secondaryAppearanceID or Constants.Transmog.NoTransmogID;
     illusionID = illusionID or Constants.Transmog.NoTransmogID;
@@ -956,93 +999,71 @@ function DatamineModelControlsTreeMixin:RemoveAppearance(appearanceID, secondary
     local hiddenAppearanceID = Transmog:GetHiddenAppearanceForAppearanceID(appearanceID);
 
     if hiddenAppearanceID then
-        self:ViewItemModifiedAppearance(hiddenAppearanceID);
+        self:GetScene():TryOnByItemModifiedAppearanceID(hiddenAppearanceID);
     end
 end
 
 function DatamineModelControlsTreeMixin:SearchItemByAppearanceID(itemModifiedAppearanceID)
     local itemID = Transmog:GetItemIDForAppearanceID(itemModifiedAppearanceID);
-    local explorer = self:GetParent():GetParent().ExplorerTab;
+    local explorer = UI_MAIN.GetExplorer();
 
     explorer:SetSearchMode(Datamine.Constants.DataTypes.Item);
     explorer:Search(itemID);
 end
 
 function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
-    local fdidCallback = function(fdid)
-        local actor = self.ModelScene:GetPlayerActor();
-        return actor:SetModelByFileID(fdid, true);
-    end;
-
     self.AdvancedTab:Insert({
         Text = "Set model by FileDataID",
         Instructions = "Enter a FileDataID...",
-        Callback = fdidCallback,
+        Callback = function(fdid) return self:GetScene():SetModelByFileID(fdid) end,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
-
-    local creatureDisplayCallback = function(id)
-        local actor = self.ModelScene:GetPlayerActor();
-        return actor:SetModelByCreatureDisplayID(id);
-    end;
 
     self.AdvancedTab:Insert({
         Text = "Set model by DisplayInfoID",
         Instructions = "Enter a DisplayInfoID...",
-        Callback = creatureDisplayCallback,
+        Callback = function(cdid) return self:GetScene():SetModelByCreatureDisplayID(cdid) end,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
-
-    local itemEntryCallback = function(id)
-        return self:ViewItemID(id);
-    end;
 
     self.AdvancedTab:Insert({
         Text = "Try on ItemID",
         Instructions = "Enter an ItemID...",
-        Callback = itemEntryCallback,
+        Callback = function(iid) return self:GetScene():TryOnByItemID(iid) end,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
-
-    local itemModAppearanceCallback = function(id)
-        return self:ViewItemModifiedAppearance(id);
-    end;
 
     self.AdvancedTab:Insert({
         Text = "Try on ItemModifiedAppearanceID",
         Instructions = "Enter an ItemModifiedAppearanceID...",
-        Callback = itemModAppearanceCallback,
+        Callback = function(imaid) return self:GetScene():TryOnByItemModifiedAppearanceID(imaid) end,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
 
-    local spellVisualCallback = function(id)
-        id = id or 0;
-        local actor = self.ModelScene:GetActiveActor();
-        return actor:SetSpellVisualKit(id);
-    end;
+    self.AdvancedTab:Insert({
+        Text = "Try on TransmogSetID",
+        Instructions = "Enter a TransmogSetID...",
+        Callback = function(tsid) return self:GetScene():TryOnByTransmogSetID(tsid) end,
+        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        RequestedExtent = 40,
+    });
 
     self.AdvancedTab:Insert({
         Text = "Apply SpellVisualKit",
         Instructions = "Enter a SpellVisualKitID...",
-        Callback = spellVisualCallback,
+        Callback = function(svkid) return self:GetScene():ApplySpellVisualKit(svkid) end,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
 
-    local animKitCallback = function(id)
-        id = id or 0;
-        local actor = self.ModelScene:GetActiveActor();
-        return actor:PlayAnimationKit(id);
-    end;
-
     self.AdvancedTab:Insert({
         Text = "Play AnimationKit",
         Instructions = "Enter an AnimKitID...",
-        Callback = animKitCallback,
+        Callback = function(akid) return self:GetScene():PlayAnimKit(akid) end,
         Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
         RequestedExtent = 40,
     });
@@ -1153,6 +1174,7 @@ function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
     local node = self:GetElementData();
     local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(self.data.AppearanceID);
     local transmogInfo = {
+        AppearanceID = self.data.AppearanceID;
         CategoryID = categoryID,
         VisualID = visualID,
         CanEnchant = tostring(canEnchant),
