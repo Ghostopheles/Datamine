@@ -375,7 +375,7 @@ end
 function DatamineScrollableDataFrameMixin:OnSearchModeChanged()
     self:RefreshDataProvider();
 
-    self.PreviewButton:SetShown(self:ShouldShowPreviewButton());
+    self:UpdatePreviewButtonVisiblity();
     self:ShowHelpText(SEARCH_HELP_TYPE.HELP);
 end
 
@@ -384,8 +384,7 @@ function DatamineScrollableDataFrameMixin:OnSearchResult(dataID)
     self.Title:SetText(modeText .. " " .. dataID);
     self.Title:Show();
 
-    self.PreviewButton:SetShown(self:ShouldShowPreviewButton());
-
+    self:UpdatePreviewButtonVisiblity();
     self:SetLoading(false);
 end
 
@@ -424,6 +423,10 @@ function DatamineScrollableDataFrameMixin:ShouldShowPreviewButton()
     return false;
 end
 
+function DatamineScrollableDataFrameMixin:UpdatePreviewButtonVisiblity()
+    self.PreviewButton:SetShown(self:ShouldShowPreviewButton());
+end
+
 function DatamineScrollableDataFrameMixin:IsPopulated()
     return self.DataProvider:GetSize() > 0;
 end
@@ -447,7 +450,7 @@ function DatamineScrollableDataFrameMixin:RefreshDataProvider()
 end
 
 function DatamineScrollableDataFrameMixin:ShowHelpText(textType, lowerHeader, lowerDetails)
-    if self:IsPopulated() then
+    if self:IsPopulated() or self:IsLoading() then
         return;
     end
 
