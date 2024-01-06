@@ -90,8 +90,11 @@
                     <Anchor point="LEFT" x="10" />
                 </Anchors>
             </ItemButton>
-            <Button parentKey="SearchButton" inherits="DatamineGenericButtonTemplate">
+            <Button parentKey="SearchButton" inherits="DatamineTooltipButtonTemplate">
                 <Size x="20" y="20" />
+                <KeyValues>
+                    <KeyValue key="TooltipText" value="Search Item" />
+                </KeyValues>
                 <Anchors>
                     <Anchor point="RIGHT" x="-5" />
                 </Anchors>
@@ -106,8 +109,11 @@
                     </Layer>
                 </Layers>
             </Button>
-            <Button parentKey="HideButton" inherits="DatamineGenericButtonTemplate">
+            <Button parentKey="HideButton" inherits="DatamineTooltipButtonTemplate">
                 <Size x="20" y="20" />
+                <KeyValues>
+                    <KeyValue key="TooltipText" value="Remove Item" />
+                </KeyValues>
                 <Anchors>
                     <Anchor point="RIGHT" relativeKey="$parent.SearchButton"
                         relativePoint="LEFT" x="-5" />
