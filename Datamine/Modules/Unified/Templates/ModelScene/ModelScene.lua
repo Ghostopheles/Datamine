@@ -495,11 +495,6 @@ function DatamineModelSceneMixin:PlayAnimKit(akid)
     return actor:PlayAnimationKit(akid);
 end
 
-function DatamineModelSceneMixin:TryOnTransmogSet()
-    local actor = self:GetActiveActor();
-    local itemModifiedAppearanceIDs = C_TransmogSets.GetAllSourceIDs(transmogSetID);
-end
-
 -------------
 
 DatamineModelControlsEditBoxMixin = {};
@@ -1274,4 +1269,8 @@ function DatamineModelControlsAdvancedPanelEntryMixin:Init(node)
     self.EntryBox.Instructions:SetText(data.Instructions);
     self.EntryBox:SetNumeric(true);
     self.EntryBox.Callback = function() data.Callback(self.EntryBox:GetNumber()); end;
+end
+
+function DatamineModelControlsAdvancedPanelEntryMixin:OnHide()
+    self.EntryBox:SetText("");
 end

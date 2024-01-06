@@ -6,6 +6,7 @@ Datamine.Events = {
     MODEL_CONTROLS_DEFAULTS_UPDATED = "ModelControlsDefaultsUpdated",
     MODEL_OUTFIT_UPDATED = "ModelOutfitUpdated",
     MODEL_DRESSED = "ModelDressed",
+    MODEL_CONTROLS_TAB_COLLAPSED = "ModelControlsTabCollapsed",
     SEARCH_MODE_CHANGED = "SearchModeChanged",
     SEARCH_RESULT = "SearchResult",
     SEARCH_BEGIN = "SearchBegin",
