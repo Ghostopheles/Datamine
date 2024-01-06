@@ -1,4 +1,6 @@
 local moduleName = "UIMain";
+local Constants = Datamine.Constants;
+local DataTypes = Constants.DataTypes;
 
 Datamine.Unified = {};
 
@@ -206,16 +208,44 @@ end
 
 -------------
 
+local DEFAULT_SEARCH_MODE = DataTypes.Item;
+
+function Datamine.Unified.GetUI()
+    return DatamineUnifiedFrame;
+end
+
+function Datamine.Unified.GetExplorer()
+    return Datamine.Unified.GetUI().Workspace.ExplorerTab;
+end
+
+function Datamine.Unified.GetModelView()
+    return Datamine.Unified.GetUI().Workspace.ModelViewTab;
+end
+
+
+function Datamine.Unified.GetExplorerDefaultSearchMode()
+    return DEFAULT_SEARCH_MODE;
+end
+
 function Datamine.Unified.GetExplorerSearchMode()
+    if not DatamineUnifiedFrame.Workspace then
+        return Datamine.Unified.GetExplorerDefaultSearchMode();
+    end
+
     return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+end
+
+function Datamine.Unified.GetExplorerSearchModeName()
+    local searchMode = Datamine.Unified.GetExplorerSearchMode();
+    return Datamine.GetEnumValueName(DataTypes, searchMode);
 end
 
 function Datamine.Unified.GetExplorerDataID()
-    return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+    return Datamine.Unified.GetExplorer():GetCurrentDataID();
 end
 
 function Datamine.Unified.GetExplorerData()
-    return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+    return Datamine.Unified.GetExplorer().DataFrame:GetCurrentData();
 end
 
 function Datamine.Unified.AddToolbarButton(atlasName, callback)

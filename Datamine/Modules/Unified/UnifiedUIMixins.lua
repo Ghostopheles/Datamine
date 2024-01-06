@@ -33,7 +33,6 @@ end
 function DatamineCustomAtlasMixin:ApplyAtlas()
     local atlasInfo = Datamine.CustomAtlas:GetAtlasInfo(self.FileName, self.AtlasName);
     if not atlasInfo then
-        print("no atlasInfo for " .. self.AtlasName);
         return;
     end
 
@@ -251,7 +250,7 @@ local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
     INVTYPE_EQUIPABLESPELL_UTILITY,
     INVTYPE_EQUIPABLESPELL_OFFENSIVE,
     INVTYPE_EQUIPABLESPELL_WEAPON,
-}
+};
 
 function DatamineScrollableDataFrameMixin:OnLoad()
     self.DataProvider = CreateDataProvider();
@@ -303,7 +302,7 @@ function DatamineScrollableDataFrameMixin:GLOBAL_MOUSE_UP()
         local item = C_Cursor.GetCursorItem();
         if item and item:IsValid() then
             local itemID = C_Item.GetItemID(item);
-            if self.SearchMode ~= DataTypes.Item then
+            if UI_MAIN.GetExplorerSearchMode() ~= DataTypes.Item then
                 self:GetParent():SetSearchMode(DataTypes.Item);
             end
             self:GetParent():Search(itemID);
@@ -315,7 +314,6 @@ end
 
 function DatamineScrollableDataFrameMixin:CURSOR_CHANGED(...)
     local _, newCursorType, _ = ...;
-    print("new cursor type: " .. Datamine.GetEnumValueName(Enum.UICursorType, newCursorType));
     if newCursorType == Enum.UICursorType.Item then
         self:SetExplorerHighlightShown(true);
     else
@@ -333,23 +331,15 @@ function DatamineScrollableDataFrameMixin:OnSearchBegin(dataID)
     self.Failed = false;
 end
 
-function DatamineScrollableDataFrameMixin:OnSearchModeChanged(searchMode)
-    if searchMode == self.SearchMode then
-        return;
-    end
-
+function DatamineScrollableDataFrameMixin:OnSearchModeChanged()
     self:RefreshDataProvider();
 
-    if searchMode ~= DataTypes.Item then
-        self.PreviewButton:Hide();
-    end
-
-    self.SearchMode = searchMode;
+    self.PreviewButton:SetShown(self:ShouldShowPreviewButton());
     self:ShowHelpText(SEARCH_HELP_TYPE.HELP);
 end
 
 function DatamineScrollableDataFrameMixin:OnSearchResult(dataID)
-    local modeText = Datamine.GetEnumValueName(DataTypes, self.SearchMode);
+    local modeText = UI_MAIN.GetExplorerSearchModeName();
     self.Title:SetText(modeText .. " " .. dataID);
     self.Title:Show();
 
@@ -369,7 +359,8 @@ function DatamineScrollableDataFrameMixin:OnFail()
 end
 
 function DatamineScrollableDataFrameMixin:ShouldShowPreviewButton()
-    if self.SearchMode ~= DataTypes.Item or not self:IsPopulated() then
+    local searchMode = UI_MAIN.GetExplorerSearchMode();
+    if searchMode ~= DataTypes.Item or not self:IsPopulated() then
         return;
     end
 
@@ -433,26 +424,23 @@ function DatamineScrollableDataFrameMixin:ShowHelpText(textType, lowerHeader, lo
 end
 
 function DatamineScrollableDataFrameMixin:GetDataKeys()
-    return DataKeys[self.SearchMode];
+    local searchMode = UI_MAIN.GetExplorerSearchMode();
+    return DataKeys[searchMode];
 end
 
-function DatamineScrollableDataFrameMixin:GetSearchModeText()
-    if self.SearchMode then
-        return Datamine.GetEnumValueName(DataTypes, self.SearchMode);
-    else
-        return Datamine.GetEnumValueName(DataTypes, DataTypes.Item);
-    end
+function DatamineScrollableDataFrameMixin:GetCurrentData()
+    return self.CurrentData;
 end
 
 -- 'a' or 'an'?
 function DatamineScrollableDataFrameMixin:GetFormattedHelpDetailsText(textType)
-    local modeText = self:GetSearchModeText();
+    local modeText = UI_MAIN.GetExplorerSearchModeName();
     local vowels = {"a", "e", "i", "o", "u"};
     local prefix = tContains(vowels, (modeText:lower():sub(1, 1))) and "an" or "a";
     if modeText then
         local fmt = SEARCH_HELP_FORMAT[textType].Details;
         if textType == SEARCH_HELP_TYPE.FAIL then
-            return format(fmt, modeText, self.DataID);
+            return format(fmt, modeText, UI_MAIN.GetExplorerDataID());
         elseif textType == SEARCH_HELP_TYPE.HELP or textType == SEARCH_HELP_TYPE.DRAGDROP then
             return format(fmt, prefix, modeText);
         end
@@ -467,6 +455,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
         return;
     end
 
+    local searchMode = UI_MAIN.GetExplorerSearchMode();
     local keys = self:GetDataKeys();
     self.CurrentData = {};
     self.i = 0;
@@ -480,11 +469,11 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
 
         local key = keys[i];
 
-        if key == "Hyperlink" and self.SearchMode == DataTypes.Item then
+        if key == "Hyperlink" and searchMode == DataTypes.Item then
             self.Icon:SetItem(value);
         end
 
-        if key == "Icon" and self.SearchMode == DataTypes.Spell then
+        if key == "Icon" and searchMode == DataTypes.Spell then
             self.Icon.icon:SetTexture(value);
         end
 
@@ -529,13 +518,13 @@ end
 DataminePreviewButtonMixin = {};
 
 function DataminePreviewButtonMixin:OnLoad()
-    Registry:RegisterCallback(Events.SEARCH_RESULT, self.OnSearchResult, self);
+    self.TooltipAnchorPoint = "ANCHOR_TOPLEFT";
 end
 
 function DataminePreviewButtonMixin:OnClick()
-    local dataID = self.dataID;
-    local searchMode = self.searchMode;
-    local data = self.data;
+    local dataID = UI_MAIN.GetExplorerDataID();
+    local searchMode = UI_MAIN.GetExplorerSearchMode();
+    local data = UI_MAIN.GetExplorerData();
 
     if searchMode ~= DataTypes.Item then
         return;
@@ -551,21 +540,14 @@ function DataminePreviewButtonMixin:OnClick()
 
 end
 
-function DataminePreviewButtonMixin:OnSearchResult(dataID)
-    local parent = self:GetParent();
-    self.dataID = dataID;
-    self.searchMode = parent.SearchMode;
-    self.data = parent.CurrentData;
-end
-
-function DataminePreviewButtonMixin:OnEnter()
-end
-
-function DataminePreviewButtonMixin:OnLeave()
+function DataminePreviewButtonMixin:GetTooltipText()
+    local fmt = "View %s";
+    local searchModeText = UI_MAIN.GetExplorerSearchModeName();
+    return format(fmt, searchModeText);
 end
 
 function DataminePreviewButtonMixin:GetModelScene()
-    return DatamineUnifiedFrame.Workspace.ModelViewTab.ModelScene;
+    return UI_MAIN.GetModelView().ModelScene;
 end
 
 function DataminePreviewButtonMixin:TryOnItem(id)
@@ -620,6 +602,14 @@ function DatamineUnifiedExplorerTabMixin:GetSearchMode()
     return self.SearchMode;
 end
 
+function DatamineUnifiedExplorerTabMixin:SetCurrentDataID(number)
+    self.CurrentDataID = number;
+end
+
+function DatamineUnifiedExplorerTabMixin:GetCurrentDataID()
+    return self.CurrentDataID;
+end
+
 function DatamineUnifiedExplorerTabMixin:GetDataFetchFunc()
     return FetchFuncs[self.SearchMode];
 end
@@ -629,12 +619,16 @@ function DatamineUnifiedExplorerTabMixin:SetSearchMode(searchMode)
         return;
     end
 
+    if searchMode == self.SearchMode then
+        return;
+    end
+
     self.SearchMode = searchMode;
-    Registry:TriggerEvent(Events.SEARCH_MODE_CHANGED, self.SearchMode);
+    Registry:TriggerEvent(Events.SEARCH_MODE_CHANGED);
 end
 
-function DatamineUnifiedExplorerTabMixin:OnSearchModeChanged(searchMode)
-    local searchModeStr = Datamine.GetEnumValueName(DataTypes, searchMode);
+function DatamineUnifiedExplorerTabMixin:OnSearchModeChanged()
+    local searchModeStr = Datamine.GetEnumValueName(DataTypes, self:GetSearchMode());
     self.SearchBox.Instructions:SetText("Enter " .. searchModeStr .. "ID...");
     self.SearchBox:SetText("");
 end
