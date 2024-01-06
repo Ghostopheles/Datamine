@@ -222,6 +222,8 @@ function Datamine.Unified.GetModelView()
     return Datamine.Unified.GetUI().Workspace.ModelViewTab;
 end
 
+------------- Explorer accessors
+
 function Datamine.Unified.GetExplorerDefaultSearchMode()
     return DEFAULT_SEARCH_MODE;
 end
@@ -231,7 +233,7 @@ function Datamine.Unified.GetExplorerSearchMode()
         return Datamine.Unified.GetExplorerDefaultSearchMode();
     end
 
-    return DatamineUnifiedFrame.Workspace.ExplorerTab:GetSearchMode();
+    return Datamine.Unified.GetExplorer():GetSearchMode();
 end
 
 function Datamine.Unified.GetExplorerSearchModeName()
@@ -246,6 +248,8 @@ end
 function Datamine.Unified.GetExplorerData()
     return Datamine.Unified.GetExplorer().DataFrame:GetCurrentData();
 end
+
+-------------
 
 function Datamine.Unified.AddToolbarButton(atlasName, callback)
     local toolbar = DatamineUnifiedFrame.Toolbar;
