@@ -5,10 +5,12 @@ local DataTypes = Datamine.Constants.DataTypes;
 local DataKeys = {
     [DataTypes.Item] = Datamine.Item.ItemInfoKeys,
     [DataTypes.Spell] = Datamine.Spell.SpellInfoKeys,
+    [DataTypes.Achievement] = Datamine.Achievement.AchievementInfoKeys,
 };
 local FetchFuncs = {
     [DataTypes.Item] = function(...) Datamine.Item:GetOrFetchItemInfoByID(...) end,
     [DataTypes.Spell] = function(...) Datamine.Spell:GetOrFetchSpellInfoByID(...) end,
+    [DataTypes.Achievement] = function(...) Datamine.Achievement:GetAchievementInfoByID(...) end,
 };
 
 local UI_MAIN = Datamine.Unified;
@@ -206,9 +208,12 @@ end
 
 DatamineDataFrameElementMixin = {};
 
-function DatamineDataFrameElementMixin:Init(data)
-    self.KeyText:SetText(data.key .. ":");
-    self.ValueText:SetText(data.value);
+function DatamineDataFrameElementMixin:Init(node)
+    local data = node:GetData();
+    local key = data.KeyValue.Key;
+    local value = data.KeyValue.Value;
+    self.KeyText:SetText(key .. ":");
+    self.ValueText:SetText(value);
 
     self.KeyText:SetTextScale(0.85);
     self.ValueText:SetTextScale(0.85);
@@ -216,7 +221,7 @@ function DatamineDataFrameElementMixin:Init(data)
     if self.KeyText:IsTruncated() then
         self.KeyText:SetScript("OnEnter", function()
             GameTooltip:SetOwner(self.KeyText, "ANCHOR_TOPRIGHT");
-            GameTooltip:SetText(data.key, 1, 1, 1);
+            GameTooltip:SetText(self.KeyText:GetText(), 1, 1, 1);
             GameTooltip:Show();
         end);
 
@@ -235,6 +240,12 @@ function DatamineDataFrameElementMixin:Init(data)
         self.ValueText:SetScript("OnLeave", function()
             GameTooltip:Hide();
         end);
+    end
+
+    if data.DarkenBackground then
+        self.Background:SetAlpha(0.45);
+    else
+        self.Background:SetAlpha(0.15);
     end
 end
 
@@ -294,32 +305,24 @@ local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
 };
 
 function DatamineScrollableDataFrameMixin:OnLoad()
-    self.DataProvider = CreateDataProvider();
+    -- override base visibility behavior
+    local anchorsWithScrollBar = {
+        CreateAnchor("TOPLEFT", 4, -4);
+        CreateAnchor("BOTTOMRIGHT", self.ScrollBar, -13, 4),
+    };
 
-    self.ScrollView = CreateScrollBoxListLinearView();
-    self.ScrollView:SetDataProvider(self.DataProvider);
+    local anchorsWithoutScrollBar = {
+        CreateAnchor("TOPLEFT", 4, -45),
+        CreateAnchor("BOTTOMRIGHT", -4, 4);
+    };
 
-    self.i = 0;
-    self.ScrollView:SetElementInitializer("DatamineDataFrameElementTemplate", function(frame, data)
-        frame:Init(data, self);
-
-        if self.i % 2 == 0 then
-            frame.Background:SetAlpha(0.15);
-        else
-            frame.Background:SetAlpha(0.35);
-        end
-        self.i = self.i + 1;
-    end);
-
-    self.ScrollBox:SetInterpolateScroll(true);
-    self.ScrollBar:SetInterpolateScroll(true);
-    self.ScrollBar:SetHideIfUnscrollable(true);
-
-    ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
+    ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
 
     Registry:RegisterCallback(Events.SEARCH_BEGIN, self.OnSearchBegin, self);
     Registry:RegisterCallback(Events.SEARCH_RESULT, self.OnSearchResult, self);
     Registry:RegisterCallback(Events.SEARCH_MODE_CHANGED, self.OnSearchModeChanged, self);
+
+    self.DataEntryCount = 0;
 
     self.HelpTextDetails:SetTextScale(0.75);
     self:RegisterEvent("GLOBAL_MOUSE_UP");
@@ -331,6 +334,7 @@ function DatamineScrollableDataFrameMixin:OnLoad()
     end);
 
     self.DragDropNineSlice.Center:SetAlpha(0.25);
+    self.Background_Base:Hide();
 end
 
 function DatamineScrollableDataFrameMixin:OnShow()
@@ -428,7 +432,7 @@ function DatamineScrollableDataFrameMixin:UpdatePreviewButtonVisiblity()
 end
 
 function DatamineScrollableDataFrameMixin:IsPopulated()
-    return self.DataProvider:GetSize() > 0;
+    return self.DataProvider:GetSize(false) > 0;
 end
 
 function DatamineScrollableDataFrameMixin:SetExplorerHighlightShown(shouldShow)
@@ -502,16 +506,21 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
     local searchMode = UI_MAIN.GetExplorerSearchMode();
     local keys = self:GetDataKeys();
     self.CurrentData = {};
-    self.i = 0;
+    self.DataEntryCount = 0;
 
-    for i, value in ipairs(data) do
+    for i, value in pairs(data) do
         if value == nil or value == "" then
             value = "N/A";
         elseif type(value) == "boolean" then
             value = tostring(value);
         end
 
-        local key = keys[i];
+        local key;
+        if type(i) == "string" then
+            key = i;
+        else
+            key = keys[i];
+        end
 
         if key == "Hyperlink" and searchMode == DataTypes.Item then
             self.Icon:SetItem(value);
@@ -522,15 +531,22 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
         end
 
         local _data = {
-            key = keys[i],
-            value = value
+            KeyValue = {
+                Key = key,
+                Value = value
+            },
+            Template = "DatamineDataFrameElementTemplate",
+            IsTopLevel = true,
+            ShowChevron = false,
+            DarkenBackground = self.DataEntryCount % 2 == 0,
         };
 
-        self.CurrentData[keys[i]] = value;
+        self.CurrentData[key] = value;
 
         -- skip the "name" entry because Hyperlink covers that
         if _data.key ~= "Name" then
             self.DataProvider:Insert(_data);
+            self.DataEntryCount = self.DataEntryCount + 1;
         end
     end
 

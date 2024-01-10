@@ -36,6 +36,7 @@ Modules/SpellData.lua
 Modules/QuestData.lua
 Modules/QuestLineData.lua
 Modules/TransmogData.lua
+Modules/AchievementInfo.lua
 
 Modules/ModelView/Mixins/ControlPanelMixin.lua
 Modules/ModelView/Mixins/ModelFrameMixin.lua

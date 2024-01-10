@@ -60,22 +60,21 @@
                 </FontString>
             </Layer>
         </Layers>
+        <Scripts>
+            <OnHyperlinkEnter method="OnHyperlinkEnter" />
+            <OnHyperlinkClick method="OnHyperlinkClick" />
+            <OnHyperlinkLeave method="OnHyperlinkLeave" />
+        </Scripts>
     </Button>
 
     <Frame name="DatamineTabTreeViewTemplate" virtual="true"
         mixin="DatamineTabTreeViewMixin">
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Background" inherits="DatamineLightGrayBackgroundTemplate" />
+                <Texture parentKey="Background_Base" inherits="DatamineLightGrayBackgroundTemplate" />
             </Layer>
         </Layers>
         <Frames>
-            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
-                <Anchors>
-                    <Anchor point="TOPRIGHT" x="-7" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" x="-7" y="7" />
-                </Anchors>
-            </EventFrame>
             <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
                 <Anchors>
                     <Anchor point="TOP" y="-4" />
@@ -84,6 +83,12 @@
                         relativePoint="BOTTOMLEFT" />
                 </Anchors>
             </Frame>
+            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-7" y="-4" />
+                    <Anchor point="BOTTOMRIGHT" x="-7" y="7" />
+                </Anchors>
+            </EventFrame>
         </Frames>
         <Scripts>
             <OnLoad method="OnLoad_Base" />

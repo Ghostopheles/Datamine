@@ -3,6 +3,7 @@
 ---@field Text? string
 ---@field IsTopLevel? boolean
 ---@field ShowChevron? boolean
+---@field CanExpand? boolean
 ---@field RequestedExtent? number
 ---@field ControlID? string
 ---@field DataFetch? function
@@ -30,13 +31,16 @@ function DatamineTabTreeViewCategoryHeaderMixin:Init(node)
     self.UncollapsedChevronAtlas = "uitools-icon-chevron-down";
     self:UpdateChevron();
 
+    self.CanExpand = data.CanExpand;
     self:Show();
 end
 
 function DatamineTabTreeViewCategoryHeaderMixin:OnClick()
-    local node = self:GetElementData();
-    node:ToggleCollapsed();
-    self:UpdateChevron();
+    if self.CanExpand then
+        local node = self:GetElementData();
+        node:ToggleCollapsed();
+        self:UpdateChevron();
+    end
 
     if self.Callback then
         self:Callback();

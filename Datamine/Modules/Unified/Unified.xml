@@ -60,6 +60,7 @@
     </Frame>
 
     <Frame name="DatamineScrollableDataFrameTemplate" virtual="true"
+        inherits="DatamineTabTreeViewTemplate"
         mixin="DatamineScrollableDataFrameMixin" enableMouse="true">
         <Layers>
             <Layer level="OVERLAY">
@@ -103,19 +104,6 @@
                     <Anchor point="RIGHT" relativeKey="$parent.Title" relativePoint="LEFT" x="-8" />
                 </Anchors>
             </ItemButton>
-            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
-                <Anchors>
-                    <Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" y="-15" />
-                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
-                    <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
-                </Anchors>
-            </Frame>
-            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
-                <Anchors>
-                    <Anchor point="TOPRIGHT" x="-13" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" x="-13" y="7" />
-                </Anchors>
-            </EventFrame>
             <Frame parentKey="LoadingSpinner" inherits="OutlineLoadingSpinnerTemplate" hidden="true">
                 <Anchors>
                     <Anchor point="CENTER" y="10" />
@@ -138,7 +126,7 @@
             </Frame>
         </Frames>
         <Scripts>
-            <OnLoad method="OnLoad" />
+            <OnLoad method="OnLoad" inherit="prepend" />
             <OnShow method="OnShow" />
         </Scripts>
     </Frame>

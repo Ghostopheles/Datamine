@@ -7,6 +7,7 @@ Datamine.Constants.AddonName = addonName;
 Datamine.Constants.DataTypes = {
     Item = 1,
     Spell = 2,
+    Achievement = 3,
 };
 
 Datamine.Mixins = {};

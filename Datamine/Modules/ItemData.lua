@@ -60,10 +60,6 @@ local Print = function(...)
     Datamine.Print(moduleName, ...);
 end;
 
-local Dump = function(tableTitle, ...)
-    Datamine.Dump(moduleName, tableTitle, ...);
-end;
-
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
     Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, ItemInfoKeys, ...);
 end;
