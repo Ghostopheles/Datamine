@@ -732,6 +732,8 @@ DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
     self.TitleContainer.Text:SetText("Datamine");
+
+    tinsert(UISpecialFrames, self:GetName());
 end
 
 function DatamineUnifiedFrameMixin:Toggle()
