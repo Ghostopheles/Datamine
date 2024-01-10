@@ -164,7 +164,7 @@
         </Scripts>
     </Frame>
 
-    <Frame name="DatamineWorkspaceTemplate" virtual="true">
+    <Frame name="DatamineWorkspaceTemplate" mixin="DatamineWorkspaceMixin" virtual="true">
         <Frames>
             <Frame parentKey="ExplorerTab" mixin="DatamineUnifiedExplorerTabMixin">
                 <Size x="300" />
@@ -363,6 +363,9 @@
                 </Texture>
             </Layer>
         </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
     </Frame>
 
     <Frame name="DatamineUnifiedFrame" parent="UIParent" toplevel="true" movable="true"

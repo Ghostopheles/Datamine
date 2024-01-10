@@ -728,6 +728,60 @@ end
 
 -------------
 
+DatamineWorkspaceMixin = {};
+DatamineWorkspaceMixin.Modes = {
+    DEFAULT = 1,
+    CODE = 2,
+    DB = 3,
+};
+
+function DatamineWorkspaceMixin:OnLoad()
+    self.ModeFrames = {
+        [self.Modes.DEFAULT] = {
+            self.ExplorerTab,
+            self.ModelViewTab,
+            self.DetailsTab,
+        },
+    };
+
+    Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnModeChanged, self);
+    self:SetMode(self.Modes.DEFAULT);
+end
+
+function DatamineWorkspaceMixin:OnModeChanged()
+    local newFrames = self.ModeFrames[self:GetMode()];
+
+    if not newFrames then
+        return;
+    end
+
+    self:HideAllChildren();
+    for _, frame in pairs(newFrames) do
+        frame:Show();
+    end
+end
+
+function DatamineWorkspaceMixin:SetMode(newMode)
+    if newMode == self.Mode then
+        return;
+    end
+
+    self.Mode = newMode;
+    Registry:TriggerEvent(Events.WORKSPACE_MODE_CHANGED);
+end
+
+function DatamineWorkspaceMixin:GetMode()
+    return self.Mode;
+end
+
+function DatamineWorkspaceMixin:HideAllChildren()
+    for _, frame in pairs({self:GetChildren()}) do
+        frame:Hide();
+    end
+end
+
+-------------
+
 DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()

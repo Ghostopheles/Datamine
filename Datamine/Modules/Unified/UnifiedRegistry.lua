@@ -10,6 +10,7 @@ Datamine.Events = {
     SEARCH_MODE_CHANGED = "SearchModeChanged",
     SEARCH_RESULT = "SearchResult",
     SEARCH_BEGIN = "SearchBegin",
+    WORKSPACE_MODE_CHANGED = "WorkspaceModeChanged",
 };
 
 local function GenerateCallbackEvents()
