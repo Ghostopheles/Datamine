@@ -207,12 +207,22 @@ end
 -------------
 
 DatamineDataFrameElementMixin = {};
+DatamineDataFrameElementMixin.DefaultMaxLines = 2;
+DatamineDataFrameElementMixin.DefaultValueTextJustification = "RIGHT";
 
 function DatamineDataFrameElementMixin:Init(node)
     local data = node:GetData();
     local key = data.KeyValue.Key;
     local value = data.KeyValue.Value;
-    self.KeyText:SetText(key .. ":");
+
+    if data.KeyValue.FontStringSettings then
+        self:ApplyFontStringSettings(data.KeyValue.FontStringSettings);
+    end
+
+    local orderIndex = data.OrderIndex;
+    local dbgKey = format("[%d] %s:", orderIndex, key);
+
+    self.KeyText:SetText(dbgKey);
     self.ValueText:SetText(value);
 
     self.KeyText:SetTextScale(0.85);
@@ -242,7 +252,7 @@ function DatamineDataFrameElementMixin:Init(node)
         end);
     end
 
-    if data.DarkenBackground then
+    if orderIndex % 2 == 0 then
         self.Background:SetAlpha(0.45);
     else
         self.Background:SetAlpha(0.15);
@@ -261,6 +271,17 @@ end
 
 function DatamineDataFrameElementMixin:OnHyperlinkLeave()
     GameTooltip:Hide();
+end
+
+function DatamineDataFrameElementMixin:OnSort()
+end
+
+function DatamineDataFrameElementMixin:ApplyFontStringSettings(settings)
+    local maxValueLines = settings.Value and settings.Value.MaxLines or self.DefaultMaxLines;
+    self.ValueText:SetMaxLines(maxValueLines);
+
+    local valueJustifyH = settings.Value and settings.Value.JustifyH or self.DefaultValueTextJustification;
+    self.ValueText:SetJustifyH(valueJustifyH);
 end
 
 -------------
@@ -302,6 +323,25 @@ local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
     INVTYPE_EQUIPABLESPELL_UTILITY,
     INVTYPE_EQUIPABLESPELL_OFFENSIVE,
     INVTYPE_EQUIPABLESPELL_WEAPON,
+};
+
+local function SortByKey(a, b, dataType)
+    local keys = DataKeys[dataType];
+    local idxA = tIndexOf(keys, a:GetData().KeyValue.Key);
+    local idxB = tIndexOf(keys, b:GetData().KeyValue.Key);
+    return idxA < idxB;
+end
+
+local SORT_FUNCTIONS = {
+    [DataTypes.Item] = function(a, b)
+        return SortByKey(a, b, DataTypes.Item);
+    end,
+    [DataTypes.Spell] = function(a, b)
+        return SortByKey(a, b, DataTypes.Spell);
+    end,
+    [DataTypes.Achievement] = function(a, b)
+        return SortByKey(a, b, DataTypes.Achievement);
+    end,
 };
 
 function DatamineScrollableDataFrameMixin:OnLoad()
@@ -508,6 +548,12 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
     self.CurrentData = {};
     self.DataEntryCount = 0;
 
+    self.DataProvider:SetSortComparator(SORT_FUNCTIONS[searchMode]);
+
+    if searchMode == DataTypes.Achievement then
+        self.Icon.icon:SetTexture(134400);
+    end
+
     for i, value in pairs(data) do
         if value == nil or value == "" then
             value = "N/A";
@@ -530,26 +576,48 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
             self.Icon.icon:SetTexture(value);
         end
 
+        local valueJustifyH = "RIGHT";
+        local maxValueLines = 2;
+        local extent = 20;
+        if searchMode == DataTypes.Achievement then
+            if key == "RewardText" then
+                extent = 35;
+                maxValueLines = 3;
+            elseif key == "Description" then
+                extent = 55;
+                maxValueLines = 5;
+                valueJustifyH = "MIDDLE";
+            end
+        end
+
         local _data = {
             KeyValue = {
                 Key = key,
-                Value = value
+                Value = value,
+                FontStringSettings = {
+                    Value = {
+                        MaxLines = maxValueLines,
+                        JustifyH = valueJustifyH,
+                    },
+                },
             },
             Template = "DatamineDataFrameElementTemplate",
             IsTopLevel = true,
             ShowChevron = false,
-            DarkenBackground = self.DataEntryCount % 2 == 0,
+            RequestedExtent = extent,
+            OrderIndex = tIndexOf(keys, key),
         };
 
         self.CurrentData[key] = value;
 
         -- skip the "name" entry because Hyperlink covers that
-        if _data.key ~= "Name" then
+        if _data.KeyValue.Key ~= "Name" then
             self.DataProvider:Insert(_data);
             self.DataEntryCount = self.DataEntryCount + 1;
         end
     end
 
+    self.DataProvider:Sort();
     Registry:TriggerEvent(Events.SEARCH_RESULT, dataID);
 end
 
