@@ -325,24 +325,11 @@ local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
     INVTYPE_EQUIPABLESPELL_WEAPON,
 };
 
-local function SortByKey(a, b, dataType)
-    local keys = DataKeys[dataType];
-    local idxA = tIndexOf(keys, a:GetData().KeyValue.Key);
-    local idxB = tIndexOf(keys, b:GetData().KeyValue.Key);
-    return idxA < idxB;
+local function SortByOrderIndex(a, b)
+    local idxA = a:GetData().OrderIndex;
+    local idxB = b:GetData().OrderIndex;
+    return idxA >= idxB;
 end
-
-local SORT_FUNCTIONS = {
-    [DataTypes.Item] = function(a, b)
-        return SortByKey(a, b, DataTypes.Item);
-    end,
-    [DataTypes.Spell] = function(a, b)
-        return SortByKey(a, b, DataTypes.Spell);
-    end,
-    [DataTypes.Achievement] = function(a, b)
-        return SortByKey(a, b, DataTypes.Achievement);
-    end,
-};
 
 function DatamineScrollableDataFrameMixin:OnLoad()
     -- override base visibility behavior
@@ -548,7 +535,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
     self.CurrentData = {};
     self.DataEntryCount = 0;
 
-    self.DataProvider:SetSortComparator(SORT_FUNCTIONS[searchMode]);
+    self.DataProvider:SetSortComparator(SortByOrderIndex, false, true);
 
     if searchMode == DataTypes.Achievement then
         self.Icon.icon:SetTexture(134400);
@@ -572,7 +559,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
             self.Icon:SetItem(value);
         end
 
-        if key == "Icon" and searchMode == DataTypes.Spell then
+        if key == "Icon" and (searchMode == DataTypes.Spell) then
             self.Icon.icon:SetTexture(value);
         end
 
