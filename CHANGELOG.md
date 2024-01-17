@@ -1,3 +1,14 @@
+# Datamine v2.1.1
+
+##### Added
+* Experimental achievement info searches (might not work)
+* Escape now closes the main Datamine frame
+
+##### Fixed
+* The item drag and drop feature will no longer eat items if the frame is hidden
+* Right shift now works alongside left shift for modelview controls
+* Model view controls can once again be expanded (sorry)
+
 # Datamine v2.1
 
 ##### Added

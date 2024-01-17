@@ -220,9 +220,8 @@ function DatamineDataFrameElementMixin:Init(node)
     end
 
     local orderIndex = data.OrderIndex;
-    local dbgKey = format("[%d] %s:", orderIndex, key);
 
-    self.KeyText:SetText(dbgKey);
+    self.KeyText:SetText(key);
     self.ValueText:SetText(value);
 
     self.KeyText:SetTextScale(0.85);
