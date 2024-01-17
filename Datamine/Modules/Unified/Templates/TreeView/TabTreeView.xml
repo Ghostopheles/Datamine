@@ -60,11 +60,6 @@
                 </FontString>
             </Layer>
         </Layers>
-        <Scripts>
-            <OnHyperlinkEnter method="OnHyperlinkEnter" />
-            <OnHyperlinkClick method="OnHyperlinkClick" />
-            <OnHyperlinkLeave method="OnHyperlinkLeave" />
-        </Scripts>
     </Button>
 
     <Frame name="DatamineTabTreeViewTemplate" virtual="true"

@@ -62,7 +62,7 @@ function DatamineCameraMixin:OnAdded()
 	self:ResetDefaultInputModes();
 
     EventRegistry:RegisterFrameEventAndCallback("MODIFIER_STATE_CHANGED", function(_, key, value)
-        if key == "LSHIFT" then
+        if key == "LSHIFT" or key == "RSHIFT" then
             if value == 1 then
                 self:SetLeftMouseButtonYMode(ORBIT_CAMERA_MOUSE_MODE_PITCH_ROTATION);
             elseif value == 0 then
@@ -808,6 +808,7 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self.TransformTab = self:AddTopLevelItem({
         Text = "Transform",
         IsTopLevel = true,
+        CanExpand = true,
     });
 
     local function OutfitSort(a, b)
@@ -819,10 +820,12 @@ function DatamineModelControlsTreeMixin:OnLoad()
     self.OutfitTab = self:AddTopLevelItem({
         Text = "Outfit",
         SortFunc = OutfitSort,
+        CanExpand = true,
     });
 
     self.AdvancedTab = self:AddTopLevelItem({
         Text = "Advanced",
+        CanExpand = true,
     });
 
     self:SetupLocationControls();

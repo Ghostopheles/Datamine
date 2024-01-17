@@ -328,7 +328,7 @@ local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
 local function SortByOrderIndex(a, b)
     local idxA = a:GetData().OrderIndex;
     local idxB = b:GetData().OrderIndex;
-    return idxA >= idxB;
+    return idxA < idxB;
 end
 
 function DatamineScrollableDataFrameMixin:OnLoad()
@@ -370,7 +370,7 @@ function DatamineScrollableDataFrameMixin:OnShow()
 end
 
 function DatamineScrollableDataFrameMixin:GLOBAL_MOUSE_UP()
-    if MouseIsOver(self) and self:IsShown() then
+    if MouseIsOver(self) and DatamineUnifiedFrame:IsShown() then
         local item = C_Cursor.GetCursorItem();
         if item and item:IsValid() then
             local itemID = C_Item.GetItemID(item);
@@ -421,7 +421,7 @@ end
 
 function DatamineScrollableDataFrameMixin:OnFail()
     self:SetLoading(false);
-    self:ShowFailText();
+    self:ShowHelpText(SEARCH_HELP_TYPE.FAIL);
 
     self.Icon:Hide();
     self.Title:Hide();
@@ -440,7 +440,7 @@ function DatamineScrollableDataFrameMixin:ShouldShowPreviewButton()
 
     local itemType = self.CurrentData.ItemClassID;
     local itemSubType = self.CurrentData.ItemSubclassID;
-    if itemType == Enum.ItemClass.Armor then
+    if (itemType == Enum.ItemClass.Armor) or (itemType == Enum.ItemClass.Weapon) then
         if not tContains(ITEM_SLOTS_THAT_CANT_BE_MOGGED, itemType) then
             return true;
         end
@@ -666,8 +666,7 @@ end
 
 function DataminePreviewButtonMixin:TryOnItem(id)
     local scene = self:GetModelScene();
-    local controls = scene:GetExternalControls();
-    controls:ViewItemID(id);
+    scene:TryOnByItemID(id);
 end
 
 function DataminePreviewButtonMixin:ViewCompanion(id)
