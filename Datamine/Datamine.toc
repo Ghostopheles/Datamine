@@ -25,6 +25,7 @@ DatamineEarlyLoad.lua
 
 Datamine.lua
 
+Localization/enUS.lua
 Settings/SettingsCore.lua
 
 Core/SlashCommands.lua

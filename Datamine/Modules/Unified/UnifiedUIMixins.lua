@@ -1,3 +1,4 @@
+local L = Datamine.Strings;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
@@ -854,7 +855,7 @@ end
 DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
-    self.TitleContainer.Text:SetText("Datamine");
+    self.TitleContainer.Text:SetText(L.ADDON_TITLE);
 
     tinsert(UISpecialFrames, self:GetName());
 end
