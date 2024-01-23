@@ -6,6 +6,7 @@ license-output: LICENSE
 externals:
   Datamine/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   Datamine/Libs/LibDevConsole: https://github.com/Ghostopheles/LibDevConsole
+  Datamine/Libs/AceLocale-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceLocale-3.0
 
 embedded-libraries:
   - msa-dropdownmenu-10
