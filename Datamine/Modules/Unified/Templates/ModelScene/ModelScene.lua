@@ -3,6 +3,107 @@ local Registry = Datamine.EventRegistry;
 local Transmog = Datamine.Transmog;
 
 local UI_MAIN = Datamine.Unified;
+local PI = math.pi;
+
+
+-------------
+
+local Projector = {};
+
+local GetCursorPosition = GetCursorPosition;
+
+local ASPECT = 1/1; --ModelScene: Height/Width
+local FOV_VERTICAL = 0.6;
+local FOV_DIAGONAL = FOV_VERTICAL * math.sqrt(1 + ASPECT^2);
+local TAN_FOV_V = math.tan(FOV_VERTICAL/2);
+local TAN_FOV_H;
+
+local function ConvertHorizontalFoV(fovV, aspect)
+    local fov_H = 2*math.atan(math.tan(fovV/2) * aspect);
+    return math.tan(fov_H/2);
+end
+
+TAN_FOV_H = ConvertHorizontalFoV(FOV_VERTICAL, ASPECT);
+
+
+local function ConvertCursorToFrameCoord(cursorX, cursorY, frameCenterX, frameCenterY, frameHalfWidth, frameHalfHeight)
+    local ratioH = (cursorX - frameCenterX)/frameHalfWidth;
+
+    if ratioH > 1 then
+        ratioH = 1;
+    elseif ratioH < -1 then
+        ratioH = -1;
+    end
+
+    local ratioV = (cursorY - frameCenterY)/frameHalfHeight;
+
+    if ratioV > 1 then
+        ratioV = 1;
+    elseif ratioV < -1 then
+        ratioV = -1;
+    end
+
+    return ratioH, ratioV
+end
+
+local function Vector_RayPlaneIntersection(rayfromX, rayfromY, rayfromZ, rayForwardX, rayForwardY, rayForwardZ, planePointX, planePointY, planePointZ, planeUpX, planeUpY, planeUpZ)
+	local scalar = ((planeUpX*planePointX + planeUpY*planePointY + planeUpZ*planePointZ) - (planeUpX*rayfromX + planeUpY*rayfromY + planeUpZ*rayfromZ)) / (planeUpX*rayForwardX + planeUpY*rayForwardY + planeUpZ*rayForwardZ)
+	return rayfromX + scalar*rayForwardX, rayfromY + scalar*rayForwardY, rayfromZ + scalar*rayForwardZ
+end
+
+
+function Projector:GetProjectedCursor3DPosition()
+    local cursorX, cursorY = GetCursorPosition();
+    local ratioH, ratioV = ConvertCursorToFrameCoord(cursorX / self.cursorScale, cursorY / self.cursorScale, self.frameCenterX, self.frameCenterY, self.frameHalfWidth, self.frameHalfHeight);
+    local camX, camY, camZ = self.modelscene:GetCameraPosition();
+
+    local fx, fy, fz = self.modelscene:GetCameraForward();
+    local rx, ry, rz = self.modelscene:GetCameraRight();
+    local ux, uy, uz = self.modelscene:GetCameraUp();
+    local forwardOffset = 1;
+    local rightOffset = -ratioH * TAN_FOV_H;
+    local upOffset = ratioV * TAN_FOV_V;
+    local rayFX, rayFY, rayFZ = forwardOffset*fx + rightOffset*rx + upOffset*ux, forwardOffset*fy + rightOffset*ry + upOffset*uy, forwardOffset*fz + rightOffset*rz + upOffset*uz;
+    local ditance = self.camera:GetZoomDistance();
+    local x1 = camX + fx*ditance;
+    local y1 = camY + fy*ditance;
+    local z1 = camZ + fz*ditance;
+    local px, py, pz = Vector_RayPlaneIntersection(camX, camY, camZ, rayFX, rayFY, rayFZ, x1, y1, z1, fx, fy, fz);
+
+    return px, py, pz
+end
+
+function Projector:GetCursor3DPositionDelta()
+    local px, py, pz = self:GetProjectedCursor3DPosition();
+    local x = px - self.from3DX + self.fromActorX;
+    local y = py - self.from3DY + self.fromActorY;
+    local z = pz - self.from3DZ + self.fromActorZ;
+    return x, y, z
+end
+
+function Projector:CaptureParameters(modelscene)
+    self.modelscene = modelscene;
+    self.camera = modelscene:GetActiveCamera();
+
+    local w, h = modelscene:GetSize();
+    local actor = modelscene:GetActiveActor();
+
+    self.fromCursorX, self.fromCursorY = GetCursorPosition();
+    self.frameCenterX, self.frameCenterY = modelscene:GetCenter();
+    self.frameHalfWidth, self.frameHalfHeight = 0.5*w, 0.5*h;
+
+    local cursorScale = UIParent:GetEffectiveScale();
+    self.cursorScale = cursorScale;
+
+    local scale = actor:GetScale();
+    self.fromActorX, self.fromActorY, self.fromActorZ = actor:GetPosition();
+
+    self.fromActorX = self.fromActorX * scale;
+    self.fromActorY = self.fromActorY * scale;
+    self.fromActorZ = self.fromActorZ * scale;
+
+    self.from3DX, self.from3DY, self.from3DZ = self:GetProjectedCursor3DPosition();
+end
 
 -------------
 
@@ -49,7 +150,7 @@ function DatamineCameraMixin:OnAdded()
     self:SetMaxZoomDistance(25);
     self:SetZoomDistance(6.8);
 
-	self:SetYaw(math.pi);
+	self:SetYaw(0);
 	self:SetPitch(0);
 	self:SetRoll(0);
 
@@ -147,7 +248,7 @@ DatamineModelSceneMixin.DefaultRaceActorOffsets = {
     Default = {
         x = 0,
         y = 0,
-        z = 0,
+        z = 0.83,
     },
     DracthyrDragon = {
         x = -0.50,
@@ -207,6 +308,7 @@ function DatamineModelSceneMixin:OnMouseDown_Custom()
     self:GetExternalControls():SetDoUpdate(true);
 
     if self:IsRightMouseButtonDown() then
+        Projector:CaptureParameters(self);
         self:StartPanning();
     end
 end
@@ -220,27 +322,8 @@ function DatamineModelSceneMixin:OnUpdate_Custom()
     if self.IsPanning then
         local actor = self:GetActiveActor();
         local actorScale = actor:GetScale();
-        local cursorX, cursorY = GetCursorPosition();
-        local scale = UIParent:GetEffectiveScale();
-
-        local camera = self:GetActiveCamera();
-        local cameraYaw = camera:GetYaw();
-        local cameraZoom = camera:GetZoomPercent() or camera:GetMinZoomPercent();
-        local cameraZoomModifier = 2;
-
-        --local scaleModifier = actorScale < 1 and (scale * actorScale) or (scale / actorScale);
-        local scaleModifier = (scale * actorScale);
-
-        local transformationRatio = 52 * 2 ^ (cameraZoom * cameraZoomModifier) * scaleModifier;
-
-        local dx = (cursorX - self.CursorX) / transformationRatio;
-		local dy = (cursorY - self.CursorY) / transformationRatio;
-        -- apply the sine and negative cosine of the camera yaw to correct for the viewport angle when moving the model
-		local newActorX = self.ActorPosition.x + (dx * math.sin(cameraYaw));
-        local newActorY = self.ActorPosition.y + (dx * -math.cos(cameraYaw));
-		local newActorZ = self.ActorPosition.z + dy;
-
-        actor:SetPosition(newActorX, newActorY, newActorZ);
+        local x, y, z = Projector:GetCursor3DPositionDelta()
+        actor:SetPosition(x/actorScale, y/actorScale, z/actorScale);
     end
 end
 
@@ -329,13 +412,18 @@ function DatamineModelSceneMixin:SetupCamera()
     camera:SetMinZoomDistance(1);
     camera:SetMaxZoomDistance(25);
     camera:SetZoomDistance(6.8);
+
+    local DEFAULT_CAM_DISTANCE = 4;
+    self:SetCameraPosition(DEFAULT_CAM_DISTANCE, 0, 0);
+    self:SetCameraOrientationByYawPitchRoll(PI, 0, 0);
+    self:SetCameraFieldOfView(FOV_DIAGONAL);
 end
 
 function DatamineModelSceneMixin:SetupCameraDefaults()
-    self.CameraDefaults = self:GetCameraPosition();
+    self.CameraDefaults = self:GetCameraPositionCustom();
 end
 
-function DatamineModelSceneMixin:GetCameraPosition()
+function DatamineModelSceneMixin:GetCameraPositionCustom()
     local forwardX, forwardY, forwardZ = self:GetCameraForward();
     local rightX, rightY, rightZ = self:GetCameraRight();
     local upX, upY, upZ = self:GetCameraUp();
@@ -419,7 +507,7 @@ function DatamineModelSceneMixin:SetupPlayerActor(force)
 
     actor:SetModelByUnit("player", sheatheWeapons, autoDress, hideWeapons, useNativeForm, holdBowString);
     actor:SetAnimationBlendOperation(Enum.ModelBlendOperation.None);
-    actor:SetUseCenterForOrigin(true, false, false);
+    actor:SetUseCenterForOrigin(true, true, true);
     actor:SetYaw(self.PlayerActorDefaults.Yaw);
     actor:SetScale(self.PlayerActorDefaults.Scale);
     actor:ResetModel();
