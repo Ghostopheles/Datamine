@@ -420,9 +420,15 @@ function DatamineScrollableDataFrameMixin:GLOBAL_MOUSE_UP()
     end
 end
 
+local SUPPORTED_CURSOR_TYPES = {
+    [Enum.UICursorType.Item] = true,
+    [Enum.UICursorType.Spell] = true,
+    [Enum.UICursorType.PetAction] = true,
+};
+
 function DatamineScrollableDataFrameMixin:CURSOR_CHANGED(...)
     local _, newCursorType, _ = ...;
-    if newCursorType == Enum.UICursorType.Item then
+    if SUPPORTED_CURSOR_TYPES[newCursorType] then
         self:SetExplorerHighlightShown(true);
     else
         self:SetExplorerHighlightShown(false);
