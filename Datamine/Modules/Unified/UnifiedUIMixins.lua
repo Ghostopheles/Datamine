@@ -371,13 +371,39 @@ end
 
 function DatamineScrollableDataFrameMixin:GLOBAL_MOUSE_UP()
     if MouseIsOver(self) and DatamineUnifiedFrame:IsShown() then
-        local item = C_Cursor.GetCursorItem();
-        if item and item:IsValid() then
-            local itemID = C_Item.GetItemID(item);
-            if UI_MAIN.GetExplorerSearchMode() ~= DataTypes.Item then
-                self:GetParent():SetSearchMode(DataTypes.Item);
+        local explorer = self:GetParent();
+        local searched = false;
+
+        if CursorHasItem() then
+            local item = C_Cursor.GetCursorItem();
+            if not item:IsValid() then
+                return;
             end
-            self:GetParent():Search(itemID);
+
+            local itemID = C_Item.GetItemID(item);
+            explorer:SetSearchMode(DataTypes.Item);
+            explorer:Search(itemID);
+            searched = true;
+        elseif CursorHasSpell() then
+            local spellID;
+            local cursorInfo = {GetCursorInfo()};
+            local infoType = cursorInfo[1];
+            if infoType == "spell" then
+                spellID = cursorInfo[4];
+            elseif infoType == "petaction" then
+                spellID = cursorInfo[2];
+            end
+
+            if not spellID then
+                return;
+            end
+
+            explorer:SetSearchMode(DataTypes.Spell);
+            explorer:Search(spellID);
+            searched = true;
+        end
+
+        if searched then
             self:SetExplorerHighlightShown(false);
             ClearCursor();
         end
