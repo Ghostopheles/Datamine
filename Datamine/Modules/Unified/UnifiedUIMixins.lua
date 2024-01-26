@@ -344,7 +344,7 @@ end
 function DatamineScrollableDataFrameMixin:OnLoad()
     -- override base visibility behavior
     local anchorsWithScrollBar = {
-        CreateAnchor("TOPLEFT", 4, -4);
+        CreateAnchor("TOPLEFT", 4, -45),
         CreateAnchor("BOTTOMRIGHT", self.ScrollBar, -13, 4),
     };
 
@@ -601,7 +601,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
 
         local valueJustifyH = "RIGHT";
         local maxValueLines = 2;
-        local extent = 20;
+        local extent = 25;
         if searchMode == DataTypes.Achievement then
             if key == "RewardText" and (value ~= "N/A") then
                 extent = 35;
