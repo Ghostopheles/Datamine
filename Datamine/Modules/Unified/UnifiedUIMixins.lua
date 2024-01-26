@@ -222,7 +222,12 @@ function DatamineDataFrameElementMixin:Init(node)
 
     local orderIndex = data.OrderIndex;
 
-    self.KeyText:SetText(key);
+    if Datamine.Debug then
+        local dbgKey = format("[%d] %s:", orderIndex, key);
+        self.KeyText:SetText(dbgKey);
+    else
+        self.KeyText:SetText(key);
+    end
     self.ValueText:SetText(value);
 
     self.KeyText:SetTextScale(0.85);

@@ -14,6 +14,14 @@ Datamine.Mixins = {};
 Datamine.Utils = {};
 Datamine.Console = LibStub:GetLibrary("LibDevConsole");
 
+--@debug
+Datamine.Debug = true;
+--@end-debug@
+
+--[===[@non-debug@
+Datamine.Debug = false;
+--@end-non-debug@]===]
+
 local PrintSettings = {
     "hidecolon",
     "addnewline",
