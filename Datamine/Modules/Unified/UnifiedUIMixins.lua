@@ -328,6 +328,11 @@ local ITEM_SLOTS_THAT_CANT_BE_MOGGED = {
 local function SortByOrderIndex(a, b)
     local idxA = a:GetData().OrderIndex;
     local idxB = b:GetData().OrderIndex;
+
+    if idxA == idxB then
+        return false;
+    end
+
     return idxA < idxB;
 end
 
