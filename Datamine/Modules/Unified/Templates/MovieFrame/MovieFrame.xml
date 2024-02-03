@@ -1,0 +1,240 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+    <Button name="DatamineMovieFrameButtonTemplate" virtual="true" registerForClicks="AnyUp">
+        <Size x="32" y="32" />
+        <Layers>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <Texture parentKey="Icon" inherits="DatamineCustomAtlasTemplate">
+                    <Size x="18" y="18" />
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Toolbar.png" />
+                        <KeyValue key="AtlasName" value="custom-toolbar-play" />
+                    </KeyValues>
+                </Texture>
+            </Layer>
+        </Layers>
+        <NormalTexture parentKey="NormalTexture"
+            atlas="common-button-square-gray-up" />
+        <PushedTexture parentKey="PushedTexture"
+            atlas="common-button-square-gray-down">
+            <Anchors>
+                <Anchor point="TOPLEFT" x="1" y="-1" />
+                <Anchor point="BOTTOMRIGHT" x="1" y="-1" />
+            </Anchors>
+        </PushedTexture>
+    </Button>
+
+    <MovieFrame name="DatamineMovieFrameTemplate" mixin="DatamineMovieFrameMixin" virtual="true"
+        enableMouseMotion="true">
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" setAllPoints="true">
+                    <Color r="0" g="0" b="0" a="1" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
+            <OnHide method="OnHide" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnEvent method="OnEvent" />
+            <OnUpdate method="OnUpdate" />
+            <OnMovieFinished method="OnMovieFinished" />
+        </Scripts>
+    </MovieFrame>
+
+    <Frame name="DatamineMovieControlsTemplate" mixin="DatamineMovieControlsMixin"
+        inherits="VerticalLayoutFrame" virtual="true">
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Label" font="DatamineCleanFont"
+                    justifyH="CENTER" justifyV="MIDDLE">
+                    <Size x="125" y="24" />
+                    <KeyValues>
+                        <KeyValue key="layoutIndex" value="1" />
+                        <KeyValue key="align" value="center" />
+                        <KeyValue key="bottomPadding" value="15" />
+                    </KeyValues>
+                </FontString>
+                <Texture parentKey="TitleBackground"
+                    inherits="DatamineDarkGrayBackgroundTemplate">
+                    <Size y="20" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="2" y="-3" />
+                        <Anchor point="TOPRIGHT" x="-2" y="-3" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" setAllPoints="true"
+                    inherits="DatamineMediumGrayBackgroundTemplate" />
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button parentKey="MinimizeButton" inherits="DatamineGenericButtonTemplate">
+                <Size x="20" y="20" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-3" y="-3" />
+                </Anchors>
+                <KeyValues>
+                    <KeyValue key="ignoreInLayout" value="true" />
+                </KeyValues>
+                <NormalTexture inherits="DatamineCustomAtlasTemplate">
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-minimize" />
+                    </KeyValues>
+                </NormalTexture>
+            </Button>
+            <EditBox parentKey="MovieIDEntryBox" inherits="DatamineEditBoxTemplate"
+                numeric="true">
+                <Size x="125" y="14" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="2" />
+                    <KeyValue key="align" value="right" />
+                    <KeyValue key="leftPadding" value="3" />
+                </KeyValues>
+            </EditBox>
+            <CheckButton parentKey="SubtitleToggle" inherits="DatamineLabelledCheckButtonTemplate"
+                checked="false">
+                <Size x="16" y="16" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="3" />
+                    <KeyValue key="topPadding" value="8" />
+                </KeyValues>
+            </CheckButton>
+            <CheckButton parentKey="LoopToggle" inherits="DatamineLabelledCheckButtonTemplate"
+                checked="false">
+                <Size x="16" y="16" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="4" />
+                    <KeyValue key="topPadding" value="8" />
+                </KeyValues>
+            </CheckButton>
+            <Frame parentKey="MiniControls">
+                <Size x="70" y="38" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="5" />
+                    <KeyValue key="align" value="center" />
+                </KeyValues>
+                <Frames>
+                    <Button parentKey="PlayButton" inherits="DatamineMovieFrameButtonTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="3" y="-3" />
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                local tab = self:GetParent():GetParent():GetParent();
+                                local movieID = self:GetParent():GetParent().MovieIDEntryBox:GetNumber();
+                                tab:LoadAndPlayMovie(movieID);
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button parentKey="StopButton" inherits="DatamineMovieFrameButtonTemplate">
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" x="-3" y="-3" />
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                local tab = self:GetParent():GetParent():GetParent();
+                                tab:Stop();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                </Frames>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" inherit="append" />
+            <OnShow method="OnShow" inherit="append" />
+        </Scripts>
+    </Frame>
+
+    <Frame name="DatamineTheaterTabTemplate" mixin="DatamineTheaterTabMixin" virtual="true">
+        <Frames>
+            <MovieFrame parentKey="MovieFrame" inherits="DatamineMovieFrameTemplate"
+                hidden="true" useParentLevel="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" />
+                    <Anchor point="BOTTOMRIGHT" />
+                </Anchors>
+            </MovieFrame>
+            <Frame parentKey="MovieControls" inherits="DatamineMovieControlsTemplate"
+                toplevel="true">
+                <Size x="150" y="150" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-15" y="-15" />
+                </Anchors>
+            </Frame>
+            <Button parentKey="MovieControlsToggle" inherits="DatamineGenericButtonTemplate"
+                alpha="0.35" hidden="true" toplevel="true">
+                <Size x="24" y="24" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-5" y="-5" />
+                </Anchors>
+                <NormalTexture inherits="DatamineCustomAtlasTemplate">
+                    <KeyValues>
+                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                        <KeyValue key="AtlasName" value="uitools-icon-chevron-left" />
+                    </KeyValues>
+                </NormalTexture>
+                <Scripts>
+                    <OnEnter>
+                        self:SetAlpha(1);
+                    </OnEnter>
+                    <OnLeave>
+                        self:SetAlpha(0.35);
+                    </OnLeave>
+                </Scripts>
+            </Button>
+            <StatusBar parentKey="LoadingBar" frameBuffer="true" hidden="true">
+                <Size x="275" y="15" />
+                <Anchors>
+                    <Anchor point="CENTER" />
+                </Anchors>
+                <BarTexture parentKey="BarFill" atlas="Capacitance-Blacksmithing-TimerFill" />
+                <Layers>
+                    <Layer level="BACKGROUND" textureSubLevel="1">
+                        <Texture parentKey="BarBackground" atlas="Capacitance-Blacksmithing-TimerBG"
+                            useAtlasSize="true">
+                            <Anchors>
+                                <Anchor point="CENTER" x="0" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <Texture parentKey="BarBorder" atlas="Capacitance-Blacksmithing-TimerFrame"
+                            useAtlasSize="true">
+                            <Anchors>
+                                <Anchor point="CENTER" x="0" y="-2" />
+                            </Anchors>
+                        </Texture>
+                        <FontString parentKey="LoadingText" font="DatamineCleanFontSmall"
+                            justifyH="CENTER"
+                            justifyV="MIDDLE">
+                            <Anchors>
+                                <Anchor point="TOP" relativePoint="BOTTOM" y="-10" />
+                            </Anchors>
+                        </FontString>
+                        <FontString parentKey="Label" font="DatamineCleanFontSmall"
+                            justifyH="CENTER"
+                            justifyV="MIDDLE">
+                            <Anchors>
+                                <Anchor point="CENTER" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </StatusBar>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnUpdate method="OnUpdate" />
+        </Scripts>
+    </Frame>
+</Ui>

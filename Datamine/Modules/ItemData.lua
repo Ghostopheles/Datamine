@@ -27,6 +27,8 @@ local ItemInfoKeys = {
     "IsSpecificToPlayerClass",
     "IsDressable",
     "IsAnimaItem",
+    "ItemSpellName",
+    "ItemSpellID",
 };
 Datamine.Item.ItemInfoKeys = ItemInfoKeys;
 
@@ -138,6 +140,11 @@ function Datamine.Item:GetFormattedItemData(itemID)
     tinsert(itemData, tostring(C_Item.IsItemSpecificToPlayerClass(itemID)));
     tinsert(itemData, tostring(C_Item.IsDressableItemByID(itemID)));
     tinsert(itemData, tostring(C_Item.IsAnimaItemByID(itemID)));
+
+    local itemSpellName, itemSpellID = GetItemSpell(itemID);
+
+    tinsert(itemData, itemSpellName);
+    tinsert(itemData, itemSpellID);
 
     return itemData;
 end

@@ -1,3 +1,11 @@
+# Datamine v2.1.2
+
+##### Added
+* A new main tab to the Datamine UI that allows you to watch pre-rendered movies in-game using a `MovieID` from `Movie.db2`.
+
+##### Fixed
+* Model view camera controls are now much more precise and actually work as expected. Thanks to Peterodox for saving me.
+
 # Datamine v2.1.1
 
 ##### Added

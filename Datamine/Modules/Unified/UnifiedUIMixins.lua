@@ -160,8 +160,9 @@ function DatamineToolbarMixin:OnLoad()
     self.Buttons = {};
 end
 
-function DatamineToolbarMixin:AddButton(atlasName, callback)
-    local button = CreateFrame("Button", nil, self, "DatamineGenericButtonTemplate");
+function DatamineToolbarMixin:AddButton(atlasName, callback, tooltipText)
+    local template = tooltipText and "DatamineTooltipButtonTemplate" or "DatamineGenericButtonTemplate";
+    local button = CreateFrame("Button", nil, self, template);
 
     local anchorPoint;
     local relativePoint;
@@ -178,6 +179,10 @@ function DatamineToolbarMixin:AddButton(atlasName, callback)
 
     button:SetPoint("TOPLEFT", anchorPoint, relativePoint, xOffset, yOffset);
     button:SetSize(30, 30);
+
+    if tooltipText then
+        button.TooltipText = tooltipText;
+    end
 
     button.Icon = Datamine.CustomAtlas:CreateCustomAtlasTexture("Toolbar.png", atlasName, true, button);
     button.Icon:ClearAllPoints();
@@ -342,14 +347,14 @@ local function SortByOrderIndex(a, b)
 end
 
 function DatamineScrollableDataFrameMixin:OnLoad()
-    -- override base visibility behavior
+    -- override base visibility behavior because it's unholy
     local anchorsWithScrollBar = {
         CreateAnchor("TOPLEFT", 4, -45),
         CreateAnchor("BOTTOMRIGHT", self.ScrollBar, -13, 4),
     };
 
     local anchorsWithoutScrollBar = {
-        CreateAnchor("TOPLEFT", 4, -45),
+        anchorsWithScrollBar[1],
         CreateAnchor("BOTTOMRIGHT", -4, 4);
     };
 
@@ -607,7 +612,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
 
         local valueJustifyH = "RIGHT";
         local maxValueLines = 2;
-        local extent = 25;
+        local extent = 22;
         if searchMode == DataTypes.Achievement then
             if key == "RewardText" and (value ~= "N/A") then
                 extent = 35;
@@ -845,6 +850,7 @@ DatamineWorkspaceMixin.Modes = {
     DEFAULT = 1,
     CODE = 2,
     DB = 3,
+    MOVIE = 4,
 };
 
 function DatamineWorkspaceMixin:OnLoad()
@@ -854,10 +860,26 @@ function DatamineWorkspaceMixin:OnLoad()
             self.ModelViewTab,
             self.DetailsTab,
         },
+        [self.Modes.MOVIE] = {
+            self.TheaterTab,
+        },
     };
 
     Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnModeChanged, self);
     self:SetMode(self.Modes.DEFAULT);
+
+    local toolbar = self:GetParent().Toolbar;
+    do
+        local tooltipText = L.WORKSPACE_MODE_EXPLORER;
+        local cb = function() self:SetMode(self.Modes.DEFAULT); end;
+        toolbar:AddButton("custom-toolbar-projects", cb, tooltipText);
+    end
+
+    do
+        local tooltipText = L.WORKSPACE_MODE_MOVIE;
+        local cb = function() self:SetMode(self.Modes.MOVIE); end;
+        toolbar:AddButton("custom-toolbar-play", cb, tooltipText);
+    end
 end
 
 function DatamineWorkspaceMixin:OnModeChanged()
@@ -874,7 +896,7 @@ function DatamineWorkspaceMixin:OnModeChanged()
 end
 
 function DatamineWorkspaceMixin:SetMode(newMode)
-    if newMode == self.Mode then
+    if newMode == self.Mode or not self.ModeFrames[newMode] then
         return;
     end
 

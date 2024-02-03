@@ -104,7 +104,11 @@ local ToolbarAtlasInfo = {
     ["custom-toolbar-centerpivot"] = CreateAtlasInfo(30, 30, 0.75, 0.875, 0, 0.125),
     ["custom-toolbar-projects"] = CreateAtlasInfo(30, 30, 0, 0.125, 0.125, 0.25),
     ["custom-toolbar-scale"] = CreateAtlasInfo(30, 30, 0.375, 0.5, 0, 0.125),
-    ["custom-toolbar-move"] = CreateAtlasInfo(30, 30, 0.125, 0.25, 0, 0.125)
+    ["custom-toolbar-move"] = CreateAtlasInfo(30, 30, 0.125, 0.25, 0, 0.125),
+    ["custom-toolbar-play"] = CreateAtlasInfo(30, 30, 0.395, 0.48, 0.895, 0.98),
+    ["custom-toolbar-pause"] = CreateAtlasInfo(30, 30, 0.52, 0.605, 0.895, 0.98),
+    ["custom-toolbar-skiponeframe"] = CreateAtlasInfo(30, 30, 0.77, 0.855, 0.895, 0.98),
+    ["custom-toolbar-skiptoend"] = CreateAtlasInfo(30, 30, 0.895, 0.98, 0.895, 0.98),
 };
 
 Datamine.CustomAtlas = {};

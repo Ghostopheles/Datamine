@@ -7,7 +7,7 @@
         <Layers>
             <Layer level="HIGHLIGHT">
                 <Texture parentKey="HighlightTexture" inherits="DatamineCustomAtlasTemplate"
-                    setAllPoints="true">
+                    setAllPoints="true" alphaMode="ADD">
                     <KeyValues>
                         <KeyValue key="FileName" value="Blizzard_UITools.blp" />
                         <KeyValue key="AtlasName" value="uitools-icon-highlight" />
@@ -49,5 +49,42 @@
             <OnLeave method="OnLeave_Base" />
         </Scripts>
     </Button>
+
+    <CheckButton name="DatamineCheckButtonTemplate" virtual="true"
+        inherits="DatamineGenericButtonTemplate" registerForClicks="AnyUp">
+        <HighlightTexture inherits="DatamineCustomAtlasTemplate" alphaMode="ADD">
+            <KeyValues>
+                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                <KeyValue key="AtlasName" value="uitools-icon-highlight" />
+            </KeyValues>
+        </HighlightTexture>
+        <NormalTexture inherits="DatamineCustomAtlasTemplate">
+            <KeyValues>
+                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                <KeyValue key="AtlasName" value="uitools-icon-checkbox" />
+            </KeyValues>
+        </NormalTexture>
+        <CheckedTexture inherits="DatamineCustomAtlasTemplate">
+            <KeyValues>
+                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
+                <KeyValue key="AtlasName" value="uitools-icon-checkmark" />
+            </KeyValues>
+        </CheckedTexture>
+    </CheckButton>
+
+    <CheckButton name="DatamineLabelledCheckButtonTemplate" virtual="true"
+        inherits="DatamineCheckButtonTemplate">
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Text" font="DatamineCleanFont" justifyH="LEFT"
+                    justifyV="MIDDLE" text="NONE">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" />
+                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="5" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </CheckButton>
 
 </Ui>

@@ -67,5 +67,7 @@ Modules/Unified/Templates/ModelScene/ControlFrame.xml
 Modules/Unified/Templates/ModelScene/ModelScene.lua
 Modules/Unified/Templates/ModelScene/ModelScene.xml
 Modules/Unified/Templates/TreeView/TabTreeView.xml
+Modules/Unified/Templates/MovieFrame/MovieFrame.lua
+Modules/Unified/Templates/MovieFrame/MovieFrame.xml
 
 Modules/Unified/Unified.xml

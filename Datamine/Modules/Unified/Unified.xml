@@ -343,6 +343,8 @@
                     </Layer>
                 </Layers>
             </Frame>
+            <Frame parentKey="TheaterTab" inherits="DatamineTheaterTabTemplate" setAllPoints="true"
+                hidden="true" />
         </Frames>
         <Layers>
             <Layer level="BACKGROUND">
@@ -358,7 +360,7 @@
 
     <Frame name="DatamineUnifiedFrame" parent="UIParent" toplevel="true" movable="true"
         resizable="false" hidden="true" mixin="DatamineUnifiedFrameMixin">
-        <Size x="1280" y="720" />
+        <Size x="1366" y="768" />
         <Anchors>
             <Anchor point="CENTER" />
         </Anchors>
