@@ -192,7 +192,8 @@
                     </OnLeave>
                 </Scripts>
             </Button>
-            <StatusBar parentKey="LoadingBar" frameBuffer="true" hidden="true">
+            <StatusBar parentKey="LoadingBar" mixin="SmoothStatusBarMixin" frameBuffer="true"
+                hidden="true">
                 <Size x="275" y="15" />
                 <Anchors>
                     <Anchor point="CENTER" />

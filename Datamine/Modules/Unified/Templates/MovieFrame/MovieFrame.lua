@@ -168,7 +168,7 @@ function DatamineTheaterTabMixin:OnLoad()
     end);
 
     self.LoadingBar:SetScale(1.2);
-    self.LoadingBar:SetMinMaxValues(0, 100);
+    self.LoadingBar:SetMinMaxSmoothedValue(0, 100);
     self.LoadingBar.LoadingText:SetText(L.THEATER_MODE_LOADING_MOVIE);
     self.LoadingBar.Label:SetText(L.THEATER_MODE_DOWNLOAD_PROGRESS);
     self.LoadingBar.Label:SetTextScale(0.75);
@@ -193,7 +193,7 @@ function DatamineTheaterTabMixin:UpdateLoadingBar(newValue)
         self.LoadingBar:Show();
     end
 
-    self.LoadingBar:SetValue(newValue);
+    self.LoadingBar:SetSmoothedValue(newValue);
     local label = format(L.THEATER_MODE_DOWNLOAD_PROGRESS, newValue);
     self.LoadingBar.Label:SetText(label);
 end
