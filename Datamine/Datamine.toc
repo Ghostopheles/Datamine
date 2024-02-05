@@ -40,23 +40,24 @@ Modules/QuestLineData.lua
 Modules/TransmogData.lua
 Modules/AchievementInfo.lua
 
-Modules/ModelView/Mixins/ControlPanelMixin.lua
-Modules/ModelView/Mixins/ModelFrameMixin.lua
-Modules/ModelView/Mixins/PlayerModelMixin.lua
-Modules/ModelView/ModelViewFrames.xml
-Modules/ModelView/ModelView.lua
+#Modules/ModelView/Mixins/ControlPanelMixin.lua
+#Modules/ModelView/Mixins/ModelFrameMixin.lua
+#Modules/ModelView/Mixins/PlayerModelMixin.lua
+#Modules/ModelView/ModelViewFrames.xml
+#Modules/ModelView/ModelView.lua
 
-Modules/Explorer/ExplorerDataEntry.xml
-Modules/Explorer/ExplorerTooltipFrame.lua
-Modules/Explorer/ExplorerTooltipFrame.xml
-Modules/Explorer/ExplorerFrame.xml
-Modules/Explorer/ExplorerFrame.lua
+#Modules/Explorer/ExplorerDataEntry.xml
+#Modules/Explorer/ExplorerTooltipFrame.lua
+#Modules/Explorer/ExplorerTooltipFrame.xml
+#Modules/Explorer/ExplorerFrame.xml
+#Modules/Explorer/ExplorerFrame.lua
 
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedNineSliceLayouts.lua
 Modules/Unified/UnifiedRegistry.lua
 Modules/Unified/UnifiedUIMixins.lua
 Modules/Unified/Templates/Fonts.xml
+Modules/Unified/Templates/EditBoxes.xml
 Modules/Unified/Templates/CustomAtlas.xml
 Modules/Unified/Templates/Buttons.xml
 Modules/Unified/Templates/BackgroundTextures.xml

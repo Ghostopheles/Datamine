@@ -141,9 +141,6 @@ function DatamineTabTreeViewChildKeyValueMixin:Init(node)
         self.Key:SetText(data.KeyValue.Key);
         self.Value:SetText(data.KeyValue.Value);
 
-        self.Key:SetTextScale(0.85);
-        self.Value:SetTextScale(0.85);
-
         self.Separator:SetTextColor(DatamineLightGray.r, DatamineLightGray.g, DatamineLightGray.b, DatamineLightGray.a);
         self.Separator:SetTextScale(1.5);
     else

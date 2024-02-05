@@ -144,7 +144,6 @@ function DatamineModelFrameControlPanelMixin:OnLoad()
     self.Header = self:CreateFontString(nil, "OVERLAY", "GameFontNormal");
     self.Header:SetPoint("TOP", self, 0, -25);
     self.Header:SetText("Model Controls");
-    self.Header:SetTextScale(1.3);
     self.Header:SetTextColor(1, 1, 1, 1);
 
     self:SetupModelScenePage();

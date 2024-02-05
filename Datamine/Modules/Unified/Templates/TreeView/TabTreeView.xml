@@ -20,7 +20,7 @@
                         <KeyValue key="AtlasName" value="uitools-icon-chevron-right" />
                     </KeyValues>
                 </Texture>
-                <FontString parentKey="Text" font="DatamineCleanFont" text="TITLE">
+                <FontString parentKey="Text" font="DatamineCleanFontMedium" text="TITLE">
                     <Anchors>
                         <Anchor point="LEFT" relativeKey="$parent.Chevron" relativePoint="RIGHT" />
                     </Anchors>

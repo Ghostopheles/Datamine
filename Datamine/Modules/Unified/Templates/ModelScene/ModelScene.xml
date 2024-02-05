@@ -3,6 +3,7 @@
 
     <EditBox name="DatamineModelControlsEditBoxTemplate" inherits="InputBoxTemplate"
         mixin="DatamineModelControlsEditBoxMixin" autoFocus="false" historyLines="3"
+        font="DatamineCleanFont"
         virtual="true">
         <Scripts>
             <OnChar method="OnChar" inherit="prepend" />
@@ -64,7 +65,7 @@
                 <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
             </Layer>
             <Layer level="OVERLAY">
-                <FontString parentKey="Title" font="DatamineCleanFontLabelSmall" text="NONE"
+                <FontString parentKey="Title" font="DatamineCleanFont" text="NONE"
                     justifyH="LEFT" justifyV="MIDDLE">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="5" />
@@ -135,7 +136,7 @@
                 <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
             </Layer>
             <Layer level="OVERLAY">
-                <FontString parentKey="Text" font="DatamineCleanFontSmall" justifyH="LEFT"
+                <FontString parentKey="Text" font="DatamineCleanFont" justifyH="LEFT"
                     wordwrap="true" maxLines="2">
                     <Anchors>
                         <Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5" />
@@ -165,7 +166,7 @@
                 <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
             </Layer>
             <Layer level="OVERLAY">
-                <FontString parentKey="Title" font="DatamineCleanFontSmall" justifyH="LEFT"
+                <FontString parentKey="Title" font="DatamineCleanFont" justifyH="LEFT"
                     wordwrap="false">
                     <Anchors>
                         <Anchor point="BOTTOM" relativeKey="$parent.EntryBox" relativePoint="TOP"

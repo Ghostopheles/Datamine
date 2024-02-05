@@ -6,10 +6,8 @@
         <!-- Add a .TitleText keyValue to set text from XML -->
         <Layers>
             <Layer level="ARTWORK">
-                <FontString parentKey="Text" font="DatamineCleanFont"
-                    text="TITLE">
-                    <FontHeight val="18" />
-                </FontString>
+                <FontString parentKey="Text" font="DatamineCleanFontBig"
+                    text="TITLE" />
             </Layer>
         </Layers>
         <Scripts>
@@ -131,21 +129,6 @@
         </Scripts>
     </Frame>
 
-    <PlayerModel name="DataminePlayerModelTemplate2" mixin="DataminePlayerModelMixin"
-        inherits="ModelWithControlsTemplate" enableMouse="true" virtual="true">
-        <KeyValues>
-            <KeyValue key="maxZoom" value="3" type="number" />
-        </KeyValues>
-        <Scripts>
-            <OnLoad>
-                Model_OnLoad(self, self.maxZoom);
-            </OnLoad>
-            <OnShow>
-                self:ResetModel();
-            </OnShow>
-        </Scripts>
-    </PlayerModel>
-
     <Frame name="DatamineToolbarTemplate" mixin="DatamineToolbarMixin" virtual="true">
         <Scripts>
             <OnLoad method="OnLoad" />
@@ -181,7 +164,7 @@
                                 <Layers>
                                     <Layer level="ARTWORK">
                                         <FontString parentKey="Text"
-                                            font="DatamineCleanFontSmallNoShadow"
+                                            font="DatamineCleanFont"
                                             wordwrap="false" text="Mode"
                                             justifyV="MIDDLE" justifyH="CENTER">
                                         </FontString>
@@ -327,13 +310,6 @@
                             </Button>
                         </Frames>
                     </ModelScene>
-                    <PlayerModel parentKey="PlayerModel" inherits="DataminePlayerModelTemplate2"
-                        hidden="true">
-                        <Anchors>
-                            <Anchor point="TOPLEFT" x="5" y="-5" />
-                            <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
-                        </Anchors>
-                    </PlayerModel>
                 </Frames>
                 <Layers>
                     <Layer level="BACKGROUND">

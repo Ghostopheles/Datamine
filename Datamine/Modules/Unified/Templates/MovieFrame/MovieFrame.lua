@@ -124,13 +124,11 @@ function DatamineMovieControlsMixin:OnLoad()
     self.MovieIDEntryBox.LabelText = L.THEATER_MODE_MOVIE_ID;
     self.MovieIDEntryBox.Instructions:SetText(L.THEATER_MODE_MOVIE_ID_EB_INSTRUCTIONS);
 
-    self.SubtitleToggle.Text:SetTextScale(0.75);
     self.SubtitleToggle.Text:SetText(L.THEATER_MODE_SUBTITLE_TOGGLE);
     self.SubtitleToggle:HookScript("OnClick", function()
         self:GetParent():SetEnableSubtitles(self.SubtitleToggle:GetChecked());
     end);
 
-    self.LoopToggle.Text:SetTextScale(0.75);
     self.LoopToggle.Text:SetText(L.THEATER_MODE_LOOP_TOGGLE);
     self.LoopToggle:HookScript("OnClick", function()
         self:GetParent():SetLoopMovie(self.SubtitleToggle:GetChecked());
@@ -171,7 +169,6 @@ function DatamineTheaterTabMixin:OnLoad()
     self.LoadingBar:SetMinMaxSmoothedValue(0, 100);
     self.LoadingBar.LoadingText:SetText(L.THEATER_MODE_LOADING_MOVIE);
     self.LoadingBar.Label:SetText(L.THEATER_MODE_DOWNLOAD_PROGRESS);
-    self.LoadingBar.Label:SetTextScale(0.75);
 
     self.LoadingBar:SetValue(0);
 end

@@ -1,18 +1,51 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-    <Font name="DatamineCleanFontBase" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="15">
+    <Font name="DatamineCleanFont" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="12">
+        <Color r="1" g="1" b="1" />
+        <Shadow x="1.5" y="-1.5" />
+    </Font>
+
+    <Font name="DatamineCleanFontNoShadow" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="12">
         <Color r="1" g="1" b="1" />
     </Font>
 
-    <Font name="DatamineCleanFont" inherits="DatamineCleanFontBase">
+    <Font name="DatamineCleanFontSmall" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="10">
+        <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
-    <Font name="DatamineCleanFontNoShadow" inherits="DatamineCleanFontBase" />
 
-    <Font name="DatamineCleanFontSmall" inherits="DatamineCleanFont" height="10" />
-    <Font name="DatamineCleanFontSmallNoShadow" inherits="DatamineCleanFontNoShadow"
-        height="10" />
+    <Font name="DatamineCleanFontSmallNoShadow" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="10">
+        <Color r="1" g="1" b="1" />
+    </Font>
 
-    <Font name="DatamineCleanFontLabelSmall" inherits="DatamineCleanFont" height="5" />
+    <Font name="DatamineCleanFontLabelSmall" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="5">
+        <Color r="1" g="1" b="1" />
+    </Font>
+
+    <Font name="DatamineCleanFontMedium" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="14">
+        <Color r="1" g="1" b="1" />
+        <Shadow x="1.5" y="-1.5" />
+    </Font>
+
+    <Font name="DatamineCleanFontMediumNoShadow" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="14">
+        <Color r="1" g="1" b="1" />
+    </Font>
+
+    <Font name="DatamineCleanFontBig" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="16">
+        <Color r="1" g="1" b="1" />
+        <Shadow x="1.5" y="-1.5" />
+    </Font>
+
+    <Font name="DatamineCleanFontBigNoShadow" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="16">
+        <Color r="1" g="1" b="1" />
+    </Font>
 </Ui>

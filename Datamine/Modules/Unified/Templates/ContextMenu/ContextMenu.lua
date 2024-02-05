@@ -18,8 +18,6 @@ function DatamineContextMenuEntryMixin:Init(data)
     else
         self.ExpandChevron:Hide();
     end
-
-    self.Text:SetTextScale(0.85);
 end
 
 function DatamineContextMenuEntryMixin:OnClick()

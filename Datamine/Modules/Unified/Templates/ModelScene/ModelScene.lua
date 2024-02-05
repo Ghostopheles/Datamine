@@ -741,8 +741,6 @@ function DatamineModelControlsLabelledEditBoxRowMixin:OnLoad()
     self.Y:HookScript("OnTextChanged", self.UpdatedCallback);
     self.Z:HookScript("OnTextChanged", self.UpdatedCallback);
 
-    self.Title:SetTextScale(0.85);
-
     Registry:RegisterCallback(Events.MODEL_CONTROLS_DEFAULTS_UPDATED, self.OnModelControlsDefaultsUpdated, self);
 end
 
@@ -1220,7 +1218,6 @@ function DatamineModelControlsOutfitPanelEntryMixin:Init(node)
     node:Flush();
     self.Overlord = self.data.OverlordFrame;
 
-    self.Text:SetTextScale(0.80);
     node:SetCollapsed(true);
 
     self.IsEmpty = false;
@@ -1354,7 +1351,6 @@ function DatamineModelControlsAdvancedPanelEntryMixin:Init(node)
     local data = node:GetData();
 
     self.Title:SetText(data.Text);
-    self.Title:SetTextScale(0.85);
 
     self.EntryBox:SetHeight(self:GetHeight() / 2);
     self.EntryBox.Instructions:SetText(data.Instructions);

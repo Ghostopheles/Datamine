@@ -17,7 +17,7 @@
                         <Anchor point="BOTTOMRIGHT" x="-2" />
                     </Anchors>
                 </Texture>
-                <FontString parentKey="Text" font="DatamineCleanFontSmallNoShadow" justifyH="LEFT"
+                <FontString parentKey="Text" font="DatamineCleanFont" justifyH="LEFT"
                     justifyV="MIDDLE" maxLines="1" wordwrap="false"
                     text="NONE">
                     <Anchors>

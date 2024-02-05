@@ -235,9 +235,6 @@ function DatamineDataFrameElementMixin:Init(node)
     end
     self.ValueText:SetText(value);
 
-    self.KeyText:SetTextScale(0.85);
-    self.ValueText:SetTextScale(0.85);
-
     if self.KeyText:IsTruncated() then
         self.KeyText:SetScript("OnEnter", function()
             GameTooltip:SetOwner(self.KeyText, "ANCHOR_TOPRIGHT");
@@ -366,7 +363,6 @@ function DatamineScrollableDataFrameMixin:OnLoad()
 
     self.DataEntryCount = 0;
 
-    self.HelpTextDetails:SetTextScale(0.75);
     self:RegisterEvent("GLOBAL_MOUSE_UP");
     self:RegisterEvent("CURSOR_CHANGED");
     self:SetScript("OnEvent", function(self, event, ...)
@@ -754,7 +750,6 @@ function DatamineUnifiedExplorerTabMixin:OnLoad()
     end
 
     local modeButton = self.Header.SearchModeButton;
-    modeButton.Text:SetTextScale(0.85);
     modeButton:SetScript("OnClick", SearchModeMenu);
 end
 

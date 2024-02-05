@@ -9,7 +9,6 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
     self.KeyText:SetText(data.key .. ":");
 
     self.KeyText:SetHeight(parent:GetHeight());
-    self.KeyText:SetTextScale(1.2);
     self.KeyText:SetJustifyV("CENTER");
 
     self.ValueText = self:CreateFontString(nil, nil, "GameFontHighlight");
@@ -18,7 +17,6 @@ function DatamineExplorerDataEntryMixin:Init(data, parent)
     self.ValueText:SetText(data.value);
 
     self.ValueText:SetHeight(parent:GetHeight());
-    self.ValueText:SetTextScale(1.2);
     self.ValueText:SetJustifyV("CENTER");
 
     if self.ValueText:IsTruncated() then

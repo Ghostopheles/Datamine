@@ -1,0 +1,83 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+    <EditBox name="DatamineEditBoxTemplate" inherits="SearchBoxTemplate" virtual="true"
+        font="DatamineCleanFont"
+        autoFocus="false">
+        <!-- most of this is stolen from TextureAtlasViewer by LanceDH and Meorawr <3 -->
+        <Layers>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Checkmark" file="Interface\Scenarios\ScenarioIcon-Check"
+                    alpha="0">
+                    <Size x="16" y="16" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="RIGHT" x="-3" />
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="Failmark" file="Interface\Scenarios\ScenarioIcon-Fail"
+                    alpha="0">
+                    <Size x="16" y="16" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="RIGHT" x="-3" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Label" inherits="GameFontWhiteSmall" justifyH="LEFT"
+                    text="Unknown" hidden="true">
+                    <Size y="15" />
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Animations>
+            <AnimationGroup parentKey="CheckAnim" setToFinalAlpha="true" looping="NONE">
+                <Alpha parentKey="Checkmark" childKey="Checkmark" fromAlpha="1" toAlpha="0"
+                    duration="0.6" order="0" />
+                <Scale parentKey="Checkmark" childKey="Checkmark" fromScaleX="0.7" toScaleX="1.5"
+                    smoothing="NONE" fromScaleY="0.7" toScaleY="1.5" duration="0.6" order="0" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="FailAnim" setToFinalAlpha="true" looping="NONE">
+                <Alpha parentKey="Failmark" childKey="Failmark" fromAlpha="1" toAlpha="0"
+                    duration="0.6" order="0" />
+                <Scale parentKey="Failmark" childKey="Failmark" fromScaleX="0.7" toScaleX="1.5"
+                    smoothing="NONE" fromScaleY="0.7" toScaleY="1.5" duration="0.6" order="0" />
+            </AnimationGroup>
+        </Animations>
+        <Scripts>
+            <OnShow inherit="prepend">
+				self.Label:SetText(self.LabelText);
+				self.Label:Show();
+			</OnShow>
+            <!-- add a self.Callback key that points to a function that returns a boolean value -
+            this is our callback to deal with the text/numbers -->
+            <OnEnterPressed>
+                if not self.Callback then return end;
+                local result;
+                if self:IsNumeric() then
+                    result = self.Callback(self:GetNumber());
+                else
+                    result = self.Callback(self:GetText());
+                end
+
+                PlaySound(SOUNDKIT.TUTORIAL_POPUP);
+
+                if result ~= nil then
+                    self.clearButton.texture:Hide();
+
+                    if result == true then
+                        self.CheckAnim:Stop();
+                        self.CheckAnim:Play();
+                    else
+                        self.FailAnim:Stop();
+                        self.FailAnim:Play();
+                    end
+
+                    C_Timer.After(0.6, function() self.clearButton.texture:Show(); end);
+                end
+			</OnEnterPressed>
+        </Scripts>
+    </EditBox>
+</Ui>
