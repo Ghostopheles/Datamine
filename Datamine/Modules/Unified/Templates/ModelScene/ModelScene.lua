@@ -253,7 +253,7 @@ DatamineModelSceneMixin.DefaultRaceActorOffsets = {
     DracthyrDragon = {
         x = -0.50,
         y = 0.80,
-        z = -0.10
+        z = 0.83,
     },
 };
 
