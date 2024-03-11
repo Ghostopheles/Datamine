@@ -608,7 +608,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
 
         local valueJustifyH = "RIGHT";
         local maxValueLines = 2;
-        local extent = 22;
+        local extent = 27;
         if searchMode == DataTypes.Achievement then
             if key == "RewardText" and (value ~= "N/A") then
                 extent = 35;
