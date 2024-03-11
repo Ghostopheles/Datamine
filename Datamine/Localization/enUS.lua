@@ -16,6 +16,13 @@ L["THEATER_MODE_LOOP_TOGGLE"] = "Loop movie";
 L["THEATER_MODE_LOADING_MOVIE"] = "Loading movie...";
 L["THEATER_MODE_DOWNLOAD_PROGRESS"] = "%d%%";
 
+L["EXPLORER_HELP_TEXT_HELP_HEADER"] = "Explorer";
+L["EXPLORER_HELP_TEXT_HELP"] = "Enter %s %s ID in the search box above|nto get started.";
+L["EXPLORER_HELP_TEXT_FAIL_HEADER"] = "Search failed";
+L["EXPLORER_HELP_TEXT_FAIL"] = "%s %d is forbidden or does not exist.";
+L["EXPLORER_HELP_TEXT_DRAGDROP_HEADER"] = "Explorer";
+L["EXPLORER_HELP_TEXT_DRAGDROP"] = "Drop %s %s here to search for it.";
+
 -- END LOCALIZATION
 
 Datamine.Strings = AceLocale:GetLocale("Datamine", false);

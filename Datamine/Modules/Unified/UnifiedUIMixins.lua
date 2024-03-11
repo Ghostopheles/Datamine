@@ -303,16 +303,16 @@ local SEARCH_HELP_TYPE = {
 
 local SEARCH_HELP_FORMAT = {
     [SEARCH_HELP_TYPE.HELP] = {
-        Header = "Explorer",
-        Details = [[Enter %s %s ID in the search box above|nto get started.]],
+        Header = L.EXPLORER_HELP_TEXT_HELP_HEADER,
+        Details = L.EXPLORER_HELP_TEXT_HELP,
     },
     [SEARCH_HELP_TYPE.FAIL] = {
-        Header = "Search failed",
-        Details = [[%s %d is forbidden or does not exist.]],
+        Header = L.EXPLORER_HELP_TEXT_FAIL_HEADER,
+        Details = L.EXPLORER_HELP_TEXT_FAIL,
     },
     [SEARCH_HELP_TYPE.DRAGDROP] = {
-        Header = "Explorer",
-        Details = [[Drop %s %s here to search for it.]],
+        Header = L.EXPLORER_HELP_TEXT_DRAGDROP_HEADER,
+        Details = L.EXPLORER_HELP_TEXT_DRAGDROP,
     },
 };
 
@@ -914,9 +914,17 @@ end
 DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
+    self:SetSize(1366, 768);
     self.TitleContainer.Text:SetText(L.ADDON_TITLE);
 
     tinsert(UISpecialFrames, self:GetName());
+end
+
+function DatamineUnifiedFrameMixin:OnShow()
+end
+
+function DatamineUnifiedFrameMixin:OnHide()
+    Registry:TriggerEvent(Events.UI_MAIN_HIDE);
 end
 
 function DatamineUnifiedFrameMixin:Toggle()
