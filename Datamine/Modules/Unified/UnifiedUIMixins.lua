@@ -602,7 +602,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
             self.Icon:SetItem(value);
         end
 
-        if key == "Icon" and (searchMode == DataTypes.Spell) then
+        if key == "Icon" and (searchMode ~= DataTypes.Item) then
             self.Icon.icon:SetTexture(value);
         end
 
@@ -635,7 +635,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
             IsTopLevel = true,
             ShowChevron = false,
             RequestedExtent = extent,
-            OrderIndex = tIndexOf(keys, key),
+            OrderIndex = self.DataEntryCount,
         };
 
         self.CurrentData[key] = value;

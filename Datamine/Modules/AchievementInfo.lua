@@ -56,11 +56,15 @@ end
 -- achievement info
 
 function Datamine.Achievement:GetAchievementInfoByID(achievementID, callback)
+    local data;
     local achievementInfo = {GetAchievementInfo(achievementID)};
-    tinsert(achievementInfo, GetAchievementCategory(achievementID));
-    tinsert(achievementInfo, GetAchievementLink(achievementID));
 
-    local data = CreateTable(AchievementInfoKeys, achievementInfo);
+    if #achievementInfo > 0 then
+        tinsert(achievementInfo, GetAchievementCategory(achievementID));
+        tinsert(achievementInfo, GetAchievementLink(achievementID));
+
+        data = CreateTable(AchievementInfoKeys, achievementInfo);
+    end
 
     if callback and type(callback) == "function" then
         callback(data);
