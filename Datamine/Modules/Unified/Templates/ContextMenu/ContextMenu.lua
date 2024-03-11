@@ -1,3 +1,6 @@
+local Registry = Datamine.EventRegistry;
+local Events = Datamine.Events;
+
 ---@class ContextMenuEntryData
 ---@field Text string
 ---@field Callback function
@@ -68,6 +71,8 @@ function DatamineContextMenuMixin:OnLoad()
 
     self.DataProvider:RegisterCallback("OnSizeChanged", self.OnDataProviderSizeChanged, self);
 
+    Registry:RegisterCallback(Events.UI_MAIN_HIDE, self.OnUIMainHide, self);
+
     self:UpdateSize();
 end
 
@@ -80,6 +85,10 @@ end
 
 function DatamineContextMenuMixin:OnDataProviderSizeChanged()
     self:UpdateSize();
+end
+
+function DatamineContextMenuMixin:OnUIMainHide()
+    self:Hide();
 end
 
 function DatamineContextMenuMixin:Clear()
