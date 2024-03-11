@@ -42,12 +42,12 @@ Datamine.Achievement.CriteriaInfoKeys = CriteriaInfoKeys;
 
 local Print = function(...)
     Datamine.Print(moduleName, ...);
-end;
+end
 
 local function CreateTable(keys, data)
     local outTable = {};
-    for i, value in ipairs(data) do
-        outTable[keys[i]] = value;
+    for i, key in ipairs(keys) do
+        outTable[key] = data[i];
     end
 
     return outTable;

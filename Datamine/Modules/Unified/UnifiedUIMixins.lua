@@ -584,7 +584,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
         self.Icon.icon:SetTexture(134400);
     end
 
-    for i, value in pairs(data) do
+    local function AddEntry(i, value)
         if value == nil or value == "" then
             value = "N/A";
         elseif type(value) == "boolean" then
@@ -644,6 +644,17 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
         if _data.KeyValue.Key ~= "Name" then
             self.DataProvider:Insert(_data);
             self.DataEntryCount = self.DataEntryCount + 1;
+        end
+    end
+
+    if searchMode == DataTypes.Achievement then
+        for i, key in pairs(keys) do
+            local value = data[key];
+            AddEntry(i, value);
+        end
+    else
+        for i, value in pairs(data) do
+            AddEntry(i, value);
         end
     end
 
