@@ -262,6 +262,13 @@ end
 
 -------------
 
+function Datamine.Unified.AddBackgroundToFrame(frame, color)
+    color = color or "DatamineDarkGray";
+    local template = format("%sBackgroundTemplate", color);
+    local bg = frame:CreateTexture("nil", "BACKGROUND", template);
+    bg:SetAllPoints();
+end
+
 do
     local helpString = "Toggle the Datamine UI.";
     Datamine.Slash:RegisterCommand("ui", function() DatamineUnifiedFrame:Toggle(); end, helpString, moduleName);
