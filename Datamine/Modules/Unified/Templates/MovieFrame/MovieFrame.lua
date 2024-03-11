@@ -216,8 +216,13 @@ function DatamineTheaterTabMixin:LoadAndPlayMovie(movieID)
     end
 
     self:CollapseControls();
-    self.PlayAfterLoad = true;
-    self:PreloadMovie(movieID);
+    if IsMovieLocal(movieID) then
+        self:Play(movieID);
+    else
+        self.PlayAfterLoad = true;
+        self:PreloadMovie(movieID);
+    end
+
     return true;
 end
 
