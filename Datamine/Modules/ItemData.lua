@@ -1,5 +1,8 @@
 Datamine.Item = CreateFrame("Frame");
 
+local GetItemInfo = C_Item.GetItemInfo or GetItemInfo;
+local GetItemSpell = C_Item.GetItemSpell or GetItemSpell;
+
 local moduleName = "ItemData";
 
 local ItemInfoKeys = {
