@@ -1,10 +1,21 @@
 # Datamine v2.1.2
 
 ##### Added
-* A new main tab to the Datamine UI that allows you to watch pre-rendered movies in-game using a `MovieID` from `Movie.db2`.
+* A new main tab to the Datamine UI that allows you to watch pre-rendered movies in-game using a `MovieID` from `Movie.db2`
+* Achievement info searching in the explorer
+* You can now drag and drop spells on the explorer to search for them
+* Item searches now display item's `ItemSpell`
 
 ##### Fixed
-* Model view camera controls are now much more precise and actually work as expected. Thanks to Peterodox for saving me.
+* Model view camera controls are now much more precise and actually work as expected. Thanks to Peterodox for saving me from the math
+* Most strings now use localized strings - accepting crowdsourced localization via Curseforge
+* Font usage has been standardized a bit better
+* Spacing should be a bit better on the explorer view
+* Updated for 10.2.6
+* Dracthyr should now start in the correct position in the model viewer
+
+##### Known Issues
+* Dracthyr do not start in the correct position in the model viewer
 
 # Datamine v2.1.1
 
