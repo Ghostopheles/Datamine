@@ -1,3 +1,11 @@
+# Datamine v2.2.0
+
+##### Fixed
+* Playing movies in the theater tab will now properly respect the 'loop movie' setting
+
+##### Known Issues
+* Lua error when playing movies related to the SubtitlesFrame anchoring
+
 # Datamine v2.1.2
 
 ##### Added

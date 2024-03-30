@@ -37,11 +37,7 @@
             </Layer>
         </Layers>
         <Scripts>
-            <OnLoad method="OnLoad" />
-            <OnShow method="OnShow" />
             <OnHide method="OnHide" />
-            <OnEnter method="OnEnter" />
-            <OnLeave method="OnLeave" />
             <OnEvent method="OnEvent" />
             <OnUpdate method="OnUpdate" />
             <OnMovieFinished method="OnMovieFinished" />

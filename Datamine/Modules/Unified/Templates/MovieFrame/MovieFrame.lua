@@ -1,4 +1,11 @@
+local moduleName = "Theater";
 local L = Datamine.Strings;
+
+local Print = function(...)
+    Datamine.Print(moduleName, ...);
+end;
+
+---TODO: create a static popup style error message window for play errors
 
 --------------
 
@@ -10,24 +17,14 @@ local START_MOVIE_ERR_CODES = {
     FILE_OPEN_FAILED = 4,
 };
 
+local START_MOVIE_ERR_STRINGS = tInvert(START_MOVIE_ERR_CODES);
+
 --------------
 
 DatamineMovieFrameMixin = {};
 
-function DatamineMovieFrameMixin:OnLoad()
-end
-
-function DatamineMovieFrameMixin:OnShow()
-end
-
 function DatamineMovieFrameMixin:OnHide()
     self:Stop();
-end
-
-function DatamineMovieFrameMixin:OnEnter()
-end
-
-function DatamineMovieFrameMixin:OnLeave()
 end
 
 function DatamineMovieFrameMixin:OnEvent(event, ...)
@@ -41,48 +38,54 @@ function DatamineMovieFrameMixin:OnUpdate(deltaTime)
 end
 
 function DatamineMovieFrameMixin:OnMovieFinished()
-    GameMovieFinished();
+    self:Stop();
 end
 
-function DatamineMovieFrameMixin:Play(movieID)
-    self:Stop();
-    self:Show();
-    local success, errorCode = self:StartMovie(movieID);
-    if not success then
-        StaticPopup_Show("ERROR_CINEMATIC");
-        print("Failed to play movie with error " .. errorCode);
-        self:Stop();
-        return;
-    end
-
-    SubtitlesFrame:SetPoint("BOTTOMLEFT", self);
-    SubtitlesFrame:SetPoint("BOTTOMRIGHT", self);
-
-    self.SubtitlesOriginalStrata = SubtitlesFrame:GetFrameStrata();
-    SubtitlesFrame:SetFrameStrata("FULLSCREEN");
-
-    EventRegistry:TriggerEvent("Subtitles.OnMovieCinematicPlay", self);
+function DatamineMovieFrameMixin:ShouldLoop()
+    return self:GetParent():GetLoopMovie();
 end
 
-function DatamineMovieFrameMixin:PlayByName(movieName, resolution)
+-- anchorToSelf essentially just means - should the subtitles be anchored to our MovieFrame or the default one
+function DatamineMovieFrameMixin:UpdateSubtitlesAnchor(anchorToSelf)
+    if anchorToSelf then
+        SubtitlesFrame:SetPoint("BOTTOMLEFT", self);
+        SubtitlesFrame:SetPoint("BOTTOMRIGHT", self);
+
+        self.SubtitlesOriginalStrata = SubtitlesFrame:GetFrameStrata();
+        SubtitlesFrame:SetFrameStrata("FULLSCREEN");
+    else
+        SubtitlesFrame:SetPoint("BOTTOMLEFT");
+        SubtitlesFrame:SetPoint("BOTTOMRIGHT");
+        if self.SubtitlesOriginalStrata then
+            SubtitlesFrame:SetFrameStrata(self.SubtitlesOriginalStrata);
+        end
+    end
+end
+
+function DatamineMovieFrameMixin:Play(movieID, byName, resolution)
     self:Stop();
-    self:Show();
-    local success, errorCode = self:StartMovieByName(movieName, self:GetParent():GetLoopMovie(), resolution);
-    if not success then
-        StaticPopup_Show("ERROR_CINEMATIC");
-        print("Failed to play movie with error " .. errorCode);
-        self:Stop();
-        return;
+    --self:Show();
+
+    local success, errorCode;
+    if byName then
+        success, errorCode = self:StartMovieByName(movieID, self:ShouldLoop(), resolution);
+    else
+        success, errorCode = self:StartMovie(movieID, self:ShouldLoop());
     end
 
-    SubtitlesFrame:SetPoint("BOTTOMLEFT", self);
-    SubtitlesFrame:SetPoint("BOTTOMRIGHT", self);
+    if not success then
+        self:HandlePlayError(errorCode, movieID);
+    end
 
-    self.SubtitlesOriginalStrata = SubtitlesFrame:GetFrameStrata();
-    SubtitlesFrame:SetFrameStrata("FULLSCREEN");
-
+    self:UpdateSubtitlesAnchor(true);
     EventRegistry:TriggerEvent("Subtitles.OnMovieCinematicPlay", self);
+
     return success, errorCode;
+end
+
+-- this function does nothing because :StartMovieByName is non-functional
+function DatamineMovieFrameMixin:PlayByName(movieName, resolution)
+    return self:Play(movieName, true, resolution);
 end
 
 function DatamineMovieFrameMixin:Stop()
@@ -93,13 +96,15 @@ function DatamineMovieFrameMixin:Stop()
         self:Hide();
     end
 
-    SubtitlesFrame:SetPoint("BOTTOMLEFT");
-    SubtitlesFrame:SetPoint("BOTTOMRIGHT");
-    if self.SubtitlesOriginalStrata then
-        SubtitlesFrame:SetFrameStrata(self.SubtitlesOriginalStrata);
-    end
-
+    self:UpdateSubtitlesAnchor(false);
     EventRegistry:TriggerEvent("Subtitles.OnMovieCinematicStop");
+end
+
+function DatamineMovieFrameMixin:HandlePlayError(errorCode, movieID)
+    StaticPopup_Show("ERROR_CINEMATIC");
+    local errString = format(L.THEATER_MODE_ERR_PLAY_FAILED, movieID, errorCode, START_MOVIE_ERR_STRINGS[errorCode]);
+    Print(errString); -- TODO: Replace with error popup window
+    self:Stop();
 end
 
 --------------
@@ -212,6 +217,7 @@ end
 
 function DatamineTheaterTabMixin:LoadAndPlayMovie(movieID)
     if not IsMoviePlayable(movieID) then
+        Print(format(L.THEATER_MODE_ERR_INVALID_MOVIE, movieID)); -- TODO: Replace with error popup window
         return false;
     end
 
@@ -266,5 +272,7 @@ end
 
 --------------
 
+
+TEST_LOCALE = L;
 
 
