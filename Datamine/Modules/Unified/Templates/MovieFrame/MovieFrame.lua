@@ -64,7 +64,7 @@ end
 
 function DatamineMovieFrameMixin:Play(movieID, byName, resolution)
     self:Stop();
-    --self:Show();
+    self:Show();
 
     local success, errorCode;
     if byName then
