@@ -7,6 +7,7 @@ local PI = math.pi;
 
 
 -------------
+-- this section was written by @Peterodox <3
 
 local Projector = {};
 
