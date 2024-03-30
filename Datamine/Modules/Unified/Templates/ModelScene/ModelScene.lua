@@ -420,7 +420,9 @@ function DatamineModelSceneMixin:SetupCamera()
 end
 
 function DatamineModelSceneMixin:SetupCameraDefaults()
-    self.CameraDefaults = self:GetCameraPositionCustom();
+    if not self.CameraDefaults then
+        self.CameraDefaults = self:GetCameraPositionCustom();
+    end
 end
 
 function DatamineModelSceneMixin:GetCameraPositionCustom()

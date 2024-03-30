@@ -2,6 +2,8 @@
 
 ##### Fixed
 * Playing movies in the theater tab will now properly respect the 'loop movie' setting
+* The 'defaults' button on the model scene transform tab should now work more consistently
+* Dracthyr should now actually start in the correct position in the model viewer
 
 ##### Known Issues
 * Lua error when playing movies related to the SubtitlesFrame anchoring
