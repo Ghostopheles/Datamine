@@ -7,7 +7,7 @@
 ## AllowLoad: Game
 ## AllowLoadGameType: mainline
 
-## RequiredDeps: Datamine_Data
+# ## RequiredDeps: Datamine_Data
 ## OptionalDeps: DevTool
 
 ## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
