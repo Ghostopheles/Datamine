@@ -6,6 +6,12 @@
 * Dracthyr should now actually start in the correct position in the model viewer
 
 ##### Added
+* Creature data collection! Now you can be your very own Wowhead!
+    * Caches creatures that you see and interact with the in the world
+    * Stores BroadcastText, Spells, Name, Reactions and InstanceIDs
+    * The raw data can be found at `<game_path>/WTF/Account/<account>/SavedVariables/Datamine_Data.lua`
+    * The saved variables file *may* fill up fairly quickly with data, so be sure to back it up manually if you don't want to lose any data.
+
 * Two new console commands
     * `GetBuildInfo`: Dumps info about the current client build, with a few extra bits of information
     * `SetChrModel`: Allows you to change the character model in the barber shop. Only certain models are supported - i.e. Dragonflight dragon mounts, druid forms, warlock pets
