@@ -1,0 +1,17 @@
+## Interface: 100206
+## Title: |cfffc037bDatamine_Data|r
+## Notes: Data store for the Datamine addon.
+## Author: Ghostopheles
+## Version: @project-version@
+## SavedVariables: DatamineData
+## LoadOnDemand: 1
+
+## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
+
+## X-License: Public Domain
+## X-Category: Development Tools
+
+## X-Curse-Project-ID: 906564
+## X-Wago-ID: 4N2mb0GL
+
+Database.lua
