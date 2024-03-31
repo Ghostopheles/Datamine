@@ -273,3 +273,11 @@ do
     local helpString = "Toggle the Datamine UI.";
     Datamine.Slash:RegisterCommand("ui", function() DatamineUnifiedFrame:Toggle(); end, helpString, moduleName);
 end
+
+---TODO: REMOVE ME
+--if Datamine.Debug then
+--    EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function()
+--        DatamineUnifiedFrame:Show();
+--        DatamineUnifiedFrame.Workspace:SetMode(3);
+--    end);
+--end

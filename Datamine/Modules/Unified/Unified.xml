@@ -69,9 +69,7 @@
                 </FontString>
             </Layer>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Background">
-                    <Color r="0.1" g="0.1" b="0.1" />
-                </Texture>
+                <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
             </Layer>
             <Layer level="ARTWORK">
                 <FontString parentKey="HelpText" font="DatamineCleanFont"
@@ -320,6 +318,8 @@
                 </Layers>
             </Frame>
             <Frame parentKey="TheaterTab" inherits="DatamineTheaterTabTemplate" setAllPoints="true"
+                hidden="true" />
+            <Frame parentKey="StorageTab" inherits="DatamineStorageTabTemplate" setAllPoints="true"
                 hidden="true" />
         </Frames>
         <Layers>

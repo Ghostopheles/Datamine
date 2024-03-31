@@ -13,6 +13,7 @@ L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs y
 
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
+L["WORKSPACE_MODE_STORAGE"] = "Storage";
 
 L["THEATER_MODE_MOVIE_ID"] = "Movie ID";
 L["THEATER_MODE_MOVIE_ID_EB_INSTRUCTIONS"] = "Enter MovieID...";
@@ -30,6 +31,8 @@ L["EXPLORER_HELP_TEXT_FAIL_HEADER"] = "Search failed";
 L["EXPLORER_HELP_TEXT_FAIL"] = "%s %d is forbidden or does not exist.";
 L["EXPLORER_HELP_TEXT_DRAGDROP_HEADER"] = "Explorer";
 L["EXPLORER_HELP_TEXT_DRAGDROP"] = "Drop %s %s here to search for it.";
+L["EXPLORER_HELP_TEXT_CREATURE_HEADER"] = "Creature Explorer";
+L["EXPLORER_HELP_TEXT_CREATURE"] = "No creatures cached yet. Make sure the '|cffffff" .. L["CONFIG_CREATUREDATA_NAME"] .. "|r' setting is enabled, and try running around a bit.";
 
 -- END LOCALIZATION
 

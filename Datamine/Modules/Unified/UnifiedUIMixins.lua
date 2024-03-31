@@ -299,6 +299,7 @@ local SEARCH_HELP_TYPE = {
     HELP = 1,
     FAIL = 2,
     DRAGDROP = 3,
+    CREATURE = 4,
 };
 
 local SEARCH_HELP_FORMAT = {
@@ -313,6 +314,10 @@ local SEARCH_HELP_FORMAT = {
     [SEARCH_HELP_TYPE.DRAGDROP] = {
         Header = L.EXPLORER_HELP_TEXT_DRAGDROP_HEADER,
         Details = L.EXPLORER_HELP_TEXT_DRAGDROP,
+    },
+    [SEARCH_HELP_TYPE.CREATURE] = {
+        Header = L.EXPLORER_HELP_TEXT_CREATURE_HEADER,
+        Details = L.EXPLORER_HELP_TEXT_CREATURE,
     },
 };
 
@@ -561,6 +566,8 @@ function DatamineScrollableDataFrameMixin:GetFormattedHelpDetailsText(textType)
             return format(fmt, modeText, UI_MAIN.GetExplorerDataID());
         elseif textType == SEARCH_HELP_TYPE.HELP or textType == SEARCH_HELP_TYPE.DRAGDROP then
             return format(fmt, prefix, modeText);
+        elseif textType == SEARCH_HELP_TYPE.CREATURE then
+            return fmt;
         end
     end
 end
@@ -855,7 +862,7 @@ DatamineWorkspaceMixin = {};
 DatamineWorkspaceMixin.Modes = {
     DEFAULT = 1,
     CODE = 2,
-    DB = 3,
+    STORAGE = 3,
     MOVIE = 4,
 };
 
@@ -868,6 +875,9 @@ function DatamineWorkspaceMixin:OnLoad()
         },
         [self.Modes.MOVIE] = {
             self.TheaterTab,
+        },
+        [self.Modes.STORAGE] = {
+            self.StorageTab,
         },
     };
 
@@ -885,6 +895,12 @@ function DatamineWorkspaceMixin:OnLoad()
         local tooltipText = L.WORKSPACE_MODE_MOVIE;
         local cb = function() self:SetMode(self.Modes.MOVIE); end;
         toolbar:AddButton("custom-toolbar-play", cb, tooltipText);
+    end
+
+    do
+        local tooltipText = L.WORKSPACE_MODE_STORAGE;
+        local cb = function() self:SetMode(self.Modes.STORAGE); end;
+        toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
     end
 end
 
