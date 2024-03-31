@@ -1,4 +1,10 @@
+local Events = Datamine.Events;
+local Registry = Datamine.EventRegistry;
+local Settings = Datamine.Settings;
+
+---@type DatamineDatabase
 local DATABASE;
+
 local EVENTS = {
     CHAT_MSG_MONSTER_SAY = "CHAT_MSG_MONSTER_SAY",
     CHAT_MSG_MONSTER_YELL = "CHAT_MSG_MONSTER_YELL",
@@ -7,6 +13,16 @@ local EVENTS = {
     CHAT_MSG_MONSTER_WHISPER = "CHAT_MSG_MONSTER_WHISPER",
 
     UPDATE_MOUSEOVER_UNIT = "UPDATE_MOUSEOVER_UNIT",
+
+    COMBAT_LOG_EVENT_UNFILTERED = "COMBAT_LOG_EVENT_UNFILTERED",
+
+    PLAYER_SOFT_ENEMY_CHANGED = "PLAYER_SOFT_ENEMY_CHANGED",
+    PLAYER_SOFT_FRIEND_CHANGED = "PLAYER_SOFT_FRIEND_CHANGED",
+    PLAYER_SOFT_INTERACT_CHANGED = "PLAYER_SOFT_INTERACT_CHANGED",
+    PLAYER_TARGET_CHANGED = "PLAYER_TARGET_CHANGED",
+
+    NAME_PLATE_UNIT_ADDED = "NAME_PLATE_UNIT_ADDED",
+    FORBIDDEN_NAME_PLATE_UNIT_ADDED = "FORBIDDEN_NAME_PLATE_UNIT_ADDED",
 };
 
 local PH_PLAYER_NAME = "$PLAYER_NAME$";
@@ -28,21 +44,44 @@ function DatamineCollectorMixin:OnLoad()
             self:RegisterEvent(event);
         end
     end
+
+    Registry:RegisterCallback(Events.SETTING_CHANGED, self.OnSettingChanged, self);
+    EventUtil.ContinueOnAddOnLoaded("Datamine", function() self:OnAddonLoaded(); end);
 end
 
 function DatamineCollectorMixin:OnEvent(event, ...)
+    if not self.EnableCollection then
+        return;
+    end
+
     if self[event] then
         self[event](self, ...);
     end
 end
 
+---@param db DatamineDatabase
 function DatamineCollectorMixin:RegisterDatabase(db)
     if not DATABASE then
         DATABASE = db;
+        Datamine.Database = db;
     end
 end
 
+function DatamineCollectorMixin:OnAddonLoaded()
+    self.EnableCollection = Datamine.Settings.GetSetting(Settings.Keys.CollectCreatureData);
+end
+
+function DatamineCollectorMixin:OnSettingChanged(setting, newValue)
+    print(setting, newValue);
+    if setting ~= Settings.Keys.CollectCreatureData then
+        return;
+    end
+
+    self.EnableCollection = newValue;
+end
+
 ------------
+-- broadcast text handling
 
 function DatamineCollectorMixin:HandleBroadcastText(...)
     local text, name, language, name2 = ...;
@@ -65,12 +104,11 @@ function DatamineCollectorMixin:HandleBroadcastText(...)
         InitializeKnownLanguages();
     end
 
-    if (KNOWN_LANGUAGES and not KNOWN_LANGUAGES[language]) or (not name) then
+    if (language and language ~= "") and (KNOWN_LANGUAGES and not KNOWN_LANGUAGES[language]) or (not name) then
         return;
     end
 
-
-    DATABASE:AddBroadcastTextToCreatureEntry(guid, text);
+    DATABASE:AddBroadcastTextToCreatureEntryByName(name, text);
 end
 
 function DatamineCollectorMixin:CHAT_MSG_MONSTER_SAY(...)
@@ -94,11 +132,78 @@ function DatamineCollectorMixin:CHAT_MSG_MONSTER_WHISPER(...)
 end
 
 ------------
+-- caching
 
-function DatamineCollectorMixin:UPDATE_MOUSEOVER_UNIT()
-    if not UnitExists("mouseover") then
+function DatamineCollectorMixin:COMBAT_LOG_EVENT_UNFILTERED()
+    local _, subEvent, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _ = CombatLogGetCurrentEventInfo();
+    if sourceGUID and sourceGUID:match("Creature") then
+        self:HandleCreatureFromCombatLog(sourceGUID, sourceName, sourceFlags, subEvent);
+    end
+
+    if destGUID and destGUID:match("Creature") then
+        self:HandleCreatureFromCombatLog(destGUID, destName, destFlags, subEvent);
+    end
+end
+
+local SUBEVENTS_TO_TRACK = {
+    RANGE = true,
+    SPELL = true,
+};
+
+function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, subevent)
+    name = name ~= "" and name or nil;
+    local entry, ID = DATABASE:GetOrCreateCreatureEntryByGUID(guid, name);
+    DATABASE:UpdateCreatureEntryWithUnitFlags(ID, flags);
+    local prefix = strsplit("_", subevent, 2);
+    if SUBEVENTS_TO_TRACK[prefix] then
+        local spellID = select(12, CombatLogGetCurrentEventInfo());
+        if entry.Spells[spellID] then return end;
+        DATABASE:AddCreatureSpell(ID, spellID);
+    end
+end
+
+------------
+-- more ways to capture creatures for the cache
+
+function DatamineCollectorMixin:HandleCreature(guid)
+    DATABASE:GetOrCreateCreatureEntryByGUID(guid);
+end
+
+function DatamineCollectorMixin:HandleCreatureByUnitToken(unitToken)
+    if not UnitExists(unitToken) then
         return;
     end
 
-    local guid = UnitGUID("mouseover");
+    local guid = UnitGUID(unitToken);
+    if guid and guid:match("Creature") then
+        self:HandleCreature(guid);
+    end
+end
+
+function DatamineCollectorMixin:UPDATE_MOUSEOVER_UNIT()
+    self:HandleCreatureByUnitToken("mouseover");
+end
+
+function DatamineCollectorMixin:PLAYER_SOFT_ENEMY_CHANGED()
+    self:HandleCreatureByUnitToken("softenemy");
+end
+
+function DatamineCollectorMixin:PLAYER_SOFT_FRIEND_CHANGED()
+    self:HandleCreatureByUnitToken("softfriend");
+end
+
+function DatamineCollectorMixin:PLAYER_SOFT_INTERACT_CHANGED()
+    self:HandleCreatureByUnitToken("softinteract");
+end
+
+function DatamineCollectorMixin:PLAYER_TARGET_CHANGED()
+    self:HandleCreatureByUnitToken("target");
+end
+
+function DatamineCollectorMixin:NAME_PLATE_UNIT_ADDED(unitToken)
+    self:HandleCreatureByUnitToken(unitToken);
+end
+
+function DatamineCollectorMixin:FORBIDDEN_NAME_PLATE_UNIT_ADDED(unitToken)
+    self:HandleCreatureByUnitToken(unitToken);
 end

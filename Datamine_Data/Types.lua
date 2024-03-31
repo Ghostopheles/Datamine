@@ -1,0 +1,12 @@
+---@class LocalizedField : table<string, string>
+---@class LocalizedTextStore : table<string, table<string>>
+---@class Instances : table<number, boolean>
+---@class CreatureReactions : table<string, string>
+---@class CreatureSpells : table<number, boolean>
+
+---@class CreatureEntry
+---@field Name? LocalizedField
+---@field Instances? number
+---@field Reactions? CreatureReactions
+---@field Spells? CreatureSpells
+---@field BroadcastText? LocalizedTextStore
