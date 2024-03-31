@@ -5,8 +5,10 @@
 * The 'defaults' button on the model scene transform tab should now work more consistently
 * Dracthyr should now actually start in the correct position in the model viewer
 
-##### Known Issues
-* Lua error when playing movies related to the SubtitlesFrame anchoring
+##### Added
+* Two new console commands
+    * `GetBuildInfo`: Dumps info about the current client build, with a few extra bits of information
+    * `SetChrModel`: Allows you to change the character model in the barber shop. Only certain models are supported - i.e. Dragonflight dragon mounts, druid forms, warlock pets
 
 # Datamine v2.1.2
 
