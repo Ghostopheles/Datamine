@@ -12,6 +12,7 @@ Datamine.Events = {
     SEARCH_BEGIN = "SearchBegin",
     WORKSPACE_MODE_CHANGED = "WorkspaceModeChanged",
     UI_MAIN_HIDE = "UIMainHide",
+    SETTING_CHANGED = "SettingChanged"
 };
 
 local function GenerateCallbackEvents()

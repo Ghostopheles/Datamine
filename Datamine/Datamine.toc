@@ -29,6 +29,7 @@ DatamineEarlyLoad.lua
 Datamine.lua
 
 Localization/enUS.lua
+Core/Events.lua
 Settings/SettingsCore.lua
 
 Core/SlashCommands.lua
@@ -45,7 +46,6 @@ Modules/AchievementInfo.lua
 
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedNineSliceLayouts.lua
-Modules/Unified/UnifiedRegistry.lua
 Modules/Unified/UnifiedUIMixins.lua
 Modules/Unified/Templates/Fonts.xml
 Modules/Unified/Templates/EditBoxes.xml
