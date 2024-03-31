@@ -1,6 +1,19 @@
+local L = Datamine.Strings;
+local Events = Datamine.Events;
+local Registry = Datamine.EventRegistry;
+
+Datamine.Settings = {};
+
+Datamine.Settings.Keys = {
+    ChatPrefixColor = "ChatPrefixColor",
+    debugTargetInfo = "debugTargetInfo",
+    CollectCreatureData = "CollectCreatureData",
+};
+
 local defaultConfig = {
-    ChatPrefixColor = "FFF542F5";
-    debugTargetInfo = false;
+    [Datamine.Settings.Keys.ChatPrefixColor] = "FFF542F5",
+    [Datamine.Settings.Keys.debugTargetInfo] = false,
+    [Datamine.Settings.Keys.CollectCreatureData] = true,
 };
 
 local allSettings = {};
@@ -13,7 +26,7 @@ local function InitSavedVariables()
     for name, setting in pairs(allSettings) do
         local var = DatamineConfig[name];
 
-        if not var then
+        if var == nil then
             DatamineConfig[name] = setting:GetValue();
         else
             setting:SetValue(DatamineConfig[name]);
@@ -28,26 +41,7 @@ EventUtil.ContinueOnAddOnLoaded("Datamine", InitSavedVariables);
 local function OnSettingChanged(_, setting, value)
 	local variable = setting:GetVariable()
 	DatamineConfig[variable] = value
-end
-
-local function ShowColorPicker(r, g, b, a, callback)
-    assert(r and g and b, "Invalid RGB values passes to ShowColorPicker");
-    local colorPicker = ColorPickerFrame;
-    local selectedColor = CreateColor(r, g, b, a);
-    local selectedColorRGB = {selectedColor:GetRGB()};
-
-    colorPicker.hasOpacity, colorPicker.opacity = (a ~= nil), a;
-    colorPicker.previousValues = selectedColorRGB;
-
-    if callback and type(callback) == "function" then
-        colorPicker.func, colorPicker.opacityFunc, colorPicker.cancelFunc = callback, callback, callback;
-    else
-        colorPicker.func, colorPicker.opacityFunc, colorPicker.cancelFunc = OnSettingChanged, OnSettingChanged, OnSettingChanged;
-    end
-
-    colorPicker:SetColorRGB(unpack(selectedColorRGB));
-    colorPicker:Hide();
-    colorPicker:Show();
+    Registry:TriggerEvent(Events.SETTING_CHANGED, variable, value);
 end
 
 local function CreateCVarSetting(category, name, variable, variableType, defaultValue)
@@ -80,10 +74,10 @@ end
 local category = Settings.RegisterVerticalLayoutCategory(Datamine.Constants.AddonName);
 
 do
-    local variable = "debugTargetInfo";
+    local variable = Datamine.Settings.Keys.debugTargetInfo;
     local variableType = Settings.VarType.Boolean;
-    local name = "Enable barber shop debug tooltips";
-    local tooltip = "Enables the display of debug tooltips in the barber shop and on character customization screens.";
+    local name = L.CONFIG_DEBUGTARGETINFO_NAME;
+    local tooltip = L.CONFIG_DEBUGTARGETINFO_TOOLTIP;
 
     local setting = CreateCVarSetting(category, name, variable, variableType, defaultConfig[variable]);
     Settings.CreateCheckBox(category, setting, tooltip);
@@ -92,4 +86,25 @@ do
     allSettings[variable] = setting;
 end
 
-Settings.RegisterAddOnCategory(category)
+do
+    local variable = Datamine.Settings.Keys.CollectCreatureData;
+    local variableType = Settings.VarType.Boolean;
+    local name = L.CONFIG_CREATUREDATA_NAME;
+    local tooltip = L.CONFIG_CREATUREDATA_TOOLTIP;
+
+    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    Settings.CreateCheckBox(category, setting, tooltip);
+    Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
+
+    allSettings[variable] = setting;
+end
+
+Settings.RegisterAddOnCategory(category);
+
+------------
+
+function Datamine.Settings.GetSetting(name)
+    if allSettings[name] then
+        return allSettings[name]:GetValue();
+    end
+end

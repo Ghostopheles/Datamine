@@ -5,6 +5,12 @@ local L = AceLocale:NewLocale("Datamine", "enUS", true);
 
 L["ADDON_TITLE"] = "Datamine";
 
+L["CONFIG_DEBUGTARGETINFO_NAME"] = "Barber shop debug tooltips";
+L["CONFIG_DEBUGTARGETINFO_TOOLTIP"] = "Toggles the display of debug tooltips in the barber shop and on character customization screens.";
+
+L["CONFIG_CREATUREDATA_NAME"] = "Collect creature data";
+L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs you encounter in the world. May impact performance slightly.";
+
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
 
