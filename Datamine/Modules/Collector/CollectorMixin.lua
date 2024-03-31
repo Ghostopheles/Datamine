@@ -72,7 +72,6 @@ function DatamineCollectorMixin:OnAddonLoaded()
 end
 
 function DatamineCollectorMixin:OnSettingChanged(setting, newValue)
-    print(setting, newValue);
     if setting ~= Settings.Keys.CollectCreatureData then
         return;
     end
