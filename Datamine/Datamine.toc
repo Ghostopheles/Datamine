@@ -52,6 +52,8 @@ Modules/Unified/Templates/EditBoxes.xml
 Modules/Unified/Templates/CustomAtlas.xml
 Modules/Unified/Templates/Buttons.xml
 Modules/Unified/Templates/BackgroundTextures.xml
+Modules/Unified/Templates/PopupBox/PopupBox.lua
+Modules/Unified/Templates/PopupBox/PopupBox.xml
 Modules/Unified/Templates/ContextMenu/ContextMenu.lua
 Modules/Unified/Templates/ContextMenu/ContextMenu.xml
 Modules/Unified/Templates/ModelScene/ControlFrame.lua

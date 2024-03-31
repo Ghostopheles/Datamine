@@ -32,7 +32,10 @@ L["EXPLORER_HELP_TEXT_FAIL"] = "%s %d is forbidden or does not exist.";
 L["EXPLORER_HELP_TEXT_DRAGDROP_HEADER"] = "Explorer";
 L["EXPLORER_HELP_TEXT_DRAGDROP"] = "Drop %s %s here to search for it.";
 L["EXPLORER_HELP_TEXT_CREATURE_HEADER"] = "Creature Explorer";
-L["EXPLORER_HELP_TEXT_CREATURE"] = "No creatures cached yet. Make sure the '|cffffff" .. L["CONFIG_CREATUREDATA_NAME"] .. "|r' setting is enabled, and try running around a bit.";
+L["EXPLORER_HELP_TEXT_CREATURE"] = "No creatures cached yet. Make sure the '|cffffffCollect creature data|r' setting is enabled, and try running around a bit.";
+
+L["POPUP_CONFIG_CREATUREDATA_TITLE"] = "Data Collection";
+L["POPUP_CONFIG_CREATUREDATA_TEXT"] = "Hey, thanks for using Datamine! Since you've last logged in, I've added the ability for Datamine to collect data about NPCs you see and interact with. All data is saved to the Datamine_Data addon's saved variables.|n|nThis feature may slightly harm performance in combat, do you want to enable NPC data collection?";
 
 -- END LOCALIZATION
 

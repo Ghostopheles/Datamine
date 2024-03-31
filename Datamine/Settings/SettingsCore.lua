@@ -8,12 +8,14 @@ Datamine.Settings.Keys = {
     ChatPrefixColor = "ChatPrefixColor",
     debugTargetInfo = "debugTargetInfo",
     CollectCreatureData = "CollectCreatureData",
+    SeenCreatureDataWarning = "SeenCreatureDataWarning",
 };
 
 local defaultConfig = {
     [Datamine.Settings.Keys.ChatPrefixColor] = "FFF542F5",
     [Datamine.Settings.Keys.debugTargetInfo] = false,
-    [Datamine.Settings.Keys.CollectCreatureData] = true,
+    [Datamine.Settings.Keys.CollectCreatureData] = false,
+    [Datamine.Settings.Keys.SeenCreatureDataWarning] = false,
 };
 
 local allSettings = {};
@@ -31,6 +33,10 @@ local function InitSavedVariables()
         else
             setting:SetValue(DatamineConfig[name]);
         end
+    end
+
+    if DatamineConfig.SeenCreatureDataWarning == nil then
+        DatamineConfig.SeenCreatureDataWarning = false;
     end
 
     Datamine.Constants.ChatPrefixColor = CreateColorFromHexString(DatamineConfig.ChatPrefixColor);
@@ -108,3 +114,22 @@ function Datamine.Settings.GetSetting(name)
         return allSettings[name]:GetValue();
     end
 end
+
+------------
+
+local function ShowCreatureDataTogglePopup()
+    if DatamineConfig.SeenCreatureDataWarning then
+        return;
+    end
+
+    local title = L.POPUP_CONFIG_CREATUREDATA_TITLE;
+    local text = L.POPUP_CONFIG_CREATUREDATA_TEXT;
+    local callback = function(choice)
+        DatamineConfig.SeenCreatureDataWarning = true;
+        allSettings.CollectCreatureData:SetValue(choice);
+    end;
+
+    DataminePopupBox:ShowPopup(title, text, callback);
+end
+
+EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", ShowCreatureDataTogglePopup);

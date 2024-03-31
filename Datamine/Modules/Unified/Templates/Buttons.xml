@@ -87,4 +87,14 @@
         </Layers>
     </CheckButton>
 
+    <Button name="DatamineTextButtonTemplate" inherits="DatamineGenericButtonTemplate"
+        virtual="true">
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Text" font="DatamineCleanFont" justifyH="CENTER"
+                    justifyV="MIDDLE" setAllPoints="true" />
+            </Layer>
+        </Layers>
+    </Button>
+
 </Ui>
