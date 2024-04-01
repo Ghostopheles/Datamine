@@ -39,6 +39,7 @@ local UNIT_FLAGS_ORDER = {
 local NAME_CACHE = {};
 
 local function AddNameToCache(name, creatureID)
+    if not name then return end;
     NAME_CACHE[name] = creatureID;
 end
 
