@@ -39,7 +39,11 @@ local UNIT_FLAGS_ORDER = {
 local NAME_CACHE = {};
 
 local function AddNameToCache(name, creatureID)
-    if not name then return end;
+    if Datamine.Debug then
+        assert(name, "Missing creature name");
+    elseif not name then
+        return
+    end
     NAME_CACHE[name] = creatureID;
 end
 
@@ -358,6 +362,10 @@ function Database:UpdateCreatureEntryWithUnitFlags(creatureID, unitFlags)
 end
 
 function Database:AddCreatureSpell(creatureID, spellID)
+    if Datamine.Debug then
+        assert(type(spellID) == "number", "Non-number spellID provided");
+    end
+
     local entry = self:GetCreatureEntryByID(creatureID);
     if not entry then
         entry = self:NewCreatureEntry();
