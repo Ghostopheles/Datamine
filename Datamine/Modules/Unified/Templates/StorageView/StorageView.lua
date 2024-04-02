@@ -126,8 +126,8 @@ end
 DatamineStorageViewMixin = {};
 
 function DatamineStorageViewMixin:OnLoad()
-    EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function()
-        DatamineUnifiedFrame:Show();
-        DatamineUnifiedFrame.Workspace:SetMode(3);
-    end);
+    --EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function()
+    --    DatamineUnifiedFrame:Show();
+    --    DatamineUnifiedFrame.Workspace:SetMode(3);
+    --end);
 end
