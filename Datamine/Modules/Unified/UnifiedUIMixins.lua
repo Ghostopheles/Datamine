@@ -112,6 +112,14 @@ end
 
 -------------
 
+DatamineTextButtonMixin = {};
+
+function DatamineTextButtonMixin:SetText(text)
+    self.Text:SetText(text)
+end
+
+-------------
+
 DatamineLightGray = CreateColor(0.25, 0.25, 0.25, 1);
 DatamineMediumGray = CreateColor(0.18, 0.18, 0.18, 1);
 DatamineDarkGray = CreateColor(0.1, 0.1, 0.1, 1);
@@ -897,11 +905,11 @@ function DatamineWorkspaceMixin:OnLoad()
         toolbar:AddButton("custom-toolbar-play", cb, tooltipText);
     end
 
-    --do
-    --    local tooltipText = L.WORKSPACE_MODE_STORAGE;
-    --    local cb = function() self:SetMode(self.Modes.STORAGE); end;
-    --    toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
-    --end
+    do
+        local tooltipText = L.WORKSPACE_MODE_STORAGE;
+        local cb = function() self:SetMode(self.Modes.STORAGE); end;
+        toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
+    end
 end
 
 function DatamineWorkspaceMixin:OnModeChanged()

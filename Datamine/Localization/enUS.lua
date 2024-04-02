@@ -11,6 +11,9 @@ L["CONFIG_DEBUGTARGETINFO_TOOLTIP"] = "Toggles the display of debug tooltips in 
 L["CONFIG_CREATUREDATA_NAME"] = "Collect creature data";
 L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs you encounter in the world. May impact performance slightly.";
 
+L["GENERIC_LOADING"] = "Loading...";
+L["GENERIC_SEARCHING"] = "Searching...";
+
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
 L["WORKSPACE_MODE_STORAGE"] = "Storage";
@@ -33,6 +36,12 @@ L["EXPLORER_HELP_TEXT_DRAGDROP_HEADER"] = "Explorer";
 L["EXPLORER_HELP_TEXT_DRAGDROP"] = "Drop %s %s here to search for it.";
 L["EXPLORER_HELP_TEXT_CREATURE_HEADER"] = "Creature Explorer";
 L["EXPLORER_HELP_TEXT_CREATURE"] = "No creatures cached yet. Make sure the '|cffffffCollect creature data|r' setting is enabled, and try running around a bit.";
+
+L["STORAGE_VIEW_TEXT_HELP_HEADER"] = "Storage";
+L["STORAGE_VIEW_TEXT_HELP"] = "There are no creatures in the cache yet.|nTry running around and interacting with some NPCs first.";
+L["STORAGE_VIEW_SEARCH_MODE_BUTTON_1"] = "ID";
+L["STORAGE_VIEW_SEARCH_MODE_BUTTON_2"] = "Name";
+L["STORAGE_VIEW_SEARCH_MODE_BUTTON_3"] = "Zone";
 
 L["POPUP_CONFIG_CREATUREDATA_TITLE"] = "Data Collection";
 L["POPUP_CONFIG_CREATUREDATA_TEXT"] = "Hey, thanks for using Datamine! Since you've last logged in, I've added the ability for Datamine to collect data about NPCs you see and interact with. All data is saved to the Datamine_Data addon's saved variables.|n|nThis feature may slightly harm performance in combat, do you want to enable NPC data collection?";

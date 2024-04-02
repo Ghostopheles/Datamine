@@ -319,7 +319,7 @@
             </Frame>
             <Frame parentKey="TheaterTab" inherits="DatamineTheaterTabTemplate" setAllPoints="true"
                 hidden="true" />
-            <Frame parentKey="StorageTab" inherits="DatamineStorageTabTemplate" setAllPoints="true"
+            <Frame parentKey="StorageTab" inherits="DatamineStorageViewTemplate" setAllPoints="true"
                 hidden="true" />
         </Frames>
         <Layers>

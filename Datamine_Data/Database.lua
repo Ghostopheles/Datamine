@@ -34,16 +34,25 @@ local UNIT_FLAGS_ORDER = {
     REACTION = "Reactions"
 };
 
-----
+------------
+
+local function DebugAssert(condition, message)
+    if not Datamine.Debug then
+        return;
+    end
+    assert(condition, message);
+end
+
+------------
 
 local NAME_CACHE = {};
 
 local function AddNameToCache(name, creatureID)
-    if Datamine.Debug then
-        assert(name, "Missing creature name");
-    elseif not name then
-        return
+    DebugAssert(name, "Missing creature name");
+    if not name then
+        return;
     end
+
     NAME_CACHE[name] = creatureID;
 end
 
@@ -51,7 +60,7 @@ local function GetCreatureIDFromNameCache(name)
     return NAME_CACHE[name];
 end
 
-----
+------------
 
 local BROADCAST_TEXT_CACHE = {};
 local BROADCAST_TEXT_CACHE_LEN = 0;
@@ -70,7 +79,7 @@ local function GetBroadcastTextFromCache(name)
     return BROADCAST_TEXT_CACHE[name];
 end
 
-----
+------------
 
 local EMPTY = {};
 local CreatureEntryDefaults = {
@@ -201,11 +210,14 @@ end
 function Database:Init()
     self.DB = CopyTable(DatamineData);
     self.TooltipInstanceIDCache = {};
+    self.Patches = {};
     self:ApplyMetatables();
+    self:ConvertStringIndicesToNumbers();
+    self:LoadOrphanedBroadcastTextIntoCache();
 end
 
 function Database:ApplyMetatables()
-    if self.MetatablesApplied then
+    if self.Patches.MetatablesApplied then
         return;
     end
 
@@ -213,7 +225,50 @@ function Database:ApplyMetatables()
         ApplyMetatableToCreatureEntry(tbl);
     end
 
-    self.MetatablesApplied = true;
+    self.Patches.MetatablesApplied = true;
+end
+
+-- everything was being stored as string indices for w/e reason so just converting those to numbers to be less insane
+function Database:ConvertStringIndicesToNumbers()
+    if self.Patches.StringKeysConverted then
+        return;
+    end
+
+    local hasChanges = false;
+    for creatureID, entry in pairs(self.DB.Creature) do
+        if type(creatureID) == "string" then
+            if entry.Instances then
+                for instanceID in pairs(entry.Instances) do
+                    if type(instanceID) == "string" then
+                        entry.Instances[instanceID] = nil;
+                        entry.Instances[tonumber(instanceID)] = true;
+                    end
+                end
+            end
+
+            self.DB.Creature[creatureID] = nil;
+            self.DB.Creature[tonumber(creatureID)] = entry;
+            hasChanges = true;
+        end
+    end
+
+    if hasChanges then
+        self:Commit();
+    end
+
+    self.Patches.StringKeysConverted = true;
+end
+
+function Database:LoadOrphanedBroadcastTextIntoCache()
+    if self.DB.BroadcastTextCache then
+        for name, lines in pairs(self.DB.BroadcastTextCache) do
+            for text in pairs(lines) do
+                AddBroadcastTextToCache(name, text);
+            end
+            self.DB.BroadcastTextCache[name] = nil;
+        end
+        self:Commit();
+    end
 end
 
 function Database:GetCreatureEntryDefaults()
@@ -276,10 +331,10 @@ function Database:NewCreatureEntry()
 end
 
 ---@param guid WOWGUID
----@return number creatureID
+---@return number? creatureID
 function Database:GetCreatureIDFromGUID(guid)
     local creatureID = select(6, strsplit("-", guid));
-    return creatureID;
+    return tonumber(creatureID);
 end
 
 ---@param guid string
@@ -288,6 +343,9 @@ end
 function Database:GetOrCreateCreatureEntryByGUID(guid, name)
     local unitType, _, _, instanceID, _, ID, _ = strsplit("-", guid);
     assert(unitType == UNIT_TYPE_CREATURE, "Invalid Creature GUID provided to :GetOrCreateCreatureEntryByGUID");
+
+    ID = tonumber(ID);
+    assert(ID, "Unable to extract ID from creature GUID '" .. guid .. "'");
 
     if self:CreatureEntryExists(ID) then
         return self:GetCreatureEntryByID(ID), ID;
@@ -316,6 +374,7 @@ end
 ---@param tooltipData TooltipData
 function Database:UpdateCreatureEntryWithTooltipData(tooltipData)
     local creatureID = self:GetCreatureIDFromGUID(tooltipData.guid);
+    assert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
 
     local entry = self:GetCreatureEntryByID(creatureID);
     if not entry then
@@ -362,9 +421,7 @@ function Database:UpdateCreatureEntryWithUnitFlags(creatureID, unitFlags)
 end
 
 function Database:AddCreatureSpell(creatureID, spellID)
-    if Datamine.Debug then
-        assert(type(spellID) == "number", "Non-number spellID provided");
-    end
+    DebugAssert(type(spellID) == "number", "Non-number spellID provided");
 
     local entry = self:GetCreatureEntryByID(creatureID);
     if not entry then
@@ -416,4 +473,8 @@ function Database:CheckBroadcastTextCache(name)
             InvalidateBroadcastTextCacheEntry(name); -- remove if successful
         end
     end
+end
+
+function Database:GetAllCreatureEntries()
+    return self.DB.Creature;
 end

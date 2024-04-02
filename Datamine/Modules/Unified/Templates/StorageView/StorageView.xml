@@ -1,11 +1,39 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
+    <Button name="DatamineCreatureExplorerEntryTemplate" mixin="DatamineCreatureExplorerEntryMixin"
+        inherits="DatamineTabTreeViewCategoryHeaderTemplate" virtual="true">
+
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background_Override"
+                    inherits="DatamineDarkGrayBackgroundTemplate">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+
+    </Button>
+
     <Frame name="DatamineCreatureExplorerTemplate" mixin="DatamineCreatureExplorerMixin"
         virtual="true">
         <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Title" font="DatamineCleanFont" text="TITLE" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOP" y="-15" />
+                    </Anchors>
+                </FontString>
+            </Layer>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Background_Fore"
+                <Texture parentKey="Background"
                     inherits="DatamineMediumGrayBackgroundTemplate">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="4" y="-4" />
@@ -13,10 +41,129 @@
                     </Anchors>
                 </Texture>
             </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="HelpText" font="DatamineCleanFont"
+                    wordwrap="false"
+                    justifyH="CENTER" justifyV="MIDDLE" text="TEXT HERE"
+                    outline="THICK">
+                    <Anchors>
+                        <Anchor point="CENTER" y="20" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+                <FontString parentKey="HelpTextDetails"
+                    font="DatamineCleanFontSmall"
+                    wordwrap="true"
+                    maxLines="3"
+                    justifyH="CENTER" justifyV="MIDDLE" text="DETAILS"
+                    outline="THICK">
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent.HelpText"
+                            relativePoint="BOTTOM" y="-3" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+            </Layer>
         </Layers>
+        <Frames>
+            <Frame parentKey="SearchManager">
+                <Size y="50" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="2" y="-2" />
+                    <Anchor point="TOPRIGHT" x="-2" y="-2" />
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="Label" font="DatamineCleanFont" justifyH="LEFT"
+                            justifyV="MIDDLE">
+                            <Size x="65" y="20" />
+                            <Anchors>
+                                <Anchor point="TOPLEFT" x="4" y="-4" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Frames>
+                    <Frame parentKey="ButtonContainer" inherits="HorizontalLayoutFrame">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.Label"
+                                relativePoint="TOPRIGHT" />
+                            <Anchor point="BOTTOMRIGHT" relativePoint="RIGHT" x="-2" y="1" />
+                        </Anchors>
+                        <Frames>
+                            <Button parentKey="ModeButtonID" parentArray="Buttons"
+                                inherits="DatamineTextButtonTemplate">
+                                <Scripts>
+                                    <OnClick>
+                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked", "ID");
+                                    </OnClick>
+                                </Scripts>
+                                <Layers>
+                                    <Layer level="BACKGROUND">
+                                        <Texture inherits="DatamineDarkGrayBackgroundTemplate" />
+                                    </Layer>
+                                </Layers>
+                            </Button>
+                            <Button parentKey="ModeButtonName" parentArray="Buttons"
+                                inherits="DatamineTextButtonTemplate">
+                                <Scripts>
+                                    <OnClick>
+                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked", "Name");
+                                    </OnClick>
+                                </Scripts>
+                                <Layers>
+                                    <Layer level="BACKGROUND">
+                                        <Texture inherits="DatamineDarkGrayBackgroundTemplate" />
+                                    </Layer>
+                                </Layers>
+                            </Button>
+                            <Button parentKey="ModeButtonZone" parentArray="Buttons"
+                                inherits="DatamineTextButtonTemplate">
+                                <Scripts>
+                                    <OnClick>
+                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked", "Zone");
+                                    </OnClick>
+                                </Scripts>
+                                <Layers>
+                                    <Layer level="BACKGROUND">
+                                        <Texture inherits="DatamineDarkGrayBackgroundTemplate" />
+                                    </Layer>
+                                </Layers>
+                            </Button>
+                        </Frames>
+                    </Frame>
+                </Frames>
+            </Frame>
+            <Frame parentKey="View" inherits="DatamineTabTreeViewTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.SearchManager"
+                        relativePoint="BOTTOMLEFT" x="4" y="-4" />
+                    <Anchor point="BOTTOMRIGHT" x="-6" y="6" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="LoadingSpinner" inherits="OutlineLoadingSpinnerTemplate" hidden="true">
+                <Anchors>
+                    <Anchor point="CENTER" y="10" />
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString parentKey="Text" font="DatamineCleanFontSmall"
+                            text="Searching...">
+                            <Anchors>
+                                <Anchor point="TOP" relativePoint="BOTTOM" y="-8" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
+        </Scripts>
     </Frame>
 
-    <Frame name="DatamineStorageTabTemplate" mixin="DatamineStorageTabMixin" virtual="true">
+    <Frame name="DatamineStorageViewTemplate" mixin="DatamineStorageViewMixin" virtual="true">
         <Frames>
             <Frame parentKey="CreatureExplorer" inherits="DatamineCreatureExplorerTemplate">
                 <Size x="300" />

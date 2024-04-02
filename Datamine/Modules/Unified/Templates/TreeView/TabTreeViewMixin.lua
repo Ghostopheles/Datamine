@@ -12,6 +12,7 @@
 ---@field OverlordFrame? frame
 ---@field SortFunc? function
 ---@field SortChildren? boolean
+---@field BackgroundColor? ColorMixin
 
 DatamineTabTreeViewCategoryHeaderMixin = {};
 
@@ -32,6 +33,9 @@ function DatamineTabTreeViewCategoryHeaderMixin:Init(node)
     self:UpdateChevron();
 
     self.CanExpand = data.CanExpand;
+
+    self.Background:SetColorTexture(data.BackgroundColor:GetRGB());
+
     self:Show();
 end
 
@@ -48,6 +52,15 @@ function DatamineTabTreeViewCategoryHeaderMixin:OnClick()
 end
 
 function DatamineTabTreeViewCategoryHeaderMixin:UpdateChevron()
+    if not self.CanExpand then
+        self.Chevron:Hide();
+        self.Text:SetPoint("LEFT");
+    else
+        self.Chevron:Show();
+        self.Text:SetPoint("LEFT", self.Chevron, "RIGHT");
+    end
+
+
     if self:GetElementData():IsCollapsed() then
         self.Chevron:SetCustomAtlas(self.CollapsedChevronAtlas);
     else
@@ -122,12 +135,22 @@ function DatamineTabTreeViewMixin:AddTopLevelItem(data)
         data.IsTopLevel = true;
     end
 
+    if not data.BackgroundColor then
+        data.BackgroundColor = DatamineLightGray;
+    end
+
     local node = self.DataProvider:Insert(data);
     if data.SortFunc then
         node:SetSortComparator(data.SortFunc, data.SortChildren);
     end
 
     return node;
+end
+
+function DatamineTabTreeViewMixin:Reset()
+    self.ScrollView:Flush();
+    self.DataProvider = CreateTreeDataProvider();
+    self.ScrollView:SetDataProvider(self.DataProvider);
 end
 
 -------------
