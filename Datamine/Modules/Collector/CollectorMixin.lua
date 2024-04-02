@@ -206,3 +206,11 @@ end
 function DatamineCollectorMixin:FORBIDDEN_NAME_PLATE_UNIT_ADDED(unitToken)
     self:HandleCreatureByUnitToken(unitToken);
 end
+
+------------
+
+Datamine.Collector = {};
+
+function Datamine.Collector.GetAllCreatureEntries()
+    return DATABASE:GetAllCreatureEntries();
+end
