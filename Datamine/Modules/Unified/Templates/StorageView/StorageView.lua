@@ -94,7 +94,7 @@ function DatamineCreatureExplorerMixin:Populate()
     view:Reset();
 
     local function SortByID(a, b)
-        local idA, idB = a.data.ID, b.data.ID;
+        local idA, idB = tonumber(a.data.ID), tonumber(b.data.ID);
         return idA <= idB;
     end
 
