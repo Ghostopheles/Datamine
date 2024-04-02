@@ -235,21 +235,29 @@ function Database:ConvertStringIndicesToNumbers()
     end
 
     local hasChanges = false;
+    local creatureIDsToRemove = {};
     for creatureID, entry in pairs(self.DB.Creature) do
         if type(creatureID) == "string" then
             if entry.Instances then
+                local instancesToRemove = {};
                 for instanceID in pairs(entry.Instances) do
                     if type(instanceID) == "string" then
-                        entry.Instances[instanceID] = nil;
+                        tinsert(instancesToRemove, instanceID);
                         entry.Instances[tonumber(instanceID)] = true;
                     end
                 end
+                for _, instanceID in pairs(instancesToRemove) do
+                    entry.Instances[instanceID] = nil;
+                end
             end
 
-            self.DB.Creature[creatureID] = nil;
+            tinsert(creatureIDsToRemove, creatureID);
             self.DB.Creature[tonumber(creatureID)] = entry;
             hasChanges = true;
         end
+    end
+    for _, creatureID in pairs(creatureIDsToRemove) do
+        self.DB.Creature[creatureID] = nil;
     end
 
     if hasChanges then
