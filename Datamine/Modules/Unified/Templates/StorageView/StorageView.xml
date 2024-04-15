@@ -95,7 +95,8 @@
                                 inherits="DatamineTextButtonTemplate">
                                 <Scripts>
                                     <OnClick>
-                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked", "ID");
+                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked",
+                                        "ID");
                                     </OnClick>
                                 </Scripts>
                                 <Layers>
@@ -108,7 +109,8 @@
                                 inherits="DatamineTextButtonTemplate">
                                 <Scripts>
                                     <OnClick>
-                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked", "Name");
+                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked",
+                                        "Name");
                                     </OnClick>
                                 </Scripts>
                                 <Layers>
@@ -121,7 +123,8 @@
                                 inherits="DatamineTextButtonTemplate">
                                 <Scripts>
                                     <OnClick>
-                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked", "Zone");
+                                        CallMethodOnNearestAncestor(self, "OnModeButtonClicked",
+                                        "Zone");
                                     </OnClick>
                                 </Scripts>
                                 <Layers>
@@ -163,18 +166,21 @@
         </Scripts>
     </Frame>
 
-    <Frame name="DatamineStorageViewTemplate" mixin="DatamineStorageViewMixin" virtual="true">
+    <Frame name="DatamineStorageViewTemplate"
+        inherits="HorizontalLayoutFrame" mixin="DatamineStorageViewMixin" virtual="true">
         <Frames>
-            <Frame parentKey="CreatureExplorer" inherits="DatamineCreatureExplorerTemplate">
-                <Size x="300" />
-                <Anchors>
-                    <Anchor point="TOPLEFT" x="4" y="-4" />
-                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
-                </Anchors>
-            </Frame>
+            <Frame parentKey="CreatureExplorer" inherits="DatamineCreatureExplorerTemplate"
+                parentArray="Columns" />
+            <Frame parentKey="PHColumn2" inherits="DatamineCreatureExplorerTemplate"
+                parentArray="Columns" />
+            <Frame parentKey="PHColumn3" inherits="DatamineCreatureExplorerTemplate"
+                parentArray="Columns" />
+            <Frame parentKey="PHColumn4" inherits="DatamineCreatureExplorerTemplate"
+                parentArray="Columns" />
         </Frames>
         <Scripts>
             <OnLoad method="OnLoad" />
+            <OnShow method="OnShow_Custom" inherit="append" />
         </Scripts>
     </Frame>
 </Ui>

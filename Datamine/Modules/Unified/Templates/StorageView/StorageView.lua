@@ -126,8 +126,28 @@ end
 DatamineStorageViewMixin = {};
 
 function DatamineStorageViewMixin:OnLoad()
-    --EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function()
-    --    DatamineUnifiedFrame:Show();
-    --    DatamineUnifiedFrame.Workspace:SetMode(3);
-    --end);
+    self.topPadding = 4;
+    self.bottomPadding = 4;
+    self.leftPadding = 2;
+    self.rightPadding = 2;
+
+    self.align = "center";
+
+    self.spacing = 2;
+
+    self:MarkDirty();
+end
+
+function DatamineStorageViewMixin:OnShow_Custom()
+    local w, h = self:GetSize();
+    w = (w - 10) / 4;
+    h = (h - 8);
+
+    for i, child in ipairs(self.Columns) do
+        child.layoutIndex = i;
+        child.expand = true;
+        child:SetSize(w, h);
+    end
+
+    self:MarkDirty();
 end
