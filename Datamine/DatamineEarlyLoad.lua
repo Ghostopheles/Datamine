@@ -205,6 +205,14 @@ function Datamine.QuickReload()
     end
 end
 
+function Datamine.ToggleDeprecationFallbacks()
+    local cvar = "loadDeprecationFallbacks";
+    local value = C_CVar.GetCVarBool(cvar);
+    local newValue = value and 0 or 1;
+    C_CVar.SetCVar(cvar, newValue);
+    Datamine.QuickReload();
+end
+
 -- print-dependent utils
 
 function Datamine.Utils.Profile(func, ...)
