@@ -131,5 +131,3 @@ local function ShowCreatureDataTogglePopup()
 
     DataminePopupBox:ShowPopup(title, text, callback);
 end
-
---EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", ShowCreatureDataTogglePopup);
