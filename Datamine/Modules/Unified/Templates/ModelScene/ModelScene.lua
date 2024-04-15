@@ -898,6 +898,7 @@ function DatamineModelControlsTreeMixin:OnLoad()
         Text = "Transform",
         IsTopLevel = true,
         CanExpand = true,
+        BackgroundColor = DatamineMediumGray,
     });
 
     local function OutfitSort(a, b)
@@ -910,11 +911,13 @@ function DatamineModelControlsTreeMixin:OnLoad()
         Text = "Outfit",
         SortFunc = OutfitSort,
         CanExpand = true,
+        BackgroundColor = DatamineMediumGray,
     });
 
     self.AdvancedTab = self:AddTopLevelItem({
         Text = "Advanced",
         CanExpand = true,
+        BackgroundColor = DatamineMediumGray,
     });
 
     self:SetupLocationControls();
