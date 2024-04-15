@@ -1,3 +1,4 @@
+local L = Datamine.Strings;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 local Transmog = Datamine.Transmog;
@@ -349,7 +350,7 @@ function DatamineModelSceneMixin:UpdateNativeFormButton()
 
         self.NativeFormToggleButton:SetScript("OnEnter", function()
             GameTooltip:SetOwner(self.NativeFormToggleButton, "ANCHOR_TOP");
-            GameTooltip:SetText("Toggle Alternate Form", 1, 1, 1);
+            GameTooltip:SetText(L.MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT, 1, 1, 1);
             GameTooltip:Show();
         end);
 
@@ -895,7 +896,7 @@ end
 
 function DatamineModelControlsTreeMixin:OnLoad()
     self.TransformTab = self:AddTopLevelItem({
-        Text = "Transform",
+        Text = L.MODEL_CONTROLS_TAB_TITLE_TRANSFORM,
         IsTopLevel = true,
         CanExpand = true,
         BackgroundColor = DatamineMediumGray,
@@ -908,14 +909,14 @@ function DatamineModelControlsTreeMixin:OnLoad()
     end
 
     self.OutfitTab = self:AddTopLevelItem({
-        Text = "Outfit",
+        Text = L.MODEL_CONTROLS_TAB_TITLE_OUTFIT,
         SortFunc = OutfitSort,
         CanExpand = true,
         BackgroundColor = DatamineMediumGray,
     });
 
     self.AdvancedTab = self:AddTopLevelItem({
-        Text = "Advanced",
+        Text = L.MODEL_CONTROLS_TAB_TITLE_ADVANCED,
         CanExpand = true,
         BackgroundColor = DatamineMediumGray,
     });
@@ -984,7 +985,7 @@ function DatamineModelControlsTreeMixin:SetupLocationControls()
     end
 
     self.TransformTab:Insert({
-        Text = "Translate",
+        Text = L.MODEL_CONTROLS_TRANSFORM_TRANSLATE,
         ControlID = "LocationControls",
         DataFetch = function() return self:GetActorPosition(); end,
         Callback = LocationCallback,
@@ -1013,7 +1014,7 @@ function DatamineModelControlsTreeMixin:SetupCameraControls()
     end
 
     self.TransformTab:Insert({
-        Text = "Camera",
+        Text = L.MODEL_CONTROLS_TRANSFORM_CAMERA,
         ControlID = "CameraControls",
         DataFetch = function() return self:GetCameraOrientation(); end,
         Callback = CameraViewCallback,
@@ -1102,59 +1103,61 @@ function DatamineModelControlsTreeMixin:SearchItemByAppearanceID(itemModifiedApp
 end
 
 function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
+    local template = "DatamineModelControlsAdvancedPanelEntryTemplate";
+
     self.AdvancedTab:Insert({
-        Text = "Set model by FileDataID",
-        Instructions = "Enter a FileDataID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_SET_BY_FDID,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_SET_BY_FDID_HELP,
         Callback = function(fdid) return self:GetScene():SetModelByFileID(fdid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 
     self.AdvancedTab:Insert({
-        Text = "Set model by DisplayInfoID",
-        Instructions = "Enter a DisplayInfoID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_SET_BY_DIID,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_SET_BY_DIID_HELP,
         Callback = function(cdid) return self:GetScene():SetModelByCreatureDisplayID(cdid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 
     self.AdvancedTab:Insert({
-        Text = "Try on ItemID",
-        Instructions = "Enter an ItemID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_TRY_ON_ITEMID,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_TRY_ON_ITEMID_HELP,
         Callback = function(iid) return self:GetScene():TryOnByItemID(iid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 
     self.AdvancedTab:Insert({
-        Text = "Try on ItemModifiedAppearanceID",
-        Instructions = "Enter an ItemModifiedAppearanceID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_TRY_ON_ITEMMODID,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_TRY_ON_ITEMMODID_HELP,
         Callback = function(imaid) return self:GetScene():TryOnByItemModifiedAppearanceID(imaid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 
     self.AdvancedTab:Insert({
-        Text = "Try on TransmogSetID",
-        Instructions = "Enter a TransmogSetID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_TRY_ON_TMOGSET,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_TRY_ON_TMOGSET_HELP,
         Callback = function(tsid) return self:GetScene():TryOnByTransmogSetID(tsid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 
     self.AdvancedTab:Insert({
-        Text = "Apply SpellVisualKit",
-        Instructions = "Enter a SpellVisualKitID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_APPLY_SPELLVISKIT,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_APPLY_SPELLVISKIT_HELP,
         Callback = function(svkid) return self:GetScene():ApplySpellVisualKit(svkid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 
     self.AdvancedTab:Insert({
-        Text = "Play AnimationKit",
-        Instructions = "Enter an AnimKitID...",
+        Text = L.MODEL_CONTROLS_ADVANCED_PLAY_ANIMKIT,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_PLAY_ANIMKIT_HELP,
         Callback = function(akid) return self:GetScene():PlayAnimKit(akid) end,
-        Template = "DatamineModelControlsAdvancedPanelEntryTemplate",
+        Template = template,
         RequestedExtent = 40,
     });
 end
@@ -1248,7 +1251,7 @@ function DatamineModelControlsOutfitPanelEntryMixin:SetupEmptySlot()
     self.Icon:Reset();
     self.Icon:SetItemButtonTexture(134400); -- question mark icon
 
-    self.Text:SetText("Empty");
+    self.Text:SetText(L.GENERIC_EMPTY);
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:SetupHiddenSlot()
@@ -1256,7 +1259,7 @@ function DatamineModelControlsOutfitPanelEntryMixin:SetupHiddenSlot()
     self.Icon.icon:SetAtlas("transmog-icon-hidden");
     self.Icon.icon:Show();
 
-    self.Text:SetText("Hidden");
+    self.Text:SetText(L.GENERIC_HIDDEN);
 end
 
 function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
