@@ -28,11 +28,11 @@ function DatamineTabTreeViewCategoryHeaderMixin:Init(node)
         self.Callback = nil;
     end
 
+    self.CanExpand = data.CanExpand;
+
     self.CollapsedChevronAtlas = "uitools-icon-chevron-right";
     self.UncollapsedChevronAtlas = "uitools-icon-chevron-down";
     self:UpdateChevron();
-
-    self.CanExpand = data.CanExpand;
 
     self.Background:SetColorTexture(data.BackgroundColor:GetRGB());
 
