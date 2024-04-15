@@ -15,6 +15,9 @@ L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
 L["GENERIC_EMPTY"] = "Empty";
 L["GENERIC_HIDDEN"] = "Hidden";
+L["GENERIC_APPEARANCE"] = "Appearance";
+L["GENERIC_SPELL"] = "Spell";
+L["GENERIC_NA"] = "N/A";
 
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
@@ -71,6 +74,59 @@ L["STORAGE_VIEW_SEARCH_MODE_BUTTON_3"] = "Zone";
 
 L["POPUP_CONFIG_CREATUREDATA_TITLE"] = "Data Collection";
 L["POPUP_CONFIG_CREATUREDATA_TEXT"] = "Hey, thanks for using Datamine! Since you've last logged in, I've added the ability for Datamine to collect data about NPCs you see and interact with. All data is saved to the Datamine_Data addon's saved variables.|n|nThis feature may slightly harm performance in combat, do you want to enable NPC data collection?";
+
+-- MODULES --
+
+-- UI Main
+
+L["UI_MAIN_MODULE_NAME"] = "UIMain";
+
+-- Spell Info
+
+L["SPELL_INFO_MODULE_NAME"] = "SpellData";
+
+L["SPELL_INFO_KEYS_NAME"] = "Name";
+L["SPELL_INFO_KEYS_RANK"] = "Rank";
+L["SPELL_INFO_KEYS_ICON"] = "Icon";
+L["SPELL_INFO_KEYS_CASTTIME"] = "CastTime";
+L["SPELL_INFO_KEYS_MINRANGE"] = "MinRange";
+L["SPELL_INFO_KEYS_MAXRANGE"] = "MaxRange";
+L["SPELL_INFO_KEYS_SPELLID"] = "SpellID";
+L["SPELL_INFO_KEYS_ORIGINALICON"] = "OriginalIcon";
+L["SPELL_INFO_KEYS_DESCRIPTION"] = "Description";
+L["SPELL_INFO_KEYS_HYPERLINK"] = "Hyperlink";
+
+L["SPELL_INFO_FMT_CAST_INSTANT"] = "Instant (%d)";
+L["SPELL_INFO_FMT_CAST_TIME"] = "%d seconds";
+L["SPELL_INFO_FMT_RANGE"] = "%d yards";
+
+L["FMT_SPELL_INFO_ERR_SPELL_DOES_NOT_EXIST"] = "Query for spell %d failed. Spell does not exist.";
+L["FMT_SPELL_INFO_ERR_SPELL_NOT_FOUND"] = "Query for spell %d failed. Spell is forbidden or does not exist.";
+
+-- Transmog Info
+
+L["TMOG_INFO_MODULE_NAME"] = "Transmog";
+
+L["TMOG_INFO_KEYS_SOURCE_TYPE"] = "SourceType";
+L["TMOG_INFO_KEYS_INVENTORY_TYPE"] = "InventoryType";
+L["TMOG_INFO_KEYS_VISUALID"] = "VisualID";
+L["TMOG_INFO_KEYS_ISCOLLECTED"] = "IsCollected";
+L["TMOG_INFO_KEYS_SOURCEID"] = "SourceID";
+L["TMOG_INFO_KEYS_ITEMID"] = "ItemID";
+L["TMOG_INFO_KEYS_CATEGORYID"] = "CategoryID";
+L["TMOG_INFO_KEYS_ITEMMODID"] = "ItemModID";
+
+L["TMOG_INFO_ERR_NO_ITEMMODS"] = "No ItemModifiedAppearances found for ItemAppearance %d.";
+L["TMOG_INFO_RESULT_ITEMMODS"] = "ItemModifiedAppearances for ItemAppearance %d >>"
+
+L["TMOG_INFO_TRY_ON_LINK_TEXT"] = "Try On";
+
+-- Slash Commands
+
+L["SLASH_CMD_UI_TOGGLE_HELP"] = "Toggle the Datamine UI.";
+L["SLASH_CMD_SPELL_INFO_HELP"] = "Retrieve information about a spell.";
+L["SLASH_CMD_TMOG_ITEMMOD_INFO_HELP"] = "Retrieve source info for an ItemModifiedAppearanceID.";
+L["SLASH_CMD_TMOG_ITEMMOD_FROM_ITEMAPP_HELP"] = "Retrieve itemModifiedAppearanceIDs for a given itemAppearanceID.";
 
 -- END LOCALIZATION
 

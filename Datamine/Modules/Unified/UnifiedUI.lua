@@ -1,6 +1,8 @@
-local moduleName = "UIMain";
+local L = Datamine.Strings;
 local Constants = Datamine.Constants;
 local DataTypes = Constants.DataTypes;
+
+local moduleName = L.UI_MAIN_MODULE_NAME;
 
 Datamine.Unified = {};
 
@@ -270,6 +272,6 @@ function Datamine.Unified.AddBackgroundToFrame(frame, color)
 end
 
 do
-    local helpString = "Toggle the Datamine UI.";
+    local helpString = L.SLASH_CMD_UI_TOGGLE_HELP;
     Datamine.Slash:RegisterCommand("ui", function() DatamineUnifiedFrame:Toggle(); end, helpString, moduleName);
 end

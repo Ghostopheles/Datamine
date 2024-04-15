@@ -1,21 +1,22 @@
 Datamine.Spell = CreateFrame("Frame");
 
-local moduleName = "SpellData"
+local L = Datamine.Strings;
+local moduleName = L.SPELL_INFO_MODULE_NAME;
 
 Datamine.Spell.SpellInfoKeys = {
-    "Name",
-    "Rank",
-    "Icon",
-    "CastTime",
-    "MinRange",
-    "MaxRange",
-    "SpellID",
-    "OriginalIcon",
+    L.SPELL_INFO_KEYS_NAME,
+    L.SPELL_INFO_KEYS_RANK,
+    L.SPELL_INFO_KEYS_ICON,
+    L.SPELL_INFO_KEYS_CASTTIME,
+    L.SPELL_INFO_KEYS_MINRANGE,
+    L.SPELL_INFO_KEYS_MAXRANGE,
+    L.SPELL_INFO_KEYS_SPELLID,
+    L.SPELL_INFO_KEYS_ORIGINALICON,
 
-    --custom values
+    -- custom values
 
-    "Description",
-    "Hyperlink"
+    L.SPELL_INFO_KEYS_DESCRIPTION,
+    L.SPELL_INFO_KEYS_HYPERLINK,
 };
 local SpellInfoKeys = Datamine.Spell.SpellInfoKeys;
 
@@ -57,7 +58,7 @@ function Datamine.Spell:OnSpellDataReceived(spellID, success)
             return;
         end
 
-        Print("Query for spell " .. spellID .. " failed. Spell does not exist.");
+        Print(format(L.FMT_SPELL_INFO_ERR_SPELL_DOES_NOT_EXIST, spellID));
         return;
     elseif success == false then
         if self.SpellDataCallback then
@@ -65,7 +66,7 @@ function Datamine.Spell:OnSpellDataReceived(spellID, success)
             return;
         end
 
-        Print("Query for spell " .. spellID .. " failed. Spell is forbidden or does not exist.");
+        Print(format(L.FMT_SPELL_INFO_ERR_SPELL_NOT_FOUND, spellID));
         return;
     end
 
@@ -83,23 +84,23 @@ function Datamine.Spell:GetFormattedSpellData(spellID)
     local spellData = {GetSpellInfo(spellID)};
 
     -- remove stupid dumb toxic no-good zero-diggity nil
-    spellData[2] = "N/A";
+    spellData[2] = L.GENERIC_NA;
 
     local castTime = spellData[4];
     if castTime == 0 then
-        spellData[4] = "Instant (" .. castTime .. ")";
+        spellData[4] = format(L.SPELL_INFO_FMT_CAST_INSTANT, castTime);
     else
-        spellData[4] = (castTime / 1000) .. " seconds";
+        spellData[4] = format(L.SPELL_INFO_FMT_CAST_TIME, castTime);
     end
 
     local minRange = spellData[5];
     if minRange > 0 then
-        spellData[5] = minRange .. " yards";
+        spellData[5] = format(L.SPELL_INFO_FMT_RANGE, minRange);
     end
 
     local maxRange = spellData[6];
     if maxRange > 0 then
-        spellData[6] = maxRange .. " yards";
+        spellData[6] = format(L.SPELL_INFO_FMT_RANGE, maxRange);
     end
 
     tinsert(spellData, GetSpellDescription(spellID));
@@ -110,7 +111,7 @@ function Datamine.Spell:GetFormattedSpellData(spellID)
 end
 
 function Datamine.Spell:PrettyDumpSpellData(spellID, spellData)
-    DumpTableWithDisplayKeys("Spell " .. spellID .. "  >> ", spellData);
+    DumpTableWithDisplayKeys(L.GENERIC_SPELL .. " " .. spellID .. "  >> ", spellData);
     self.LastSpell = spellData;
 end
 
@@ -132,7 +133,7 @@ end
 
 Datamine.Spell:Init();
 
-local helpMessage = "Retrieve information about a spell.";
+local helpMessage = L.SLASH_CMD_SPELL_INFO_HELP;
 local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<spellID>", helpMessage);
 
 Datamine.Slash:RegisterCommand("spell", function(spellID) Datamine.Spell:GetOrFetchSpellInfoByID(tonumber(spellID)) end, helpString, moduleName);

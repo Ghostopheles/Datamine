@@ -1,4 +1,6 @@
-local moduleName = "Transmog";
+local L = Datamine.Strings;
+
+local moduleName = L.TMOG_INFO_MODULE_NAME;
 
 local Print = function(...)
     Datamine.Print(moduleName, ...);
@@ -9,14 +11,14 @@ local Dump = function(tableTitle, ...)
 end;
 
 local TransmogInfoKeys = {
-    "SourceType",
-    "InventoryType",
-    "VisualID",
-    "IsCollected",
-    "SourceID",
-    "ItemID",
-    "CategoryID",
-    "ItemModID"
+    L.TMOG_INFO_KEYS_SOURCE_TYPE,
+    L.TMOG_INFO_KEYS_INVENTORY_TYPE,
+    L.TMOG_INFO_KEYS_VISUALID,
+    L.TMOG_INFO_KEYS_ISCOLLECTED,
+    L.TMOG_INFO_KEYS_SOURCEID,
+    L.TMOG_INFO_KEYS_ITEMID,
+    L.TMOG_INFO_KEYS_CATEGORYID,
+    L.TMOG_INFO_KEYS_ITEMMODID,
 };
 
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
@@ -31,7 +33,7 @@ local TryOnPrefix = "tryOn";
 
 function Datamine.Transmog.HandleLink(pattern)
     local prefix, itemModifiedAppearanceID = strsplit(Datamine.Links.SEPARATOR, pattern);
-    if prefix == "tryOn" then
+    if prefix == TryOnPrefix then
         Datamine.ModelView:TryOnByItemModifiedAppearanceID({itemModifiedAppearanceID})
         return;
     end
@@ -44,14 +46,14 @@ end
 
 function Datamine.Transmog:GetTryOnLink(itemModifiedAppearanceID)
     local pattern = TryOnPrefix .. Datamine.Links.SEPARATOR .. itemModifiedAppearanceID;
-    return Datamine.Links.GenerateLinkWithCallback(pattern, "Try On", Datamine.Transmog.HandleLink);
+    return Datamine.Links.GenerateLinkWithCallback(pattern, L.TMOG_INFO_TRY_ON_LINK_TEXT, Datamine.Transmog.HandleLink);
 end
 
 function Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID)
     local itemModifiedAppearanceIDs = C_TransmogCollection.GetAllAppearanceSources(appearanceID);
 
     if not itemModifiedAppearanceIDs or #itemModifiedAppearanceIDs < 1 then
-        Print("No ItemModifiedAppearances found for ItemAppearance " .. appearanceID .. ".");
+        Print(format(L.TMOG_INFO_ERR_NO_ITEMMODS, appearanceID));
         return;
     end
 
@@ -65,7 +67,7 @@ function Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID
         linkTable[i] = tryOnLink;
     end
 
-    DumpTableWithDisplayKeys("ItemModifiedAppearances for ItemAppearance " .. appearanceID .. " >>", displayKeys, linkTable);
+    DumpTableWithDisplayKeys(format(L.TMOG_INFO_RESULT_ITEMMODS, appearanceID), displayKeys, linkTable);
 end
 
 function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
@@ -110,7 +112,7 @@ function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
     outputTable.CategoryID = sourceInfo.categoryID;
     outputTable.ItemModID = sourceInfo.itemModID;
 
-    DumpTableWithDisplayKeys("Appearance " .. itemModifiedAppearanceID .. "  >> ", nil, outputTable);
+    DumpTableWithDisplayKeys(L.GENERIC_APPEARANCE .. itemModifiedAppearanceID .. "  >> ", nil, outputTable);
 
     return true;
 end
@@ -221,14 +223,14 @@ end
 -- Registering our slash commands
 
 do
-    local helpMessage = "Retrieve source info for an itemModifiedAppearanceID.";
+    local helpMessage = L.SLASH_CMD_TMOG_ITEMMOD_INFO_HELP;
     local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemModifiedAppearanceID>", helpMessage);
 
     Datamine.Slash:RegisterCommand("appearanceinfo", function(itemModifiedAppearanceID) Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID) end, helpString, moduleName);
 end
 
 do
-    local helpMessage = "Retrieve itemModifiedAppearanceIDs for a given itemAppearanceID.";
+    local helpMessage = L.SLASH_CMD_TMOG_ITEMMOD_FROM_ITEMAPP_HELP;
     local helpString = Datamine.Slash.GenerateHelpStringWithArgs("<itemAppearanceID>", helpMessage);
 
     Datamine.Slash:RegisterCommand("appearancemods", function(appearanceID) Datamine.Transmog:GetModifiedAppearanceIDsFromAppearanceID(appearanceID) end, helpString, moduleName);
