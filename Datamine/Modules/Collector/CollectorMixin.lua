@@ -156,6 +156,7 @@ function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, s
     local prefix = strsplit("_", subevent, 2);
     if SUBEVENTS_TO_TRACK[prefix] then
         local spellID = select(12, CombatLogGetCurrentEventInfo());
+        if type(spellID) ~= "number" then return end;
         if entry.Spells[spellID] then return end;
         DATABASE:AddCreatureSpell(ID, spellID);
     end
