@@ -3,6 +3,10 @@ Datamine.Spell = CreateFrame("Frame");
 local L = Datamine.Strings;
 local moduleName = L.SPELL_INFO_MODULE_NAME;
 
+local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo;
+local GetSpellLink = C_Spell and C_Spell.GetSpellLink or GetSpellLink;
+local GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpellDescription;
+
 Datamine.Spell.SpellInfoKeys = {
     L.SPELL_INFO_KEYS_NAME,
     L.SPELL_INFO_KEYS_RANK,
