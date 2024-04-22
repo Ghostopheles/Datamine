@@ -22,7 +22,6 @@
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
 Libs/AceLocale-3.0/AceLocale-3.0.xml
-Embeds/MSA-DropDownMenu-1.0/MSA-DropDownMenu-1.0.xml
 
 DatamineEarlyLoad.lua
 
