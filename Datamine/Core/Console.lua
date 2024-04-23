@@ -35,6 +35,15 @@ local function SetDressState(dressState)
     return true;
 end
 
+local function SetChrModel(number)
+    number = tonumber(number);
+    if not number then
+        console.AddError("Please provide a ChrModelID");
+    end
+
+    C_BarberShop.SetViewingChrModel(number);
+end
+
 local function DumpBuildInfo()
     local buildVersion, buildNumber, buildDate, interfaceVersion = GetBuildInfo();
     local publicBuild = tostring(IsPublicBuild());
@@ -85,32 +94,32 @@ end
 
 local customCommandInfo = {
     {
-        help = "Preview a customization option in the barber shop.\n<optionID> <choiceID>",
-        category = commandCategory.Game,
         command = "PreviewCustomizationChoice",
+        help = "Preview a customization option in the barber shop.\n<optionID> <choiceID>\nRequires the barber shop to be open.",
+        category = commandCategory.Game,
         commandType = commandType.Script,
         commandFunc = PreviewCustomizationChoice,
     },
     {
-        help = "Set the dress state of your character in the barber shop.",
-        category = commandCategory.Game,
         command = "SetDressState",
+        help = "Set the dress state of your character in the barber shop.\nRequires the barber shop to be open.",
+        category = commandCategory.Game,
         commandType = commandType.Script,
         commandFunc = SetDressState,
     },
     {
-        category = console.CommandCategory.Debug,
         command = "SetChrModel",
-        commandFunc = function(number) C_BarberShop.SetViewingChrModel(number) end,
+        help = "Set barber shop character model.\nRequires the barber shop to be open.",
+        category = console.CommandCategory.Debug,
         commandType = console.CommandType.Macro,
-        help = "Set barber shop character model."
+        commandFunc = SetChrModel,
     },
     {
-        category = console.CommandCategory.Debug,
         command = "GetBuildInfo",
-        commandFunc = DumpBuildInfo,
+        help = "Dumps client build info the console.",
+        category = console.CommandCategory.Debug,
         commandType = console.CommandType.Macro,
-        help = "Dumps client build info the console."
+        commandFunc = DumpBuildInfo,
     }
 }
 
