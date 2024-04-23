@@ -8,9 +8,6 @@ externals:
   Datamine/Libs/LibDevConsole: https://github.com/Ghostopheles/LibDevConsole
   Datamine/Libs/AceLocale-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceLocale-3.0
 
-embedded-libraries:
-  - msa-dropdownmenu-10
-
 ignore:
   - Datamine/Libs/*/*.rockspec
   - Datamine/Libs/*/*.toc
