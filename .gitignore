@@ -1,2 +1,5 @@
 Libs/
-.vscode/*
+Tools/dm_tools/cache
+Datamine_Maps/Generated
+__pycache__
+.vscode
