@@ -905,11 +905,12 @@ function DatamineWorkspaceMixin:OnLoad()
         toolbar:AddButton("custom-toolbar-play", cb, tooltipText);
     end
 
-    do
-        local tooltipText = L.WORKSPACE_MODE_STORAGE;
-        local cb = function() self:SetMode(self.Modes.STORAGE); end;
-        toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
-    end
+    -- temporarily disabling this because it is an utter abomination and deserves to be thrown into a meat grinder
+    --do
+    --    local tooltipText = L.WORKSPACE_MODE_STORAGE;
+    --    local cb = function() self:SetMode(self.Modes.STORAGE); end;
+    --    toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
+    --end
 end
 
 function DatamineWorkspaceMixin:OnModeChanged()
