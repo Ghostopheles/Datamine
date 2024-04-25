@@ -103,7 +103,7 @@ local function RemoveEmptyGridsFromMap(map)
         local isTop = x < halfway;
         local isLeft = y < halfway;
 
-        local topLeftFound, bottomRightFound = false, false;
+        local topLeftFound = false;
 
         local gridData = {
             Y = y,
@@ -111,25 +111,17 @@ local function RemoveEmptyGridsFromMap(map)
             TextureID = grid,
         };
 
-        local tilesDone = 0;
-        local tilesBeforeBottomRightDeclared = halfway;
         if grid ~= 0 then
             tinsert(mapInfo.Grids, gridData);
             if (isLeft and isTop) and (topLeft.X == 0 and topLeft.Y == 0) then
                 topLeft.X = x;
                 topLeft.Y = y;
                 topLeftFound = true;
-            elseif not bottomRightFound and (not isLeft and not isTop) then
+            elseif (not isLeft and not isTop) then
                 bottomRight.X = x;
                 bottomRight.Y = y;
-
-                if tilesDone == tilesBeforeBottomRightDeclared then
-                    bottomRightFound = true;
-                end
-
-                tilesDone = tilesDone + 1;
             end
-        elseif topLeftFound and not bottomRightFound then
+        else
             tinsert(mapInfo.Grids, gridData);
         end
 
@@ -159,10 +151,10 @@ local function RemoveEmptyGridsFromMap(map)
         return distA < distB;
     end
 
-    table.sort(mapInfo.Grids, Sort);
+    --table.sort(mapInfo.Grids, Sort);
 
     local _y, _x = 0, 0;
-    for _, grid in pairs(mapInfo.Grids) do
+    for _, grid in ipairs(mapInfo.Grids) do
         grid.NormalizedCoords = {
             Y = _y,
             X = _x,

@@ -46,10 +46,20 @@ end
 
 -- have to redefine 'self' here because frame pools are stupid
 function DatamineMapTileMixin:Reset(self)
+	self.Texture = nil;
     self.x = nil;
     self.y = nil;
     self.layoutIndex = nil;
     self.ignoreInLayout = true;
+end
+
+function DatamineMapTileMixin:OnEnter()
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+	GameTooltip:SetText(self.layoutIndex);
+end
+
+function DatamineMapTileMixin:OnLeave()
+	GameTooltip:Hide();
 end
 
 function DatamineMapTileMixin:SetTileTexture(texture, ...)
@@ -62,6 +72,7 @@ function DatamineMapTileMixin:SetTileTexture(texture, ...)
 end
 
 function DatamineMapTileMixin:MakeEmpty()
+	self.Texture = nil;
     self:SetColorTexture(DatamineLightGray:GetRGB());
 end
 
@@ -70,14 +81,13 @@ end
 DatamineMapCanvasMixin = {};
 
 function DatamineMapCanvasMixin:OnLoad()
-    self.isHorizontal = true;
+	self.alwaysUpdateLayout = true;
+    self.isHorizontal = false;
     self.layoutFramesGoingRight = true;
     self.layoutFramesGoingUp = false;
 
-    self.TilePool = CreateTexturePool(self, "BACKGROUND", 0, TILE_TEMPLATE_NAME, DatamineMapTileMixin.Reset);
+    self.TilePool = CreateTexturePool(self, "ARTWORK", 7, TILE_TEMPLATE_NAME, DatamineMapTileMixin.Reset);
     self.TilePool:SetResetDisallowedIfNew(true);
-
-	self.TextPool = CreateFontStringPool(self, "ARTWORK", 10, "DatamineCleanFontSmall");
 
     self.DisplayedWDT = 0;
     self.MapInfo = nil;
@@ -137,28 +147,42 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
     local gridX = mapInfo.CanvasSize.X + 1;
     self:UpdateCanvasSize(gridY, gridX);
 
-    local i = 1;
-    for _, grid in pairs(mapInfo.Grids) do
-        local y, x = grid.NormalizedCoords.Y, grid.NormalizedCoords.X;
+    --local i = 1;
+    --for _, grid in pairs(mapInfo.Grids) do
+    --    local y, x = grid.NormalizedCoords.Y, grid.NormalizedCoords.X;
+    --    local textureID = grid.TextureID;
+    --    local tile = self.TilePool:Acquire();
+	--	tile.layoutIndex = i;
+    --    tile:Init(textureID, y, x);
+    --    i = i + 1;
+    --end
+    --print(format("Generated %d tiles.", i));
+
+	local numTiles = 0;
+	local maxTiles = MAX_TILES;
+	local function AddTile(grid)
+		if numTiles == maxTiles then
+			Registry:TriggerEvent(Events.MAPVIEW_MAP_LOADED, id, mapInfo);
+			return;
+		end
+
+		local y, x = grid.NormalizedCoords.Y, grid.NormalizedCoords.X;
         local textureID = grid.TextureID;
         local tile = self.TilePool:Acquire();
-		tile.layoutIndex = i;
+		tile.layoutIndex = numTiles;
         tile:Init(textureID, y, x);
 
-		local text = self.TextPool:Acquire();
-		text:ClearAllPoints();
-		text:SetPoint("CENTER", tile);
-		text:SetSize(64, 64);
-		text:SetText(format("X: %d Y: %d", y, x));
-		text.ignoreInLayout = true;
+		numTiles = numTiles + 1;
 
-        i = i + 1;
-    end
-    print(format("Generated %d tiles.", i));
+		print(format("Generated tile %d > Y: %d X: %d", numTiles, y, x));
+		self:MarkDirty();
+	end
 
-    TEST_MAPINFO = mapInfo;
+	C_Timer.NewTicker(0.1, function()
+		AddTile(mapInfo.Grids[numTiles + 1]);
+	end, #mapInfo.Grids);
 
-    Registry:TriggerEvent(Events.MAPVIEW_MAP_LOADED, id, mapInfo);
+    TEST_MAPINFO = mapInfo; --TODO: remove me
 end
 
 ------------
@@ -183,9 +207,9 @@ DatamineMapControllerMixin.LERP_TYPE = {
 };
 
 function DatamineMapControllerMixin:OnLoad()
-    local defaultScroll = 0.5;
-    self:SetCurrentScroll(defaultScroll, defaultScroll);
-    self:SetTargetScroll(defaultScroll, defaultScroll);
+    local defaultScrollX, defaultScrollY = 0.4, 0.1;
+    self:SetCurrentScroll(defaultScrollX, defaultScrollY);
+    self:SetTargetScroll(defaultScrollX, defaultScrollY);
     self:SetZoomAmountPerMouseWheelDelta(0.075);
     self:SetMouseWheelZoomMode(self.ZOOM_BEHAVIOR.SMOOTH);
     self:SetScalingMode(self.SCALING_MODE.TRANSLATE_FASTER_THAN_SCALE);
@@ -738,7 +762,7 @@ function DatamineMapControllerMixin:ZoomOut()
 end
 
 function DatamineMapControllerMixin:ResetZoom()
-    self:InstantPanAndZoom(self.ZoomLevels[1].Scale, 0.5, 0.5);
+    self:InstantPanAndZoom(self.ZoomLevels[1].Scale, 0.4, 0.1);
 end
 
 function DatamineMapControllerMixin:InstantPanAndZoom(scale, panX, panY, ignoreScaleRatio)
@@ -919,5 +943,5 @@ end
 function DM_TEST()
     DatamineUnifiedFrame:Toggle();
     DatamineUnifiedFrame.Workspace:SetMode(5);
-    TEST_CONTROLLER:LoadWDT(775971);
+    TEST_CONTROLLER:LoadWDT(1890596);
 end
