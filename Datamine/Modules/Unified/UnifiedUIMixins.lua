@@ -872,6 +872,7 @@ DatamineWorkspaceMixin.Modes = {
     CODE = 2,
     STORAGE = 3,
     MOVIE = 4,
+    MAPS = 5,
 };
 
 function DatamineWorkspaceMixin:OnLoad()
@@ -883,6 +884,9 @@ function DatamineWorkspaceMixin:OnLoad()
         },
         [self.Modes.MOVIE] = {
             self.TheaterTab,
+        },
+        [self.Modes.MAPS] = {
+            self.MapViewTab,
         },
         [self.Modes.STORAGE] = {
             self.StorageTab,
@@ -903,6 +907,12 @@ function DatamineWorkspaceMixin:OnLoad()
         local tooltipText = L.WORKSPACE_MODE_MOVIE;
         local cb = function() self:SetMode(self.Modes.MOVIE); end;
         toolbar:AddButton("custom-toolbar-play", cb, tooltipText);
+    end
+
+    do
+        local tooltipText = L.WORKSPACE_MODE_MAPS;
+        local cb = function() self:SetMode(self.Modes.MAPS); end;
+        toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
     end
 
     -- temporarily disabling this because it is an utter abomination and deserves to be thrown into a meat grinder

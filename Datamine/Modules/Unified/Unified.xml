@@ -321,6 +321,8 @@
                 hidden="true" />
             <Frame parentKey="StorageTab" inherits="DatamineStorageViewTemplate" setAllPoints="true"
                 hidden="true" />
+            <Frame parentKey="MapViewTab" inherits="DatamineMapViewerTemplate" setAllPoints="true"
+                hidden="true" />
         </Frames>
         <Layers>
             <Layer level="BACKGROUND">

@@ -40,6 +40,8 @@ def add_map_files_to_toc():
         for file in os.listdir(OUTPUT_DIR):
             if file.endswith(".lua"):
                 f.write(f"Generated/{file}\n")
+            else:
+                os.remove(os.path.join(OUTPUT_DIR, file))
 
 
 def lua_format(wdtFileDataID: int, map_name: str, map_info: str):
@@ -74,8 +76,8 @@ def format_map_grids(map_grids: list[WDT]):
 
 def format_map_info(map: Map, map_grids_str: str) -> str:
     map_info = f"""MapName = "{map.MapName_lang}",
-    MapDescription0 = "{map.MapDescription0_lang}",
-    MapDescription1 = "{map.MapDescription1_lang}",
+    MapDescription0 = [[{map.MapDescription0_lang}]],
+    MapDescription1 = [[{map.MapDescription1_lang}]],
     MapType = {map.MapType},
     InstanceType = {map.InstanceType},
     ExpansionID = {map.ExpansionID},

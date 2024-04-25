@@ -21,6 +21,7 @@ L["GENERIC_NA"] = "N/A";
 
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
+L["WORKSPACE_MODE_MAPS"] = "Maps";
 L["WORKSPACE_MODE_STORAGE"] = "Storage";
 
 L["MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT"] = "Toggle Alternate Form";

@@ -12,7 +12,9 @@ Datamine.Events = {
     SEARCH_BEGIN = "SearchBegin",
     WORKSPACE_MODE_CHANGED = "WorkspaceModeChanged",
     UI_MAIN_HIDE = "UIMainHide",
-    SETTING_CHANGED = "SettingChanged"
+    SETTING_CHANGED = "SettingChanged",
+    MAPVIEW_MAP_CHANGED = "MapViewMapChanged",
+    MAPVIEW_MAP_LOADED = "MapViewMapLoaded"
 };
 
 local function GenerateCallbackEvents()

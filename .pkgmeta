@@ -24,6 +24,7 @@ ignore:
 move-folders:
   Datamine/Datamine: Datamine
   Datamine/Datamine_Data: Datamine_Data
+  Datamine/Datamine_Maps: Datamine_Maps
 
 manual-changelog:
   filename: CHANGELOG.md

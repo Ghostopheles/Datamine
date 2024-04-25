@@ -67,5 +67,8 @@ Modules/Unified/Templates/MovieFrame/MovieFrame.lua
 Modules/Unified/Templates/MovieFrame/MovieFrame.xml
 Modules/Unified/Templates/StorageView/StorageView.lua
 Modules/Unified/Templates/StorageView/StorageView.xml
+Modules/Unified/Templates/MapViewer/MapController.lua
+Modules/Unified/Templates/MapViewer/MapViewer.lua
+Modules/Unified/Templates/MapViewer/MapViewer.xml
 
 Modules/Unified/Unified.xml
