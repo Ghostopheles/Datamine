@@ -11,7 +11,6 @@ local GetSpellInfo = GetSpellInfo or function(spell)
     return nil;
 end
 local GetSpellLink = C_Spell and C_Spell.GetSpellLink or GetSpellLink;
-local GetSpellDescription = GetSpellDescription;
 
 Datamine.Spell.SpellInfoKeys = {
     L.SPELL_INFO_KEYS_NAME,
