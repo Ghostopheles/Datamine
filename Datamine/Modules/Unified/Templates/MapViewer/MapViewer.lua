@@ -16,7 +16,6 @@ end
 
 function DatamineMapViewerMixin:OnMapLoaded(wdtID, ...)
     local mapName = Datamine.Maps.GetMapNameByWdtID(wdtID);
-    print("Loaded map: " .. mapName);
     self:SetMapTitle(mapName);
 
     self.ErrorText:Hide();
@@ -32,8 +31,9 @@ function DatamineMapViewerMixin:ShowErrorText(text)
     self.ErrorText:Show();
 end
 
-function DatamineMapViewerMixin:HandleNoContentMap()
-    print("no content")
+function DatamineMapViewerMixin:HandleNoContentMap(wdtID)
+    local mapName = Datamine.Maps.GetMapNameByWdtID(wdtID);
+    self:SetMapTitle(mapName);
     self:ShowErrorText(L.MAPVIEW_WARNING_NO_CONTENT);
 end
 

@@ -121,7 +121,7 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
     end
 
 	if not mapInfo.HasContent then
-		Datamine.MapViewer:HandleNoContentMap();
+		Datamine.MapViewer:HandleNoContentMap(id);
 		return;
 	end
 
