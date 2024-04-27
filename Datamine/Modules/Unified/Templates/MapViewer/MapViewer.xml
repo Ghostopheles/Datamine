@@ -102,7 +102,7 @@
             </Frame>
             <Frame parentKey="DetailsContainer" inherits="VerticalLayoutFrame"
                 mixin="DatamineMapViewerDetailsPanelMixin" frameLevel="5">
-                <Size x="350" y="200" />
+                <Size x="350" y="150" />
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-8" y="-8" />
                 </Anchors>
@@ -167,7 +167,7 @@
                             wordwrap="true"
                             justifyH="CENTER" justifyV="TOP"
                             outline="THICK" enableMouseMotion="true">
-                            <Size x="190" y="100" />
+                            <Size x="125" y="100" />
                             <Scripts>
                                 <OnEnter>
                                     if self:IsTruncated() then

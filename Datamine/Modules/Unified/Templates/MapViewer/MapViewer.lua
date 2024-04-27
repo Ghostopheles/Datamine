@@ -7,7 +7,7 @@ local Events = Datamine.Events;
 DatamineMapViewerDetailsPanelMixin = {};
 
 function DatamineMapViewerDetailsPanelMixin:OnLoad()
-    self.minimumWidth = 200;
+    self.minimumWidth = 150;
     self.minimumHeight = 250;
 
     self.maximumWidth = 300;
@@ -56,6 +56,9 @@ function DatamineMapViewerDetailsPanelMixin:OnLoad()
     self.GoButton:SetText(L.MAPVIEW_DETAILS_GO);
     self.GoButton.layoutIndex = self.CoordEntryX.layoutIndex + 1;
     self.GoButton.align = "center";
+    self.GoButton:SetScript("OnClick", function()
+        self:OnGoButtonClicked();
+    end);
 
     self.MiscHeader:SetText(L.MAPVIEW_DETAILS_HEADER_MISC);
     self.MiscHeader.layoutIndex = self.GoButton.layoutIndex + 1;
@@ -75,6 +78,7 @@ function DatamineMapViewerDetailsPanelMixin:OnLoad()
     self:MarkDirty();
 
     Registry:RegisterCallback(Events.MAPVIEW_MAP_LOADED, self.OnMapLoaded, self);
+    Registry:RegisterCallback(Events.MAPVIEW_RIGHT_CLICK, self.OnMapRightClick, self);
 end
 
 function DatamineMapViewerDetailsPanelMixin:OnMapLoaded(wdtID)
@@ -86,8 +90,8 @@ function DatamineMapViewerDetailsPanelMixin:OnMapLoaded(wdtID)
     self.MapIDEntry.EditBox:SetText(mapInfo.MapID);
     self.WDTEntry.EditBox:SetText(wdtID);
 
-    self.CoordEntryY.EditBox:SetText("69");
-    self.CoordEntryX.EditBox:SetText("420");
+    self.CoordEntryY.EditBox:SetText("-0");
+    self.CoordEntryX.EditBox:SetText("-0");
 
     local desc = mapInfo.MapDescription0;
     if desc and desc ~= "" then
@@ -101,14 +105,26 @@ function DatamineMapViewerDetailsPanelMixin:OnMapLoaded(wdtID)
     self:MarkDirty();
 end
 
+function DatamineMapViewerDetailsPanelMixin:OnMapRightClick(y, x)
+    self.CoordEntryY.EditBox:SetText(y);
+    self.CoordEntryX.EditBox:SetText(x);
+end
+
+function DatamineMapViewerDetailsPanelMixin:OnGoButtonClicked()
+    local mapID = self.MapIDEntry.EditBox:GetText();
+    local wdtID = self.WDTEntry.EditBox:GetText();
+    local coordY = self.CoordEntryY.EditBox:GetText();
+    local coordX = self.CoordEntryX.EditBox:GetText();
+
+    self:GetParent().Controller:NavigateByMapID(mapID, coordY, coordX);
+end
+
 ------------
 
 DatamineMapViewerMixin = {};
 
 function DatamineMapViewerMixin:OnLoad()
     self:SetMapTitle(L.GENERIC_NA);
-
-    self:SetupDetailsPanel();
 
     Registry:RegisterCallback(Events.MAPVIEW_MAP_LOADED, self.OnMapLoaded, self);
 
@@ -120,12 +136,6 @@ function DatamineMapViewerMixin:OnMapLoaded(wdtID, ...)
     self:SetMapTitle(mapName);
 
     self.ErrorText:Hide();
-end
-
-function DatamineMapViewerMixin:SetupDetailsPanel()
-    local details = self.DetailsContainer;
-
-    
 end
 
 function DatamineMapViewerMixin:SetMapTitle(mapName)

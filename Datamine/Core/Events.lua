@@ -15,7 +15,8 @@ Datamine.Events = {
     SETTING_CHANGED = "SettingChanged",
     MAPVIEW_MAP_CHANGED = "MapViewMapChanged",
     MAPVIEW_MAP_LOADED = "MapViewMapLoaded",
-    MAPVIEW_MAP_DATA_LOADED = "MapViewMapDataLoaded"
+    MAPVIEW_MAP_DATA_LOADED = "MapViewMapDataLoaded",
+    MAPVIEW_RIGHT_CLICK = "MapViewRightClick",
 };
 
 local function GenerateCallbackEvents()

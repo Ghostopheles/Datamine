@@ -11,11 +11,10 @@ local MIN_CANVAS_ZOOM = 0.05;
 local ZOOM_STEP = 0.25;
 local NUM_ZOOM_LEVELS = Round((MAX_CANVAS_ZOOM - MIN_CANVAS_ZOOM) / ZOOM_STEP);
 
-local MAX_TILES_PER_FRAME = 300;
+local ADT_TILE_SIZE = 533.33333;
 
 local MAX_TILES_X = 64;
 local MAX_TILES_Y = 64;
-local MAX_TILES = MAX_TILES_X * MAX_TILES_Y;
 local TILE_TEMPLATE_NAME = "DatamineMapTileTemplate";
 
 local function CheckMapsLoaded()
@@ -99,6 +98,7 @@ function DatamineMapCanvasMixin:Clear()
     self.TilePool:ReleaseAll();
     self.DisplayedWDT = 0;
     self.MapInfo = nil;
+	self.CenterTile = nil;
 
 	self:Hide();
 end
@@ -134,6 +134,10 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
         local tile = self.TilePool:Acquire();
 		tile.layoutIndex = i;
         tile:Init(textureID, y, x);
+
+		if y == 31 and x == 31 then
+			self.CenterTile = tile;
+		end
 
 		tinsert(tiles, tile);
         i = i + 1;
@@ -222,6 +226,11 @@ function DatamineMapControllerMixin:OnMouseDown(button)
 
         self.AccumulatedMouseDeltaX = 0.0;
         self.AccumulatedMouseDeltaY = 0.0;
+	elseif button == "RightButton" then
+		local y, x = self:GetWorldCoordinatesFromMapClick();
+		if y and x then
+			Registry:TriggerEvent(Events.MAPVIEW_RIGHT_CLICK, y, x);
+		end
     end
 end
 
@@ -361,6 +370,48 @@ function DatamineMapControllerMixin:OnUpdate(deltaTime)
 	if panChanged then
 		-- TODO: maybe update something here i dunno
 	end
+end
+
+---
+
+function DatamineMapControllerMixin:NavigateByMapID(mapID, y, x)
+	local panX, panY = self:GetCanvasScrollPointFromWorldCoordinates(y, x);
+	self:InstantPanAndZoom(1, panX, panY);
+end
+
+---
+
+function DatamineMapControllerMixin:GetScaledADTTileSize()
+	local tileWidth = self.Canvas.CenterTile:GetWidth();
+	local scaledTileSize = ADT_TILE_SIZE / tileWidth;
+	return scaledTileSize;
+end
+
+function DatamineMapControllerMixin:GetWorldCoordinatesFromMapClick()
+	local centerTile = self.Canvas.CenterTile;
+	if not centerTile then
+		return;
+	end
+
+	-- 0,0 point, distance from the bottom left of the screen
+	local origin = CreateVector2D(self.Canvas:GetCenter());
+
+	-- cursor position, also in distance from bottom left of the screen
+	local cursor = CreateVector2D(InputUtil.GetCursorPosition(self.Canvas));
+
+	local xPoint = origin.x - cursor.x;
+	local yPoint = origin.y - cursor.y;
+
+	local adtTileSizeScaled = self:GetScaledADTTileSize();
+
+	return Round(xPoint * adtTileSizeScaled), Round(yPoint * adtTileSizeScaled);
+end
+
+function DatamineMapControllerMixin:GetCanvasScrollPointFromWorldCoordinates(y, x)
+	local panY = y - (self:GetWidth() * .5) / self:GetCanvasScale();
+	local panX = x - (self:GetHeight() * .5) / self:GetCanvasScale();
+
+	return panX, panY;
 end
 
 ----
@@ -603,31 +654,6 @@ function DatamineMapControllerMixin:AccumulateMouseDeltas(elapsed, deltaX, delta
 	local normalizedSamples = MOUSE_DELTA_SAMPLES * elapsed * 60;
 	self.AccumulatedMouseDeltaX = (self.AccumulatedMouseDeltaX / normalizedSamples) + (deltaX * MOUSE_DELTA_FACTOR) / normalizedSamples;
 	self.AccumulatedMouseDeltaY = (self.AccumulatedMouseDeltaY / normalizedSamples) + (deltaY * MOUSE_DELTA_FACTOR) / normalizedSamples;
-end
-
-function DatamineMapControllerMixin:SetShouldZoomInOnClick(shouldZoomInOnClick)
-	self.shouldZoomInOnClick = shouldZoomInOnClick;
-end
-
-function DatamineMapControllerMixin:ShouldZoomInOnClick()
-	return not not self.shouldZoomInOnClick;
-end
-
-function DatamineMapControllerMixin:SetShouldNavigateOnClick(shouldNavigateOnClick)
-	self.shouldNavigateOnClick = shouldNavigateOnClick;
-end
-
-function DatamineMapControllerMixin:ShouldNavigateOnClick()
-	return not not self.shouldNavigateOnClick;
-end
-
--- Optional limiter related to shouldNavigateOnClick checks.
-function DatamineMapControllerMixin:SetShouldNavigateIgnoreZoneMapPositionData(ignoreZoneMapPositionData)
-	self.ignoreZoneMapPositionData = ignoreZoneMapPositionData;
-end
-
-function DatamineMapControllerMixin:ShouldNavigateIgnoreZoneMapPositionData()
-	return not not self.ignoreZoneMapPositionData;
 end
 
 function DatamineMapControllerMixin:SetShouldPanOnClick(shouldPanOnClick)

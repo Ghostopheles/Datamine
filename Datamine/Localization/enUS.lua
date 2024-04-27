@@ -11,6 +11,9 @@ L["CONFIG_DEBUGTARGETINFO_TOOLTIP"] = "Toggles the display of debug tooltips in 
 L["CONFIG_CREATUREDATA_NAME"] = "Collect creature data";
 L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs you encounter in the world. May impact performance slightly.";
 
+L["CONFIG_AUTO_LOAD_MAP_DATA_NAME"] = "Load map data at startup";
+L["CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP"] = "Automatically loads map viewer data at startup. May increase loading times on first login or on reload.";
+
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
 L["GENERIC_EMPTY"] = "Empty";

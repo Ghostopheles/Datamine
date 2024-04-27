@@ -10,7 +10,7 @@ from dm_tools import logger, FileReader
 DEFAULT_MAP_SIZE_X = 64
 DEFAULT_MAP_SIZE_Y = 64
 WDT_FILE_INFO_MARKER = b"DIAM"
-WDT_FILE_INFO_MARKER_SIZE = 4
+WDT_FILE_INFO_MARKER_SIZE = 8
 
 
 @dataclass
@@ -30,6 +30,7 @@ class WDT:
     y: int
     rootADT: int
     obj0ADT: int
+    obj1ADT: int
     tex0ADT: int
     lodADT: int
     mapTexture: int
@@ -40,15 +41,17 @@ class WDT:
         self.x, self.y = x, y
         self.rootADT = data[0]
         self.obj0ADT = data[1]
-        self.tex0ADT = data[2]
-        self.lodADT = data[3]
-        self.mapTexture = data[4]
-        self.mapTextureN = data[5]
-        self.minimapTexture = data[6]
+        self.obj1ADT = data[2]
+        self.tex0ADT = data[3]
+        self.lodADT = data[4]
+        self.mapTexture = data[5]
+        self.mapTextureN = data[6]
+        self.minimapTexture = data[7]
 
         self.__all = {
             "rootADT": self.rootADT,
             "obj0ADT": self.obj0ADT,
+            "obj1ADT": self.obj1ADT,
             "tex0ADT": self.tex0ADT,
             "lodADT": self.lodADT,
             "mapTexture": self.mapTexture,

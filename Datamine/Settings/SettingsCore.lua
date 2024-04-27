@@ -4,18 +4,20 @@ local Registry = Datamine.EventRegistry;
 
 Datamine.Settings = {};
 
-Datamine.Settings.Keys = {
+Datamine.Setting = {
     ChatPrefixColor = "ChatPrefixColor",
     debugTargetInfo = "debugTargetInfo",
     CollectCreatureData = "CollectCreatureData",
     SeenCreatureDataWarning = "SeenCreatureDataWarning",
+    AutoLoadMapData = "AutoLoadMapData"
 };
 
 local defaultConfig = {
-    [Datamine.Settings.Keys.ChatPrefixColor] = "FFF542F5",
-    [Datamine.Settings.Keys.debugTargetInfo] = false,
-    [Datamine.Settings.Keys.CollectCreatureData] = false,
-    [Datamine.Settings.Keys.SeenCreatureDataWarning] = false,
+    [Datamine.Setting.ChatPrefixColor] = "FFF542F5",
+    [Datamine.Setting.debugTargetInfo] = false,
+    [Datamine.Setting.CollectCreatureData] = false,
+    [Datamine.Setting.SeenCreatureDataWarning] = false,
+    [Datamine.Setting.AutoLoadMapData] = false,
 };
 
 local allSettings = {};
@@ -80,7 +82,7 @@ end
 local category = Settings.RegisterVerticalLayoutCategory(Datamine.Constants.AddonName);
 
 do
-    local variable = Datamine.Settings.Keys.debugTargetInfo;
+    local variable = Datamine.Setting.debugTargetInfo;
     local variableType = Settings.VarType.Boolean;
     local name = L.CONFIG_DEBUGTARGETINFO_NAME;
     local tooltip = L.CONFIG_DEBUGTARGETINFO_TOOLTIP;
@@ -93,10 +95,23 @@ do
 end
 
 do
-    local variable = Datamine.Settings.Keys.CollectCreatureData;
+    local variable = Datamine.Setting.CollectCreatureData;
     local variableType = Settings.VarType.Boolean;
     local name = L.CONFIG_CREATUREDATA_NAME;
     local tooltip = L.CONFIG_CREATUREDATA_TOOLTIP;
+
+    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    Settings.CreateCheckBox(category, setting, tooltip);
+    Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
+
+    allSettings[variable] = setting;
+end
+
+do
+    local variable = Datamine.Setting.AutoLoadMapData;
+    local variableType = Settings.VarType.Boolean;
+    local name = L.CONFIG_AUTO_LOAD_MAP_DATA_NAME;
+    local tooltip = L.CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP;
 
     local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
     Settings.CreateCheckBox(category, setting, tooltip);
@@ -117,17 +132,9 @@ end
 
 ------------
 
-local function ShowCreatureDataTogglePopup()
-    if DatamineConfig.SeenCreatureDataWarning then
-        return;
+-- handler for the AutoLoadMapData config option
+EventUtil.ContinueOnAddOnLoaded("Datamine", function()
+    if Datamine.Settings.GetSetting(Datamine.Setting.AutoLoadMapData) then
+        C_AddOns.LoadAddOn("Datamine_Maps");
     end
-
-    local title = L.POPUP_CONFIG_CREATUREDATA_TITLE;
-    local text = L.POPUP_CONFIG_CREATUREDATA_TEXT;
-    local callback = function(choice)
-        DatamineConfig.SeenCreatureDataWarning = true;
-        allSettings.CollectCreatureData:SetValue(choice);
-    end;
-
-    DataminePopupBox:ShowPopup(title, text, callback);
-end
+end);
