@@ -3,9 +3,15 @@ Datamine.Spell = CreateFrame("Frame");
 local L = Datamine.Strings;
 local moduleName = L.SPELL_INFO_MODULE_NAME;
 
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo;
+local GetSpellInfo = GetSpellInfo or function(spell)
+    local spellInfo = C_Spell.GetSpellInfo(spell);
+    if spellInfo then
+        return spellInfo.name, 0, spellInfo.iconID, spellInfo.castTime, spellInfo.minRange, spellInfo.maxRange, spellInfo.spellID, spellInfo.originalIconID;
+    end
+    return nil;
+end
 local GetSpellLink = C_Spell and C_Spell.GetSpellLink or GetSpellLink;
-local GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpellDescription;
+local GetSpellDescription = GetSpellDescription;
 
 Datamine.Spell.SpellInfoKeys = {
     L.SPELL_INFO_KEYS_NAME,
