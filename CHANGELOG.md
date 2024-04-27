@@ -4,6 +4,7 @@
 * Playing movies in the theater tab will now properly respect the 'loop movie' setting
 * The 'defaults' button on the model scene transform tab should now work more consistently
 * Dracthyr should now actually start in the correct position in the model viewer
+* SpellData fetching should now work properly on the War Within alpha (thanks QartemisT)
 
 ##### Added
 * Creature data collection! Now you can be your very own Wowhead!
@@ -11,6 +12,13 @@
     * Stores BroadcastText, Spells, Name, Reactions and InstanceIDs
     * The raw data can be found at `<game_path>/WTF/Account/<account>/SavedVariables/Datamine_Data.lua`
     * The saved variables file *may* fill up fairly quickly with data, so be sure to back it up manually if you don't want to lose any data.
+
+* Map viewer! You can now view minimap textures for every valid map in the game, without exiting the game!
+    * Currently still under construction, will have some rough edges, and the maps can sometimes be hard to navigate, and content can be hard to find
+    * Also allows you to view most important map data, like MapID, WDTFileDataID, World Coordinates, Description, and soon to be much more
+    * Involves a fairly cumbersome data-generation step, but pre-packaged data will be provided with every full release
+        * Keep in mind that this data can easily become outdated through new builds and hotfixes
+        * Instructions for generating the data yourself will be included at some point
 
 * Two new console commands
     * `GetBuildInfo`: Dumps info about the current client build, with a few extra bits of information
