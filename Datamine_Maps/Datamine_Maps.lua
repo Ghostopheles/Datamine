@@ -39,6 +39,17 @@ function Datamine.Maps.GetMapInfoByWdtID(wdtFileDataID)
     return maps[wdtFileDataID];
 end
 
+function Datamine.Maps.GetAllMaps()
+    return maps;
+end
+
+function Datamine.Maps.GetMapNameByWdtID(wdtID)
+    local map = maps[wdtID];
+    if map then
+        return map.MapName;
+    end
+end
+
 function Datamine.Maps.ConvertCoordsToLookupString(x, y)
     return format("%02d,%02d", x, y);
 end
@@ -51,28 +62,23 @@ end
 ---@field X number
 ---@field Y number
 ---@field TextureID number
----@field NormalizedCoords DatamineGridCoords
 
 ---@class DatamineMapCanvasSize : DatamineGridCoords
 
 ---@class DatamineMapBounds
----@field TopLeft DatamineGridCoords
----@field BottomRight DatamineGridCoords
+---@field Top number
+---@field Bottom number
+---@field Left number
+---@field Right number
 
 ---@class DatamineMapDisplayInfo
 ---@field Grids table<DatamineGridData>
 ---@field Bounds DatamineMapBounds
----@field CanvasSize DatamineMapCanvasSize
-
-local function GetDistance(x1, y1, x2, y2)
-    local xDist = math.abs(x1 - x2);
-    local yDist = math.abs(y1 - y2);
-    return (xDist + yDist) / 2;
-end
+---@field HasContent boolean
 
 ---@param map DatamineMapInfo | number
 ---@return DatamineMapDisplayInfo? mapInfo
-local function RemoveEmptyGridsFromMap(map)
+local function PreprocessMapDisplayInfo(map)
     if type(map) == "number" then
         local info = Datamine.Maps.GetMapInfoByWdtID(map);
         if not info then
@@ -85,26 +91,15 @@ local function RemoveEmptyGridsFromMap(map)
     local mapInfo = {
         Grids = {},
         Bounds = {
-            TopLeft = {
-                Y = 0,
-                X = 0
-            },
-            BottomRight = {
-                Y = 0,
-                X = 0
-            },
+            Top = 0, -- x
+            Bottom = 0, -- x
+            Left = 0, -- y
+            Right = 0, -- y
         },
+        HasContent = false,
     };
 
-    local halfway = 31;
-    local topLeft = mapInfo.Bounds.TopLeft;
-    local bottomRight = mapInfo.Bounds.BottomRight;
     for _, grid in pairs(map.Grids.MinimapTextures) do
-        local isTop = x < halfway;
-        local isLeft = y < halfway;
-
-        local topLeftFound = false;
-
         local gridData = {
             Y = y,
             X = x,
@@ -112,18 +107,20 @@ local function RemoveEmptyGridsFromMap(map)
         };
 
         if grid ~= 0 then
-            tinsert(mapInfo.Grids, gridData);
-            if (isLeft and isTop) and (topLeft.X == 0 and topLeft.Y == 0) then
-                topLeft.X = x;
-                topLeft.Y = y;
-                topLeftFound = true;
-            elseif (not isLeft and not isTop) then
-                bottomRight.X = x;
-                bottomRight.Y = y;
+            mapInfo.HasContent = true;
+
+            if mapInfo.Bounds.Left == 0 then
+                mapInfo.Bounds.Left = y;
             end
-        else
-            tinsert(mapInfo.Grids, gridData);
+            if mapInfo.Bounds.Top == 0 then
+                mapInfo.Bounds.Top = x;
+            end
+
+            mapInfo.Bounds.Bottom = x;
+            mapInfo.Bounds.Right = y;
         end
+
+        tinsert(mapInfo.Grids, gridData);
 
         if y < MAX_TILES_Y then
             y = y + 1;
@@ -137,41 +134,6 @@ local function RemoveEmptyGridsFromMap(map)
         end
     end
 
-    mapInfo.CanvasSize = {
-        Y = mapInfo.Bounds.BottomRight.Y - mapInfo.Bounds.TopLeft.Y,
-        X = mapInfo.Bounds.BottomRight.X - mapInfo.Bounds.TopLeft.X,
-    };
-
-    print(format("Map Dimensions: %dx%d", mapInfo.CanvasSize.Y, mapInfo.CanvasSize.X));
-
-    local function Sort(a, b)
-        local topLeftX, topLeftY = mapInfo.Bounds.TopLeft.X, mapInfo.Bounds.TopLeft.Y;
-        local distA = GetDistance(a.X, a.Y, topLeftX, topLeftY);
-        local distB = GetDistance(b.X, b.Y, topLeftX, topLeftY);
-        return distA < distB;
-    end
-
-    --table.sort(mapInfo.Grids, Sort);
-
-    local _y, _x = 0, 0;
-    for _, grid in ipairs(mapInfo.Grids) do
-        grid.NormalizedCoords = {
-            Y = _y,
-            X = _x,
-        };
-
-        if _y < mapInfo.CanvasSize.Y then
-            _y = _y + 1;
-        else
-            _y = 0;
-            if _x < mapInfo.CanvasSize.X then
-                _x = _x + 1;
-            else
-                _x = 0;
-            end
-        end
-    end
-
     return mapInfo;
 end
 
@@ -180,6 +142,10 @@ end
 function Datamine.Maps.GetMapDisplayInfoByWdtID(wdtFileDataID)
     local map = maps[wdtFileDataID];
     if map then
-        return RemoveEmptyGridsFromMap(map);
+        return PreprocessMapDisplayInfo(map);
     end
 end
+
+EventUtil.ContinueOnAddOnLoaded(addonName, function()
+    Datamine.EventRegistry:TriggerEvent(Datamine.Events.MAPVIEW_MAP_DATA_LOADED);
+end);

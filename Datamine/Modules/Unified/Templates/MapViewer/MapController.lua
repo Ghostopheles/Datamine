@@ -6,7 +6,7 @@ local Events = Datamine.Events;
 local Maps;
 
 local MAX_CANVAS_ZOOM = 20;
-local MIN_CANVAS_ZOOM = 0.15;
+local MIN_CANVAS_ZOOM = 0.05;
 
 local ZOOM_STEP = 0.25;
 local NUM_ZOOM_LEVELS = Round((MAX_CANVAS_ZOOM - MIN_CANVAS_ZOOM) / ZOOM_STEP);
@@ -24,7 +24,7 @@ local function CheckMapsLoaded()
     end
 end
 
-EventUtil.ContinueOnAddOnLoaded("Datamine_Maps", function()
+Registry:RegisterCallback(Events.MAPVIEW_MAP_DATA_LOADED, function()
 	Maps = Datamine.Maps;
 end);
 
@@ -71,7 +71,7 @@ end
 DatamineMapCanvasMixin = {};
 
 function DatamineMapCanvasMixin:OnLoad()
-    self.TilePool = CreateTexturePool(self, "BACKGROUND", -1, TILE_TEMPLATE_NAME, DatamineMapTileMixin.Reset);
+    self.TilePool = CreateTexturePool(self, "ARTWORK", -1, TILE_TEMPLATE_NAME, DatamineMapTileMixin.Reset);
     self.TilePool:SetResetDisallowedIfNew(true);
 
     self.DisplayedWDT = 0;
@@ -80,8 +80,6 @@ function DatamineMapCanvasMixin:OnLoad()
     self:UpdateCanvasSize();
 
     Registry:RegisterCallback(Events.MAPVIEW_MAP_LOADED, self.OnMapLoaded, self);
-
-    TEST_CANVAS = self; --TODO: REMOVE ME
 end
 
 function DatamineMapCanvasMixin:OnMapLoaded(wdtID, mapInfo)
@@ -98,11 +96,11 @@ function DatamineMapCanvasMixin:UpdateCanvasSize()
 end
 
 function DatamineMapCanvasMixin:Clear()
-    self:GetParent():SetEnabled(false);
     self.TilePool:ReleaseAll();
-	self.TextPool:ReleaseAll();
     self.DisplayedWDT = 0;
     self.MapInfo = nil;
+
+	self:Hide();
 end
 
 function DatamineMapCanvasMixin:GetDisplayedWDT()
@@ -118,11 +116,14 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
         return;
     end
 
-	DevTool:AddData(mapInfo, "MAP_INFO");
-
-    if self.TilePool:GetNumActive() > 0 then
+	if self.TilePool:GetNumActive() > 0 then
         self:Clear();
     end
+
+	if not mapInfo.HasContent then
+		Datamine.MapViewer:HandleNoContentMap();
+		return;
+	end
 
 	local tiles = {};
 
@@ -143,9 +144,8 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
 	local initialAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self, "TOPLEFT", 0, 0);
 	AnchorUtil.GridLayout(tiles, initialAnchor, layout);
 
+	self:Show();
 	Registry:TriggerEvent(Events.MAPVIEW_MAP_LOADED, id, mapInfo);
-
-    TEST_MAPINFO = mapInfo; --TODO: remove me
 end
 
 ------------
@@ -190,8 +190,6 @@ function DatamineMapControllerMixin:OnLoad()
 
     Registry:RegisterCallback(Events.MAPVIEW_MAP_CHANGED, self.OnMapChanged, self);
     Registry:RegisterCallback(Events.MAPVIEW_MAP_LOADED, self.OnMapLoaded, self);
-
-    TEST_CONTROLLER = self; --TODO: REMOVE ME
 end
 
 function DatamineMapControllerMixin:OnHide()
@@ -547,16 +545,12 @@ function DatamineMapControllerMixin:OnMapChanged()
     self:SetEnabled(false);
 end
 
-function DatamineMapControllerMixin:OnMapLoaded(...)
+function DatamineMapControllerMixin:OnMapLoaded(wdtID, mapInfo)
     self:SetEnabled(true);
     self:CreateZoomLevels();
     self:CalculateScaleExtents();
 	self:CalculateScrollExtents();
-
-    local fmt = "TargetScale: %d\nScrollXExtentsMin: %d\nScrollXExtentsMax: %d\n\nScrollYExtentsMin: %d\nScrollYExtentsMax: %d";
-    print(format(fmt, self.TargetScale, self.scrollXExtentsMin, self.scrollXExtentsMax, self.scrollYExtentsMin, self.scrollYExtentsMax));
-
-    self:ResetZoom();
+    self:ResetZoom(mapInfo);
 end
 
 -----------
@@ -718,13 +712,28 @@ function DatamineMapControllerMixin:ZoomOut()
 			self:InstantPanAndZoom(nextZoomOutScale, targetScroll.x, targetScroll.y);
 		else
 			self:SetZoomTarget(nextZoomOutScale);
-			--self:SetPanTarget(0.5, 0.5);
 		end
 	end
 end
 
-function DatamineMapControllerMixin:ResetZoom()
-    self:InstantPanAndZoom(self.ZoomLevels[1].Scale, 0.4, 0.1);
+function DatamineMapControllerMixin:ResetZoom(mapInfo)
+	local defaultScrollX, defaultScrollY = 0.5, 0.5;
+    self:SetCurrentScroll(defaultScrollX, defaultScrollY);
+    self:SetTargetScroll(defaultScrollX, defaultScrollY);
+
+	local panX, panY = 0, 0;
+
+	if mapInfo then
+		local bounds = mapInfo.Bounds;
+
+		local verticalPoint = (bounds.Top + bounds.Bottom) / 2;
+		local horizontalPoint = (bounds.Left + bounds.Right) / 2;
+
+		panY = horizontalPoint / MAX_TILES_Y;
+		panX = verticalPoint / MAX_TILES_X;
+	end
+
+    self:InstantPanAndZoom(self.ZoomLevels[1].Scale, panX, panY);
 end
 
 function DatamineMapControllerMixin:InstantPanAndZoom(scale, panX, panY, ignoreScaleRatio)
@@ -900,10 +909,4 @@ end
 
 function DatamineMapControllerMixin:LoadWDT(wdtID)
     self.Canvas:LoadMapByWdtID(wdtID);
-end
-
-function DM_TEST()
-    DatamineUnifiedFrame:Toggle();
-    DatamineUnifiedFrame.Workspace:SetMode(5);
-    TEST_CONTROLLER:LoadWDT(775971);
 end

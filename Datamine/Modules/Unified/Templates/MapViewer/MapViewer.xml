@@ -42,7 +42,50 @@
                     <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
                 </Anchors>
             </ScrollFrame>
+            <Frame parentKey="MapPicker" inherits="DatamineMapPickerTemplate" frameLevel="5">
+                <Size x="300" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="4" y="-4" />
+                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="MapTitleContainer" frameLevel="6">
+                <Size x="525" y="30" />
+                <Anchors>
+                    <Anchor point="TOP" x="50" y="-10" />
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="Text" font="DatamineCleanFontBig"
+                            wordwrap="false"
+                            justifyH="CENTER" justifyV="MIDDLE"
+                            outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background"
+                            inherits="DatamineDarkGrayBackgroundTemplate" setAllPoints="true" />
+                    </Layer>
+                </Layers>
+            </Frame>
         </Frames>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="ErrorText" font="DatamineCleanFontBig"
+                    wordwrap="false"
+                    justifyH="CENTER" justifyV="MIDDLE"
+                    outline="THICK" hidden="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.MapPicker" relativePoint="RIGHT"
+                            x="550" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+            </Layer>
+        </Layers>
         <Scripts>
             <OnLoad method="OnLoad" />
         </Scripts>

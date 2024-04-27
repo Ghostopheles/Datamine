@@ -18,6 +18,10 @@ L["GENERIC_HIDDEN"] = "Hidden";
 L["GENERIC_APPEARANCE"] = "Appearance";
 L["GENERIC_SPELL"] = "Spell";
 L["GENERIC_NA"] = "N/A";
+L["GENERIC_YES"] = "Yes";
+L["GENERIC_NO"] = "No";
+L["GENERIC_OKAY"] = "Ok";
+L["GENERIC_CONTINUE"] = "Continue";
 
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
@@ -75,6 +79,15 @@ L["STORAGE_VIEW_SEARCH_MODE_BUTTON_3"] = "Zone";
 
 L["POPUP_CONFIG_CREATUREDATA_TITLE"] = "Data Collection";
 L["POPUP_CONFIG_CREATUREDATA_TEXT"] = "Hey, thanks for using Datamine! Since you've last logged in, I've added the ability for Datamine to collect data about NPCs you see and interact with. All data is saved to the Datamine_Data addon's saved variables.|n|nThis feature may slightly harm performance in combat, do you want to enable NPC data collection?";
+
+L["MAPVIEW_PICKER_TITLE"] = "Map Picker";
+L["MAPVIEW_LOAD_DATA_BUTTON_TEXT"] = "Load maps";
+L["MAPVIEW_TEXT_HELP_HEADER"] = "No maps loaded";
+L["MAPVIEW_TEXT_HELP"] = "Map data hasn't been loaded yet.|nClick the button below to load map data.";
+L["MAPVIEW_LOAD_WARNING_TITLE"] = "Warning";
+L["MAPVIEW_LOAD_WARNING_TEXT"] = "Loading map data can take a bit and will likely freeze the game for a few seconds. Don't panic! Click the button below to load saved data.";
+L["MAPVIEW_WARNING_NO_CONTENT"] = "Map has no content";
+L["MAPVIEW_MAP_TITLE"] = "Current Map: %s";
 
 -- MODULES --
 

@@ -14,7 +14,8 @@ Datamine.Events = {
     UI_MAIN_HIDE = "UIMainHide",
     SETTING_CHANGED = "SettingChanged",
     MAPVIEW_MAP_CHANGED = "MapViewMapChanged",
-    MAPVIEW_MAP_LOADED = "MapViewMapLoaded"
+    MAPVIEW_MAP_LOADED = "MapViewMapLoaded",
+    MAPVIEW_MAP_DATA_LOADED = "MapViewMapDataLoaded"
 };
 
 local function GenerateCallbackEvents()

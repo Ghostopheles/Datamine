@@ -942,7 +942,7 @@ function DatamineWorkspaceMixin:SetMode(newMode)
     end
 
     self.Mode = newMode;
-    Registry:TriggerEvent(Events.WORKSPACE_MODE_CHANGED);
+    Registry:TriggerEvent(Events.WORKSPACE_MODE_CHANGED, newMode);
 end
 
 function DatamineWorkspaceMixin:GetMode()
@@ -957,11 +957,27 @@ end
 
 -------------
 
+local DEFAULT_W = 1600;
+local DEFAULT_H = 900;
+
 DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
-    self:SetSize(1366, 768);
+    self:SetSize(DEFAULT_W, DEFAULT_H);
     self.TitleContainer.Text:SetText(L.ADDON_TITLE);
+
+    Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnWorkspaceModeChanged, self);
+
+    self.ResizeButton:SetScript("OnMouseDown", function()
+        self.ShouldResetFrameSize = true;
+        self.ResizeBorder:Show();
+        self:StartSizing();
+    end);
+
+    self.ResizeButton:SetScript("OnMouseUp", function()
+        self.ResizeBorder:Hide();
+        self:StopMovingOrSizing();
+    end);
 
     tinsert(UISpecialFrames, self:GetName());
 end
@@ -971,6 +987,34 @@ end
 
 function DatamineUnifiedFrameMixin:OnHide()
     Registry:TriggerEvent(Events.UI_MAIN_HIDE);
+end
+
+function DatamineUnifiedFrameMixin:OnWorkspaceModeChanged(newMode)
+    local modes = self.Workspace.Modes;
+    if newMode == modes.MAPS then
+        self:SetAllowResize(true);
+    end
+
+    if self:ShouldResetSizeAndPosition() then
+        self:ResetSizeAndPosition();
+    end
+end
+
+function DatamineUnifiedFrameMixin:ShouldResetSizeAndPosition()
+    return self.ShouldResetFrameSize;
+end
+
+function DatamineUnifiedFrameMixin:ResetSizeAndPosition()
+    self:ClearAllPoints();
+    self:SetPoint("CENTER");
+    self:SetSize(DEFAULT_W, DEFAULT_H);
+
+    self.ShouldResetFrameSize = false;
+end
+
+function DatamineUnifiedFrameMixin:SetAllowResize(allow)
+    self:SetResizable(allow);
+    self.ResizeButton:SetShown(allow);
 end
 
 function DatamineUnifiedFrameMixin:Toggle()

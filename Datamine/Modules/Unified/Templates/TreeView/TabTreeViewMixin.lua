@@ -147,6 +147,10 @@ function DatamineTabTreeViewMixin:AddTopLevelItem(data)
     return node;
 end
 
+function DatamineTabTreeViewMixin:AddTable(tbl)
+    self.DataProvider:InsertTable(tbl);
+end
+
 function DatamineTabTreeViewMixin:Reset()
     self.ScrollView:Flush();
     self.DataProvider = CreateTreeDataProvider();

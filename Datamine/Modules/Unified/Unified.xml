@@ -375,28 +375,18 @@
                     <Anchor point="TOPRIGHT" />
                 </Anchors>
             </Button>
-            <Button parentKey="PHButton" inherits="DatamineGenericButtonTemplate" hidden="true">
-                <Size x="20" y="20" />
+            <Button parentKey="ResizeButton" inherits="DatamineGenericButtonTemplate" hidden="true"
+                frameStrata="DIALOG">
+                <Size x="25" y="25" />
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeKey="$parent.CloseButton"
-                        relativePoint="TOPLEFT" />
+                    <Anchor point="BOTTOMRIGHT" />
                 </Anchors>
                 <Layers>
-                    <Layer level="ARTWORK">
-                        <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate"
-                            setAllPoints="true">
-                            <KeyValues>
-                                <KeyValue key="FileName" value="Blizzard_UITools.blp" />
-                                <KeyValue key="AtlasName" value="uitools-icon-minimize" />
-                            </KeyValues>
-                        </Texture>
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background"
+                            inherits="DatamineDarkGrayBackgroundTemplate" setAllPoints="true" />
                     </Layer>
                 </Layers>
-                <Scripts>
-                    <OnClick>
-                        self:GetParent().Workspace.ExplorerTab:SetSearchMode(Datamine.Constants.DataTypes.Spell);
-                    </OnClick>
-                </Scripts>
             </Button>
             <Frame parentKey="Workspace" inherits="DatamineWorkspaceTemplate">
                 <Anchors>
@@ -409,6 +399,12 @@
                 </Anchors>
                 <Frames>
                 </Frames>
+            </Frame>
+            <Frame parentKey="ResizeBorder"
+                inherits="NineSlicePanelTemplate" hidden="true" setAllPoints="true">
+                <KeyValues>
+                    <KeyValue key="layoutType" value="DatamineBlueHighlight" />
+                </KeyValues>
             </Frame>
         </Frames>
         <Scripts>
