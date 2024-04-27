@@ -176,7 +176,6 @@ Generated/Map_Deathwing'sFinalMoment.lua
 Generated/Map_DeephaulRavine.lua
 Generated/Map_Deepholm.lua
 Generated/Map_DeeprunTram.lua
-Generated/Map_DeepwalkerHold.lua
 Generated/Map_DeepwindGorge(Legacy).lua
 Generated/Map_DeepwindGorge.lua
 Generated/Map_DefenseofKarabor.lua
@@ -253,6 +252,7 @@ Generated/Map_GrommasharScenario.lua
 Generated/Map_Gruul'sLair.lua
 Generated/Map_Gundrak.lua
 Generated/Map_HalfhillScenario.lua
+Generated/Map_HallofAwakening.lua
 Generated/Map_HalloftheGuardian.lua
 Generated/Map_HallsofAtonement.lua
 Generated/Map_HallsofInfusion.lua
@@ -548,6 +548,7 @@ Generated/Map_TheSunwell.lua
 Generated/Map_TheTempleofElune.lua
 Generated/Map_TheTiger'sPeak.lua
 Generated/Map_TheTimeways(DawnoftheInfiniteOutdoor).lua
+Generated/Map_TheUnderkeep.lua
 Generated/Map_TheUnderrot.lua
 Generated/Map_TheVindicaar.lua
 Generated/Map_TheVioletHold.lua

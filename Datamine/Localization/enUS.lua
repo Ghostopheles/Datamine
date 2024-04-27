@@ -88,6 +88,16 @@ L["MAPVIEW_LOAD_WARNING_TITLE"] = "Warning";
 L["MAPVIEW_LOAD_WARNING_TEXT"] = "Loading map data can take a bit and will likely freeze the game for a few seconds. Don't panic! Click the button below to load saved data.";
 L["MAPVIEW_WARNING_NO_CONTENT"] = "Map has no content";
 L["MAPVIEW_MAP_TITLE"] = "Current Map: %s";
+L["MAPVIEW_DETAILS_TITLE"] = "Map Details";
+L["MAPVIEW_DETAILS_HEADER_COORDS"] = "Coordinates";
+L["MAPVIEW_DETAILS_HEADER_MISC"] = "Miscellaneous";
+L["MAPVIEW_DETAILS_COORDS_WARNING"] = "X and Y are flipped for maps";
+L["MAPVIEW_DETAILS_LABEL_Y"] = "Y";
+L["MAPVIEW_DETAILS_LABEL_X"] = "X";
+L["MAPVIEW_DETAILS_LABEL_MAP"] = "Map";
+L["MAPVIEW_DETAILS_LABEL_WDT"] = "WDT";
+L["MAPVIEW_DETAILS_GO"] = "Go";
+L["MAPVIEW_DETAILS_DESC_TITLE"] = "Description";
 
 -- MODULES --
 

@@ -76,6 +76,8 @@ def format_map_grids(map_grids: list[WDT]):
 
 def format_map_info(map: Map, map_grids_str: str) -> str:
     map_info = f"""MapName = "{map.MapName_lang}",
+    MapID = {map.ID},
+    Directory = [[{map.Directory}]],
     MapDescription0 = [[{map.MapDescription0_lang}]],
     MapDescription1 = [[{map.MapDescription1_lang}]],
     MapType = {map.MapType},

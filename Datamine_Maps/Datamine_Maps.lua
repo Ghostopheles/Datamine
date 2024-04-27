@@ -6,6 +6,8 @@ local addonName, maps = ...;
 ---@field MinimapTextures table<number>
 
 ---@class DatamineMapInfo
+---@field MapID number
+---@field Directory string | number
 ---@field MapName string
 ---@field MapDescription0 string
 ---@field MapDescription1 string
