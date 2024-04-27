@@ -1,4 +1,4 @@
-## Interface: 100206, 100207
+## Interface: 100207
 ## Title: |cfffc037bDatamine_Data|r
 ## Notes: Data store for the Datamine addon.
 ## Author: Ghostopheles
