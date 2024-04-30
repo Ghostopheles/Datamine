@@ -41,7 +41,7 @@ In the theater tab, you can play pre-rendered movies in-game using their MovieID
 The map viewer lets you view the minimap textures for any in-game map by either clicking it's name from the map picker, or by navigating to a MapID or WDT FileDataID using the details panel.
 
 > [!IMPORTANT]
-> In order to use the map viewer, Datamine requires access to external data. To help keep people up-to-date, I've included [instructions](GENERATING_MAP_DATA.md) to generate your own map data.
+> In order to use the map viewer, Datamine requires access to external data. I'll include a baseline set of data in each release. To help keep people up-to-date, I've included [instructions](GENERATING_MAP_DATA.md) to generate your own map data.
 
 The map viewer is highly experimental and may have some performance issues, though in my experience, performance was unaffected.
 
