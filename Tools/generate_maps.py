@@ -122,7 +122,7 @@ _maps = []
 for map in maps.read():
     _maps.append(map)
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
     futures = [executor.submit(write_map_file, map) for map in _maps]
     concurrent.futures.wait(futures)
 

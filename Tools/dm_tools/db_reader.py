@@ -79,6 +79,9 @@ class DB2:
 
         self.file_path = os.path.join(DB2_PATH, f"{self.name}.csv")
 
+        if not os.path.exists(DB2_PATH):
+            os.makedirs(DB2_PATH, exist_ok=True)
+
     def should_update(self) -> bool:
         # if the file doesn't exist, update (duh)
         if not os.path.exists(self.file_path):
