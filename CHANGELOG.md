@@ -15,10 +15,10 @@
 
 * Map viewer! You can now view minimap textures for every valid map in the game, without exiting the game!
     * Currently still under construction, will have some rough edges, and the maps can sometimes be hard to navigate, and content can be hard to find
-    * Also allows you to view most important map data, like MapID, WDTFileDataID, World Coordinates, Description, and soon to be much more
+    * Allows you to view most important map data, like MapID, WDTFileDataID, World Coordinates, Description, and soon to be much more
     * Involves a fairly cumbersome data-generation step, but pre-packaged data will be provided with every full release
         * Keep in mind that this data can easily become outdated through new builds and hotfixes
-        * Instructions for generating the data yourself will be included at some point
+        * Instructions for generating the data yourself can be found [here](GENERATING_MAP_DATA.md)
 
 * Two new console commands
     * `GetBuildInfo`: Dumps info about the current client build, with a few extra bits of information
@@ -42,38 +42,3 @@
 
 ##### Known Issues
 * Dracthyr do not start in the correct position in the model viewer
-
-# Datamine v2.1.1
-
-##### Added
-* Experimental achievement info searches (might not work)
-* Escape now closes the main Datamine frame
-
-##### Fixed
-* The item drag and drop feature will no longer eat items if the frame is hidden
-* Right shift now works alongside left shift for modelview controls
-* Model view controls can once again be expanded (sorry)
-
-# Datamine v2.1
-
-##### Added
-* You can now drag items from your bag onto the Datamine Explorer tab to search for that item
-* Added additional entry boxes under the 'Advanced' model controls tab
-* Added some tooltips to ambiguous buttons (will get better icons eventually!)
-* You can now hide pants
-
-##### Fixed
-* Fixed errors being thrown by LibDevConsole
-* Fixed outfits and player actors misbehaving if you open the UI too quickly after loading in
-* Unified some UI state handling and added a couple of easy accessors to the `Datamine.Unified` namespace
-
-# Datamine v2.0
-
-##### Added
-* Datamine UI - a fully-featured interface for all of your datamining needs (plus like 10 billion lines of code cause I'm stubborn)
-    * You can open the UI with the command `/dm ui`, or bind a key to toggle it in your settings.
-    * Features model viewing, item and spell lookups, advanced model controls, and more.
-    * All existing functionality in the model viewer and explorer has been migrated to the new UI. Old panels will be kept around but should be considered deprecated.
-    * If you have any feedback on the new UI, please let me know! ❤️
-
-Will be adding more and more features to the new UI as time goes on. If you have any questions or suggestions, don't hesitate to reach out.
