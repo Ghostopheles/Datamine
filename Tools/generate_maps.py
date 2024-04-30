@@ -1,8 +1,10 @@
 import os
-import httpx
 import concurrent.futures
 
-from dm_tools import SHARED_CLIENT_HEADERS, WDTReader, WDT, Listfile, MAP_DB2, Map
+from dm_tools import WDTReader, WDT, MAP_DB2, Map
+
+MAX_THREADS = os.cpu_count()
+UPDATE_ALL = False
 
 parent_directory = os.path.dirname(os.getcwd())
 ADDON_DIR = os.path.join(parent_directory, "Datamine_Maps")
