@@ -31,3 +31,48 @@ end
 Datamine.EventRegistry = CreateFromMixins(CallbackRegistryMixin);
 Datamine.EventRegistry:OnLoad();
 Datamine.EventRegistry:GenerateCallbackEvents(GenerateCallbackEvents());
+
+Datamine.Callbacks = {};
+
+local PrivateRegistries = {};
+
+---Provides a way to create private callback registries
+---@param name? string
+---@param events? table<string> | table<string, string>
+---@return CallbackRegistryMixin registry
+function Datamine.Callbacks.NewRegistry(name, events)
+    assert(not PrivateRegistries[name], "Private registry with that name already exists");
+    local registry = CreateFromMixins(CallbackRegistryMixin);
+
+    if type(events) == "table" then
+        local _events = {};
+        for _, eventName in pairs(events) do
+            tinsert(_events, eventName);
+        end
+        registry:GenerateCallbackEvents(_events);
+    else
+        registry:SetUndefinedEventsAllowed(true);
+    end
+
+    registry:OnLoad();
+
+    -- if name is not provided, it'll be entirely ephemeral
+    if type(name) == "string" then
+        PrivateRegistries[name] = registry;
+    end
+
+    return registry;
+end
+
+---Wrapper for NewRegistry that doesn't include name as the first argument
+---@param events? table<string> | table<string, string>
+---@return CallbackRegistryMixin registry
+function Datamine.Callbacks.NewAnonymousRegistry(events)
+    return Datamine.Callbacks.NewRegistry(nil, events);
+end
+
+---Returns a cached private callback registry
+---@param name string
+function Datamine.Callbacks.GetRegistryByName(name)
+    return PrivateRegistries[name];
+end
