@@ -382,9 +382,10 @@
                     <Anchor point="BOTTOMRIGHT" />
                 </Anchors>
                 <Layers>
-                    <Layer level="BACKGROUND">
-                        <Texture parentKey="Background"
-                            inherits="DatamineDarkGrayBackgroundTemplate" setAllPoints="true" />
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="Icon"
+                            file="Interface/AddOns/Datamine/Assets/cornerResize.png"
+                            setAllPoints="true" />
                     </Layer>
                 </Layers>
             </Button>

@@ -991,9 +991,7 @@ end
 
 function DatamineUnifiedFrameMixin:OnWorkspaceModeChanged(newMode)
     local modes = self.Workspace.Modes;
-    if newMode == modes.MAPS then
-        self:SetAllowResize(true);
-    end
+    self:SetAllowResize(newMode == modes.MAPS);
 
     if self:ShouldResetSizeAndPosition() then
         self:ResetSizeAndPosition();
