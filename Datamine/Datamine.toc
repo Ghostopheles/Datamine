@@ -34,6 +34,7 @@ Settings/SettingsCore.lua
 Core/SlashCommands.lua
 Core/Links.lua
 Core/Console.lua
+Core/Search.lua
 
 Modules/Sounds.lua
 Modules/ItemData.lua
@@ -62,7 +63,10 @@ Modules/Unified/Templates/ModelScene/ControlFrame.lua
 Modules/Unified/Templates/ModelScene/ControlFrame.xml
 Modules/Unified/Templates/ModelScene/ModelScene.lua
 Modules/Unified/Templates/ModelScene/ModelScene.xml
+Modules/Unified/Templates/TreeView/TabTreeView.lua
 Modules/Unified/Templates/TreeView/TabTreeView.xml
+Modules/Unified/Templates/SearchableList/SearchableList.lua
+Modules/Unified/Templates/SearchableList/SearchableList.xml
 Modules/Unified/Templates/MovieFrame/MovieFrame.lua
 Modules/Unified/Templates/MovieFrame/MovieFrame.xml
 Modules/Unified/Templates/StorageView/StorageView.lua
