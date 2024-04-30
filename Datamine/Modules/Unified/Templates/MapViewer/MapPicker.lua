@@ -2,31 +2,46 @@ local L = Datamine.Strings;
 local Registry = Datamine.EventRegistry;
 local Events = Datamine.Events;
 local Popup = Datamine.Popup;
-
-------------
-
-DatamineMapPickerEntryMixin = {};
-
-function DatamineMapPickerEntryMixin:OnLoad()
-    self.Background:ClearAllPoints();
-    self.Text:SetScale(0.9);
-end
+local Search = Datamine.Search;
 
 ------------
 
 DatamineMapPickerMixin = {};
 
 function DatamineMapPickerMixin:OnLoad()
-    self.TitleBar.TitleText:SetText(L.MAPVIEW_PICKER_TITLE);
-    self.MapList.Background_Base:Hide();
-    self.MapList.LoadButton:SetText(L.MAPVIEW_LOAD_DATA_BUTTON_TEXT);
+    local titleBar = self.TitleBar;
+    local mapList = self.MapList;
 
-    self.MapList.HelpText:SetText(L.MAPVIEW_TEXT_HELP_HEADER);
-    self.MapList.HelpTextDetails:SetText(L.MAPVIEW_TEXT_HELP);
+    titleBar.TitleText:SetText(L.MAPVIEW_PICKER_TITLE);
+    mapList.Background_Base:Hide();
+    mapList.LoadButton:SetText(L.MAPVIEW_LOAD_DATA_BUTTON_TEXT);
 
-    self.MapList.LoadButton:SetScript("OnClick", function() self:LoadMapData(); end);
+    mapList.HelpText:SetText(L.MAPVIEW_TEXT_HELP_HEADER);
+    mapList.HelpTextDetails:SetText(L.MAPVIEW_TEXT_HELP);
+
+    mapList:SetFailText(nil, L.MAPVIEW_PICKER_SEARCH_FAIL_TEXT);
+
+    mapList.LoadButton:SetScript("OnClick", function() self:LoadMapData(); end);
+
+    self:SetupSearchBox();
 
     Registry:RegisterCallback(Events.MAPVIEW_MAP_DATA_LOADED, self.PopulateMapData, self);
+end
+
+function DatamineMapPickerMixin:OnShow()
+    if self.SearchTask then
+        self.SearchTask:ClearSearchQuery();
+    end
+
+    self.TitleBar.SearchBox:SetText("");
+    self.MapList.ScrollBox:ScrollToBegin();
+end
+
+function DatamineMapPickerMixin:SetupSearchBox()
+    local searchBox = self.TitleBar.SearchBox;
+    local mapList = self.MapList;
+
+    mapList:SetEditBox(searchBox);
 end
 
 function DatamineMapPickerMixin:LoadMapData()
@@ -50,29 +65,26 @@ function DatamineMapPickerMixin:PopulateMapData()
 
     mapList.ScrollView:SetPadding(2, 2, 2, 2, 2);
 
-    mapList:Reset();
-
     local maps = Datamine.Maps;
+    local allMaps = {};
     for wdtID, mapInfo in pairs(maps.GetAllMaps()) do
         local data = {
-            Template = "DatamineMapPickerEntryTemplate",
+            ID = wdtID,
             Text = mapInfo.MapName,
-            IsTopLevel = true,
-            ShowChevron = false,
-            CanExpand = false,
+            TextScale = 0.9,
             Callback = function()
                 Datamine.MapViewer:LoadWDT(wdtID);
             end,
-            ID = wdtID,
+            BackgroundAlpha = 0.5,
         };
 
-        mapList:AddTopLevelItem(data);
+        tinsert(allMaps, data);
     end
 
-    local function SortByText(a, b)
-        return a:GetData().Text < b:GetData().Text;
+    local function AlphabeticalSort(a, b)
+        return a.Text < b.Text;
     end
-    mapList.DataProvider:SetSortComparator(SortByText, false);
-    mapList.DataProvider.node.sortComparator = nil;
-    mapList.DataProvider:Invalidate();
+
+    table.sort(allMaps, AlphabeticalSort);
+    mapList:SetSearchDataSource(allMaps, "Text");
 end

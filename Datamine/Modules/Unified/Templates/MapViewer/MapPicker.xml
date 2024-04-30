@@ -1,24 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-    <Button name="DatamineMapPickerEntryTemplate" mixin="DatamineMapPickerEntryMixin"
-        inherits="DatamineTabTreeViewCategoryHeaderTemplate" virtual="true">
-        <Layers>
-            <Layer level="BACKGROUND">
-                <Texture parentKey="Background_Override"
-                    inherits="DatamineMediumGrayBackgroundTemplate" alpha="0.5">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" />
-                        <Anchor point="BOTTOMRIGHT" />
-                    </Anchors>
-                </Texture>
-            </Layer>
-        </Layers>
-        <Scripts>
-            <OnLoad method="OnLoad" />
-        </Scripts>
-    </Button>
-
     <Frame name="DatamineMapPickerTemplate" mixin="DatamineMapPickerMixin" virtual="true">
         <Layers>
             <Layer level="BACKGROUND">
@@ -53,7 +35,7 @@
                     </EditBox>
                 </Frames>
             </Frame>
-            <Frame parentKey="MapList" inherits="DatamineTabTreeViewTemplate">
+            <Frame parentKey="MapList" inherits="DatamineSearchableListTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.TitleBar"
                         relativePoint="BOTTOMLEFT" x="6" y="-2" />
