@@ -4,6 +4,12 @@
     <EditBox name="DatamineMapViewMinimalEditBoxTemplate"
         inherits="DatamineModelControlsEditBoxTemplate"
         virtual="true">
+        <Scripts>
+            <OnEnterPressed function="nop" />
+            <OnEditFocusGained function="nop" />
+            <OnEditFocusLost function="nop" />
+            <OnChar function="nop" />
+        </Scripts>
     </EditBox>
 
     <Frame name="DatamineMapViewLabelledEditBoxTemplate" virtual="true">

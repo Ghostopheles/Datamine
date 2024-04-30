@@ -28,9 +28,9 @@ Datamine.Maps = {};
 ---@param mapName string
 ---@return DatamineMapInfo?
 function Datamine.Maps.GetMapInfoByName(mapName)
-    for map in pairs(maps) do
+    for _, map in pairs(maps) do
         if map.MapName == mapName then
-            return map
+            return map;
         end
     end
 end
@@ -41,10 +41,6 @@ function Datamine.Maps.GetMapInfoByWdtID(wdtFileDataID)
     return maps[wdtFileDataID];
 end
 
-function Datamine.Maps.GetAllMaps()
-    return maps;
-end
-
 function Datamine.Maps.GetMapNameByWdtID(wdtID)
     local map = maps[wdtID];
     if map then
@@ -52,8 +48,23 @@ function Datamine.Maps.GetMapNameByWdtID(wdtID)
     end
 end
 
-function Datamine.Maps.ConvertCoordsToLookupString(x, y)
-    return format("%02d,%02d", x, y);
+function Datamine.Maps.GetMapIDByWdtID(wdtID)
+    local map = maps[wdtID];
+    if map then
+        return map.MapID;
+    end
+end
+
+function Datamine.Maps.GetWdtIDByMapID(mapID)
+    for wdtID, map in pairs(maps) do
+        if map.MapID == mapID then
+            return wdtID;
+        end
+    end
+end
+
+function Datamine.Maps.GetAllMaps()
+    return maps;
 end
 
 ---@class DatamineGridCoords

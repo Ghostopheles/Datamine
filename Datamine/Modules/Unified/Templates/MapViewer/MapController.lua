@@ -217,6 +217,11 @@ function DatamineMapControllerMixin:OnMouseDown(button)
         mouseButtonInfo.StartX, StartY = mouseButtonInfo.LastX, mouseButtonInfo.LastY;
     end
 
+	local y, x = self:GetWorldCoordinatesFromMapClick();
+	if y and x then
+		Registry:TriggerEvent(Events.MAPVIEW_RIGHT_CLICK, y, x);
+	end
+
     if button == "LeftButton" then
         if self:IsPanning() then
             local scrollX, scrollY = self:GetNormalizedHorizontalScroll(), self:GetNormalizedVerticalScroll();
@@ -226,11 +231,6 @@ function DatamineMapControllerMixin:OnMouseDown(button)
 
         self.AccumulatedMouseDeltaX = 0.0;
         self.AccumulatedMouseDeltaY = 0.0;
-	elseif button == "RightButton" then
-		local y, x = self:GetWorldCoordinatesFromMapClick();
-		if y and x then
-			Registry:TriggerEvent(Events.MAPVIEW_RIGHT_CLICK, y, x);
-		end
     end
 end
 
@@ -929,10 +929,20 @@ end
 
 ------------
 
+function DatamineMapControllerMixin:GetDisplayedMapID()
+	local wdtID = self:GetDisplayedWDT();
+	return Maps.GetMapIDByWdtID(wdtID);
+end
+
 function DatamineMapControllerMixin:GetDisplayedWDT()
     return self.Canvas:GetDisplayedWDT();
 end
 
 function DatamineMapControllerMixin:LoadWDT(wdtID)
     self.Canvas:LoadMapByWdtID(wdtID);
+end
+
+function DatamineMapControllerMixin:LoadMapID(mapID)
+    local wdtID = Maps.GetWdtIDByMapID(mapID);
+	self.Canvas:LoadMapByWdtID(wdtID);
 end
