@@ -621,12 +621,12 @@ Generated/Map_WaycrestManor.lua
 Generated/Map_WellofEternity.lua
 Generated/Map_WhisperingReef(Islands10).lua
 Generated/Map_WinterAB_old.lua
-Generated/Map_Xev'zikk'sLair.lua
 Generated/Map_Zandalar.lua
 Generated/Map_ZandalarAllianceIntroScenario.lua
 Generated/Map_ZandalarContinentFinale.lua
 Generated/Map_ZandalariTreasury.lua
 Generated/Map_ZaralekCavern.lua
+Generated/Map_Zekvir'sLair.lua
 Generated/Map_ZerethMortis.lua
 Generated/Map_Zul'Aman.lua
 Generated/Map_Zul'Farrak.lua
