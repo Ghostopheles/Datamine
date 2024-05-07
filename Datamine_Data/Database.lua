@@ -180,9 +180,16 @@ EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_LOGOUT", HandleLogout);
 
 ------------
 
+local function ValidateName(name)
+    return name and name ~= "" and name ~= UNKNOWNOBJECT;
+end
+
+------------
+
 ---@class TooltipDataManager : Frame
 local TooltipDataManager = CreateFrame("Frame");
 TooltipDataManager:RegisterEvent("TOOLTIP_DATA_UPDATE");
+TooltipDataManager.TooltipInstanceIDCache = {};
 
 function TooltipDataManager:OnEvent(event, ...)
     if self[event] then
@@ -191,23 +198,39 @@ function TooltipDataManager:OnEvent(event, ...)
 end
 
 function TooltipDataManager:TOOLTIP_DATA_UPDATE(dataInstanceID)
-    if dataInstanceID and Database.TooltipInstanceIDCache[dataInstanceID] then
+    if dataInstanceID and self.TooltipInstanceIDCache[dataInstanceID] then
         self:UpdateTooltipData(dataInstanceID);
     end
 end
 
 function TooltipDataManager:UpdateTooltipData(dataInstanceID)
-    local guid = Database.TooltipInstanceIDCache[dataInstanceID];
+    local guid = self.TooltipInstanceIDCache[dataInstanceID];
     local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
     Database:UpdateCreatureEntryWithTooltipData(tooltipData);
-    Database.TooltipInstanceIDCache[dataInstanceID] = nil;
+    self.TooltipInstanceIDCache[dataInstanceID] = nil;
+end
+
+function TooltipDataManager:RequestNameForCreatureByGUID(guid)
+    local name;
+    local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
+    for _, line in pairs(tooltipData.lines) do
+        if line.type == Enum.TooltipDataLineType.UnitName then
+            name = line.leftText;
+            break;
+        end
+    end
+
+    if not ValidateName(name) then
+        self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
+    else
+        Database:UpdateCreatureEntryWithTooltipData(tooltipData);
+    end
 end
 
 ------------
 
 function Database:Init()
     self.DB = CopyTable(DatamineData);
-    self.TooltipInstanceIDCache = {};
     self.Patches = {};
     self:ApplyMetatables();
     self:ConvertStringIndicesToNumbers();
@@ -367,19 +390,12 @@ function Database:GetOrCreateCreatureEntryByGUID(guid, name)
         return self:GetCreatureEntryByID(ID), ID;
     end
 
+    if not ValidateName(name) then
+        return TooltipDataManager:RequestNameForCreatureByGUID(guid);
+    end
+
     local CreatureEntry = self:NewCreatureEntry();
     CreatureEntry.Instances[instanceID] = true;
-
-    if not name or name == "" or name == UNKNOWNOBJECT then
-        local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
-        self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
-        for _, line in pairs(tooltipData.lines) do
-            if line.type == Enum.TooltipDataLineType.UnitName then
-                name = line.leftText;
-                break;
-            end
-        end
-    end
 
     local locale = GetLocale();
     CreatureEntry.Name[locale] = name;
