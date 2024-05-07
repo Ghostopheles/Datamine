@@ -345,15 +345,25 @@ function Database:GetCreatureIDFromGUID(guid)
     return tonumber(creatureID);
 end
 
+---@param name string
+---@return boolean isPlayerName
+function Database:IsPlayerName(name)
+    return name == UnitName("player");
+end
+
 ---@param guid string
----@return CreatureEntry creatureEntry
----@return number creatureID
+---@return CreatureEntry? creatureEntry
+---@return number? creatureID
 function Database:GetOrCreateCreatureEntryByGUID(guid, name)
     local unitType, _, _, instanceID, _, ID, _ = strsplit("-", guid);
     assert(unitType == UNIT_TYPE_CREATURE, "Invalid Creature GUID provided to :GetOrCreateCreatureEntryByGUID");
 
     ID = tonumber(ID);
     assert(ID, "Unable to extract ID from creature GUID '" .. guid .. "'");
+
+    if name and name == UnitName("player") then
+        return;
+    end
 
     if self:CreatureEntryExists(ID) then
         return self:GetCreatureEntryByID(ID), ID;
@@ -362,7 +372,7 @@ function Database:GetOrCreateCreatureEntryByGUID(guid, name)
     local CreatureEntry = self:NewCreatureEntry();
     CreatureEntry.Instances[instanceID] = true;
 
-    if not name then
+    if not name or name == "" or name == UNKNOWNOBJECT then
         local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
         self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
         for _, line in pairs(tooltipData.lines) do
