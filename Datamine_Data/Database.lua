@@ -240,7 +240,7 @@ function Database:ConvertStringIndicesToNumbers()
         if type(creatureID) == "string" then
             if entry.Instances then
                 local instancesToRemove = {};
-                for instanceID in pairs(entry.Instances) do
+                for instanceID, _ in pairs(entry.Instances) do
                     if type(instanceID) == "string" then
                         tinsert(instancesToRemove, instanceID);
                         entry.Instances[tonumber(instanceID)] = true;
@@ -438,6 +438,8 @@ function Database:UpdateCreatureEntryWithUnitFlags(creatureID, unitFlags)
     self:Commit();
 end
 
+---@param creatureID number
+---@param spellID number
 function Database:AddCreatureSpell(creatureID, spellID)
     DebugAssert(type(spellID) == "number", "Non-number spellID provided");
 
@@ -480,6 +482,7 @@ function Database:AddBroadcastTextToCreatureEntryByName(name, text, cached)
     return true;
 end
 
+---@param name string
 function Database:CheckBroadcastTextCache(name)
     if BROADCAST_TEXT_CACHE_LEN < 1 then
         return;
@@ -490,6 +493,14 @@ function Database:CheckBroadcastTextCache(name)
         if self:AddBroadcastTextToCreatureEntryByName(name, text, true) then
             InvalidateBroadcastTextCacheEntry(name); -- remove if successful
         end
+    end
+end
+
+---@param name string
+function Database:CheckPlayerNameForLackOfParents(name)
+    local text = GetBroadcastTextFromCache(name);
+    if text then
+        InvalidateBroadcastTextCacheEntry(name);
     end
 end
 

@@ -152,7 +152,7 @@ local SUBEVENTS_TO_TRACK = {
 function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, subevent, skipLogSpell)
     name = name ~= "" and name or nil;
     local entry, ID = DATABASE:GetOrCreateCreatureEntryByGUID(guid, name);
-    if not entry then
+    if not entry or not ID then
         return;
     end
 
@@ -179,14 +179,23 @@ function DatamineCollectorMixin:HandleCreature(guid)
     DATABASE:GetOrCreateCreatureEntryByGUID(guid);
 end
 
+function DatamineCollectorMixin:HandlePlayer(unitToken)
+    local name = UnitName(unitToken);
+    DATABASE:CheckPlayerNameForLackOfParents(name);
+end
+
 function DatamineCollectorMixin:HandleCreatureByUnitToken(unitToken)
     if not UnitExists(unitToken) then
         return;
     end
 
-    local guid = UnitGUID(unitToken);
-    if guid and guid:match("Creature") then
-        self:HandleCreature(guid);
+    if UnitIsPlayer(unitToken) then
+        self:HandlePlayer(unitToken);
+    else
+        local guid = UnitGUID(unitToken);
+        if guid and guid:match("Creature") then
+            self:HandleCreature(guid);
+        end
     end
 end
 
