@@ -140,7 +140,7 @@ function DatamineCollectorMixin:COMBAT_LOG_EVENT_UNFILTERED()
     end
 
     if destGUID and destGUID:match("Creature") then
-        self:HandleCreatureFromCombatLog(destGUID, destName, destFlags, subEvent);
+        self:HandleCreatureFromCombatLog(destGUID, destName, destFlags, subEvent, true);
     end
 end
 
@@ -149,10 +149,20 @@ local SUBEVENTS_TO_TRACK = {
     SPELL = true,
 };
 
-function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, subevent)
+function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, subevent, skipLogSpell)
     name = name ~= "" and name or nil;
     local entry, ID = DATABASE:GetOrCreateCreatureEntryByGUID(guid, name);
+    if not entry then
+        return;
+    end
+
     DATABASE:UpdateCreatureEntryWithUnitFlags(ID, flags);
+
+    -- dont wanna add the spell if the creature is the target
+    if skipLogSpell then
+        return;
+    end
+
     local prefix = strsplit("_", subevent, 2);
     if SUBEVENTS_TO_TRACK[prefix] then
         local spellID = select(12, CombatLogGetCurrentEventInfo());
