@@ -873,6 +873,7 @@ DatamineWorkspaceMixin.Modes = {
     STORAGE = 3,
     MOVIE = 4,
     MAPS = 5,
+    CREATURE = 6,
 };
 
 function DatamineWorkspaceMixin:OnLoad()
@@ -890,6 +891,9 @@ function DatamineWorkspaceMixin:OnLoad()
         },
         [self.Modes.STORAGE] = {
             self.StorageTab,
+        },
+        [self.Modes.CREATURE] = {
+            self.CreatureViewTab,
         },
     };
 
@@ -915,12 +919,11 @@ function DatamineWorkspaceMixin:OnLoad()
         toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
     end
 
-    -- temporarily disabling this because it is an utter abomination and deserves to be thrown into a meat grinder
-    --do
-    --    local tooltipText = L.WORKSPACE_MODE_STORAGE;
-    --    local cb = function() self:SetMode(self.Modes.STORAGE); end;
-    --    toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
-    --end
+    do
+        local tooltipText = L.WORKSPACE_MODE_STORAGE;
+        local cb = function() self:SetMode(self.Modes.CREATURE); end;
+        toolbar:AddButton("custom-toolbar-scale", cb, tooltipText);
+    end
 end
 
 function DatamineWorkspaceMixin:OnModeChanged()
