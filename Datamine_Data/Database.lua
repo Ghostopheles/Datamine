@@ -178,8 +178,6 @@ EventUtil.ContinueOnAddOnLoaded(addonName, InitDB);
 EventUtil.ContinueOnAddOnLoaded("Datamine", RegisterDB);
 EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_LOGOUT", HandleLogout);
 
-local GetLocale = GetLocale or function() return C_CVar.GetCVar("textLocale") end;
-
 ------------
 
 ---@class TooltipDataManager : Frame
