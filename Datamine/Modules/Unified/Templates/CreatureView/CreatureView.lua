@@ -22,10 +22,6 @@ function DatamineCreaturePickerMixin:OnLoad()
     creatureList:SetFailText(nil, L.CREATUREVIEW_LIST_SEARCH_FAIL_TEXT);
 
     self:SetupSearchBox();
-
-    self.Model:SetScript("OnModelLoaded", function()
-        self:SetWaitingForCreature(nil);
-    end);
 end
 
 function DatamineCreaturePickerMixin:OnShow()
@@ -111,6 +107,10 @@ function DatamineCreatureViewMixin:OnLoad()
     self:RegisterEvent("TOOLTIP_DATA_UPDATE");
 
     self.LoadingOverlay.Spinner.Text:SetText(L.CREATUREVIEW_LOADING);
+
+    self.Model:SetScript("OnModelLoaded", function()
+        self:SetWaitingForCreature(nil);
+    end);
 
     Registry:RegisterCallback(Events.CREATUREVIEW_CREATURE_LOADED, self.OnCreatureLoaded, self);
 end
