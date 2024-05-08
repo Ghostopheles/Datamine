@@ -22,6 +22,10 @@ function DatamineCreaturePickerMixin:OnLoad()
     creatureList:SetFailText(nil, L.CREATUREVIEW_LIST_SEARCH_FAIL_TEXT);
 
     self:SetupSearchBox();
+
+    self.Model:SetScript("OnModelLoaded", function()
+        self:SetWaitingForCreature(nil);
+    end);
 end
 
 function DatamineCreaturePickerMixin:OnShow()
@@ -155,13 +159,14 @@ end
 function DatamineCreatureViewMixin:SetWaitingForCreature(creatureID)
     if not creatureID then
         Registry:TriggerEvent(Events.CREATUREVIEW_CREATURE_LOADED, self.WaitingForCreature);
+    else
+        self:SetLoading(true);
     end
     self.WaitingForCreature = creatureID;
 end
 
 function DatamineCreatureViewMixin:SetCreature(creatureID)
     self.Model:SetCreature(creatureID);
-    self:SetWaitingForCreature(nil);
 end
 
 function DatamineCreatureViewMixin:TrySetCreature(creatureID)
