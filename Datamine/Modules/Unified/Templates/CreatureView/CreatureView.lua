@@ -56,15 +56,18 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
     local creatures = Datamine.Database:GetAllCreatureEntries();
     for creatureID, creatureInfo in pairs(creatures) do
         local locale = GetLocale();
-        local data = {
-            ID = creatureID,
-            Text = creatureInfo.Name[locale],
-            TextScale = 0.9,
-            Callback = function() end,
-            BackgroundAlpha = 0.5,
-        };
+        if creatureInfo.Name[locale] then
+            local data = {
+                ID = creatureID,
+                Text = creatureInfo.Name[locale],
+                TextScale = 0.9,
+                Callback = function() self:GetParent():TrySetCreature(creatureID); end,
+                BackgroundAlpha = 0.5,
+                Data = creatureInfo,
+            };
 
-        tinsert(allCreatures, data);
+            tinsert(allCreatures, data);
+        end
     end
 
     local function AlphabeticalSort(a, b)

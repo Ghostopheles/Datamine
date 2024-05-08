@@ -189,6 +189,8 @@ end
 ---@class TooltipDataManager : Frame
 local TooltipDataManager = CreateFrame("Frame");
 TooltipDataManager:RegisterEvent("TOOLTIP_DATA_UPDATE");
+TooltipDataManager:SetScript("OnEvent", TooltipDataManager.OnEvent);
+
 TooltipDataManager.TooltipInstanceIDCache = {};
 
 function TooltipDataManager:OnEvent(event, ...)
@@ -200,6 +202,9 @@ end
 function TooltipDataManager:TOOLTIP_DATA_UPDATE(dataInstanceID)
     if dataInstanceID and self.TooltipInstanceIDCache[dataInstanceID] then
         self:UpdateTooltipData(dataInstanceID);
+    elseif self.WaitingForGUID then
+        self:UpdateTooltipDataByGUID(self.WaitingForGUID);
+        self.WaitingForGUID = nil;
     end
 end
 
@@ -210,9 +215,19 @@ function TooltipDataManager:UpdateTooltipData(dataInstanceID)
     self.TooltipInstanceIDCache[dataInstanceID] = nil;
 end
 
+function TooltipDataManager:UpdateTooltipDataByGUID(guid)
+    local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
+    Database:UpdateCreatureEntryWithTooltipData(tooltipData);
+end
+
 function TooltipDataManager:RequestNameForCreatureByGUID(guid)
     local name;
     local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
+    if not tooltipData then
+        self.WaitingForGUID = guid;
+        return;
+    end
+
     for _, line in pairs(tooltipData.lines) do
         if line.type == Enum.TooltipDataLineType.UnitName then
             name = line.leftText;
@@ -225,6 +240,11 @@ function TooltipDataManager:RequestNameForCreatureByGUID(guid)
     else
         Database:UpdateCreatureEntryWithTooltipData(tooltipData);
     end
+end
+
+function TooltipDataManager:RequestNameForCreatureByID(creatureID)
+    local guid = format("Creature-0-0-0-0-%s-0", creatureID);
+    self:RequestNameForCreatureByGUID(guid);
 end
 
 ------------
