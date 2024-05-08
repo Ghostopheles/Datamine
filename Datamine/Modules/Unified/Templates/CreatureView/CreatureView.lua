@@ -76,3 +76,71 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
 
     self.Populated = true;
 end
+
+------------
+
+DatamineCreatureViewMixin = {};
+
+function DatamineCreatureViewMixin:OnLoad()
+    self:SetWaitingForCreature(nil);
+    self:RegisterEvent("TOOLTIP_DATA_UPDATE");
+
+    self.LoadingOverlay.Spinner.Text:SetText(L.CREATUREVIEW_LOADING);
+end
+
+function DatamineCreatureViewMixin:OnEvent(event, ...)
+    if type(self[event]) == "function" then
+        self[event](self, ...);
+    end
+end
+
+function DatamineCreatureViewMixin:OnUpdate()
+    self:UpdateLoadOverlayVisibility();
+end
+
+function DatamineCreatureViewMixin:TOOLTIP_DATA_UPDATE(dataInstanceID)
+    if self.WaitingForCreature then
+        self:TrySetCreature(self.WaitingForCreature);
+    end
+end
+
+function DatamineCreatureViewMixin:UpdateLoadOverlayVisibility()
+    local overlay = self.LoadingOverlay;
+    if self.Loading then
+        if overlay.AnimOut:IsPlaying() then
+            overlay.AnimOut:Stop();
+        end
+
+        if not overlay:IsShown() then
+            local reverse = true;
+            overlay.AnimIn:Play(reverse);
+            overlay:Show();
+        end
+    elseif overlay:IsShown() then
+        overlay.AnimOut:Play();
+    end
+end
+
+function DatamineCreatureViewMixin:SetLoading(isLoading)
+    self.Loading = isLoading;
+end
+
+function DatamineCreatureViewMixin:SetWaitingForCreature(creatureID)
+    self.WaitingForCreature = creatureID;
+    self:SetLoading(creatureID ~= nil);
+end
+
+function DatamineCreatureViewMixin:SetCreature(creatureID)
+    self.Model:SetCreature(creatureID);
+    self:SetWaitingForCreature(nil);
+end
+
+function DatamineCreatureViewMixin:TrySetCreature(creatureID)
+    local guid = format("unit:Creature-0-0-0-0-%s-0", creatureID);
+    local data = C_TooltipInfo.GetHyperlink(guid);
+    if not data then
+        self:SetWaitingForCreature(creatureID);
+    else
+        self:SetCreature(creatureID);
+    end
+end

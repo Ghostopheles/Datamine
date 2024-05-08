@@ -111,6 +111,7 @@ L["CREATUREVIEW_LIST_TITLE"] = "Creatures";
 L["CREATUREVIEW_LIST_SEARCH_FAIL_TEXT"] = "$Search Failed$";
 L["CREATUREVIEW_TEXT_HELP_HEADER"] = "$Header$";
 L["CREATUREVIEW_TEXT_HELP"] = "$Help$";
+L["CREATUREVIEW_LOADING"] = "Loading Creature...";
 
 -- MODULES --
 

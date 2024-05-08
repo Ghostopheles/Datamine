@@ -323,7 +323,7 @@
                 hidden="true" />
             <Frame parentKey="MapViewTab" inherits="DatamineMapViewerTemplate" setAllPoints="true"
                 hidden="true" />
-            <Frame parentKey="CreatureViewTab" inherits="DatamineCreatureViewTabTemplate"
+            <Frame parentKey="CreatureViewTab" inherits="DatamineCreatureViewTemplate"
                 setAllPoints="true"
                 hidden="true" />
         </Frames>
