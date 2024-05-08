@@ -84,7 +84,8 @@
                 <Texture parentKey="HighlightTexture"
                     atlas="GarrMissionLocation-Maw-ButtonHighlight" alpha="0.35" />
             </Layer>
-            <Layer level="OVERLAY">
+            <Layer
+                level="OVERLAY">
                 <FontString parentKey="Text" font="DatamineCleanFontMedium" text="TITLE"
                     wordwrap="false" justifyH="LEFT">
                     <Anchors>
@@ -92,8 +93,14 @@
                         <Anchor point="BOTTOMRIGHT" />
                     </Anchors>
                 </FontString>
+                <Texture parentKey="SelectionBorder"
+                    atlas="ReportList-ButtonSelect" desaturated="true">
+                    <TextureSliceMargins left="0" right="0" top="0" bottom="0" />
+                    <TextureSliceMode mode="Tiled" />
+                </Texture>
             </Layer>
-            <Layer level="BACKGROUND">
+            <Layer
+                level="BACKGROUND">
                 <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
             </Layer>
         </Layers>

@@ -39,15 +39,18 @@ end
 ---@field HideBackground? boolean
 ---@field BackgroundColor? ColorMixin
 ---@field BackgroundAlpha? number
+---@field SelectionCallback? function
 
 DatamineSearchableEntryMixin = {};
 
 ---@param data DatamineSearchableEntryData
 function DatamineSearchableEntryMixin:Init(data)
+    self.Data = data;
     self:SetText(data.Text, data.TextScale);
     self:SetCallback(data.Callback);
     self:SetNoHighlight(data.NoHighlight);
     self:SetBackground(data.BackgroundColor, data.HideBackground, data.BackgroundAlpha);
+    self:SetSelected(data.SelectionCallback);
 
     self:Show();
 end
@@ -113,6 +116,17 @@ end
 
 function DatamineSearchableEntryMixin:GetText()
     return self.Text;
+end
+
+function DatamineSearchableEntryMixin:SetSelected(selectionCallback)
+    if not selectionCallback and not self.Data.SelectionCallback then
+        self.SelectionBorder:Hide();
+        return;
+    end
+
+    local callback = selectionCallback or self.Data.SelectionCallback;
+    local isSelected = callback(self.Data);
+    self.SelectionBorder:SetShown(isSelected);
 end
 
 -------------

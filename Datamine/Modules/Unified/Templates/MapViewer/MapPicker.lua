@@ -56,6 +56,23 @@ function DatamineMapPickerMixin:LoadMapData()
     Popup.ShowPopup(title, text, LoadMaps, Popup.PopupType.SINGLE);
 end
 
+function DatamineMapPickerMixin:SetSelectedWDT(wdtID)
+    local controller = Datamine.MapViewer.Controller;
+    local function FindByWdtID(_, element)
+        return element.ID == controller:GetDisplayedWDT();
+    end
+
+    local oldFrame = self.MapList.ScrollView:FindFrameByPredicate(FindByWdtID);
+    if oldFrame then
+        oldFrame.SelectionBorder:Hide();
+    end
+
+    Datamine.MapViewer:LoadWDT(wdtID);
+
+    local newFrame = self.MapList.ScrollView:FindFrameByPredicate(FindByWdtID);
+    newFrame.SelectionBorder:Show();
+end
+
 function DatamineMapPickerMixin:PopulateMapData()
     local mapList = self.MapList;
 
@@ -73,9 +90,12 @@ function DatamineMapPickerMixin:PopulateMapData()
             Text = mapInfo.MapName,
             TextScale = 0.9,
             Callback = function()
-                Datamine.MapViewer:LoadWDT(wdtID);
+                self:SetSelectedWDT(wdtID);
             end,
             BackgroundAlpha = 0.5,
+            SelectionCallback = function()
+                return Datamine.MapViewer.Controller:GetDisplayedWDT() == wdtID;
+            end,
         };
 
         tinsert(allMaps, data);

@@ -34,7 +34,6 @@ function DatamineCreaturePickerMixin:OnShow()
     end
 
     self.TitleBar.SearchBox:SetText("");
-    self.CreatureList.ScrollBox:ScrollToBegin();
 end
 
 function DatamineCreaturePickerMixin:SetupSearchBox()
@@ -42,6 +41,24 @@ function DatamineCreaturePickerMixin:SetupSearchBox()
     local creatureList = self.CreatureList;
 
     creatureList:SetEditBox(searchBox);
+end
+
+function DatamineCreaturePickerMixin:SetSelectedCreature(creatureID)
+    local function FindByCreatureID(_, element)
+        return element.ID == self.SelectedCreature;
+    end
+
+    local oldFrame = self.CreatureList.ScrollView:FindFrameByPredicate(FindByCreatureID);
+    if oldFrame then
+        oldFrame.SelectionBorder:Hide();
+    end
+
+    self.SelectedCreature = creatureID;
+
+    local newFrame = self.CreatureList.ScrollView:FindFrameByPredicate(FindByCreatureID);
+    newFrame.SelectionBorder:Show();
+
+    self:GetParent():TrySetCreature(creatureID);
 end
 
 function DatamineCreaturePickerMixin:PopulateCreatures()
@@ -61,9 +78,10 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
                 ID = creatureID,
                 Text = creatureInfo.Name[locale],
                 TextScale = 0.9,
-                Callback = function() self:GetParent():TrySetCreature(creatureID); end,
+                Callback = function() self:SetSelectedCreature(creatureID); end,
                 BackgroundAlpha = 0.5,
                 Data = creatureInfo,
+                SelectionCallback = function() return creatureID == self.SelectedCreature; end,
             };
 
             tinsert(allCreatures, data);
@@ -89,6 +107,8 @@ function DatamineCreatureViewMixin:OnLoad()
     self:RegisterEvent("TOOLTIP_DATA_UPDATE");
 
     self.LoadingOverlay.Spinner.Text:SetText(L.CREATUREVIEW_LOADING);
+
+    Registry:RegisterCallback(Events.CREATUREVIEW_CREATURE_LOADED, self.OnCreatureLoaded, self);
 end
 
 function DatamineCreatureViewMixin:OnEvent(event, ...)
@@ -105,6 +125,10 @@ function DatamineCreatureViewMixin:TOOLTIP_DATA_UPDATE(dataInstanceID)
     if self.WaitingForCreature then
         self:TrySetCreature(self.WaitingForCreature);
     end
+end
+
+function DatamineCreatureViewMixin:OnCreatureLoaded(creatureID)
+    self:SetLoading(false);
 end
 
 function DatamineCreatureViewMixin:UpdateLoadOverlayVisibility()
@@ -129,8 +153,10 @@ function DatamineCreatureViewMixin:SetLoading(isLoading)
 end
 
 function DatamineCreatureViewMixin:SetWaitingForCreature(creatureID)
+    if not creatureID then
+        Registry:TriggerEvent(Events.CREATUREVIEW_CREATURE_LOADED, self.WaitingForCreature);
+    end
     self.WaitingForCreature = creatureID;
-    self:SetLoading(creatureID ~= nil);
 end
 
 function DatamineCreatureViewMixin:SetCreature(creatureID)

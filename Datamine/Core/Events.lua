@@ -17,6 +17,7 @@ Datamine.Events = {
     MAPVIEW_MAP_LOADED = "MapViewMapLoaded",
     MAPVIEW_MAP_DATA_LOADED = "MapViewMapDataLoaded",
     MAPVIEW_RIGHT_CLICK = "MapViewRightClick",
+    CREATUREVIEW_CREATURE_LOADED = "CreatureViewCreatureLoaded"
 };
 
 local function GenerateCallbackEvents()
