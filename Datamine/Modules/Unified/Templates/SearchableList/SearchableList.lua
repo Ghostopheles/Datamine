@@ -33,6 +33,7 @@ end
 ---@class DatamineSearchableEntryData
 ---@field Text string
 ---@field TextScale? number
+---@field TextKey? string
 ---@field ID? string | number
 ---@field Callback? function
 ---@field NoHighlight? boolean
@@ -40,17 +41,22 @@ end
 ---@field BackgroundColor? ColorMixin
 ---@field BackgroundAlpha? number
 ---@field SelectionCallback? function
+---@field Variants? table
+---@field Misc? table
 
 DatamineSearchableEntryMixin = {};
 
 ---@param data DatamineSearchableEntryData
 function DatamineSearchableEntryMixin:Init(data)
     self.Data = data;
-    self:SetText(data.Text, data.TextScale);
+
+    local text = data.TextKey and data[data.TextKey] or data.Text;
+    self:SetText(text, data.TextScale);
     self:SetCallback(data.Callback);
     self:SetNoHighlight(data.NoHighlight);
     self:SetBackground(data.BackgroundColor, data.HideBackground, data.BackgroundAlpha);
     self:SetSelected(data.SelectionCallback);
+    self:SetVariants(data.Variants);
 
     self:Show();
 end
@@ -125,8 +131,16 @@ function DatamineSearchableEntryMixin:SetSelected(selectionCallback)
     end
 
     local callback = selectionCallback or self.Data.SelectionCallback;
-    local isSelected = callback(self.Data);
+    local isSelected = callback(self);
     self.SelectionBorder:SetShown(isSelected);
+end
+
+function DatamineSearchableEntryMixin:SetVariants(variants)
+    self.Variants = variants;
+end
+
+function DatamineSearchableEntryMixin:HasVariants()
+    return type(self.Variants) == "table" and #self.Variants > 0;
 end
 
 -------------

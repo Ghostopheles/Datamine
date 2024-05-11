@@ -203,8 +203,10 @@ function TooltipDataManager:TOOLTIP_DATA_UPDATE(dataInstanceID)
     if dataInstanceID and self.TooltipInstanceIDCache[dataInstanceID] then
         self:UpdateTooltipData(dataInstanceID);
     elseif self.WaitingForGUID then
-        self:UpdateTooltipDataByGUID(self.WaitingForGUID);
-        self.WaitingForGUID = nil;
+        local success = self:UpdateTooltipDataByGUID(self.WaitingForGUID);
+        if success then
+            self.WaitingForGUID = nil;
+        end
     end
 end
 
@@ -217,7 +219,12 @@ end
 
 function TooltipDataManager:UpdateTooltipDataByGUID(guid)
     local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
+    if not tooltipData then
+        return false;
+    end
+
     Database:UpdateCreatureEntryWithTooltipData(tooltipData);
+    return true;
 end
 
 function TooltipDataManager:RequestNameForCreatureByGUID(guid)
@@ -426,7 +433,7 @@ end
 ---@param tooltipData TooltipData
 function Database:UpdateCreatureEntryWithTooltipData(tooltipData)
     local creatureID = self:GetCreatureIDFromGUID(tooltipData.guid);
-    assert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
+    DebugAssert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
 
     local entry = self:GetCreatureEntryByID(creatureID);
     if not entry then

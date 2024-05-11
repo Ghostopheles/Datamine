@@ -79,6 +79,140 @@
         </Scripts>
     </Frame>
 
+    <Frame name="DatamineCreatureDetailsTemplate" mixin="DatamineCreatureDetailsMixin"
+        inherits="VerticalLayoutFrame"
+        virtual="true">
+        <Size x="275" />
+        <KeyValues>
+            <KeyValue key="fixedWidth" value="275" type="number" />
+            <KeyValue key="fixedHeight" value="603" type="number" />
+            <KeyValue key="expand" value="false" type="boolean" />
+            <KeyValue key="topPadding" value="4" type="number" />
+            <KeyValue key="bottomPadding" value="4" type="number" />
+            <KeyValue key="leftPadding" value="4" type="number" />
+            <KeyValue key="rightPadding" value="4" type="number" />
+            <KeyValue key="spacing" value="4" type="number" />
+        </KeyValues>
+        <Frames>
+            <Frame parentKey="TitleBar">
+                <Size x="275" y="30" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="1" type="number" />
+                </KeyValues>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="Title" font="DatamineCleanFont" justifyH="CENTER"
+                            text="$CREATURE DETAILS$" setAllPoints="true" />
+                    </Layer>
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background"
+                            inherits="DatamineDarkGrayBackgroundTemplate">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.Title" x="45" />
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Title" x="-45" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="Identification">
+                <Size x="270" y="40" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="2" type="number" />
+                    <KeyValue key="topPadding" value="8" type="number" />
+                </KeyValues>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="CreatureID" font="DatamineCleanFontSmallish"
+                            justifyH="LEFT"
+                            text="$CREATUREID$">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" x="4" />
+                                <Anchor point="TOPRIGHT" x="-4" />
+                            </Anchors>
+                        </FontString>
+                        <FontString parentKey="CreatureName" font="DatamineCleanFontMedium"
+                            justifyH="LEFT"
+                            text="$CREATURENAME$">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.CreatureID"
+                                    relativePoint="BOTTOMLEFT" y="-12" />
+                                <Anchor point="TOPRIGHT" relativeKey="$parent.CreatureID"
+                                    relativePoint="BOTTOM" x="15" y="-12" />
+                            </Anchors>
+                        </FontString>
+                        <FontString parentKey="Locale" font="DatamineCleanFont"
+                            justifyH="RIGHT" justifyV="MIDDLE"
+                            text="$LOCALE$">
+                            <Anchors>
+                                <Anchor point="TOPRIGHT" x="-4" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="Variants">
+                <Size x="265" y="200" />
+                <KeyValues>
+                    <KeyValue key="layoutIndex" value="4" type="number" />
+                </KeyValues>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="Title" font="DatamineCleanFontMedium"
+                            justifyH="CENTER" justifyV="MIDDLE"
+                            text="$VARIANTS$">
+                            <Size y="15" />
+                            <Anchors>
+                                <Anchor point="TOPLEFT" />
+                                <Anchor point="TOPRIGHT" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Frames>
+                    <EditBox parentKey="SearchBox" inherits="DatamineEditBoxTemplate">
+                        <Size y="30" />
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="13" y="-20" />
+                            <Anchor point="TOPRIGHT" x="-4" y="-20" />
+                        </Anchors>
+                    </EditBox>
+                    <Frame parentKey="List" inherits="DatamineSearchableListTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.SearchBox"
+                                relativePoint="BOTTOMLEFT" y="-4" />
+                            <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
+                        </Anchors>
+                    </Frame>
+                </Frames>
+            </Frame>
+        </Frames>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="Separator" atlas="_AnimaChannel-Reinforce-Line-horizontal"
+                    snapToPixelGrid="true" alpha="0.75">
+                    <Size y="8" />
+                    <KeyValues>
+                        <KeyValue key="layoutIndex" value="3" type="number" />
+                        <KeyValue key="expand" value="true" type="boolean" />
+                        <KeyValue key="leftPadding" value="14" type="number" />
+                        <KeyValue key="rightPadding" value="14" type="number" />
+                    </KeyValues>
+                    <TextureSliceMargins left="0" right="0" top="0" bottom="0" />
+                    <TextureSliceMode mode="Tiled" />
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background"
+                    inherits="DatamineMediumGrayBackgroundTemplate"
+                    setAllPoints="true" />
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
     <Frame name="DatamineCreatureViewTemplate" mixin="DatamineCreatureViewMixin" virtual="true">
         <Frames>
             <Frame parentKey="CreaturePicker" inherits="DatamineCreaturePickerTemplate"
@@ -89,7 +223,7 @@
                     <Anchor point="BOTTOMLEFT" x="4" y="4" />
                 </Anchors>
             </Frame>
-            <Frame parentKey="DetailsPanel">
+            <Frame parentKey="BottomPanel">
                 <Size y="225" />
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeKey="$parent.CreaturePicker"
@@ -104,26 +238,19 @@
                     </Layer>
                 </Layers>
             </Frame>
-            <Frame parentKey="RightPanel">
-                <Size x="225" />
+            <Frame parentKey="Details" inherits="DatamineCreatureDetailsTemplate">
+                <Size x="275" />
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-4" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.DetailsPanel"
+                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomPanel"
                         relativePoint="TOPRIGHT" y="4" />
                 </Anchors>
-                <Layers>
-                    <Layer level="BACKGROUND">
-                        <Texture parentKey="Background"
-                            inherits="DatamineMediumGrayBackgroundTemplate"
-                            setAllPoints="true" />
-                    </Layer>
-                </Layers>
             </Frame>
             <PlayerModel parentKey="Model" inherits="ModelWithControlsTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="4" relativeKey="$parent.CreaturePicker"
                         relativePoint="TOPRIGHT" />
-                    <Anchor point="BOTTOMRIGHT" x="-4" relativeKey="$parent.RightPanel"
+                    <Anchor point="BOTTOMRIGHT" x="-4" relativeKey="$parent.Details"
                         relativePoint="BOTTOMLEFT" />
                 </Anchors>
                 <Layers>

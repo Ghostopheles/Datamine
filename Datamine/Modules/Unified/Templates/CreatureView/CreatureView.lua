@@ -69,22 +69,48 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
 
     creatureList.ScrollView:SetPadding(2, 2, 2, 2, 2);
 
+    local function OnClickCallback(frame)
+        self:SetSelectedCreature(frame.Data.ID);
+    end
+
+    local function SelectionCallback(frame)
+        return frame.Data.ID == self.SelectedCreature;
+    end
+
     local allCreatures = {};
+    local parentCreatures = {};
     local creatures = Datamine.Database:GetAllCreatureEntries();
     for creatureID, creatureInfo in pairs(creatures) do
         local locale = GetLocale();
-        if creatureInfo.Name[locale] then
-            local data = {
-                ID = creatureID,
-                Text = creatureInfo.Name[locale],
-                TextScale = 0.9,
-                Callback = function() self:SetSelectedCreature(creatureID); end,
-                BackgroundAlpha = 0.5,
-                Data = creatureInfo,
-                SelectionCallback = function() return creatureID == self.SelectedCreature; end,
-            };
+        local name = creatureInfo.Name[locale];
+        if name then
+            local parent = parentCreatures[name];
+            if parent then
+                if not parent.Variants then
+                    parent.Variants = {};
+                end
 
-            tinsert(allCreatures, data);
+                local data = {
+                    CreatureID = creatureID,
+                    CreatureInfo = creatureInfo,
+                };
+
+                tinsert(parent.Variants, data);
+            else
+                ---@type DatamineSearchableEntryData
+                local data = {
+                    ID = creatureID,
+                    Text = name,
+                    TextScale = 0.9,
+                    Callback = OnClickCallback,
+                    BackgroundAlpha = 0.5,
+                    Misc = creatureInfo,
+                    SelectionCallback = SelectionCallback,
+                };
+
+                parentCreatures[name] = data;
+                tinsert(allCreatures, data);
+            end
         end
     end
 
@@ -95,7 +121,97 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
     table.sort(allCreatures, AlphabeticalSort);
     creatureList:SetSearchDataSource(allCreatures, "Text");
 
+    self.ParentCreatures = parentCreatures;
     self.Populated = true;
+end
+
+------------
+
+DatamineCreatureDetailsMixin = {};
+
+function DatamineCreatureDetailsMixin:OnLoad()
+    self.SelectedVariant = nil;
+
+    Registry:RegisterCallback(Events.CREATUREVIEW_CREATURE_LOADED, self.OnCreatureLoaded, self);
+end
+
+function DatamineCreatureDetailsMixin:SetupStrings()
+    local creatureID = self:GetParent():GetViewingCreature();
+    local creature = Datamine.Database:GetCreatureEntryByID(creatureID);
+
+    local idText = format("#%s", creatureID);
+    local locale = GetLocale();
+    local nameText = creature.Name[locale];
+    local locText = locale;
+
+    self.Identification.CreatureID:SetText(idText);
+    self.Identification.CreatureName:SetText(nameText);
+    self.Identification.Locale:SetText(locText);
+end
+
+function DatamineCreatureDetailsMixin:SetupVariantsList()
+    local variants = self.Variants;
+    local searchBox = variants.SearchBox;
+    local list = variants.List;
+
+    list:SetEditBox(searchBox);
+end
+
+function DatamineCreatureDetailsMixin:OnCreatureLoaded()
+    self:SetupStrings();
+    local picker = self:GetParent().CreaturePicker;
+    if not picker.ParentCreatures then
+        return;
+    end
+
+    local creatureID = self:GetParent():GetViewingCreature();
+    local creature = Datamine.Database:GetCreatureEntryByID(creatureID);
+    local locale = GetLocale();
+    local name = creature.Name[locale];
+
+    local parent = picker.ParentCreatures[name];
+    if not parent then
+        return;
+    end
+
+    local variants = parent.Variants;
+    if not variants then
+        return;
+    end
+
+    self:SetVariants(variants);
+end
+
+function DatamineCreatureDetailsMixin:SetVariants(variants)
+    local function OnClick(frame)
+        print(frame.Data.ID);
+    end
+
+    DevTools_Dump(variants);
+
+    local function SelectionCallback(frame)
+        return frame.Data.ID == self.SelectedVariant;
+    end
+
+    local allVariants = {};
+    local locale = GetLocale();
+    for _, tbl in pairs(variants) do
+        ---@type DatamineSearchableEntryData
+        local data = {
+            ID = tbl.CreatureID,
+            Text = tbl.CreatureInfo.Name[locale],
+            TextScale = 0.9,
+            TextKey = "ID",
+            Callback = OnClick,
+            BackgroundAlpha = 0.5,
+            Misc = tbl.CreatureInfo,
+            SelectionCallback = SelectionCallback,
+        };
+        tinsert(allVariants, data);
+    end
+
+    table.sort(allVariants, function(a, b) return a.ID > b.ID; end);
+    self.Variants.List:SetSearchDataSource(allVariants, "ID");
 end
 
 ------------
@@ -157,16 +273,24 @@ function DatamineCreatureViewMixin:SetLoading(isLoading)
 end
 
 function DatamineCreatureViewMixin:SetWaitingForCreature(creatureID)
-    if not creatureID then
-        Registry:TriggerEvent(Events.CREATUREVIEW_CREATURE_LOADED, self.WaitingForCreature);
-    else
+    if creatureID then
         self:SetLoading(true);
     end
     self.WaitingForCreature = creatureID;
 end
 
+function DatamineCreatureViewMixin:SetViewingCreature(creatureID)
+    self.ViewingCreature = creatureID;
+    Registry:TriggerEvent(Events.CREATUREVIEW_CREATURE_LOADED, creatureID);
+end
+
+function DatamineCreatureViewMixin:GetViewingCreature()
+    return self.ViewingCreature;
+end
+
 function DatamineCreatureViewMixin:SetCreature(creatureID)
     self.Model:SetCreature(creatureID);
+    self:SetViewingCreature(creatureID);
 end
 
 function DatamineCreatureViewMixin:TrySetCreature(creatureID)
