@@ -28,7 +28,7 @@
     </Font>
 
     <Font name="DatamineCleanFontSmallish" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="13">
+        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="11">
         <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
