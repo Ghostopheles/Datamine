@@ -135,6 +135,7 @@ end
 -- handler for the AutoLoadMapData config option
 EventUtil.ContinueOnAddOnLoaded("Datamine", function()
     if Datamine.Settings.GetSetting(Datamine.Setting.AutoLoadMapData) then
+        C_AddOns.EnableAddOn("Datamine_Maps");
         C_AddOns.LoadAddOn("Datamine_Maps");
     end
 end);
