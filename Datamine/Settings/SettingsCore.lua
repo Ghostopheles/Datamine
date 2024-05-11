@@ -8,7 +8,6 @@ Datamine.Setting = {
     ChatPrefixColor = "ChatPrefixColor",
     debugTargetInfo = "debugTargetInfo",
     CollectCreatureData = "CollectCreatureData",
-    SeenCreatureDataWarning = "SeenCreatureDataWarning",
     AutoLoadMapData = "AutoLoadMapData"
 };
 
@@ -16,7 +15,6 @@ local defaultConfig = {
     [Datamine.Setting.ChatPrefixColor] = "FFF542F5",
     [Datamine.Setting.debugTargetInfo] = false,
     [Datamine.Setting.CollectCreatureData] = false,
-    [Datamine.Setting.SeenCreatureDataWarning] = false,
     [Datamine.Setting.AutoLoadMapData] = false,
 };
 
@@ -35,10 +33,6 @@ local function InitSavedVariables()
         else
             setting:SetValue(DatamineConfig[name]);
         end
-    end
-
-    if DatamineConfig.SeenCreatureDataWarning == nil then
-        DatamineConfig.SeenCreatureDataWarning = false;
     end
 
     Datamine.Constants.ChatPrefixColor = CreateColorFromHexString(DatamineConfig.ChatPrefixColor);
