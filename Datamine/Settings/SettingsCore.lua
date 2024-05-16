@@ -126,10 +126,19 @@ end
 
 ------------
 
+local DATAMINE_MAPS = "Datamine_Maps";
 -- handler for the AutoLoadMapData config option
 EventUtil.ContinueOnAddOnLoaded("Datamine", function()
     if Datamine.Settings.GetSetting(Datamine.Setting.AutoLoadMapData) then
-        C_AddOns.EnableAddOn("Datamine_Maps");
-        C_AddOns.LoadAddOn("Datamine_Maps");
+        C_AddOns.EnableAddOn(DATAMINE_MAPS);
+        C_AddOns.LoadAddOn(DATAMINE_MAPS);
+    end
+end);
+
+Registry:RegisterCallback(Events.SETTING_CHANGED, function(_, setting, value)
+    if setting == Datamine.Setting.AutoLoadMapData then
+        if value == false then
+            C_AddOns.DisableAddOn(DATAMINE_MAPS);
+        end
     end
 end);
