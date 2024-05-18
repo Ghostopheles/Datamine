@@ -88,6 +88,7 @@ local CreatureEntryDefaults = {
     Reactions = EMPTY,
     Spells = EMPTY,
     BroadcastText = EMPTY,
+    Variants = EMPTY,
 };
 
 local CreatureEntryMetatable = {
@@ -228,24 +229,28 @@ function TooltipDataManager:UpdateTooltipDataByGUID(guid)
 end
 
 function TooltipDataManager:RequestNameForCreatureByGUID(guid)
-    local name;
-    local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
-    if not tooltipData then
-        self.WaitingForGUID = guid;
-        return;
-    end
-
-    for _, line in pairs(tooltipData.lines) do
-        if line.type == Enum.TooltipDataLineType.UnitName then
-            name = line.leftText;
-            break;
-        end
-    end
-
-    if not ValidateName(name) then
-        self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
+    local name = C_PlayerInfo.GetClass({guid=guid});
+    if ValidateName(name) then
+        Database:UpdateCreatureEntryWithNameByGUID(guid, name);
     else
-        Database:UpdateCreatureEntryWithTooltipData(tooltipData);
+        local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
+        if not tooltipData then
+            self.WaitingForGUID = guid;
+            return;
+        end
+
+        for _, line in pairs(tooltipData.lines) do
+            if line.type == Enum.TooltipDataLineType.UnitName then
+                name = line.leftText;
+                break;
+            end
+        end
+
+        if not ValidateName(name) then
+            self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
+        else
+            Database:UpdateCreatureEntryWithTooltipData(tooltipData);
+        end
     end
 end
 
@@ -285,20 +290,20 @@ function Database:ConvertStringIndicesToNumbers()
     local hasChanges = false;
     local creatureIDsToRemove = {};
     for creatureID, entry in pairs(self.DB.Creature) do
-        if type(creatureID) == "string" then
-            if entry.Instances then
-                local instancesToRemove = {};
-                for instanceID, _ in pairs(entry.Instances) do
-                    if type(instanceID) == "string" then
-                        tinsert(instancesToRemove, instanceID);
-                        entry.Instances[tonumber(instanceID)] = true;
-                    end
-                end
-                for _, instanceID in pairs(instancesToRemove) do
-                    entry.Instances[instanceID] = nil;
+        if entry.Instances then
+            local instancesToRemove = {};
+            for instanceID, _ in pairs(entry.Instances) do
+                if type(instanceID) == "string" then
+                    tinsert(instancesToRemove, instanceID);
+                    entry.Instances[tonumber(instanceID)] = true;
                 end
             end
-
+            for _, instanceID in pairs(instancesToRemove) do
+                entry.Instances[instanceID] = nil;
+                hasChanges = true;
+            end
+        end
+        if type(creatureID) == "string" then
             tinsert(creatureIDsToRemove, creatureID);
             self.DB.Creature[tonumber(creatureID)] = entry;
             hasChanges = true;
@@ -422,7 +427,7 @@ function Database:GetOrCreateCreatureEntryByGUID(guid, name)
     end
 
     local CreatureEntry = self:NewCreatureEntry();
-    CreatureEntry.Instances[instanceID] = true;
+    CreatureEntry.Instances[tonumber(instanceID)] = true;
 
     local locale = GetLocale();
     CreatureEntry.Name[locale] = name;
@@ -477,6 +482,20 @@ function Database:UpdateCreatureEntryWithUnitFlags(creatureID, unitFlags)
     end
 
     self:Commit();
+end
+
+
+function Database:UpdateCreatureEntryWithName(creatureID, name)
+    local entry = self:GetCreatureEntryByID(creatureID);
+    local locale = GetLocale();
+    entry["Name"][locale] = name;
+end
+
+function Database:UpdateCreatureEntryWithNameByGUID(guid, name)
+    local creatureID = select(6, strsplit("-", guid));
+    local entry = self:GetCreatureEntryByID(creatureID);
+    local locale = GetLocale();
+    entry["Name"][locale] = name;
 end
 
 ---@param creatureID number
