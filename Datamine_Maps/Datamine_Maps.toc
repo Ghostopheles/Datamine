@@ -35,6 +35,7 @@ Generated/Map_10.2Scenario.lua
 Generated/Map_11.0-CampaignFinaleScenario.lua
 Generated/Map_11.0-ChamberofHeart.lua
 Generated/Map_11.0-PrioryScenario.lua
+Generated/Map_11.0-VaultofMemory.lua
 Generated/Map_11.0DalaranScenario.lua
 Generated/Map_11.0WarbandTesting.lua
 Generated/Map_11.0WarbandTesting2.lua
@@ -383,6 +384,7 @@ Generated/Map_PitofSaron-DeathKnightCampaign.lua
 Generated/Map_PitofSaron.lua
 Generated/Map_Plaguefall.lua
 Generated/Map_PlunderIsle.lua
+Generated/Map_PocketDimension.lua
 Generated/Map_PocketDimensionAkazamzaraksHatScenario.lua
 Generated/Map_PrioryoftheSacredFlame.lua
 Generated/Map_ProvingGrounds.lua
