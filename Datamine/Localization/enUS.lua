@@ -135,7 +135,7 @@ L["SPELL_INFO_KEYS_DESCRIPTION"] = "Description";
 L["SPELL_INFO_KEYS_HYPERLINK"] = "Hyperlink";
 
 L["SPELL_INFO_FMT_CAST_INSTANT"] = "Instant (%d)";
-L["SPELL_INFO_FMT_CAST_TIME"] = "%d seconds";
+L["SPELL_INFO_FMT_CAST_TIME"] = "%.1f seconds";
 L["SPELL_INFO_FMT_RANGE"] = "%d yards";
 
 L["FMT_SPELL_INFO_ERR_SPELL_DOES_NOT_EXIST"] = "Query for spell %d failed. Spell does not exist.";

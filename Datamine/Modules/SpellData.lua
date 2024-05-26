@@ -98,9 +98,9 @@ function Datamine.Spell:GetFormattedSpellData(spellID)
 
     local castTime = spellData[4];
     if castTime == 0 then
-        spellData[4] = format(L.SPELL_INFO_FMT_CAST_INSTANT, castTime);
+        spellData[4] = format(L.SPELL_INFO_FMT_CAST_INSTANT, castTime / 1000);
     else
-        spellData[4] = format(L.SPELL_INFO_FMT_CAST_TIME, castTime);
+        spellData[4] = format(L.SPELL_INFO_FMT_CAST_TIME, castTime / 1000);
     end
 
     local minRange = spellData[5];
@@ -113,8 +113,9 @@ function Datamine.Spell:GetFormattedSpellData(spellID)
         spellData[6] = format(L.SPELL_INFO_FMT_RANGE, maxRange);
     end
 
-    tinsert(spellData, GetSpellDescription or "");
-    local spellLink, _ = GetSpellLink(spellID) or "N/A";
+    local spellDesc = GetSpellDescription(spellID) or "N/A";
+    tinsert(spellData, spellDesc);
+    local spellLink = GetSpellLink(spellID) or "N/A";
     tinsert(spellData, spellLink);
 
     return spellData;
