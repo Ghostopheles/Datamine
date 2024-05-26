@@ -151,6 +151,7 @@
                     </Layer>
                 </Layers>
             </Frame>
+            <!--
             <Frame parentKey="Variants">
                 <Size x="265" y="200" />
                 <KeyValues>
@@ -185,7 +186,7 @@
                         </Anchors>
                     </Frame>
                 </Frames>
-            </Frame>
+            </Frame>-->
         </Frames>
         <Layers>
             <Layer level="ARTWORK">

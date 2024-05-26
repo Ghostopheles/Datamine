@@ -175,22 +175,22 @@ function DatamineCreatureDetailsMixin:OnCreatureLoaded()
     end
 
     local variants = parent.Variants;
-    if not variants then
+    if not variants or self.SelectedVariant then
         return;
     end
 
-    self:SetVariants(variants);
+    --self:SetVariants(variants);
 end
 
 function DatamineCreatureDetailsMixin:SetVariants(variants)
     local function OnClick(frame)
-        print(frame.Data.ID);
+        local creatureID = frame.Data.ID;
+        self.SelectedVariant = creatureID;
+        self:GetParent():TrySetCreature(creatureID);
     end
 
-    DevTools_Dump(variants);
-
     local function SelectionCallback(frame)
-        return frame.Data.ID == self.SelectedVariant;
+        return frame.Data.ID == self:GetParent():GetViewingCreature();
     end
 
     local allVariants = {};
