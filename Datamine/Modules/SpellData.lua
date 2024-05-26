@@ -113,9 +113,9 @@ function Datamine.Spell:GetFormattedSpellData(spellID)
         spellData[6] = format(L.SPELL_INFO_FMT_RANGE, maxRange);
     end
 
-    local spellDesc = GetSpellDescription(spellID) or "N/A";
+    local spellDesc = GetSpellDescription(spellID) or L.GENERIC_NA;
     tinsert(spellData, spellDesc);
-    local spellLink = GetSpellLink(spellID) or "N/A";
+    local spellLink = GetSpellLink(spellID) or L.GENERIC_NA;
     tinsert(spellData, spellLink);
 
     return spellData;
