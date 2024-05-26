@@ -418,8 +418,13 @@ function Database:GetOrCreateCreatureEntryByGUID(guid, name)
         return;
     end
 
+    local locale = GetLocale();
     if self:CreatureEntryExists(ID) then
-        return self:GetCreatureEntryByID(ID), ID;
+        local entry = self:GetCreatureEntryByID(ID);
+        if not ValidateName(entry.Name[locale]) and ValidateName(name) then
+            entry.Name[locale] = name;
+        end
+        return entry, ID;
     end
 
     if not ValidateName(name) then
@@ -428,8 +433,6 @@ function Database:GetOrCreateCreatureEntryByGUID(guid, name)
 
     local CreatureEntry = self:NewCreatureEntry();
     CreatureEntry.Instances[tonumber(instanceID)] = true;
-
-    local locale = GetLocale();
     CreatureEntry.Name[locale] = name;
 
     return self:UpdateCreatureEntry(ID, CreatureEntry), ID;
@@ -438,7 +441,7 @@ end
 ---@param tooltipData TooltipData
 function Database:UpdateCreatureEntryWithTooltipData(tooltipData)
     local creatureID = self:GetCreatureIDFromGUID(tooltipData.guid);
-    DebugAssert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
+    assert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
 
     local entry = self:GetCreatureEntryByID(creatureID);
     if not entry then
@@ -484,18 +487,8 @@ function Database:UpdateCreatureEntryWithUnitFlags(creatureID, unitFlags)
     self:Commit();
 end
 
-
-function Database:UpdateCreatureEntryWithName(creatureID, name)
-    local entry = self:GetCreatureEntryByID(creatureID);
-    local locale = GetLocale();
-    entry["Name"][locale] = name;
-end
-
 function Database:UpdateCreatureEntryWithNameByGUID(guid, name)
-    local creatureID = select(6, strsplit("-", guid));
-    local entry = self:GetCreatureEntryByID(creatureID);
-    local locale = GetLocale();
-    entry["Name"][locale] = name;
+    return self:GetOrCreateCreatureEntryByGUID(guid, name);
 end
 
 ---@param creatureID number
