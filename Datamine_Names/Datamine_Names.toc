@@ -1,0 +1,18 @@
+## Interface: 100207, 110000
+## Title: |cfffc037bDatamine_Names|r
+## Notes: Name data for the Datamine addon
+## Author: Ghostopheles
+## Version: @project-version@
+## LoadOnDemand: 1
+
+## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
+
+## X-License: Public Domain
+## X-Category: Development Tools
+
+## X-Curse-Project-ID: 906564
+## X-Wago-ID: 4N2mb0GL
+
+Datamine_Names.lua
+Generated/Items.lua
+Generated/Items.lua
