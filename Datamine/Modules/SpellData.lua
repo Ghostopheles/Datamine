@@ -11,6 +11,7 @@ local GetSpellInfo = GetSpellInfo or function(spell)
     return nil;
 end
 local GetSpellLink = C_Spell and C_Spell.GetSpellLink or GetSpellLink;
+local GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpellDescription;
 
 Datamine.Spell.SpellInfoKeys = {
     L.SPELL_INFO_KEYS_NAME,
@@ -112,8 +113,8 @@ function Datamine.Spell:GetFormattedSpellData(spellID)
         spellData[6] = format(L.SPELL_INFO_FMT_RANGE, maxRange);
     end
 
-    tinsert(spellData, GetSpellDescription(spellID));
-    local spellLink, _ = GetSpellLink(spellID);
+    tinsert(spellData, GetSpellDescription or "");
+    local spellLink, _ = GetSpellLink(spellID) or "N/A";
     tinsert(spellData, spellLink);
 
     return spellData;
