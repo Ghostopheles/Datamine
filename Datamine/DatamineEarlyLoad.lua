@@ -223,3 +223,33 @@ function Datamine.Utils.Profile(func, ...)
     Datamine.Print("Profiling", outString);
     return output;
 end
+
+local function _P(...)
+    Datamine.Print("Utils", ...);
+end
+
+function Datamine.Utils.PrintWorldPos()
+    local token = "player";
+    local map = C_Map.GetBestMapForUnit(token);
+    local mapPos = C_Map.GetPlayerMapPosition(map, token);
+    local continentID, worldPos = C_Map.GetWorldPosFromMapPos(map, mapPos);
+
+    _P(format("Continent: %d X: %.f Y: %.2f", continentID, worldPos.x, worldPos.y));
+end
+
+function Datamine.Utils.GetUnitCreatureID(unitToken)
+    local guid = UnitGUID(unitToken);
+    if not guid then
+        Datamine.Print("Utils")
+        return;
+    end
+    local creatureID = select(6, strsplit("-", guid));
+    return tonumber(creatureID);
+end
+
+function Datamine.Utils.PrintMouseoverCreatureID()
+    local creatureID = Datamine.Utils.GetUnitCreatureID("mouseover");
+    if creatureID then
+        _P(format("Creature ID: %d", creatureID));
+    end
+end
