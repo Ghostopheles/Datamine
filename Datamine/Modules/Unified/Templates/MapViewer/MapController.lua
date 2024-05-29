@@ -71,7 +71,6 @@ DatamineMapCanvasMixin = {};
 
 function DatamineMapCanvasMixin:OnLoad()
     self.TilePool = CreateTexturePool(self, "ARTWORK", -1, TILE_TEMPLATE_NAME, DatamineMapTileMixin.Reset);
-    self.TilePool:SetResetDisallowedIfNew(true);
 
     self.DisplayedWDT = 0;
     self.MapInfo = nil;

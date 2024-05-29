@@ -2,6 +2,8 @@ local L = Datamine.Strings;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
+local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox;
+
 Datamine.Settings = {};
 
 Datamine.Setting = {
@@ -82,7 +84,7 @@ do
     local tooltip = L.CONFIG_DEBUGTARGETINFO_TOOLTIP;
 
     local setting = CreateCVarSetting(category, name, variable, variableType, defaultConfig[variable]);
-    Settings.CreateCheckBox(category, setting, tooltip);
+    CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
     allSettings[variable] = setting;
@@ -95,7 +97,7 @@ do
     local tooltip = L.CONFIG_CREATUREDATA_TOOLTIP;
 
     local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
-    Settings.CreateCheckBox(category, setting, tooltip);
+    CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
     allSettings[variable] = setting;
@@ -108,7 +110,7 @@ do
     local tooltip = L.CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP;
 
     local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
-    Settings.CreateCheckBox(category, setting, tooltip);
+    CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
     allSettings[variable] = setting;
