@@ -108,7 +108,7 @@ def write_map_file(map: Map):
     map_grids_str = format_map_grids(map_grids)
     map_info = format_map_info(map, map_grids_str)
 
-    map_name = map.MapName_lang.replace(" ", "")
+    map_name = map.Directory.replace(" ", "")
     output_file = os.path.join(OUTPUT_DIR, f"Map_{map_name}.lua")
     with open(output_file, "w") as f:
         f.write(
