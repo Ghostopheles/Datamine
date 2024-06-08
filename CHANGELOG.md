@@ -8,6 +8,7 @@
 * Fixed an issue that caused players to be cached as if they were creatures
 * Maps are now named by directory rather than map name. Should help clear up any possible duplicates, and may give you more maps to explore now
 * Updated maps for 11.0.0.55000
+* Updated map table definition for map generation
 
 ##### Added
 * A creature viewer for taking a peek at collected creature data (still in early development)
