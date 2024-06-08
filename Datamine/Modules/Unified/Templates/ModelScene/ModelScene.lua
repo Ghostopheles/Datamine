@@ -1148,19 +1148,6 @@ function DatamineModelControlsTreeMixin:SetupTransmogSetPanel()
     end
 end
 
-function DatamineModelControlsTreeMixin:GetPrimaryAppearancesForTransmogSet(transmogSetID)
-    local primaryAppearances = C_TransmogSets.GetSetPrimaryAppearances(transmogSetID);
-    if not primaryAppearances then
-        return;
-    end
-
-    local out = {};
-    for _, appearanceInfo in pairs(primaryAppearances) do
-        out[appearanceInfo.appearanceID] = true
-    end
-    return out;
-end
-
 function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
     local panel = self.TransmogSetTab;
 
@@ -1208,8 +1195,6 @@ function DatamineModelControlsTreeMixin:SelectTransmogSetItem(itemData)
         return self:SearchItemByAppearanceID(itemData.SourceID);
     end
 
-    local scene = UI_MAIN.GetModelView().ModelScene;
-
     local invSlotName;
     if itemData.InvSlot == INVSLOT_MAINHAND then
         invSlotName = "MAINHANDSLOT";
@@ -1217,7 +1202,7 @@ function DatamineModelControlsTreeMixin:SelectTransmogSetItem(itemData)
         invSlotName = "SECONDARYHANDSLOT";
     end
 
-    scene:TryOnByItemModifiedAppearanceID(itemData.SourceID, invSlotName);
+    self.ModelScene:TryOnByItemModifiedAppearanceID(itemData.SourceID, invSlotName);
     Registry:TriggerEvent(Events.MODEL_CONTROLS_TRANSMOG_SET_ITEM_SELECTED, itemData.InvSlot, itemData.SourceID);
 end
 
