@@ -1172,13 +1172,17 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
     local itemTransmogInfoList = actor:GetItemTransmogInfoList();
 
     local itemsAdded = false;
+    local hasSlotWithMoreThanTwoItems = false;
 
     local template = "DatamineModelControlsTransmogSetItemEntryTemplate";
     for invSlot, tab in pairs(panel.InvSlotToTab) do
+        tab:Flush();
+        tab:Invalidate();
+
         local numSourcesForSlot = 0;
         local sourceIDs = C_TransmogSets.GetSourceIDsForSlot(transmogSetID, invSlot);
 
-        -- have to do this awful shit since the above function doesn't return anything for weapon sets
+        -- have to do this awful shit since the above function doesn't return anything for certain sets >:(
         if #sourceIDs == 0 then
             sourceIDs = {};
             for appearance in pairs(primaryAppearances) do
@@ -1190,6 +1194,8 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
                     elseif canOffHand and invSlot == INVSLOT_OFFHAND then
                         tinsert(sourceIDs, appearance);
                     end
+                elseif itemTransmogInfoList[invSlot].appearanceID == appearance then
+                    tinsert(sourceIDs, appearance);
                 end
             end
         end
@@ -1211,8 +1217,10 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
         end
         tab:SetCollapsed(numSourcesForSlot < 2);
     end
-
     panel:SetCollapsed(not itemsAdded);
+    if itemsAdded and not hasSlotWithMoreThanTwoItems then
+        panel:SetChildrenCollapsed(false, false, false);
+    end
 end
 
 function DatamineModelControlsTreeMixin:SelectTransmogSetItem(itemData)
