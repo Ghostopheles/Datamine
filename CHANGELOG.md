@@ -1,3 +1,23 @@
+# Datamine v2.2.1
+
+##### Fixed
+* Creature names will no longer be cached with inaccurate names
+* Map data loading should now be more reliable
+* Fixed an issue related to spell data searching in the explorer
+* Fixed a creature data caching issue related to logging spells cast by players on a creature
+* Fixed an issue that caused players to be cached as if they were creatures
+* Maps are now named by directory rather than map name. Should help clear up any possible duplicates, and may give you more maps to explore now
+* Updated maps for 11.0.0.55000
+
+##### Added
+* A creature viewer for taking a peek at collected creature data (still in early development)
+* A transmog set tab to the details display on the model view page. This will show the different items per slot in the transmog set currently being displayed on the model (also still in early development)
+* Selection boxes indicating which element is currently selected in the various scrollable lists throughout Datamine
+
+##### Notes
+* The creature viewer and the transmog set tab are both still under construction. They're not going to work perfectly and are lacking features and polish
+
+
 # Datamine v2.2.0
 
 ##### Fixed
@@ -23,22 +43,3 @@
 * Two new console commands
     * `GetBuildInfo`: Dumps info about the current client build, with a few extra bits of information
     * `SetChrModel`: Allows you to change the character model in the barber shop. Only certain models are supported - i.e. Dragonflight dragon mounts, druid forms, warlock pets
-
-# Datamine v2.1.2
-
-##### Added
-* A new main tab to the Datamine UI that allows you to watch pre-rendered movies in-game using a `MovieID` from `Movie.db2`
-* Achievement info searching in the explorer
-* You can now drag and drop spells on the explorer to search for them
-* Item searches now display item's `ItemSpell`
-
-##### Fixed
-* Model view camera controls are now much more precise and actually work as expected. Thanks to Peterodox for saving me from the math
-* Most strings now use localized strings - accepting crowdsourced localization via Curseforge
-* Font usage has been standardized a bit better
-* Spacing should be a bit better on the explorer view
-* Updated for 10.2.6
-* Dracthyr should now start in the correct position in the model viewer
-
-##### Known Issues
-* Dracthyr do not start in the correct position in the model viewer
