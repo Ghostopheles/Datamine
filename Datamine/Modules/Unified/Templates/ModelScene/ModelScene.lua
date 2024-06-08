@@ -535,14 +535,14 @@ function DatamineModelSceneMixin:ViewPet(displayID)
     actor:SetModelByCreatureDisplayID(displayID);
 end
 
-function DatamineModelSceneMixin:TryOnByItemModifiedAppearanceID(appearanceIDs)
+function DatamineModelSceneMixin:TryOnByItemModifiedAppearanceID(appearanceIDs, invSlot)
     local actor = self:GetActiveActor();
     if type(appearanceIDs) == "table" then
         for _, appearanceID in pairs(appearanceIDs) do
             actor:TryOn(appearanceID);
         end
     else
-        actor:TryOn(appearanceIDs);
+        actor:TryOn(appearanceIDs, invSlot);
     end
 
     Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
@@ -560,7 +560,9 @@ function DatamineModelSceneMixin:TryOnByTransmogSetID(transmogSetID)
         actor:Undress();
     end
 
-    return self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceIDs);
+    self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceIDs);
+    UI_MAIN.GetModelControls():PopulateTransmogSetPanel(transmogSetID);
+    return true;
 end
 
 function DatamineModelSceneMixin:SetModelByFileID(fdid)
@@ -861,6 +863,22 @@ DatamineModelControlsTreeMixin.ArmorSlotNames = {
     RANGED = RANGEDSLOT
 };
 
+DatamineModelControlsTreeMixin.TransmoggableSlots = {
+    INVSLOT_HEAD,
+    INVSLOT_SHOULDER,
+    INVSLOT_BODY,
+    INVSLOT_CHEST,
+    INVSLOT_WAIST,
+    INVSLOT_LEGS,
+    INVSLOT_FEET,
+    INVSLOT_WRIST,
+    INVSLOT_HAND,
+    INVSLOT_BACK,
+    INVSLOT_MAINHAND,
+    INVSLOT_OFFHAND,
+    INVSLOT_TABARD
+};
+
 function DatamineModelControlsTreeMixin:GetScene()
     return DatamineUnifiedFrame.Workspace.ModelViewTab.ModelScene;
 end
@@ -921,14 +939,22 @@ function DatamineModelControlsTreeMixin:OnLoad()
         BackgroundColor = DatamineMediumGray,
     });
 
+    self.TransmogSetTab = self:AddTopLevelItem({
+        Text = L.MODEL_CONTROLS_TAB_TITLE_TRANSMOG_SET,
+        CanExpand = true,
+        BackgroundColor = DatamineMediumGray,
+    });
+
     self:SetupLocationControls();
     self:SetupCameraControls();
     self:SetupAdvancedPanel();
+    self:SetupTransmogSetPanel();
 
     self:SetDoUpdate(false);
 
     self.TransformTab:SetCollapsed(true);
     self.OutfitTab:SetCollapsed(true);
+    self.TransmogSetTab:SetCollapsed(true);
 
     Registry:RegisterCallback(Events.MODEL_RESET, self.OnModelReset, self);
     Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelLoaded, self);
@@ -1100,6 +1126,111 @@ function DatamineModelControlsTreeMixin:SearchItemByAppearanceID(itemModifiedApp
 
     explorer:SetSearchMode(Datamine.Constants.DataTypes.Item);
     explorer:Search(itemID);
+end
+
+function DatamineModelControlsTreeMixin:SetupTransmogSetPanel()
+    local tab = self.TransmogSetTab;
+    tab.InvSlotToTab = {};
+
+    local template = "DatamineTabTreeViewCategoryHeaderTemplate";
+    for _, invslot in pairs(self.TransmoggableSlots) do
+        local invSlotTab = tab:Insert({
+            Text = L["MODEL_CONTROLS_TRANSMOG_SET_SLOT" .. invslot],
+            InvSlot = invslot,
+            CanExpand = true,
+            ShouldShowChevron = true,
+            Template = template,
+            RequestedExtent = 25,
+            BackgroundColor = DatamineDarkGray,
+        });
+        invSlotTab:SetCollapsed(true);
+        tab.InvSlotToTab[invslot] = invSlotTab;
+    end
+end
+
+function DatamineModelControlsTreeMixin:GetPrimaryAppearancesForTransmogSet(transmogSetID)
+    local primaryAppearances = C_TransmogSets.GetSetPrimaryAppearances(transmogSetID);
+    if not primaryAppearances then
+        return;
+    end
+
+    local out = {};
+    for _, appearanceInfo in pairs(primaryAppearances) do
+        out[appearanceInfo.appearanceID] = true
+    end
+    return out;
+end
+
+function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
+    local panel = self.TransmogSetTab;
+    local primaryAppearances = self:GetPrimaryAppearancesForTransmogSet(transmogSetID);
+    if not primaryAppearances then
+        return;
+    end
+
+    local actor = self.ModelScene:GetActiveActor();
+    local itemTransmogInfoList = actor:GetItemTransmogInfoList();
+
+    local itemsAdded = false;
+
+    local template = "DatamineModelControlsTransmogSetItemEntryTemplate";
+    for invSlot, tab in pairs(panel.InvSlotToTab) do
+        local numSourcesForSlot = 0;
+        local sourceIDs = C_TransmogSets.GetSourceIDsForSlot(transmogSetID, invSlot);
+
+        -- have to do this awful shit since the above function doesn't return anything for weapon sets
+        if #sourceIDs == 0 then
+            sourceIDs = {};
+            for appearance in pairs(primaryAppearances) do
+                local category = C_TransmogCollection.GetCategoryForItem(appearance);
+                local _, isWeapon, _, canMainHand, canOffHand = C_TransmogCollection.GetCategoryInfo(category);
+                if isWeapon then
+                    if canMainHand and invSlot == INVSLOT_MAINHAND then
+                        tinsert(sourceIDs, appearance);
+                    elseif canOffHand and invSlot == INVSLOT_OFFHAND then
+                        tinsert(sourceIDs, appearance);
+                    end
+                end
+            end
+        end
+
+        for _, sourceID in pairs(sourceIDs) do
+            local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(sourceID);
+            local data = {
+                Text = itemLink,
+                IsOwned = isCollected,
+                IsSelected = itemTransmogInfoList[invSlot].appearanceID == sourceID,
+                SourceID = sourceID,
+                InvSlot = invSlot,
+                Template = template,
+                RequestedExtent = 15;
+            };
+            tab:Insert(data);
+            numSourcesForSlot = numSourcesForSlot + 1;
+            itemsAdded = true;
+        end
+        tab:SetCollapsed(numSourcesForSlot < 2);
+    end
+
+    panel:SetCollapsed(not itemsAdded);
+end
+
+function DatamineModelControlsTreeMixin:SelectTransmogSetItem(itemData)
+    if IsShiftKeyDown() then
+        return self:SearchItemByAppearanceID(itemData.SourceID);
+    end
+
+    local scene = UI_MAIN.GetModelView().ModelScene;
+
+    local invSlotName;
+    if itemData.InvSlot == INVSLOT_MAINHAND then
+        invSlotName = "MAINHANDSLOT";
+    elseif itemData.InvSlot == INVSLOT_OFFHAND then
+        invSlotName = "SECONDARYHANDSLOT";
+    end
+
+    scene:TryOnByItemModifiedAppearanceID(itemData.SourceID, invSlotName);
+    Registry:TriggerEvent(Events.MODEL_CONTROLS_TRANSMOG_SET_ITEM_SELECTED, itemData.InvSlot, itemData.SourceID);
 end
 
 function DatamineModelControlsTreeMixin:SetupAdvancedPanel()

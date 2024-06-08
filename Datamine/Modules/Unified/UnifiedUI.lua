@@ -228,6 +228,10 @@ function Datamine.Unified.GetModelView()
     return Datamine.Unified.GetUI().Workspace.ModelViewTab;
 end
 
+function Datamine.Unified.GetModelControls()
+    return Datamine.Unified.GetUI().Workspace.DetailsTab.Controls;
+end
+
 ------------- Explorer accessors
 
 function Datamine.Unified.GetExplorerDefaultSearchMode()

@@ -39,6 +39,13 @@ function DatamineTabTreeViewCategoryHeaderMixin:Init(node)
     self:Show();
 end
 
+function DatamineTabTreeViewCategoryHeaderMixin:OnUpdate()
+    if not self:IsShown() then
+        return;
+    end
+    self:UpdateChevron();
+end
+
 function DatamineTabTreeViewCategoryHeaderMixin:OnClick()
     if self.CanExpand then
         local node = self:GetElementData();

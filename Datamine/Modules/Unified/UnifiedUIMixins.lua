@@ -505,6 +505,8 @@ function DatamineScrollableDataFrameMixin:ShouldShowPreviewButton()
         if itemSubType == miscSubType.CompanionPet or itemSubType == miscSubType.Mount then
             return true;
         end
+    elseif itemType == Enum.ItemClass.Consumable then
+        return C_Item.IsDressableItemByID(self.CurrentData.ID);
     end
 
     return false;
@@ -590,7 +592,9 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
 
     local searchMode = UI_MAIN.GetExplorerSearchMode();
     local keys = self:GetDataKeys();
-    self.CurrentData = {};
+    self.CurrentData = {
+        ID = dataID,
+    };
     self.DataEntryCount = 0;
 
     self.DataProvider:SetSortComparator(SortByOrderIndex, false, true);
@@ -715,7 +719,12 @@ function DataminePreviewButtonMixin:OnClick()
     end
 
     if data.IsDressable == "true" then
-        self:TryOnItem(dataID);
+        local transmogSetID = C_Item.GetItemLearnTransmogSet(dataID);
+        if transmogSetID then
+            self:TryOnTransmogSet(transmogSetID);
+        else
+            self:TryOnItem(dataID);
+        end
     elseif data.ItemSubType == "Companion Pets" then
         self:ViewCompanion(dataID);
     elseif data.ItemSubType == "Mount" then
@@ -731,6 +740,11 @@ end
 
 function DataminePreviewButtonMixin:GetModelScene()
     return UI_MAIN.GetModelView().ModelScene;
+end
+
+function DataminePreviewButtonMixin:TryOnTransmogSet(id)
+    local scene = self:GetModelScene();
+    scene:TryOnByTransmogSetID(id);
 end
 
 function DataminePreviewButtonMixin:TryOnItem(id)

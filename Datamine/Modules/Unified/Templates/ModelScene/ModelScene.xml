@@ -180,6 +180,41 @@
         </Scripts>
     </Frame>
 
+    <Frame name="DatamineModelControlsTransmogSetItemEntryTemplate"
+        mixin="DatamineModelControlsTransmogSetItemEntryMixin" virtual="true"
+        enableMouseClicks="true">
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
+            </Layer>
+            <Layer level="ARTWORK">
+                <Texture parentKey="Icon">
+                    <Size x="12" y="12" />
+                    <Anchors>
+                        <Anchor point="LEFT" x="5" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Text" font="DatamineCleanFont" justifyH="LEFT"
+                    wordwrap="true" maxLines="2">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5" />
+                    </Anchors>
+                </FontString>
+                <Texture parentKey="SelectedHighlight"
+                    atlas="GarrMissionLocation-Maw-ButtonHighlight" hidden="true"
+                    setAllPoints="true" />
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnMouseUp>
+                CallMethodOnNearestAncestor(self, "SelectTransmogSetItem", self.Data);
+            </OnMouseUp>
+        </Scripts>
+    </Frame>
+
     <Actor name="DatamineModelSceneActorTemplate" mixin="DatamineModelSceneActorMixin"
         virtual="true">
         <Scripts>

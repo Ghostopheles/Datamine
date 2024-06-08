@@ -61,6 +61,7 @@ Modules/Unified/Templates/ContextMenu/ContextMenu.lua
 Modules/Unified/Templates/ContextMenu/ContextMenu.xml
 Modules/Unified/Templates/ModelScene/ControlFrame.lua
 Modules/Unified/Templates/ModelScene/ControlFrame.xml
+Modules/Unified/Templates/ModelScene/TransmogSetPanel.lua
 Modules/Unified/Templates/ModelScene/ModelScene.lua
 Modules/Unified/Templates/ModelScene/ModelScene.xml
 Modules/Unified/Templates/TreeView/TabTreeView.lua
