@@ -38,6 +38,7 @@ class Map:
     ZmpFileDataID: int
     WdtFileDataID: int
     NavigationMaxDistance: int
+    PreloadFileDataID: int
     Flags_0: str
     Flags_1: str
     Flags_2: str
