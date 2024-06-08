@@ -213,6 +213,59 @@ function Datamine.Transmog:AppearanceCanBeHidden(itemModifiedAppearanceID)
     end
 end
 
+---@param transmogSetID number
+---@return table transmogSet
+function Datamine.Transmog:GetAppearancesBySlotForSet(transmogSetID)
+    local transmogSet = {};
+    local setInfo = C_TransmogSets.GetSetInfo(transmogSetID);
+
+    transmogSet.ID = setInfo.setID;
+    transmogSet.Name = setInfo.name;
+    transmogSet.HiddenUntilCollected = setInfo.hiddenUntilCollected;
+    transmogSet.Appearances = {};
+    transmogSet.Slots = {};
+    transmogSet.Defaults = {};
+
+    local primaryAppearances = {};
+    for _, v in pairs(C_TransmogSets.GetSetPrimaryAppearances(transmogSetID)) do
+        primaryAppearances[v.appearanceID] = true;
+    end
+
+    local sources = C_TransmogSets.GetAllSourceIDs(transmogSetID);
+    for _, source in pairs(sources) do
+        local isDefault = primaryAppearances[source] or false;
+        local invSlot = self:GetSlotIDForAppearanceID(source);
+
+        local category = C_TransmogCollection.GetCategoryForItem(source);
+        local _, isWeapon, _, canMainHand, canOffHand = C_TransmogCollection.GetCategoryInfo(category);
+
+        transmogSet.Appearances[source] = {
+            IsDefault = isDefault,
+            InvSlot = invSlot,
+            IsWeapon = isWeapon,
+            CanMainHand = canMainHand,
+            CanOffhand = canOffHand,
+        };
+
+        if not transmogSet.Slots[invSlot] then
+            transmogSet.Slots[invSlot] = {};
+        end
+
+        tinsert(transmogSet.Slots[invSlot], source);
+
+        if canOffHand then
+            if not transmogSet.Slots[INVSLOT_OFFHAND] then
+                transmogSet.Slots[INVSLOT_OFFHAND] = {};
+            end
+            tinsert(transmogSet.Slots[INVSLOT_OFFHAND], source);
+        end
+
+        transmogSet.Defaults[source] = isDefault;
+    end
+
+    return transmogSet;
+end
+
 ---@param itemModifiedAppearanceID number
 ---@return number itemID
 function Datamine.Transmog:GetItemIDForAppearanceID(itemModifiedAppearanceID)

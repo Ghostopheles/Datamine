@@ -1163,13 +1163,10 @@ end
 
 function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
     local panel = self.TransmogSetTab;
-    local primaryAppearances = self:GetPrimaryAppearancesForTransmogSet(transmogSetID);
-    if not primaryAppearances then
-        return;
-    end
 
     local actor = self.ModelScene:GetActiveActor();
     local itemTransmogInfoList = actor:GetItemTransmogInfoList();
+    local set = Transmog:GetAppearancesBySlotForSet(transmogSetID);
 
     local itemsAdded = false;
     local hasSlotWithMoreThanTwoItems = false;
@@ -1180,42 +1177,25 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
         tab:Invalidate();
 
         local numSourcesForSlot = 0;
-        local sourceIDs = C_TransmogSets.GetSourceIDsForSlot(transmogSetID, invSlot);
-
-        -- have to do this awful shit since the above function doesn't return anything for certain sets >:(
-        if #sourceIDs == 0 then
-            sourceIDs = {};
-            for appearance in pairs(primaryAppearances) do
-                local category = C_TransmogCollection.GetCategoryForItem(appearance);
-                local _, isWeapon, _, canMainHand, canOffHand = C_TransmogCollection.GetCategoryInfo(category);
-                if isWeapon then
-                    if canMainHand and invSlot == INVSLOT_MAINHAND then
-                        tinsert(sourceIDs, appearance);
-                    elseif canOffHand and invSlot == INVSLOT_OFFHAND then
-                        tinsert(sourceIDs, appearance);
-                    end
-                elseif itemTransmogInfoList[invSlot].appearanceID == appearance then
-                    tinsert(sourceIDs, appearance);
-                end
+        local sourceIDs = set.Slots[invSlot];
+        if sourceIDs then
+            for _, sourceID in pairs(sourceIDs) do
+                local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(sourceID);
+                local data = {
+                    Text = itemLink,
+                    IsOwned = isCollected,
+                    IsSelected = itemTransmogInfoList[invSlot].appearanceID == sourceID,
+                    SourceID = sourceID,
+                    InvSlot = invSlot,
+                    Template = template,
+                    RequestedExtent = 15;
+                };
+                tab:Insert(data);
+                numSourcesForSlot = numSourcesForSlot + 1;
+                itemsAdded = true;
             end
+            tab:SetCollapsed(numSourcesForSlot < 2);
         end
-
-        for _, sourceID in pairs(sourceIDs) do
-            local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(sourceID);
-            local data = {
-                Text = itemLink,
-                IsOwned = isCollected,
-                IsSelected = itemTransmogInfoList[invSlot].appearanceID == sourceID,
-                SourceID = sourceID,
-                InvSlot = invSlot,
-                Template = template,
-                RequestedExtent = 15;
-            };
-            tab:Insert(data);
-            numSourcesForSlot = numSourcesForSlot + 1;
-            itemsAdded = true;
-        end
-        tab:SetCollapsed(numSourcesForSlot < 2);
     end
     panel:SetCollapsed(not itemsAdded);
     if itemsAdded and not hasSlotWithMoreThanTwoItems then
