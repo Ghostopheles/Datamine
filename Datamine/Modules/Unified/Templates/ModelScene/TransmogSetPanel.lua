@@ -1,8 +1,8 @@
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
-local OWNED_ATLAS = "common-icon-checkmark"
-local UNOWNED_ATLAS = "UI-QuestTracker-Objective-Fail" --"Interface\Scenarios\ScenarioIcon-Fail"
+local OWNED_ATLAS = "common-icon-checkmark";
+local UNOWNED_ATLAS = "common-icon-redx";
 
 DatamineModelControlsTransmogSetItemEntryMixin = {};
 
