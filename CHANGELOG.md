@@ -1,3 +1,8 @@
+# Datamine v2.2.2
+
+##### Added
+* Datamine can now add various IDs to item, spell, macro, mount and toy tooltips, configurable in the Blizzard settings. Support for more tooltip types to come
+
 # Datamine v2.2.1
 
 ##### Fixed
@@ -14,7 +19,6 @@
 * A creature viewer for taking a peek at collected creature data (still in early development)
 * A transmog set tab to the details display on the model view page. This will show the different items per slot in the transmog set currently being displayed on the model (also still in early development)
 * Selection boxes indicating which element is currently selected in the various scrollable lists throughout Datamine
-* Datamine can now add various IDs to item, spell, macro, mount and toy tooltips, configurable in the Blizzard settings. Support for more tooltip types to come.
 
 ##### Notes
 * The creature viewer and the transmog set tab are both still under construction. They're not going to work perfectly and are lacking features and polish
