@@ -29,7 +29,12 @@ local function RegisterSettingsTable(settings)
         local variable = _setting.Name;
         local name = L[_setting.LocKey .. "_NAME"];
         local tooltip = L[_setting.LocKey .. "_TOOLTIP"];
-        local default = _setting.Default or true;
+        local default;
+        if _setting.Default ~= nil then
+            default = _setting.Default;
+        else
+            default = true;
+        end
 
         local setting = S.RegisterSetting(category, variable, name, default);
         S.CreateCheckbox(category, setting, tooltip);
@@ -56,6 +61,7 @@ local itemSettings = {
     [4] = {
         Name = "TooltipItemShowItemContext",
         LocKey = "CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT",
+        Default = false,
     },
     [5] = {
         Name = "TooltipItemShowBonusIDs",
@@ -64,14 +70,17 @@ local itemSettings = {
     [6] = {
         Name = "TooltipItemShowModifiers",
         LocKey = "CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS",
+        Default = false,
     },
     [7] = {
         Name = "TooltipItemShowCrafterGUID",
         LocKey = "CONFIG_TOOLTIP_SHOW_ITEM_CRAFTER_GUID",
+        Default = false,
     },
     [8] = {
         Name = "TooltipItemShowExtraEnchantID",
         LocKey = "CONFIG_TOOLTIP_SHOW_ITEM_EXTRA_ENCHANT_ID",
+        Default = false,
     },
     [9] = {
         Name = "TooltipItemShowItemSpellID",
@@ -80,6 +89,7 @@ local itemSettings = {
     [10] = {
         Name = "TooltipItemShowRelicBonuses",
         LocKey = "CONFIG_TOOLTIP_SHOW_ITEM_RELIC_BONUSES",
+        Default = false,
     }
 };
 
@@ -168,22 +178,27 @@ local mountSettings = {
     [6] = {
         Name = "TooltipMountShowDisplay",
         LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_DISPLAY",
+        Default = false,
     },
     [7] = {
         Name = "TooltipMountShowType",
         LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_TYPE",
+        Default = false,
     },
     [8] = {
         Name = "TooltipMountShowModelScene",
         LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_MODELSCENE",
+        Default = false,
     },
     [9] = {
         Name = "TooltipMountShowAnim",
         LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_ANIM",
+        Default = false,
     },
     [10] = {
         Name = "TooltipMountShowSpellVisual",
         LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_SPELLVISUAL",
+        Default = false,
     },
 };
 
