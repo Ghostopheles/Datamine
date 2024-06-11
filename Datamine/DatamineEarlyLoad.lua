@@ -10,7 +10,6 @@ Datamine.Constants.DataTypes = {
     Achievement = 3,
 };
 
-Datamine.Mixins = {};
 Datamine.Utils = {};
 Datamine.Console = LibStub:GetLibrary("LibDevConsole");
 
@@ -252,4 +251,24 @@ function Datamine.Utils.PrintMouseoverCreatureID()
     if creatureID then
         _P(format("Creature ID: %d", creatureID));
     end
+end
+
+---@param timeout number
+---@param callback function
+---@return function
+function Datamine.Utils.Debounce(timeout, callback)
+    local calls = 0;
+
+	local function Decrement()
+		calls = calls - 1;
+
+		if calls == 0 then
+			callback();
+		end
+	end
+
+	return function()
+		C_Timer.After(timeout, Decrement);
+		calls = calls + 1;
+	end
 end

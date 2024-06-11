@@ -5,6 +5,11 @@ local L = AceLocale:NewLocale("Datamine", "enUS", true);
 
 L["ADDON_TITLE"] = "Datamine";
 
+L["CONFIG_COLOR_PICKER_TEXT"] = COLOR_PICKER;
+
+L["CONFIG_CHAT_PREFIX_COLOR_NAME"] = "Chat prefix color";
+L["CONFIG_CHAT_PREFIX_COLOR_TOOLTIP"] = "Color of the prefix used for chat output";
+
 L["CONFIG_DEBUGTARGETINFO_NAME"] = "Barber shop debug tooltips";
 L["CONFIG_DEBUGTARGETINFO_TOOLTIP"] = "Toggles the display of debug tooltips in the barber shop and on character customization screens.";
 
@@ -13,6 +18,40 @@ L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs y
 
 L["CONFIG_AUTO_LOAD_MAP_DATA_NAME"] = "Load map data at startup";
 L["CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP"] = "Automatically loads map viewer data at startup. May increase loading times on first login or on reload.";
+
+L["CONFIG_CATEGORY_TOOLTIPS"] = "$Tooltips$";
+
+L["CONFIG_HEADER_ITEM_TOOLTIPS"] = "Item Tooltips";
+
+L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "$Tooltip data key color$";
+L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "$Description$";
+
+L["CONFIG_TOOLTIP_VALUE_COLOR_NAME"] = "$Tooltip data value color$";
+L["CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP"] = "$Description$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_ID_NAME"] = "Show ItemID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_ID_TOOLTIP"] = "$Show Item ID$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_ENCHANT_ID_NAME"] = "Show EnchantID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_ENCHANT_ID_TOOLTIP"] = "$Show enchant ID$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_GEMS_NAME"] = "Show GemIDs";
+L["CONFIG_TOOLTIP_SHOW_ITEM_GEMS_TOOLTIP"] = "$Show Gems$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT_NAME"] = "Show ItemCreationContext";
+L["CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT_TOOLTIP"] = "$Show ItemContext$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_BONUSES_NAME"] = "Show Bonus IDs";
+L["CONFIG_TOOLTIP_SHOW_ITEM_BONUSES_TOOLTIP"] = "$Show BonusIDs$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS_NAME"] = "Show Item Modifiers";
+L["CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS_TOOLTIP"] = "$Show Item Modifiers$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_CRAFTER_GUID_NAME"] = "Show Crafter GUID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_CRAFTER_GUID_TOOLTIP"] = "$Show Crafter GUID$";
+
+L["CONFIG_TOOLTIP_SHOW_ITEM_EXTRA_ENCHANT_ID_NAME"] = "Show Extra Enchant ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_EXTRA_ENCHANT_ID_TOOLTIP"] = "$Show Extra Enchant ID$";
 
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";

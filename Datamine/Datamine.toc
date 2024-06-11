@@ -47,6 +47,9 @@ Modules/AchievementInfo.lua
 Modules/Collector/CollectorMixin.lua
 Modules/Collector/Collector.xml
 
+Modules/Tooltips/Structures.lua
+Modules/Tooltips/Tooltips.lua
+
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedNineSliceLayouts.lua
 Modules/Unified/UnifiedUIMixins.lua
