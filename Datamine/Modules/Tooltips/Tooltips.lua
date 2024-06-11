@@ -14,7 +14,7 @@ local CURRENT_TOOLTIP = nil;
 -- tooltip context management
 
 -- when customizating a tooltip, you must first open the tooltip context with Tooltips.Begin, passing in the tooltip
--- this prevents us from customizing the same tooltip multiple times, as there can only ever be one tooltip context
+-- this helps with customization since we don't have to constantly pass the tooltip object around
 -- and of course, remember to end the context when done with Tooltips.End()
 
 function Tooltips.Begin(tooltip)
