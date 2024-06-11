@@ -18,8 +18,12 @@ local CURRENT_TOOLTIP = nil;
 -- and of course, remember to end the context when done with Tooltips.End()
 
 function Tooltips.Begin(tooltip)
-    assert(CURRENT_TOOLTIP == nil or tooltip == CURRENT_TOOLTIP, "Attempt to begin new tooltip context while a tooltip is already in context");
+    if CURRENT_TOOLTIP ~= nil and tooltip ~= CURRENT_TOOLTIP then
+        return false;
+    end
+
     CURRENT_TOOLTIP = tooltip;
+    return true;
 end
 
 function Tooltips.GetCurrentTooltip()
@@ -55,11 +59,11 @@ end
 ------------
 
 function Tooltips.GetKeyColor()
-    return WHITE_FONT_COLOR;
+    return Datamine.Settings.GetColor("TooltipKeyColor");
 end
 
 function Tooltips.GetValueColor()
-    return HIGHLIGHT_FONT_COLOR;
+    return Datamine.Settings.GetColor("TooltipValueColor");
 end
 
 ------------
@@ -70,7 +74,7 @@ function Tooltips.ColorKeyValueText(key, value)
 end
 
 function Tooltips.FormatKeyValuePair(key, value)
-    return Tooltips.ColorKeyValueText(key .. ":", tostring(value));
+    return Tooltips.ColorKeyValueText(key, tostring(value));
 end
 
 function Tooltips.AddLine(line)
@@ -104,7 +108,9 @@ end
 ------
 
 function Tooltips.OnHyperlinkSet(tooltip, link)
-    Tooltips.Begin(tooltip);
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
 
     local linkType, linkID = string.match(link, "^(%a+):(%d+)");
     local left, right = Tooltips.FormatKeyValuePair(linkType, linkID);
@@ -114,7 +120,9 @@ function Tooltips.OnHyperlinkSet(tooltip, link)
 end
 
 function Tooltips.OnTooltipSetItem(tooltip)
-    Tooltips.Begin(tooltip);
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
 
     local itemLink;
     if tooltip.GetItem then
@@ -150,7 +158,7 @@ function Tooltips.OnTooltipSetItem(tooltip)
         for _, modifier in pairs(item.Modifiers) do
             if modifier.Type and modifier.Value then
                 local modifierType = Datamine.GetEnumValueName(Enum.ItemModification, modifier.Type);
-                Tooltips.FormatAndAddDoubleLine(TAB .. "-" .. modifierType, modifier.Value);
+                Tooltips.FormatAndAddDoubleLine(TAB .. "- " .. modifierType, modifier.Value);
             end
         end
     end
@@ -182,13 +190,103 @@ function Tooltips.OnTooltipSetItem(tooltip)
     tooltip:Show();
 end
 
+function Tooltips.OnTooltipSetSpell(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local spellID;
+    if tooltip.GetSpell then
+        spellID = select(2, tooltip:GetSpell());
+    end
+    if not spellID then
+        Tooltips.End();
+        return;
+    end
+
+    Tooltips.FormatAndAddDoubleLine("SpellID", spellID);
+    Tooltips.End();
+
+    tooltip:Show();
+end
+
+function Tooltips.OnTooltipSetMacro(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local tooltipData = tooltip:GetPrimaryTooltipInfo();
+    local actionSlot = tooltipData.getterArgs[1];
+
+    local macroName = GetActionText(actionSlot);
+    Tooltips.FormatAndAddDoubleLine("Macro Name", macroName);
+
+    local _, spellID = GetActionInfo(actionSlot);
+    local actionKey = IsItemAction(actionSlot) and "Macro Item Slot" or "Macro Spell";
+    Tooltips.FormatAndAddDoubleLine(actionKey, spellID);
+
+    local icon = GetActionTexture(actionSlot);
+    Tooltips.FormatAndAddDoubleLine("Macro Icon", icon);
+
+    Tooltips.End();
+end
+
+function Tooltips.OnTooltipSetToy(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local itemID = tooltip:GetTooltipData().id;
+    Tooltips.FormatAndAddDoubleLine("ItemID", itemID);
+
+    local itemSpellName, itemSpellID = C_Item.GetItemSpell(itemID);
+    if itemSpellName and itemSpellID then
+        Tooltips.FormatAndAddDoubleLine("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
+    end
+
+    local icon = select(3, C_ToyBox.GetToyInfo(itemID));
+    Tooltips.FormatAndAddDoubleLine("Icon", icon);
+
+    Tooltips.End();
+end
+
+function Tooltips.OnTooltipSetMount(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local mountID = tooltip:GetTooltipData().id;
+    Tooltips.FormatAndAddDoubleLine("MountID", mountID);
+
+    local mountInfo = {C_MountJournal.GetMountInfoByID(mountID)};
+    local spellID = mountInfo[2];
+    if not spellID then
+        Tooltips.End();
+        return;
+    end
+
+    Tooltips.FormatAndAddDoubleLine("SpellID", spellID);
+    Tooltips.FormatAndAddDoubleLine("Icon", mountInfo[3]);
+
+    if mountInfo[8] then
+        local faction = mountInfo[9];
+        local factionName = faction == 0 and "Horde" or "Alliance";
+        Tooltips.FormatAndAddDoubleLine("Faction", factionName);
+    end
+
+    Tooltips.FormatAndAddDoubleLine("Skyriding", mountInfo[13]);
+
+    Tooltips.End();
+end
+
 ------------
 -- final setup
 
-Tooltips.HookMethod(ItemRefTooltip, "SetHyperlink", Tooltips.OnHyperlinkSet);
-Tooltips.HookMethod(GameTooltip, "SetHyperlink", Tooltips.OnHyperlinkSet);
-
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, Tooltips.OnTooltipSetItem);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, Tooltips.OnTooltipSetSpell);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Macro, Tooltips.OnTooltipSetMacro);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, Tooltips.OnTooltipSetToy);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, Tooltips.OnTooltipSetMount);
 
 ------------
 

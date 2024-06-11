@@ -19,39 +19,74 @@ L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs y
 L["CONFIG_AUTO_LOAD_MAP_DATA_NAME"] = "Load map data at startup";
 L["CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP"] = "Automatically loads map viewer data at startup. May increase loading times on first login or on reload.";
 
-L["CONFIG_CATEGORY_TOOLTIPS"] = "$Tooltips$";
+L["CONFIG_CATEGORY_TOOLTIPS"] = "Tooltips";
 
 L["CONFIG_HEADER_ITEM_TOOLTIPS"] = "Item Tooltips";
+L["CONFIG_HEADER_SPELL_TOOLTIPS"] = "Spell Tooltips";
+L["CONFIG_HEADER_MACRO_TOOLTIPS"] = "Macro Tooltips";
+L["CONFIG_HEADER_TOY_TOOLTIPS"] = "Toy Tooltips";
+L["CONFIG_HEADER_MOUNT_TOOLTIPS"] = "Mount Tooltips";
 
-L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "$Tooltip data key color$";
-L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "$Description$";
+L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
+L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
 
-L["CONFIG_TOOLTIP_VALUE_COLOR_NAME"] = "$Tooltip data value color$";
-L["CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP"] = "$Description$";
+L["CONFIG_TOOLTIP_VALUE_COLOR_NAME"] = "Data Value Color";
+L["CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP"] = "Color of the data values on tooltips";
 
-L["CONFIG_TOOLTIP_SHOW_ITEM_ID_NAME"] = "Show ItemID";
-L["CONFIG_TOOLTIP_SHOW_ITEM_ID_TOOLTIP"] = "$Show Item ID$";
+-- item tooltips
 
-L["CONFIG_TOOLTIP_SHOW_ITEM_ENCHANT_ID_NAME"] = "Show EnchantID";
-L["CONFIG_TOOLTIP_SHOW_ITEM_ENCHANT_ID_TOOLTIP"] = "$Show enchant ID$";
-
-L["CONFIG_TOOLTIP_SHOW_ITEM_GEMS_NAME"] = "Show GemIDs";
-L["CONFIG_TOOLTIP_SHOW_ITEM_GEMS_TOOLTIP"] = "$Show Gems$";
-
-L["CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT_NAME"] = "Show ItemCreationContext";
-L["CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT_TOOLTIP"] = "$Show ItemContext$";
-
+L["CONFIG_TOOLTIP_SHOW_ITEM_ID_NAME"] = "Show Item ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_ID_TOOLTIP"] = "Show item ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_ENCHANT_ID_NAME"] = "Show Enchant ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_ENCHANT_ID_TOOLTIP"] = "Show enchant ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_GEMS_NAME"] = "Show Gem IDs";
+L["CONFIG_TOOLTIP_SHOW_ITEM_GEMS_TOOLTIP"] = "Show slotted Gem IDs";
+L["CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT_NAME"] = "Show CreationContext";
+L["CONFIG_TOOLTIP_SHOW_ITEM_CONTEXT_TOOLTIP"] = "Show ItemCreationContext name and ID";
 L["CONFIG_TOOLTIP_SHOW_ITEM_BONUSES_NAME"] = "Show Bonus IDs";
-L["CONFIG_TOOLTIP_SHOW_ITEM_BONUSES_TOOLTIP"] = "$Show BonusIDs$";
-
-L["CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS_NAME"] = "Show Item Modifiers";
-L["CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS_TOOLTIP"] = "$Show Item Modifiers$";
-
+L["CONFIG_TOOLTIP_SHOW_ITEM_BONUSES_TOOLTIP"] = "Show item bonus IDs";
+L["CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS_NAME"] = "Show Modifiers";
+L["CONFIG_TOOLTIP_SHOW_ITEM_MODIFIERS_TOOLTIP"] = "Show modifiers";
 L["CONFIG_TOOLTIP_SHOW_ITEM_CRAFTER_GUID_NAME"] = "Show Crafter GUID";
-L["CONFIG_TOOLTIP_SHOW_ITEM_CRAFTER_GUID_TOOLTIP"] = "$Show Crafter GUID$";
-
+L["CONFIG_TOOLTIP_SHOW_ITEM_CRAFTER_GUID_TOOLTIP"] = "For crafted items, shows the GUID of the crafter";
 L["CONFIG_TOOLTIP_SHOW_ITEM_EXTRA_ENCHANT_ID_NAME"] = "Show Extra Enchant ID";
-L["CONFIG_TOOLTIP_SHOW_ITEM_EXTRA_ENCHANT_ID_TOOLTIP"] = "$Show Extra Enchant ID$";
+L["CONFIG_TOOLTIP_SHOW_ITEM_EXTRA_ENCHANT_ID_TOOLTIP"] = "Show extra enchant ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_SPELL_NAME"] = "Show Item Spell";
+L["CONFIG_TOOLTIP_SHOW_ITEM_SPELL_TOOLTIP"] = "Show item spell name and ID";
+L["CONFIG_TOOLTIP_SHOW_ITEM_RELIC_BONUSES_NAME"] = "Show Relic Bonuses";
+L["CONFIG_TOOLTIP_SHOW_ITEM_RELIC_BONUSES_TOOLTIP"] = "Show slotted relic bonuses";
+
+-- spell tooltips
+
+L["CONFIG_TOOLTIP_SHOW_SPELL_ID_NAME"] = "Show Spell ID";
+L["CONFIG_TOOLTIP_SHOW_SPELL_ID_TOOLTIP"] = "Show spell ID";
+
+-- macro tooltips
+
+L["CONFIG_TOOLTIP_SHOW_MACRO_NAME"] = "Show Macro Name";
+L["CONFIG_TOOLTIP_SHOW_MACRO_TOOLTIP"] = "Show macro name";
+L["CONFIG_TOOLTIP_SHOW_MACRO_ACTION_NAME"] = "Show Macro Action";
+L["CONFIG_TOOLTIP_SHOW_MACRO_ACTION_TOOLTIP"] = "Show macro action - either an inventory slot, item or spell";
+L["CONFIG_TOOLTIP_SHOW_MACRO_ICON_NAME"] = "Show Macro Icon";
+L["CONFIG_TOOLTIP_SHOW_MACRO_ICON_TOOLTIP"] = "Show macro icon ID";
+
+-- toy tooltips
+
+L["CONFIG_TOOLTIP_SHOW_TOY_ICON_NAME"] = "Show Toy Icon";
+L["CONFIG_TOOLTIP_SHOW_TOY_ICON_TOOLTIP"] = "Show toy icon ID";
+
+-- mount tooltips
+
+L["CONFIG_TOOLTIP_SHOW_MOUNT_ID_NAME"] = "Show Mount ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_ID_TOOLTIP"] = "Show mount ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_SPELL_NAME"] = "Show Mount Spell ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_SPELL_TOOLTIP"] = "Show mount spell ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_ICON_NAME"] = "Show Mount Icon";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_ICON_TOOLTIP"] = "Show mount icon ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_FACTION_NAME"] = "Show Mount Faction";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_FACTION_TOOLTIP"] = "Show required faction for mount";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_SKYRIDING_NAME"] = "Show Mount Skyriding";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_SKYRIDING_TOOLTIP"] = "Show whether the mount is capable of Skyriding or not";
 
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
