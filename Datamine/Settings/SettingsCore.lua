@@ -151,13 +151,20 @@ end
 Datamine.Settings.CreateHeader = CreateHeader;
 
 local function CreateCheckboxForSetting(category, setting, tooltip)
-    CreateCheckbox(category, setting, tooltip);
-
-    local variable = setting:GetVariable();
-    allSettings[variable] = setting;
+    return CreateCheckbox(category, setting, tooltip);
 end
 
 Datamine.Settings.CreateCheckbox = CreateCheckboxForSetting;
+
+local function CreateDropdown(category, setting, options, tooltip)
+    local initializer = Settings.CreateDropDownInitializer(setting, options, tooltip);
+    local layout = SettingsPanel:GetLayout(category);
+    layout:AddInitializer(initializer);
+
+    return initializer;
+end
+
+Datamine.Settings.CreateDropdown = CreateDropdown;
 
 ------------
 

@@ -1,9 +1,7 @@
+local S = Datamine.Settings;
+
 local Tooltips = {};
 local Hooks = {};
-
-local ID_TYPE = {
-    ITEM = 1
-};
 
 local TAB_SIZE = 2;
 local TAB = strrep(" ", TAB_SIZE);
@@ -59,15 +57,21 @@ end
 ------------
 
 function Tooltips.GetKeyColor()
-    return Datamine.Settings.GetColor("TooltipKeyColor");
+    return S.GetColor("TooltipKeyColor");
 end
 
 function Tooltips.GetValueColor()
-    return Datamine.Settings.GetColor("TooltipValueColor");
+    return S.GetColor("TooltipValueColor");
 end
 
 function Tooltips.ShouldShow(configKey)
-    return Datamine.Settings.GetSetting(configKey);
+    if S.GetSetting("TooltipUseModifier") then
+        if S.IsTooltipModifierDown() then
+            return true;
+        end
+    end
+
+    return S.GetSetting(configKey);
 end
 
 ------------

@@ -24,6 +24,50 @@ do
     S.CreateColorPickerButton(category, setting, name, tooltip);
 end
 
+local useModifierSetting, useModifierInitializer;
+do
+    local variable = "TooltipUseModifier";
+    local name = L.CONFIG_TOOLTIP_USE_MODIFIER_NAME;
+    local tooltip = L.CONFIG_TOOLTIP_USE_MODIFIER_TOOLTIP;
+    local default = false;
+
+    useModifierSetting = S.RegisterSetting(category, variable, name, default);
+    useModifierInitializer = S.CreateCheckbox(category, useModifierSetting, tooltip);
+end
+
+do
+    local function isParentSelected()
+        return S.GetSetting("TooltipUseModifier");
+    end
+
+    local variable = "TooltipModifierKey";
+    local name = L.CONFIG_TOOLTIP_MODIFIER_NAME;
+    local default = "CTRL";
+    local tooltip = L.CONFIG_TOOLTIP_MODIFIER_TOOLTIP;
+
+    local optionTooltips = {
+        [1] = L.CONFIG_TOOLTIP_MODIFIER_ALT_TOOLTIP,
+        [2] = L.CONFIG_TOOLTIP_MODIFIER_CTRL_TOOLTIP,
+        [3] = L.CONFIG_TOOLTIP_MODIFIER_SHIFT_TOOLTIP,
+    };
+
+    local options = Settings.CreateModifiedClickOptions(optionTooltips, true);
+    local setting = S.RegisterSetting(category, variable, name, default);
+    local initializer = S.CreateDropdown(category, setting, options, tooltip);
+    initializer:SetParentInitializer(useModifierInitializer, isParentSelected);
+end
+
+function S.IsTooltipModifierDown()
+    local key = S.GetSetting("TooltipModifierKey");
+    if key == "ALT" then
+        return IsAltKeyDown();
+    elseif key == "CTRL" then
+        return IsControlKeyDown();
+    elseif key == "SHIFT" then
+        return IsShiftKeyDown();
+    end
+end
+
 local function RegisterSettingsTable(settings)
     for _, _setting in ipairs(settings) do
         local variable = _setting.Name;

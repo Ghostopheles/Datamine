@@ -33,6 +33,15 @@ L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
 L["CONFIG_TOOLTIP_VALUE_COLOR_NAME"] = "Data Value Color";
 L["CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP"] = "Color of the data values on tooltips";
 
+L["CONFIG_TOOLTIP_USE_MODIFIER_NAME"] = "Use override modifier";
+L["CONFIG_TOOLTIP_USE_MODIFIER_TOOLTIP"] = "Toggles usage of the tooltip override modifier";
+
+L["CONFIG_TOOLTIP_MODIFIER_NAME"] = "Override modifier";
+L["CONFIG_TOOLTIP_MODIFIER_TOOLTIP"] = "When holding this key, all tooltip data will be shown regardless of the settings below";
+L["CONFIG_TOOLTIP_MODIFIER_ALT_TOOLTIP"] = "Override settings when holding the " .. ALT_KEY;
+L["CONFIG_TOOLTIP_MODIFIER_CTRL_TOOLTIP"] = "Override settings when holding the " .. CTRL_KEY;
+L["CONFIG_TOOLTIP_MODIFIER_SHIFT_TOOLTIP"] = "Override settings when holding the " .. SHIFT_KEY;
+
 -- item tooltips
 
 L["CONFIG_TOOLTIP_SHOW_ITEM_ID_NAME"] = "Show Item ID";
