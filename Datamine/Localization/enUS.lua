@@ -26,6 +26,7 @@ L["CONFIG_HEADER_SPELL_TOOLTIPS"] = "Spell Tooltips";
 L["CONFIG_HEADER_MACRO_TOOLTIPS"] = "Macro Tooltips";
 L["CONFIG_HEADER_TOY_TOOLTIPS"] = "Toy Tooltips";
 L["CONFIG_HEADER_MOUNT_TOOLTIPS"] = "Mount Tooltips";
+L["CONFIG_HEADER_UNIT_TOOLTIPS"] = "Unit Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -106,6 +107,13 @@ L["CONFIG_TOOLTIP_SHOW_MOUNT_ANIM_NAME"] = "Show Anim ID";
 L["CONFIG_TOOLTIP_SHOW_MOUNT_ANIM_TOOLTIP"] = "Show mount summon animation ID";
 L["CONFIG_TOOLTIP_SHOW_MOUNT_SPELLVISUAL_NAME"] = "Show SpellVisualKit ID";
 L["CONFIG_TOOLTIP_SHOW_MOUNT_SPELLVISUAL_TOOLTIP"] = "Show spell visual kit ID";
+
+-- unit tooltips
+
+L["CONFIG_TOOLTIP_SHOW_UNIT_TOKEN_NAME"] = "Show Unit Token";
+L["CONFIG_TOOLTIP_SHOW_UNIT_TOKEN_TOOLTIP"] = "Show unit token";
+L["CONFIG_TOOLTIP_SHOW_UNIT_CREATURE_ID_NAME"] = "Show Creature ID";
+L["CONFIG_TOOLTIP_SHOW_UNIT_CREATURE_ID_TOOLTIP"] = "Show creature ID for NPCs";
 
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";

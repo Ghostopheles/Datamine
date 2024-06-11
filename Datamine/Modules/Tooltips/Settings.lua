@@ -247,3 +247,20 @@ local mountSettings = {
 };
 
 RegisterSettingsTable(mountSettings);
+
+-- UNIT TOOLTIPS
+
+S.CreateHeader(category, L.CONFIG_HEADER_UNIT_TOOLTIPS);
+
+local unitSettings = {
+    [1] = {
+        Name = "TooltipUnitShowUnitToken",
+        LocKey = "CONFIG_TOOLTIP_SHOW_UNIT_TOKEN",
+    },
+    [2] = {
+        Name = "TooltipUnitShowCreatureID",
+        LocKey = "CONFIG_TOOLTIP_SHOW_UNIT_CREATURE_ID",
+    },
+};
+
+RegisterSettingsTable(unitSettings);

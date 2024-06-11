@@ -339,6 +339,25 @@ function Tooltips.OnTooltipSetMount(tooltip)
     Tooltips.End();
 end
 
+function Tooltips.OnTooltipSetUnit(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local _, unit, guid = tooltip:GetUnit();
+
+    if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
+        Tooltips.FormatAndAddDoubleLine("UnitToken", unit);
+    end
+
+    if Tooltips.ShouldShow("TooltipUnitShowCreatureID") and string.match(guid, "Creature") then
+        local creatureID = Datamine.Database:GetCreatureIDFromGUID(guid);
+        Tooltips.FormatAndAddDoubleLine("CreatureID", creatureID);
+    end
+
+    Tooltips.End();
+end
+
 ------------
 -- final setup
 
@@ -347,6 +366,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, Tooltips.OnT
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Macro, Tooltips.OnTooltipSetMacro);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, Tooltips.OnTooltipSetToy);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, Tooltips.OnTooltipSetMount);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, Tooltips.OnTooltipSetUnit);
 
 ------------
 
