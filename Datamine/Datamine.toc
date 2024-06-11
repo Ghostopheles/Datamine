@@ -47,6 +47,7 @@ Modules/AchievementInfo.lua
 Modules/Collector/CollectorMixin.lua
 Modules/Collector/Collector.xml
 
+Modules/Tooltips/Settings.lua
 Modules/Tooltips/Structures.lua
 Modules/Tooltips/Tooltips.lua
 
