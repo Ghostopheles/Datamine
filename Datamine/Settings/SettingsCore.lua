@@ -3,6 +3,7 @@ local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
 local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox;
+local CreateDropdownInitializer = Settings.CreateDropdownInitializer or Settings.CreateDropDownInitializer;
 
 Datamine.Settings = {};
 
@@ -157,7 +158,7 @@ end
 Datamine.Settings.CreateCheckbox = CreateCheckboxForSetting;
 
 local function CreateDropdown(category, setting, options, tooltip)
-    local initializer = Settings.CreateDropDownInitializer(setting, options, tooltip);
+    local initializer = CreateDropdownInitializer(setting, options, tooltip);
     local layout = SettingsPanel:GetLayout(category);
     layout:AddInitializer(initializer);
 
