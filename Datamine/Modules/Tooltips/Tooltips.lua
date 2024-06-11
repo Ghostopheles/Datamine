@@ -115,6 +115,10 @@ end
 
 ------
 
+-- to add new data points to tooltips, find the appropriate function below (or make a new one)
+-- add the relevant config key to Settings.lua, with lockeys and default value if it's not true
+-- data shouldn't be shown without first going through a Tooltips.ShouldShow check
+
 function Tooltips.OnHyperlinkSet(tooltip, link)
     if not Tooltips.Begin(tooltip) then
         return;
