@@ -53,11 +53,18 @@ local DEFAULTS = {
 
 local ITEM_LINK_NUM_GEM_SLOTS = 4;
 
-local ItemLinkMixin = CopyTable(DEFAULTS);
+local ItemLinkMixin = {};
 
 function ItemLinkMixin:Init(itemLink)
     local linkType, linkData, displayText = LinkUtil.ExtractLink(itemLink);
     assert(linkType == "item", "Invalid link type");
+
+    self.GemIDs = {};
+    self.BonusIDs = {};
+    self.Modifiers = {};
+    self.Relic1BonusIDs = {};
+    self.Relic2BonusIDs = {};
+    self.Relic3BonusIDs = {};
 
     local data = strsplittable(":", linkData);
 
