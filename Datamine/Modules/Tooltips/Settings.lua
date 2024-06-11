@@ -29,7 +29,7 @@ local function RegisterSettingsTable(settings)
         local variable = _setting.Name;
         local name = L[_setting.LocKey .. "_NAME"];
         local tooltip = L[_setting.LocKey .. "_TOOLTIP"];
-        local default = true;
+        local default = _setting.Default or true;
 
         local setting = S.RegisterSetting(category, variable, name, default);
         S.CreateCheckbox(category, setting, tooltip);
@@ -164,7 +164,27 @@ local mountSettings = {
     [5] = {
         Name = "TooltipMountShowSkyriding",
         LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_SKYRIDING",
-    }
+    },
+    [6] = {
+        Name = "TooltipMountShowDisplay",
+        LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_DISPLAY",
+    },
+    [7] = {
+        Name = "TooltipMountShowType",
+        LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_TYPE",
+    },
+    [8] = {
+        Name = "TooltipMountShowModelScene",
+        LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_MODELSCENE",
+    },
+    [9] = {
+        Name = "TooltipMountShowAnim",
+        LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_ANIM",
+    },
+    [10] = {
+        Name = "TooltipMountShowSpellVisual",
+        LocKey = "CONFIG_TOOLTIP_SHOW_MOUNT_SPELLVISUAL",
+    },
 };
 
 RegisterSettingsTable(mountSettings);

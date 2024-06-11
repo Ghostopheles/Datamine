@@ -186,8 +186,6 @@ function Tooltips.OnTooltipSetItem(tooltip)
     end
 
     Tooltips.End();
-
-    tooltip:Show();
 end
 
 function Tooltips.OnTooltipSetSpell(tooltip)
@@ -206,8 +204,6 @@ function Tooltips.OnTooltipSetSpell(tooltip)
 
     Tooltips.FormatAndAddDoubleLine("SpellID", spellID);
     Tooltips.End();
-
-    tooltip:Show();
 end
 
 function Tooltips.OnTooltipSetMacro(tooltip)
@@ -275,6 +271,13 @@ function Tooltips.OnTooltipSetMount(tooltip)
     end
 
     Tooltips.FormatAndAddDoubleLine("Skyriding", mountInfo[13]);
+
+    local extraMountInfo = {C_MountJournal.GetMountInfoExtraByID(mountID)};
+    Tooltips.FormatAndAddDoubleLine("DisplayID", extraMountInfo[1]);
+    Tooltips.FormatAndAddDoubleLine("MountTypeID", extraMountInfo[5]);
+    Tooltips.FormatAndAddDoubleLine("UiModelSceneID", extraMountInfo[6]);
+    Tooltips.FormatAndAddDoubleLine("AnimID", extraMountInfo[7]);
+    Tooltips.FormatAndAddDoubleLine("SpellVisualKitID", extraMountInfo[8]);
 
     Tooltips.End();
 end

@@ -87,6 +87,16 @@ L["CONFIG_TOOLTIP_SHOW_MOUNT_FACTION_NAME"] = "Show Mount Faction";
 L["CONFIG_TOOLTIP_SHOW_MOUNT_FACTION_TOOLTIP"] = "Show required faction for mount";
 L["CONFIG_TOOLTIP_SHOW_MOUNT_SKYRIDING_NAME"] = "Show Mount Skyriding";
 L["CONFIG_TOOLTIP_SHOW_MOUNT_SKYRIDING_TOOLTIP"] = "Show whether the mount is capable of Skyriding or not";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_DISPLAY_NAME"] = "Show CreatureDisplayInfo ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_DISPLAY_TOOLTIP"] = "Show mount display ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_TYPE_NAME"] = "Show Mount Type ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_TYPE_TOOLTIP"] = "Show mount capabilities ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_MODELSCENE_NAME"] = "Show UiModelSceneID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_MODELSCENE_TOOLTIP"] = "Show UiModelSceneID for mount display";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_ANIM_NAME"] = "Show Anim ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_ANIM_TOOLTIP"] = "Show mount summon animation ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_SPELLVISUAL_NAME"] = "Show SpellVisualKit ID";
+L["CONFIG_TOOLTIP_SHOW_MOUNT_SPELLVISUAL_TOOLTIP"] = "Show spell visual kit ID";
 
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
