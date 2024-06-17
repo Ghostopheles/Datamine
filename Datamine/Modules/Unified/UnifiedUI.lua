@@ -266,6 +266,10 @@ function Datamine.Unified.AddToolbarButton(atlasName, callback)
     toolbar:AddButton(atlasName, callback);
 end
 
+function Datamine.Unified.GetIconPath(iconName, extension)
+    return "Interface/AddOns/Datamine/Assets/Icons/" .. iconName .. (extension or ".png");
+end
+
 -------------
 
 function Datamine.Unified.AddBackgroundToFrame(frame, color)
