@@ -273,3 +273,78 @@ local unitSettings = {
 };
 
 RegisterSettingsTable(unitSettings);
+
+-- AURA TOOLTIPS
+
+S.CreateHeader(category, L.CONFIG_HEADER_AURA_TOOLTIPS);
+
+local auraSettings = {
+    [1] = {
+        Name = "TooltipAuraShowSpellID",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_ID",
+    },
+    [2] = {
+        Name = "TooltipAuraShowIcon",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_ICON",
+    },
+    [3] = {
+        Name = "TooltipAuraShowDispel",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_DISPEL",
+        Default = false,
+    },
+    [4] = {
+        Name = "TooltipAuraShowIsBossAura",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_BOSS_AURA",
+        Default = false,
+    },
+    [5] = {
+        Name = "TooltipAuraShowCharges",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_CHARGES",
+        Default = false,
+    },
+    [6] = {
+        Name = "TooltipAuraShowMaxCharges",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_MAX_CHARGES",
+        Default = false,
+    },
+    [7] = {
+        Name = "TooltipAuraShowSourceUnit",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_SOURCE_UNIT",
+    },
+    [8] = {
+        Name = "TooltipAuraShowSourceName",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_SOURCE",
+        Default = false,
+    },
+    [9] = {
+        Name = "TooltipAuraShowInstanceID",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_INSTANCE_ID",
+    },
+    [10] = {
+        Name = "TooltipAuraShowStacks",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_STACKS",
+        Default = false,
+    },
+    [11] = {
+        Name = "TooltipAuraShowPlayerApplicable",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_PLAYER_APPLICABLE",
+        Default = false,
+    },
+    [12] = {
+        Name = "TooltipAuraShowFromPlayerOrPet",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_FROM_PLAYER_OR_PET",
+        Default = false,
+    },
+    [13] = {
+        Name = "TooltipAuraShowPoints",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_POINTS",
+        Default = false,
+    },
+    [14] = {
+        Name = "TooltipAuraShowIsPrivate",
+        LocKey = "CONFIG_TOOLTIP_SHOW_AURA_IS_PRIVATE",
+        Default = false,
+    },
+};
+
+RegisterSettingsTable(auraSettings);

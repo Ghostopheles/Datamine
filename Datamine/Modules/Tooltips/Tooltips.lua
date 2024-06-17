@@ -372,6 +372,86 @@ function Tooltips.OnTooltipSetUnit(tooltip)
     Tooltips.End();
 end
 
+function Tooltips.OnTooltipSetUnitAura(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
+    local spellID = tooltipInfo.tooltipData.id;
+
+    if Tooltips.ShouldShow("TooltipAuraShowSpellID") then
+        Tooltips.Append("SpellID", spellID);
+    end
+
+    local args = tooltipInfo.getterArgs;
+    local aura = C_UnitAuras.GetAuraDataByIndex(unpack(args));
+
+    if not aura then
+        Tooltips.End();
+        return;
+    end
+
+    if Tooltips.ShouldShow("TooltipAuraShowIcon") then
+        Tooltips.Append("Icon", aura.icon);
+    end
+
+    if aura.dispelName and Tooltips.ShouldShow("TooltipAuraShowDispel") then
+        Tooltips.Append("DispelName", aura.dispelName);
+    end
+
+    if Tooltips.ShouldShow("TooltipAuraShowIsBossAura") then
+        Tooltips.Append("IsBossAura", aura.isBossAura);
+    end
+
+    if aura.charges and Tooltips.ShouldShow("TooltipAuraShowCharges") then
+        Tooltips.Append("Charges", aura.charges);
+    end
+
+    if aura.maxCharges and Tooltips.ShouldShow("TooltipAuraShowMaxCharges") then
+        Tooltips.Append("MaxCharges", aura.maxCharges);
+    end
+
+    if aura.sourceUnit then
+        if Tooltips.ShouldShow("TooltipAuraShowSourceUnit") then
+            Tooltips.Append("SourceUnit", aura.sourceUnit);
+        end
+
+        if Tooltips.ShouldShow("TooltipAuraShowSourceName") then
+            Tooltips.Append("SourceName", UnitName(aura.sourceUnit));
+        end
+    end
+
+    if Tooltips.ShouldShow("TooltipAuraShowInstanceID") then
+        Tooltips.Append("AuraInstanceID", aura.auraInstanceID);
+    end
+
+    if (aura.applications > 0) and Tooltips.ShouldShow("TooltipAuraShowStacks") then
+        Tooltips.Append("Stacks", aura.applications);
+    end
+
+    if Tooltips.ShouldShow("TooltipAuraShowPlayerApplicable") then
+        Tooltips.Append("PlayerApplicable", aura.canApplyAura);
+    end
+
+    if Tooltips.ShouldShow("TooltipAuraShowFromPlayerOrPet") then
+        Tooltips.Append("FromPlayerOrPet", aura.isFromPlayerOrPlayerPet);
+    end
+
+    if aura.points and #aura.points > 0 and Tooltips.ShouldShow("TooltipAuraShowPoints") then
+        Tooltips.AddLine("Points");
+        for k, v in pairs(aura.points) do
+            Tooltips.Append(format(TAB .. "- [%d]", k), v);
+        end
+    end
+
+    if Tooltips.ShouldShow("TooltipAuraShowIsPrivate") then
+        Tooltips.Append("IsPrivateAura", C_UnitAuras.AuraIsPrivate(spellID));
+    end
+
+    Tooltips.End();
+end
+
 ------------
 -- the joys of not supporting classic omegalul
 
@@ -381,6 +461,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Macro, Tooltips.OnT
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, Tooltips.OnTooltipSetToy);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, Tooltips.OnTooltipSetMount);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, Tooltips.OnTooltipSetUnit);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, Tooltips.OnTooltipSetUnitAura);
 
 ------------
 

@@ -27,6 +27,7 @@ L["CONFIG_HEADER_MACRO_TOOLTIPS"] = "Macro Tooltips";
 L["CONFIG_HEADER_TOY_TOOLTIPS"] = "Toy Tooltips";
 L["CONFIG_HEADER_MOUNT_TOOLTIPS"] = "Mount Tooltips";
 L["CONFIG_HEADER_UNIT_TOOLTIPS"] = "Unit Tooltips";
+L["CONFIG_HEADER_AURA_TOOLTIPS"] = "Aura Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -118,6 +119,39 @@ L["CONFIG_TOOLTIP_SHOW_UNIT_DISPLAY_ID_NAME"] = "Show Display ID";
 L["CONFIG_TOOLTIP_SHOW_UNIT_DISPLAY_ID_TOOLTIP"] = "Show CreatureDisplayInfoID for NPCs";
 L["CONFIG_TOOLTIP_SHOW_UNIT_NPC_CLASS_NAME"] = "Show NPC Class";
 L["CONFIG_TOOLTIP_SHOW_UNIT_NPC_CLASS_TOOLTIP"] = "Show class name for NPCs";
+
+-- unit tooltips
+
+L["CONFIG_TOOLTIP_SHOW_AURA_ID_NAME"] = "Show Aura Spell ID";
+L["CONFIG_TOOLTIP_SHOW_AURA_ID_TOOLTIP"] = "Show aura spell ID";
+L["CONFIG_TOOLTIP_SHOW_AURA_ICON_NAME"] = "Show Icon ID";
+L["CONFIG_TOOLTIP_SHOW_AURA_ICON_TOOLTIP"] = "Show aura icon ID";
+L["CONFIG_TOOLTIP_SHOW_AURA_DISPEL_NAME"] = "Show Dispel Name";
+L["CONFIG_TOOLTIP_SHOW_AURA_DISPEL_TOOLTIP"] = "Show dispel name for dispellable auras";
+L["CONFIG_TOOLTIP_SHOW_AURA_BOSS_AURA_NAME"] = "Show Boss Aura";
+L["CONFIG_TOOLTIP_SHOW_AURA_BOSS_AURA_TOOLTIP"] = "Show whether or not the aura was applied by a boss";
+L["CONFIG_TOOLTIP_SHOW_AURA_CHARGES_NAME"] = "Show Charges";
+L["CONFIG_TOOLTIP_SHOW_AURA_CHARGES_TOOLTIP"] = "Show aura charges";
+L["CONFIG_TOOLTIP_SHOW_AURA_MAX_CHARGES_NAME"] = "Show Max Charges";
+L["CONFIG_TOOLTIP_SHOW_AURA_MAX_CHARGES_TOOLTIP"] = "Show aura max charges";
+L["CONFIG_TOOLTIP_SHOW_AURA_SOURCE_UNIT_NAME"] = "Show Source Unit Token";
+L["CONFIG_TOOLTIP_SHOW_AURA_SOURCE_UNIT_TOOLTIP"] = "Show the unit token for the unit that applied the aura";
+L["CONFIG_TOOLTIP_SHOW_AURA_SOURCE_NAME"] = "Show Source Name";
+L["CONFIG_TOOLTIP_SHOW_AURA_SOURCE_TOOLTIP"] = "Show the name of the unit that applied the aura. |cnRED_FONT_COLOR:May be inaccurate|r";
+L["CONFIG_TOOLTIP_SHOW_AURA_INSTANCE_ID_NAME"] = "Show Aura Instance ID";
+L["CONFIG_TOOLTIP_SHOW_AURA_INSTANCE_ID_TOOLTIP"] = "Show aura instance ID for use with the C_UnitAuras APIs";
+L["CONFIG_TOOLTIP_SHOW_AURA_STACKS_NAME"] = "Show Aura Stacks";
+L["CONFIG_TOOLTIP_SHOW_AURA_STACKS_TOOLTIP"] = "Show aura stacks";
+L["CONFIG_TOOLTIP_SHOW_AURA_PLAYER_APPLICABLE_NAME"] = "Show Player Applicable";
+L["CONFIG_TOOLTIP_SHOW_AURA_PLAYER_APPLICABLE_TOOLTIP"] = "Show if the aura can be applied by a player action";
+L["CONFIG_TOOLTIP_SHOW_AURA_FROM_PLAYER_OR_PET_NAME"] = "Show From Player or Pet";
+L["CONFIG_TOOLTIP_SHOW_AURA_FROM_PLAYER_OR_PET_TOOLTIP"] = "Show if the aura was applied by a player or a player's pet";
+L["CONFIG_TOOLTIP_SHOW_AURA_POINTS_NAME"] = "Show Aura Points";
+L["CONFIG_TOOLTIP_SHOW_AURA_POINTS_TOOLTIP"] = "Show aura points. Values vary based on source spell";
+L["CONFIG_TOOLTIP_SHOW_AURA_IS_PRIVATE_NAME"] = "Show Private";
+L["CONFIG_TOOLTIP_SHOW_AURA_IS_PRIVATE_TOOLTIP"] = "Show whether or not the aura is a private aura";
+
+-- end tooltips
 
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
