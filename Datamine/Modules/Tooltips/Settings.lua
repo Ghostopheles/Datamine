@@ -379,3 +379,50 @@ local achievementSettings = {
 };
 
 RegisterSettingsTable(achievementSettings);
+
+-- BATTLE PET TOOLTIPS
+
+S.CreateHeader(category, L.CONFIG_HEADER_BATTLE_PET_TOOLTIPS);
+
+local battlePetSettings = {
+    [1] = {
+        Name = "TooltipBattlePetShowSpeciesID",
+        LocKey = "BATTLE_PET_SPECIES",
+    },
+    [2] = {
+        Name = "TooltipBattlePetShowLevel",
+        LocKey = "BATTLE_PET_LEVEL",
+        Default = false,
+    },
+    [3] = {
+        Name = "TooltipBattlePetShowBreedQuality",
+        LocKey = "BATTLE_PET_BREED_QUALITY",
+        Default = false,
+    },
+    [4] = {
+        Name = "TooltipBattlePetShowMaxHealth",
+        LocKey = "BATTLE_PET_MAX_HEALTH",
+        Default = false,
+    },
+    [5] = {
+        Name = "TooltipBattlePetShowPower",
+        LocKey = "BATTLE_PET_POWER",
+        Default = false,
+    },
+    [6] = {
+        Name = "TooltipBattlePetShowSpeed",
+        LocKey = "BATTLE_PET_SPEED",
+        Default = false,
+    },
+    [7] = {
+        Name = "TooltipBattlePetShowPetID",
+        LocKey = "BATTLE_PET_ID",
+        Default = false,
+    },
+    [8] = {
+        Name = "TooltipBattlePetShowDisplayID",
+        LocKey = "BATTLE_PET_DISPLAY_ID",
+    },
+};
+
+RegisterSettingsTable(battlePetSettings);

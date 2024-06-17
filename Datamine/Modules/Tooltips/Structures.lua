@@ -163,6 +163,36 @@ end
 
 ------------
 
+local BATTLEPET_KEYS = {
+    "SpeciesID",
+    "Level",
+    "BreedQuality",
+    "MaxHealth",
+    "Power",
+    "Speed",
+    "BattlePetID",
+    "DisplayID"
+};
+
+local BattlePetLinkMixin = {};
+
+function BattlePetLinkMixin:Init(battlePetLink)
+    local linkType, linkData, displayText = LinkUtil.ExtractLink(battlePetLink);
+    assert(linkType == "battlepet", "Invalid link type");
+
+    local data = strsplittable(":", linkData);
+
+    local i = 1;
+    for _, key in pairs(BATTLEPET_KEYS) do
+        self[key] = data[i];
+        i = i + 1;
+    end
+
+    self.DisplayText = displayText;
+end
+
+------------
+
 Datamine.Structures = {};
 
 function Datamine.Structures.CreateItemLink(itemLink)
@@ -171,4 +201,8 @@ end
 
 function Datamine.Structures.CreateAchievementLink(achievementLink)
     return CreateAndInitFromMixin(AchievementLinkMixin, achievementLink);
+end
+
+function Datamine.Structures.CreateBattlePetLink(battlePetLink)
+    return CreateAndInitFromMixin(BattlePetLinkMixin, battlePetLink);
 end

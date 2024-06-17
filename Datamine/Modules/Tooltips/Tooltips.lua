@@ -120,6 +120,10 @@ function Tooltips.ParseAchievementLink(achievementLink)
     return Datamine.Structures.CreateAchievementLink(achievementLink);
 end
 
+function Tooltips.ParseBattlePetLink(battlePetLink)
+    return Datamine.Structures.CreateBattlePetLink(battlePetLink);
+end
+
 function Tooltips.GetUnitDisplayID(creatureID)
     MODEL:SetCreature(creatureID);
     return MODEL:GetDisplayInfo();
@@ -497,6 +501,55 @@ function Tooltips.OnTooltipSetAchievement(tooltip)
     Tooltips.End();
 end
 
+-- companion pet == battle pet for our use case
+function Tooltips.OnTooltipSetCompanionPet(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
+    local petID = tooltipInfo.getterArgs[1];
+    local link = Tooltips.ParseBattlePetLink(C_PetJournal.GetBattlePetLink(petID));
+    if not link then
+        Tooltips.End();
+        return;
+    end
+
+    if Tooltips.ShouldShow("TooltipBattlePetShowSpeciesID") then
+        Tooltips.Append("SpeciesID", link.SpeciesID);
+    end
+
+    if Tooltips.ShouldShow("TooltipBattlePetShowLevel") then
+        Tooltips.Append("Level", link.Level);
+    end
+
+    if Tooltips.ShouldShow("TooltipBattlePetShowBreedQuality") then
+        Tooltips.Append("BreedQuality", link.BreedQuality);
+    end
+
+    if Tooltips.ShouldShow("TooltipBattlePetShowMaxHealth") then
+        Tooltips.Append("MaxHealth", link.MaxHealth);
+    end
+
+    if link.Power and Tooltips.ShouldShow("TooltipBattlePetShowPower") then
+        Tooltips.Append("Power", link.Power);
+    end
+
+    if link.Speed and Tooltips.ShouldShow("TooltipBattlePetShowSpeed") then
+        Tooltips.Append("Speed", link.Speed);
+    end
+
+    if Tooltips.ShouldShow("TooltipBattlePetShowPetID") then
+        Tooltips.Append("PetID", petID);
+    end
+
+    if link.DisplayID and Tooltips.ShouldShow("TooltipBattlePetShowDisplayID") then
+        Tooltips.Append("DisplayID", link.DisplayID);
+    end
+
+    Tooltips.End();
+end
+
 ------------
 -- the joys of not supporting classic omegalul
 
@@ -508,6 +561,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, Tooltips.OnT
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, Tooltips.OnTooltipSetUnit);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, Tooltips.OnTooltipSetUnitAura);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, Tooltips.OnTooltipSetAchievement);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, Tooltips.OnTooltipSetCompanionPet);
 
 ------------
 

@@ -29,7 +29,7 @@ L["CONFIG_HEADER_MOUNT_TOOLTIPS"] = "Mount Tooltips";
 L["CONFIG_HEADER_UNIT_TOOLTIPS"] = "Unit Tooltips";
 L["CONFIG_HEADER_AURA_TOOLTIPS"] = "Aura Tooltips";
 L["CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS"] = "Achievement Tooltips";
-
+L["CONFIG_HEADER_BATTLE_PET_TOOLTIPS"] = "Battle Pet Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -165,6 +165,26 @@ L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_DATE_NAME"] = "Show Completion Date";
 L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_DATE_TOOLTIP"] = "Show the date the achievement was completed, if applicable";
 L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_CRITERIA_NAME"] = "Show Achievement Criteria";
 L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_CRITERIA_TOOLTIP"] = "Show criteria for achievement completion";
+
+-- battle pet tooltips
+
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_SPECIES_NAME"] = "Show Battle Pet Species ID";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_SPECIES_TOOLTIP"] = "Show species ID";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_LEVEL_NAME"] = "Show Battle Pet Level";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_LEVEL_TOOLTIP"] = "Show battle pet level";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_BREED_QUALITY_NAME"] = "Show Breed Quality";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_BREED_QUALITY_TOOLTIP"] = "Show battle pet breed quality";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_MAX_HEALTH_NAME"] = "Show Battle Pet Max Health";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_MAX_HEALTH_TOOLTIP"] = "Show the pet's max health";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_POWER_NAME"] = "Show Battle Pet Power";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_POWER_TOOLTIP"] = "Show battle pet power stat";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_SPEED_NAME"] = "Show Battle Pet Speed";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_SPEED_TOOLTIP"] = "Show battle pet speed stat";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_ID_NAME"] = "Show Battle Pet GUID";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_ID_TOOLTIP"] = "Show battle pet GUID, also known as the petID";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_DISPLAY_ID_NAME"] = "Show Battle Pet Display ID";
+L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_DISPLAY_ID_TOOLTIP"] = "Show the CreatureDisplayInfoID for the battle pet";
+
 
 -- end tooltips
 
