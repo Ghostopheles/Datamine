@@ -1,7 +1,7 @@
 # Datamine v2.2.2
 
 ##### Added
-* Datamine can now add various IDs to item, spell, macro, mount and toy tooltips, configurable in the Blizzard settings. Support for more tooltip types to come
+* Datamine can now add various IDs to tooltips, configurable in the Blizzard settings.
 
 # Datamine v2.2.1
 
