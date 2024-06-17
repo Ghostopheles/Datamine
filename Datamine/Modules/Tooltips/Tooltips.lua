@@ -103,7 +103,7 @@ function Tooltips.AddDoubleLine(left, right, show)
     end
 end
 
-function Tooltips.FormatAndAddDoubleLine(key, value)
+function Tooltips.Append(key, value)
     if type(value) == "table" then
         value = strjoin(", ", unpack(value));
     end
@@ -144,23 +144,23 @@ function Tooltips.OnTooltipSetItem(tooltip)
     local item = Tooltips.ParseItemLink(itemLink);
 
     if Tooltips.ShouldShow("TooltipItemShowItemID") then
-        Tooltips.FormatAndAddDoubleLine("ItemID", item.ItemID);
+        Tooltips.Append("ItemID", item.ItemID);
     end
 
     if item.EnchantID and Tooltips.ShouldShow("TooltipItemShowEnchantID") then
-        Tooltips.FormatAndAddDoubleLine("EnchantID", item.EnchantID);
+        Tooltips.Append("EnchantID", item.EnchantID);
     end
 
     if item.ExtraEnchantID and Tooltips.ShouldShow("TooltipItemShowExtraEnchantID") then
-        Tooltips.FormatAndAddDoubleLine("ExtraEnchantID", item.ExtraEnchantID);
+        Tooltips.Append("ExtraEnchantID", item.ExtraEnchantID);
     end
 
     if (#item.GemIDs > 0) and Tooltips.ShouldShow("TooltipItemShowGemIDs") then
-        Tooltips.FormatAndAddDoubleLine("GemIDs", item.GemIDs);
+        Tooltips.Append("GemIDs", item.GemIDs);
     end
 
     if (item.NumBonusIDs > 0) and Tooltips.ShouldShow("TooltipItemShowBonusIDs") then
-        Tooltips.FormatAndAddDoubleLine("BonusIDs", item.BonusIDs);
+        Tooltips.Append("BonusIDs", item.BonusIDs);
     end
 
     if (item.NumModifiers > 0) and Tooltips.ShouldShow("TooltipItemShowModifiers") then
@@ -168,7 +168,7 @@ function Tooltips.OnTooltipSetItem(tooltip)
         for _, modifier in pairs(item.Modifiers) do
             if modifier.Type and modifier.Value then
                 local modifierType = Datamine.GetEnumValueName(Enum.ItemModification, modifier.Type);
-                Tooltips.FormatAndAddDoubleLine(TAB .. "- " .. modifierType, modifier.Value);
+                Tooltips.Append(TAB .. "- " .. modifierType, modifier.Value);
             end
         end
     end
@@ -178,24 +178,24 @@ function Tooltips.OnTooltipSetItem(tooltip)
             local numKeyName = "Relic" .. i .. "NumBonusIDs";
             if (item[numKeyName] or 0) > 0 then
                 local keyName = "Relic" .. i .. "BonusIDs";
-                Tooltips.FormatAndAddDoubleLine(keyName, item[keyName]);
+                Tooltips.Append(keyName, item[keyName]);
             end
         end
     end
 
     if item.ItemContext and Tooltips.ShouldShow("TooltipItemShowItemContext") then
         local contextType = Datamine.GetEnumValueName(Enum.ItemCreationContext, item.ItemContext);
-        Tooltips.FormatAndAddDoubleLine("ItemContext", format("%s (%d)", contextType, item.ItemContext));
+        Tooltips.Append("ItemContext", format("%s (%d)", contextType, item.ItemContext));
     end
 
     if item.CrafterGUID and Tooltips.ShouldShow("TooltipItemShowCrafterGUID") then
-        Tooltips.FormatAndAddDoubleLine("CrafterGUID", item.CrafterGUID);
+        Tooltips.Append("CrafterGUID", item.CrafterGUID);
     end
 
     if Tooltips.ShouldShow("TooltipItemShowItemSpellID") then
         local itemSpellName, itemSpellID = C_Item.GetItemSpell(item.ItemID);
         if itemSpellName and itemSpellID then
-            Tooltips.FormatAndAddDoubleLine("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
+            Tooltips.Append("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
         end
     end
 
@@ -217,7 +217,7 @@ function Tooltips.OnTooltipSetSpell(tooltip)
     end
 
     if Tooltips.ShouldShow("TooltipSpellShowSpellID") then
-        Tooltips.FormatAndAddDoubleLine("SpellID", spellID);
+        Tooltips.Append("SpellID", spellID);
     end
 
     Tooltips.End();
@@ -233,18 +233,18 @@ function Tooltips.OnTooltipSetMacro(tooltip)
 
     if Tooltips.ShouldShow("TooltipMacroShowMacroName") then
         local macroName = GetActionText(actionSlot);
-        Tooltips.FormatAndAddDoubleLine("Macro Name", macroName);
+        Tooltips.Append("Macro Name", macroName);
     end
 
     if Tooltips.ShouldShow("TooltipMacroShowMacroAction") then
         local _, spellID = GetActionInfo(actionSlot);
         local actionKey = IsItemAction(actionSlot) and "Macro Item Slot" or "Macro Spell";
-        Tooltips.FormatAndAddDoubleLine(actionKey, spellID);
+        Tooltips.Append(actionKey, spellID);
     end
 
     if Tooltips.ShouldShow("TooltipMacroShowMacroIcon") then
         local icon = GetActionTexture(actionSlot);
-        Tooltips.FormatAndAddDoubleLine("Macro Icon", icon);
+        Tooltips.Append("Macro Icon", icon);
     end
 
     Tooltips.End();
@@ -258,19 +258,19 @@ function Tooltips.OnTooltipSetToy(tooltip)
     local itemID = tooltip:GetTooltipData().id;
 
     if Tooltips.ShouldShow("TooltipToyShowItemID") then
-        Tooltips.FormatAndAddDoubleLine("ItemID", itemID);
+        Tooltips.Append("ItemID", itemID);
     end
 
     if Tooltips.ShouldShow("TooltipToyShowItemSpell") then
         local itemSpellName, itemSpellID = C_Item.GetItemSpell(itemID);
         if itemSpellName and itemSpellID then
-            Tooltips.FormatAndAddDoubleLine("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
+            Tooltips.Append("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
         end
     end
 
     if Tooltips.ShouldShow("TooltipToyShowIcon") then
         local icon = select(3, C_ToyBox.GetToyInfo(itemID));
-        Tooltips.FormatAndAddDoubleLine("Icon", icon);
+        Tooltips.Append("Icon", icon);
     end
 
     Tooltips.End();
@@ -284,7 +284,7 @@ function Tooltips.OnTooltipSetMount(tooltip)
     local mountID = tooltip:GetTooltipData().id;
 
     if Tooltips.ShouldShow("TooltipMountShowMountID") then
-        Tooltips.FormatAndAddDoubleLine("MountID", mountID);
+        Tooltips.Append("MountID", mountID);
     end
 
     local mountInfo = {C_MountJournal.GetMountInfoByID(mountID)};
@@ -295,45 +295,45 @@ function Tooltips.OnTooltipSetMount(tooltip)
     end
 
     if Tooltips.ShouldShow("TooltipMountShowSpellID") then
-        Tooltips.FormatAndAddDoubleLine("SpellID", spellID);
+        Tooltips.Append("SpellID", spellID);
     end
 
     if Tooltips.ShouldShow("TooltipMountShowIcon") then
-        Tooltips.FormatAndAddDoubleLine("Icon", mountInfo[3]);
+        Tooltips.Append("Icon", mountInfo[3]);
     end
 
     if Tooltips.ShouldShow("TooltipMountShowFaction") then
         if mountInfo[8] then
             local faction = mountInfo[9];
             local factionName = faction == 0 and "Horde" or "Alliance";
-            Tooltips.FormatAndAddDoubleLine("Faction", factionName);
+            Tooltips.Append("Faction", factionName);
         end
     end
 
     if Tooltips.ShouldShow("TooltipMountShowSkyriding") then
-        Tooltips.FormatAndAddDoubleLine("Skyriding", mountInfo[13]);
+        Tooltips.Append("Skyriding", mountInfo[13]);
     end
 
     local extraMountInfo = {C_MountJournal.GetMountInfoExtraByID(mountID)};
 
     if Tooltips.ShouldShow("TooltipMountShowDisplay") then
-        Tooltips.FormatAndAddDoubleLine("DisplayID", extraMountInfo[1]);
+        Tooltips.Append("DisplayID", extraMountInfo[1]);
     end
 
     if Tooltips.ShouldShow("TooltipMountShowType") then
-        Tooltips.FormatAndAddDoubleLine("MountTypeID", extraMountInfo[5]);
+        Tooltips.Append("MountTypeID", extraMountInfo[5]);
     end
 
     if Tooltips.ShouldShow("TooltipMountShowModelScene") then
-        Tooltips.FormatAndAddDoubleLine("UiModelSceneID", extraMountInfo[6]);
+        Tooltips.Append("UiModelSceneID", extraMountInfo[6]);
     end
 
     if Tooltips.ShouldShow("TooltipMountShowAnim") then
-        Tooltips.FormatAndAddDoubleLine("AnimID", extraMountInfo[7]);
+        Tooltips.Append("AnimID", extraMountInfo[7]);
     end
 
     if Tooltips.ShouldShow("TooltipMountShowSpellVisual") then
-        Tooltips.FormatAndAddDoubleLine("SpellVisualKitID", extraMountInfo[8]);
+        Tooltips.Append("SpellVisualKitID", extraMountInfo[8]);
     end
 
     Tooltips.End();
@@ -348,24 +348,24 @@ function Tooltips.OnTooltipSetUnit(tooltip)
     local isNPC = string.match(guid, "Creature");
 
     if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
-        Tooltips.FormatAndAddDoubleLine("UnitToken", unit);
+        Tooltips.Append("UnitToken", unit);
     end
 
     if isNPC then
         local creatureID = Datamine.Database:GetCreatureIDFromGUID(guid);
         if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
-            Tooltips.FormatAndAddDoubleLine("CreatureID", creatureID);
+            Tooltips.Append("CreatureID", creatureID);
         end
 
         if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
             local displayID = Tooltips.GetUnitDisplayID(creatureID);
-            Tooltips.FormatAndAddDoubleLine("DisplayID", displayID);
+            Tooltips.Append("DisplayID", displayID);
         end
 
         if Tooltips.ShouldShow("TooltipUnitShowNPCClass") then
             local _, class = C_PlayerInfo.GetClass({guid=guid});
             local className = LocalizedClassList()[class];
-            Tooltips.FormatAndAddDoubleLine("Class", className);
+            Tooltips.Append("Class", className);
         end
     end
 
