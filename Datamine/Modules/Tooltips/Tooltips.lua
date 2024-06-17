@@ -68,6 +68,10 @@ function Tooltips.GetValueColor()
 end
 
 function Tooltips.ShouldShow(configKey)
+    if Datamine.Debug then
+        return true;
+    end
+
     if S.GetSetting("TooltipUseModifier") then
         if S.IsTooltipModifierDown() then
             return true;
@@ -592,12 +596,12 @@ function Tooltips.OnTooltipSetCurrency(tooltip)
     end
 
     if IsValid(currencyInfo.transferPercentage) then
+        local isTransferable = currencyInfo.transferPercentage > 0;
         if Tooltips.ShouldShow("TooltipCurrencyShowTransferable") then
-            local isTransferable = currencyInfo.transferPercentage > 0;
             Tooltips.Append("Transferable", isTransferable);
         end
 
-        if Tooltips.ShouldShow("TooltipCurrencyShowTransferPercentage") then
+        if isTransferable and Tooltips.ShouldShow("TooltipCurrencyShowTransferPercentage") then
             Tooltips.Append("TransferPercentage", format("%d%%", currencyInfo.transferPercentage));
         end
     end
