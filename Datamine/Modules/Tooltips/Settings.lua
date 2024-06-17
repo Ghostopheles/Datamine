@@ -426,3 +426,58 @@ local battlePetSettings = {
 };
 
 RegisterSettingsTable(battlePetSettings);
+
+-- CURRENCY TOOLTIPS
+
+S.CreateHeader(category, L.CONFIG_HEADER_CURRENCY_TOOLTIPS);
+
+local currrencySettings = {
+    [1] = {
+        Name = "TooltipCurrencyShowCurrencyID",
+        LocKey = "CURRENCY_ID",
+    },
+    [2] = {
+        Name = "TooltipCurrencyShowIcon",
+        LocKey = "CURRENCY_ICON",
+    },
+    [3] = {
+        Name = "TooltipCurrencyShowLimitedPerWeek",
+        LocKey = "CURRENCY_LIMITED_PER_WEEK",
+    },
+    [4] = {
+        Name = "TooltipCurrencyShowTradeable",
+        LocKey = "CURRENCY_IS_TRADEABLE",
+    },
+    [5] = {
+        Name = "TooltipCurrencyShowDiscovered",
+        LocKey = "CURRENCY_DISCOVERED",
+        Default = false,
+    },
+    [6] = {
+        Name = "TooltipCurrencyShowAccountWide",
+        LocKey = "CURRENCY_IS_ACCOUNT_WIDE",
+    },
+    [7] = {
+        Name = "TooltipCurrencyShowTransferable",
+        LocKey = "CURRENCY_CAN_XFER",
+    },
+    [8] = {
+        Name = "TooltipCurrencyShowTransferPercentage",
+        LocKey = "CURRENCY_XFER_PERCENTAGE",
+    },
+    [9] = {
+        Name = "TooltipCurrencyShowAmountPerCycle",
+        LocKey = "CURRENCY_AMOUNT_PER_CYCLE",
+    },
+    [10] = {
+        Name = "TooltipCurrencyShowCycleDuration",
+        LocKey = "CURRENCY_CYCLE_DURATION",
+    },
+    [11] = {
+        Name = "TooltipCurrencyShowHasWarmodeBonus",
+        LocKey = "CURRENCY_HAS_WARMODE_BONUS",
+        Default = false,
+    },
+};
+
+RegisterSettingsTable(currrencySettings);

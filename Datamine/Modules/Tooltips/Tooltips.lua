@@ -550,6 +550,76 @@ function Tooltips.OnTooltipSetCompanionPet(tooltip)
     Tooltips.End();
 end
 
+function Tooltips.OnTooltipSetCurrency(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local currencyID = tooltip:GetTooltipData().id;
+    local currencyInfo = C_CurrencyInfo.GetCurrencyInfo(currencyID);
+
+    if currencyInfo.isHeader then
+        Tooltips.End();
+        return;
+    end
+
+    if Tooltips.ShouldShow("TooltipCurrencyShowCurrencyID") then
+        Tooltips.Append("CurrencyID", currencyID);
+    end
+
+    if Tooltips.ShouldShow("TooltipCurrencyShowIcon") then
+        Tooltips.Append("Icon", currencyInfo.iconFileID);
+    end
+
+    if Tooltips.ShouldShow("TooltipCurrencyShowLimitedPerWeek") then
+        Tooltips.Append("LimitedPerWeek", currencyInfo.canEarnPerWeek);
+    end
+
+    if Tooltips.ShouldShow("TooltipCurrencyShowTradeable") then
+        Tooltips.Append("Tradeable", currencyInfo.isTradeable);
+    end
+
+    if Tooltips.ShouldShow("TooltipCurrencyShowDiscovered") then
+        Tooltips.Append("Discovered", currencyInfo.discovered);
+    end
+
+    local function IsValid(value)
+        return value ~= nil;
+    end
+
+    if IsValid(currencyInfo.isAccountWide) and Tooltips.ShouldShow("TooltipCurrencyShowAccountWide") then
+        Tooltips.Append("AccountWide", currencyInfo.isAccountWide);
+    end
+
+    if IsValid(currencyInfo.transferPercentage) then
+        if Tooltips.ShouldShow("TooltipCurrencyShowTransferable") then
+            local isTransferable = currencyInfo.transferPercentage > 0;
+            Tooltips.Append("Transferable", isTransferable);
+        end
+
+        if Tooltips.ShouldShow("TooltipCurrencyShowTransferPercentage") then
+            Tooltips.Append("TransferPercentage", format("%d%%", currencyInfo.transferPercentage));
+        end
+    end
+
+    if IsValid(currencyInfo.rechargingAmountPerCycle) and Tooltips.ShouldShow("TooltipCurrencyShowAmountPerCycle") then
+        Tooltips.Append("AmountPerCycle", currencyInfo.rechargingAmountPerCycle);
+    end
+
+    if IsValid(currencyInfo.rechargingCycleDurationMS) and Tooltips.ShouldShow("TooltipCurrencyShowCycleDuration") then
+        local durationHours = Round(currencyInfo.rechargingCycleDurationMS / 3.6e6);
+        Tooltips.Append("CycleDuration (Hours)", durationHours);
+    end
+
+    if Tooltips.ShouldShow("TooltipCurrencyShowHasWarmodeBonus") then
+        local hasWarModeBonus = C_CurrencyInfo.DoesWarModeBonusApply(currencyID);
+        Tooltips.Append("HasWarModeBonus", hasWarModeBonus);
+    end
+
+
+    Tooltips.End();
+end
+
 ------------
 -- the joys of not supporting classic omegalul
 
@@ -562,6 +632,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, Tooltips.OnTo
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, Tooltips.OnTooltipSetUnitAura);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, Tooltips.OnTooltipSetAchievement);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, Tooltips.OnTooltipSetCompanionPet);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, Tooltips.OnTooltipSetCurrency);
 
 ------------
 

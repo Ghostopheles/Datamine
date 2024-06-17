@@ -30,6 +30,7 @@ L["CONFIG_HEADER_UNIT_TOOLTIPS"] = "Unit Tooltips";
 L["CONFIG_HEADER_AURA_TOOLTIPS"] = "Aura Tooltips";
 L["CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS"] = "Achievement Tooltips";
 L["CONFIG_HEADER_BATTLE_PET_TOOLTIPS"] = "Battle Pet Tooltips";
+L["CONFIG_HEADER_CURRENCY_TOOLTIPS"] = "Currency Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -185,6 +186,30 @@ L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_ID_TOOLTIP"] = "Show battle pet GUID, also kno
 L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_DISPLAY_ID_NAME"] = "Show Battle Pet Display ID";
 L["CONFIG_TOOLTIP_SHOW_BATTLE_PET_DISPLAY_ID_TOOLTIP"] = "Show the CreatureDisplayInfoID for the battle pet";
 
+-- currency tooltips
+
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_ID_NAME"] = "Show Currency ID";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_ID_TOOLTIP"] = "Show currency ID";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_ICON_NAME"] = "Show Currency Icon ID";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_ICON_TOOLTIP"] = "Show currency icon FileDataID";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_LIMITED_PER_WEEK_NAME"] = "Show Limited Per Week";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_LIMITED_PER_WEEK_TOOLTIP"] = "Show if the currency has a weekly limit";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_IS_TRADEABLE_NAME"] = "Show Currency Tradeable";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_IS_TRADEABLE_TOOLTIP"] = "Show whether or not the currency is tradeable";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_DISCOVERED_NAME"] = "Show Discovered";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_DISCOVERED_TOOLTIP"] = "Show if the currency has been discovered or not";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_IS_ACCOUNT_WIDE_NAME"] = "Show Account Wide Currency";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_IS_ACCOUNT_WIDE_TOOLTIP"] = "Show whether the currency is account-wide or not";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_CAN_XFER_NAME"] = "Show Transferable Currency";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_CAN_XFER_TOOLTIP"] = "Show if the currency can be transferred to alts";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_XFER_PERCENTAGE_NAME"] = "Show Transfer Percentage";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_XFER_PERCENTAGE_TOOLTIP"] = "Show the percentage of this currency that can be transfered to alts";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_AMOUNT_PER_CYCLE_NAME"] = "Show Currency Amount Per Cycle";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_AMOUNT_PER_CYCLE_TOOLTIP"] = "Show amount of currency earned per cycle, used for creation catalyst currencies";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_CYCLE_DURATION_NAME"] = "Show Currency Cycle Duration";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_CYCLE_DURATION_TOOLTIP"] = "Show duration of the currency cycle in hours";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_NAME"] = "Show Currency War Mode Bonus";
+L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_TOOLTIP"] = "Show if the currency benefits from the war mode bonus";
 
 -- end tooltips
 
