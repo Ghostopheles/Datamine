@@ -387,6 +387,7 @@ L["SLASH_CMD_UI_TOGGLE_HELP"] = "Toggle the Datamine UI.";
 L["SLASH_CMD_SPELL_INFO_HELP"] = "Retrieve information about a spell.";
 L["SLASH_CMD_TMOG_ITEMMOD_INFO_HELP"] = "Retrieve source info for an ItemModifiedAppearanceID.";
 L["SLASH_CMD_TMOG_ITEMMOD_FROM_ITEMAPP_HELP"] = "Retrieve itemModifiedAppearanceIDs for a given itemAppearanceID.";
+L["SLASH_CMD_SETTINGS_HELP"] = "Open the Datamine settings";
 
 -- END LOCALIZATION
 

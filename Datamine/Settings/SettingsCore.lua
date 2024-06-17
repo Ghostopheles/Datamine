@@ -244,6 +244,10 @@ function Datamine.Settings.GetTopLevelCategory()
     return category;
 end
 
+function Datamine.Settings.OpenSettings()
+    Settings.OpenToCategory(category:GetID());
+end
+
 ------------
 
 local DATAMINE_MAPS = "Datamine_Maps";
@@ -258,3 +262,10 @@ EventUtil.ContinueOnAddOnLoaded("Datamine", function()
         C_AddOns.LoadAddOn(DATAMINE_MAPS);
     end
 end);
+
+------------
+
+do
+    local helpMessage = L.SLASH_CMD_SETTINGS_HELP;
+    Datamine.Slash:RegisterCommand("settings", Datamine.Settings.OpenSettings, helpMessage, "Settings");
+end
