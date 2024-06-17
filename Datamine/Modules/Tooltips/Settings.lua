@@ -7,7 +7,7 @@ local category = Settings.RegisterVerticalLayoutSubcategory(parentCategory, L.CO
 do
     local variable = "TooltipKeyColor";
     local name = L.CONFIG_TOOLTIP_KEY_COLOR_NAME;
-    local default = "FFF542F5";
+    local default = DatamineLightGray:GenerateHexColor();
     local setting = S.RegisterSetting(category, variable, name, default);
     local tooltip = L.CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP;
 
@@ -17,7 +17,7 @@ end
 do
     local variable = "TooltipValueColor";
     local name = L.CONFIG_TOOLTIP_VALUE_COLOR_NAME;
-    local default = "808080FF"
+    local default = DatamineDarkGray:GenerateHexColor();
     local setting = S.RegisterSetting(category, variable, name, default);
     local tooltip = L.CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP;
 

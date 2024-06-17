@@ -47,10 +47,6 @@ Modules/AchievementInfo.lua
 Modules/Collector/CollectorMixin.lua
 Modules/Collector/Collector.xml
 
-Modules/Tooltips/Settings.lua
-Modules/Tooltips/Structures.lua
-Modules/Tooltips/Tooltips.lua
-
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedNineSliceLayouts.lua
 Modules/Unified/UnifiedUIMixins.lua
@@ -85,3 +81,7 @@ Modules/Unified/Templates/CreatureView/CreatureView.lua
 Modules/Unified/Templates/CreatureView/CreatureView.xml
 
 Modules/Unified/Unified.xml
+
+Modules/Tooltips/Settings.lua
+Modules/Tooltips/Structures.lua
+Modules/Tooltips/Tooltips.lua
