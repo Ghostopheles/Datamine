@@ -1,5 +1,9 @@
 # Datamine v2.2.2
 
+##### Fixed
+* Horrendous temporary toolbar icons are no more
+    * Toolbar icons may still be horrendous (I think they're okay)
+
 ##### Added
 * Datamine can now add various IDs to tooltips, configurable in the Blizzard settings.
     * Currently supports the following tooltip types
