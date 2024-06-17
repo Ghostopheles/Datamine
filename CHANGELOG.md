@@ -2,6 +2,16 @@
 
 ##### Added
 * Datamine can now add various IDs to tooltips, configurable in the Blizzard settings.
+    * Currently supports the following tooltip types
+        * Items
+        * Spells
+        * Toys
+        * Mounts
+        * Units
+        * Auras
+        * Achievements
+        * Battle Pets
+        * Currencies
 
 # Datamine v2.2.1
 
