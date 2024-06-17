@@ -348,3 +348,34 @@ local auraSettings = {
 };
 
 RegisterSettingsTable(auraSettings);
+
+-- ACHIEVEMENT TOOLTIPS
+
+S.CreateHeader(category, L.CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS);
+
+local achievementSettings = {
+    [1] = {
+        Name = "TooltipAchievementShowID",
+        LocKey = "CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_ID",
+    },
+    [2] = {
+        Name = "TooltipAchievementShowPlayerGUID",
+        LocKey = "CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_PLAYER_GUID",
+    },
+    [3] = {
+        Name = "TooltipAchievementShowCompleted",
+        LocKey = "CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_COMPLETED",
+    },
+    [4] = {
+        Name = "TooltipAchievementShowDate",
+        LocKey = "CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_DATE",
+        Default = false,
+    },
+    [5] = {
+        Name = "TooltipAchievementShowCriteria",
+        LocKey = "CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_CRITERIA",
+        Default = false,
+    },
+};
+
+RegisterSettingsTable(achievementSettings);

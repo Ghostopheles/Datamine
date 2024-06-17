@@ -116,6 +116,10 @@ function Tooltips.ParseItemLink(itemLink)
     return Datamine.Structures.CreateItemLink(itemLink);
 end
 
+function Tooltips.ParseAchievementLink(achievementLink)
+    return Datamine.Structures.CreateAchievementLink(achievementLink);
+end
+
 function Tooltips.GetUnitDisplayID(creatureID)
     MODEL:SetCreature(creatureID);
     return MODEL:GetDisplayInfo();
@@ -452,6 +456,49 @@ function Tooltips.OnTooltipSetUnitAura(tooltip)
     Tooltips.End();
 end
 
+function Tooltips.OnTooltipSetAchievement(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
+    DevTools_Dump(tooltipInfo.getterArgs);
+    local link = Tooltips.ParseAchievementLink(tooltipInfo.getterArgs[1]);
+    if not link then
+        print("no link")
+        Tooltips.End();
+        return;
+    end
+
+    if Tooltips.ShouldShow("TooltipAchievementShowID") then
+        Tooltips.Append("AchievementID", link.ID);
+    end
+
+    if Tooltips.ShouldShow("TooltipAchievementShowPlayerGUID") then
+        Tooltips.Append("PlayerGUID", link.PlayerGUID);
+    end
+
+    local isCompleted = link.Completed == 1;
+    if Tooltips.ShouldShow("TooltipAchievementShowCompleted") then
+        Tooltips.Append("IsCompleted", isCompleted);
+    end
+
+    if isCompleted and Tooltips.ShouldShow("TooltipAchievementShowDate") then
+        local month, day, year = link.Month, link.Day, link.Year;
+        Tooltips.Append("Date", format("%d/%d/%d", month, day, year));
+    end
+
+    if Tooltips.ShouldShow("TooltipAchievementShowCriteria") then
+        Tooltips.AddLine("Criteria");
+        for i=1, 4 do
+            local criteria = link["Criteria"..i];
+            Tooltips.Append(format("%s- [%d]", TAB, i), criteria);
+        end
+    end
+
+    Tooltips.End();
+end
+
 ------------
 -- the joys of not supporting classic omegalul
 
@@ -462,6 +509,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, Tooltips.OnToo
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, Tooltips.OnTooltipSetMount);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, Tooltips.OnTooltipSetUnit);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, Tooltips.OnTooltipSetUnitAura);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, Tooltips.OnTooltipSetAchievement);
 
 ------------
 

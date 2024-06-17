@@ -28,6 +28,8 @@ L["CONFIG_HEADER_TOY_TOOLTIPS"] = "Toy Tooltips";
 L["CONFIG_HEADER_MOUNT_TOOLTIPS"] = "Mount Tooltips";
 L["CONFIG_HEADER_UNIT_TOOLTIPS"] = "Unit Tooltips";
 L["CONFIG_HEADER_AURA_TOOLTIPS"] = "Aura Tooltips";
+L["CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS"] = "Achievement Tooltips";
+
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -150,6 +152,19 @@ L["CONFIG_TOOLTIP_SHOW_AURA_POINTS_NAME"] = "Show Aura Points";
 L["CONFIG_TOOLTIP_SHOW_AURA_POINTS_TOOLTIP"] = "Show aura points. Values vary based on source spell";
 L["CONFIG_TOOLTIP_SHOW_AURA_IS_PRIVATE_NAME"] = "Show Private";
 L["CONFIG_TOOLTIP_SHOW_AURA_IS_PRIVATE_TOOLTIP"] = "Show whether or not the aura is a private aura";
+
+-- achievement tooltips
+
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_ID_NAME"] = "Show Achievement ID";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_ID_TOOLTIP"] = "Show achievement ID";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_PLAYER_GUID_NAME"] = "Show Referenced Player GUID";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_PLAYER_GUID_TOOLTIP"] = "Show the GUID of the player referenced in the achievement tooltip";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_COMPLETED_NAME"] = "Show Completed";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_COMPLETED_TOOLTIP"] = "Show whether the achievement is completed or not";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_DATE_NAME"] = "Show Completion Date";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_DATE_TOOLTIP"] = "Show the date the achievement was completed, if applicable";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_CRITERIA_NAME"] = "Show Achievement Criteria";
+L["CONFIG_TOOLTIP_SHOW_ACHIEVEMENT_CRITERIA_TOOLTIP"] = "Show criteria for achievement completion";
 
 -- end tooltips
 

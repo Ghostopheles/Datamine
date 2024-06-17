@@ -1,4 +1,4 @@
-local KEY_ORDER = {
+local ITEM_KEY_ORDER = {
     "ItemID",
     "EnchantID",
     "GemIDs",
@@ -69,7 +69,7 @@ function ItemLinkMixin:Init(itemLink)
     local data = strsplittable(":", linkData);
 
     local i = 1;
-    for _, key in pairs(KEY_ORDER) do
+    for _, key in pairs(ITEM_KEY_ORDER) do
         local default = DEFAULTS[key];
         local value = data[i];
         if value == "" then
@@ -136,8 +136,39 @@ end
 
 ------------
 
+local ACHIEVEMENT_KEYS = {
+    "ID",
+    "PlayerGUID",
+    "Completed",
+    "Month",
+    "Day",
+    "Year",
+    "Criteria1",
+    "Criteria2",
+    "Criteria3",
+    "Criteria4"
+};
+
+local AchievementLinkMixin = {};
+
+function AchievementLinkMixin:Init(linkData)
+    local data = strsplittable(":", linkData);
+
+    local i = 2;
+    for _, key in pairs(ACHIEVEMENT_KEYS) do
+        self[key] = data[i];
+        i = i + 1;
+    end
+end
+
+------------
+
 Datamine.Structures = {};
 
 function Datamine.Structures.CreateItemLink(itemLink)
     return CreateAndInitFromMixin(ItemLinkMixin, itemLink);
+end
+
+function Datamine.Structures.CreateAchievementLink(achievementLink)
+    return CreateAndInitFromMixin(AchievementLinkMixin, achievementLink);
 end
