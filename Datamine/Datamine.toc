@@ -29,7 +29,9 @@ Datamine.lua
 
 Localization/enUS.lua
 Core/Events.lua
+
 Settings/SettingsCore.lua
+Settings/DebugSettings.lua
 
 Core/SlashCommands.lua
 Core/Links.lua

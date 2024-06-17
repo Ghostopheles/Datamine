@@ -12,13 +12,14 @@ Datamine.Constants.DataTypes = {
 
 Datamine.Utils = {};
 Datamine.Console = LibStub:GetLibrary("LibDevConsole");
+Datamine.Debug = {};
 
 --@debug
-Datamine.Debug = true;
+Datamine.Debug.DebugEnabled = true;
 --@end-debug@
 
 --[===[@non-debug@
-Datamine.Debug = false;
+Datamine.Debug.DebugEnabled = false;
 --@end-non-debug@]===]
 
 local PrintSettings = {

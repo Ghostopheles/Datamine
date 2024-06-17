@@ -19,6 +19,14 @@ L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs y
 L["CONFIG_AUTO_LOAD_MAP_DATA_NAME"] = "Load map data at startup";
 L["CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP"] = "Automatically loads map viewer data at startup. May increase loading times on first login or on reload.";
 
+-- debug settings
+L["CONFIG_CATEGORY_DEBUG"] = "Debug";
+
+L["CONFIG_DEBUG_SHOW_ALL_TOOLTIP_DATA_NAME"] = "Show all tooltip data";
+L["CONFIG_DEBUG_SHOW_ALL_TOOLTIP_DATA_TOOLTIP"] = "Show all tooltip data regardless of tooltip configuration";
+
+-- tooltip settings
+
 L["CONFIG_CATEGORY_TOOLTIPS"] = "Tooltips";
 
 L["CONFIG_HEADER_ITEM_TOOLTIPS"] = "Item Tooltips";

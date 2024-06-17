@@ -1,4 +1,5 @@
 local S = Datamine.Settings;
+local D = Datamine.Debug;
 
 local Tooltips = {};
 local Hooks = {};
@@ -68,7 +69,7 @@ function Tooltips.GetValueColor()
 end
 
 function Tooltips.ShouldShow(configKey)
-    if Datamine.Debug then
+    if D.IsDebugEnabled() and S.GetSetting(D.Setting.Debug_ShowAllTooltipData) then
         return true;
     end
 

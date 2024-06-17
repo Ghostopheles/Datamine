@@ -37,7 +37,7 @@ local UNIT_FLAGS_ORDER = {
 ------------
 
 local function DebugAssert(condition, message)
-    if not Datamine.Debug then
+    if not Datamine.Debug.IsDebugEnabled() then
         return;
     end
     assert(condition, message);
