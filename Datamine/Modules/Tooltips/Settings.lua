@@ -265,6 +265,11 @@ local unitSettings = {
         Name = "TooltipUnitShowDisplayID",
         LocKey = "CONFIG_TOOLTIP_SHOW_UNIT_DISPLAY_ID",
     },
+    [4] = {
+        Name = "TooltipUnitShowNPCClass",
+        LocKey = "CONFIG_TOOLTIP_SHOW_UNIT_NPC_CLASS",
+        Default = false,
+    }
 };
 
 RegisterSettingsTable(unitSettings);
