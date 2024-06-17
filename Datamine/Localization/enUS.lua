@@ -119,7 +119,6 @@ L["CONFIG_TOOLTIP_SHOW_UNIT_DISPLAY_ID_TOOLTIP"] = "Show CreatureDisplayInfoID f
 L["CONFIG_TOOLTIP_SHOW_UNIT_NPC_CLASS_NAME"] = "Show NPC Class";
 L["CONFIG_TOOLTIP_SHOW_UNIT_NPC_CLASS_TOOLTIP"] = "Show class name for NPCs";
 
-
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
 L["GENERIC_EMPTY"] = "Empty";
