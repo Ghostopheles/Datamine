@@ -8,6 +8,9 @@ local TAB = strrep(" ", TAB_SIZE);
 
 local CURRENT_TOOLTIP = nil;
 
+local MODEL = CreateFrame("PlayerModel");
+MODEL:SetKeepModelOnHide(true);
+
 ------------
 -- tooltip context management
 
@@ -113,23 +116,16 @@ function Tooltips.ParseItemLink(itemLink)
     return Datamine.Structures.CreateItemLink(itemLink);
 end
 
+function Tooltips.GetUnitDisplayID(creatureID)
+    MODEL:SetCreature(creatureID);
+    return MODEL:GetDisplayInfo();
+end
+
 ------
 
 -- to add new data points to tooltips, find the appropriate function below (or make a new one)
 -- add the relevant config key to Settings.lua, with lockeys and default value if it's not true
 -- data shouldn't be shown without first going through a Tooltips.ShouldShow check
-
-function Tooltips.OnHyperlinkSet(tooltip, link)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
-    local linkType, linkID = string.match(link, "^(%a+):(%d+)");
-    local left, right = Tooltips.FormatKeyValuePair(linkType, linkID);
-    Tooltips.AddDoubleLine(left, right);
-
-    Tooltips.End();
-end
 
 function Tooltips.OnTooltipSetItem(tooltip)
     if not Tooltips.Begin(tooltip) then
@@ -349,21 +345,29 @@ function Tooltips.OnTooltipSetUnit(tooltip)
     end
 
     local _, unit, guid = tooltip:GetUnit();
+    local isNPC = string.match(guid, "Creature");
 
     if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
         Tooltips.FormatAndAddDoubleLine("UnitToken", unit);
     end
 
-    if Tooltips.ShouldShow("TooltipUnitShowCreatureID") and string.match(guid, "Creature") then
+    if isNPC then
         local creatureID = Datamine.Database:GetCreatureIDFromGUID(guid);
-        Tooltips.FormatAndAddDoubleLine("CreatureID", creatureID);
+        if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
+            Tooltips.FormatAndAddDoubleLine("CreatureID", creatureID);
+        end
+
+        if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
+            local displayID = Tooltips.GetUnitDisplayID(creatureID);
+            Tooltips.FormatAndAddDoubleLine("DisplayID", displayID);
+        end
     end
 
     Tooltips.End();
 end
 
 ------------
--- final setup
+-- the joys of not supporting classic omegalul
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, Tooltips.OnTooltipSetItem);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, Tooltips.OnTooltipSetSpell);

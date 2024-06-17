@@ -261,6 +261,10 @@ local unitSettings = {
         Name = "TooltipUnitShowCreatureID",
         LocKey = "CONFIG_TOOLTIP_SHOW_UNIT_CREATURE_ID",
     },
+    [3] = {
+        Name = "TooltipUnitShowDisplayID",
+        LocKey = "CONFIG_TOOLTIP_SHOW_UNIT_DISPLAY_ID",
+    },
 };
 
 RegisterSettingsTable(unitSettings);
