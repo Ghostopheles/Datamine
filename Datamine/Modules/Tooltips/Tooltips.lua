@@ -462,10 +462,8 @@ function Tooltips.OnTooltipSetAchievement(tooltip)
     end
 
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
-    DevTools_Dump(tooltipInfo.getterArgs);
     local link = Tooltips.ParseAchievementLink(tooltipInfo.getterArgs[1]);
     if not link then
-        print("no link")
         Tooltips.End();
         return;
     end
