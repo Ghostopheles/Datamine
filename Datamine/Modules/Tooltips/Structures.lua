@@ -57,7 +57,12 @@ local ItemLinkMixin = {};
 
 function ItemLinkMixin:Init(itemLink)
     local linkType, linkData, displayText = LinkUtil.ExtractLink(itemLink);
-    assert(linkType == "item", "Invalid link type");
+    if linkType ~= "item" then
+        if Datamine.Debug.IsDebugEnabled() then
+            error("Invalid link type provided to ItemLinkMixin:Init. Expected 'item', got '" .. linkType .. "'");
+        end
+        return;
+    end
 
     self.GemIDs = {};
     self.BonusIDs = {};
