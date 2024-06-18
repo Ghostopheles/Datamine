@@ -138,6 +138,7 @@ end
 function DatamineCreatureDetailsMixin:SetupStrings()
     local creatureID = self:GetParent():GetViewingCreature();
     local creature = Datamine.Database:GetCreatureEntryByID(creatureID);
+    local displayID = self:GetParent().Model:GetDisplayInfo();
 
     local idText = format("#%s", creatureID);
     local locale = GetLocale();
@@ -147,6 +148,7 @@ function DatamineCreatureDetailsMixin:SetupStrings()
     self.Identification.CreatureID:SetText(idText);
     self.Identification.CreatureName:SetText(nameText);
     self.Identification.Locale:SetText(locText);
+    self.Identification.DisplayID:SetText(displayID);
 end
 
 function DatamineCreatureDetailsMixin:SetupVariantsList()
@@ -226,6 +228,8 @@ function DatamineCreatureViewMixin:OnLoad()
 
     self.Model:SetScript("OnModelLoaded", function()
         self:SetWaitingForCreature(nil);
+        self.Model:SetCamera(2);
+        self.Model:RefreshCamera();
     end);
 
     Registry:RegisterCallback(Events.CREATUREVIEW_CREATURE_LOADED, self.OnCreatureLoaded, self);
@@ -263,7 +267,7 @@ function DatamineCreatureViewMixin:UpdateLoadOverlayVisibility()
             overlay.AnimIn:Play(reverse);
             overlay:Show();
         end
-    elseif overlay:IsShown() then
+    elseif overlay:IsShown() and not overlay.AnimOut:IsPlaying() then
         overlay.AnimOut:Play();
     end
 end

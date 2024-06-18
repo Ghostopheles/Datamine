@@ -148,10 +148,17 @@
                                 <Anchor point="TOPRIGHT" x="-4" />
                             </Anchors>
                         </FontString>
+                        <FontString parentKey="DisplayID" font="DatamineCleanFont"
+                            justifyH="RIGHT" justifyV="MIDDLE"
+                            text="$DISPLAYID$">
+                            <Anchors>
+                                <Anchor point="TOPRIGHT" relativeKey="$parent.Locale"
+                                    relativePoint="BOTTOMRIGHT" y="-12" />
+                            </Anchors>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
-            <!--
             <Frame parentKey="Variants">
                 <Size x="265" y="200" />
                 <KeyValues>
@@ -186,7 +193,7 @@
                         </Anchors>
                     </Frame>
                 </Frames>
-            </Frame>-->
+            </Frame>
         </Frames>
         <Layers>
             <Layer level="ARTWORK">
@@ -198,6 +205,7 @@
                         <KeyValue key="expand" value="true" type="boolean" />
                         <KeyValue key="leftPadding" value="14" type="number" />
                         <KeyValue key="rightPadding" value="14" type="number" />
+                        <KeyValue key="topPadding" value="4" type="number" />
                     </KeyValues>
                     <TextureSliceMargins left="0" right="0" top="0" bottom="0" />
                     <TextureSliceMode mode="Tiled" />
@@ -224,27 +232,11 @@
                     <Anchor point="BOTTOMLEFT" x="4" y="4" />
                 </Anchors>
             </Frame>
-            <Frame parentKey="BottomPanel">
-                <Size y="225" />
-                <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativeKey="$parent.CreaturePicker"
-                        relativePoint="BOTTOMRIGHT" x="4" />
-                    <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
-                </Anchors>
-                <Layers>
-                    <Layer level="BACKGROUND">
-                        <Texture parentKey="Background"
-                            inherits="DatamineMediumGrayBackgroundTemplate"
-                            setAllPoints="true" />
-                    </Layer>
-                </Layers>
-            </Frame>
             <Frame parentKey="Details" inherits="DatamineCreatureDetailsTemplate">
                 <Size x="275" />
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-4" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomPanel"
-                        relativePoint="TOPRIGHT" y="4" />
+                    <Anchor point="BOTTOMRIGHT" y="4" />
                 </Anchors>
             </Frame>
             <PlayerModel parentKey="Model" inherits="ModelWithControlsTemplate">
