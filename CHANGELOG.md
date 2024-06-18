@@ -4,6 +4,8 @@
 * Horrendous temporary toolbar icons are no more
     * Toolbar icons may still be horrendous (I think they're okay)
 * Improved creature viewer a tiny bit - still has a long way to go though
+* Fixed a bug that caused errors to appear on the user's screen when viewing some tooltips
+* Fixed a missing debug function haha
 
 ##### Added
 * Datamine can now add various IDs to tooltips, configurable in the Blizzard settings.
