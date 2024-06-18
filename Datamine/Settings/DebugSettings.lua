@@ -1,10 +1,14 @@
-if not Datamine.Debug.DebugEnabled then
-    return;
-end
-
 local L = Datamine.Strings;
 local S = Datamine.Settings;
 local D = Datamine.Debug;
+
+function D.IsDebugEnabled()
+    return D.DebugEnabled;
+end
+
+if not D.IsDebugEnabled() then
+    return;
+end
 
 D.Setting = {
     Debug_ShowAllTooltipData = "Debug_ShowAllTooltipData",
@@ -20,8 +24,6 @@ end
 
 ------------
 
-function D.IsDebugEnabled()
-    return D.DebugEnabled;
-end
+
 
 
