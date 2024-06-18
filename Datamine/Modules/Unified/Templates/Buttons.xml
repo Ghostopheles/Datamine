@@ -22,12 +22,12 @@
         mixin="DatamineCloseButtonMixin">
         <Layers>
             <Layer level="ARTWORK">
-                <Texture parentKey="NormalTexture" inherits="DatamineCustomAtlasTemplate"
-                    setAllPoints="true">
-                    <KeyValues>
-                        <KeyValue key="FileName" value="Blizzard_UITools.blp" />
-                        <KeyValue key="AtlasName" value="uitools-icon-close" />
-                    </KeyValues>
+                <Texture parentKey="NormalTexture"
+                    file="Interface/AddOns/Datamine/Assets/Icons/cross.png">
+                    <Size x="14" y="14" />
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
                 </Texture>
             </Layer>
         </Layers>

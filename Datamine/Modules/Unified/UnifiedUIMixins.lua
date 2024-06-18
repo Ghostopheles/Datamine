@@ -168,7 +168,7 @@ function DatamineToolbarMixin:OnLoad()
     self.Buttons = {};
 end
 
-function DatamineToolbarMixin:AddButton(atlasOrTexturePath, callback, tooltipText, sizeX, sizeY)
+function DatamineToolbarMixin:AddButton(atlasOrTexturePath, callback, tooltipText)
     local template = tooltipText and "DatamineTooltipButtonTemplate" or "DatamineGenericButtonTemplate";
     local button = CreateFrame("Button", nil, self, template);
 
@@ -201,13 +201,8 @@ function DatamineToolbarMixin:AddButton(atlasOrTexturePath, callback, tooltipTex
     else
         button.Icon = button:CreateTexture(nil, "ARTWORK");
         button.Icon:SetTexture(atlasOrTexturePath, nil, nil, "TRILINEAR");
-        button.Icon:SetAllPoints();
-    end
-
-    if sizeX and sizeY then
-        button.Icon:ClearAllPoints();
+        button.Icon:SetSize(22, 22);
         button.Icon:SetPoint("CENTER");
-        button.Icon:SetSize(sizeX, sizeY);
     end
 
     button.Icon:Show();
@@ -930,29 +925,28 @@ function DatamineWorkspaceMixin:OnLoad()
     self:SetMode(self.Modes.DEFAULT);
 
     local toolbar = self:GetParent().Toolbar;
-    local iconSize = 22;
     do
         local tooltipText = L.WORKSPACE_MODE_EXPLORER;
         local cb = function() self:SetMode(self.Modes.DEFAULT); end;
-        toolbar:AddButton(UI_MAIN.GetIconPath("home"), cb, tooltipText, iconSize, iconSize);
+        toolbar:AddButton(UI_MAIN.GetIconPath("home"), cb, tooltipText);
     end
 
     do
         local tooltipText = L.WORKSPACE_MODE_MOVIE;
         local cb = function() self:SetMode(self.Modes.MOVIE); end;
-        toolbar:AddButton(UI_MAIN.GetIconPath("play"), cb, tooltipText, iconSize, iconSize);
+        toolbar:AddButton(UI_MAIN.GetIconPath("play"), cb, tooltipText);
     end
 
     do
         local tooltipText = L.WORKSPACE_MODE_MAPS;
         local cb = function() self:SetMode(self.Modes.MAPS); end;
-        toolbar:AddButton(UI_MAIN.GetIconPath("map-marker"), cb, tooltipText, iconSize, iconSize);
+        toolbar:AddButton(UI_MAIN.GetIconPath("map-marker"), cb, tooltipText);
     end
 
     do
         local tooltipText = L.WORKSPACE_MODE_STORAGE;
         local cb = function() self:SetMode(self.Modes.CREATURE); end;
-        toolbar:AddButton(UI_MAIN.GetIconPath("database"), cb, tooltipText, iconSize, iconSize);
+        toolbar:AddButton(UI_MAIN.GetIconPath("database"), cb, tooltipText);
     end
 end
 
