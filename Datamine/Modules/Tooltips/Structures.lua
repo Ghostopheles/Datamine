@@ -59,7 +59,7 @@ function ItemLinkMixin:Init(itemLink)
     local linkType, linkData, displayText = LinkUtil.ExtractLink(itemLink);
     if linkType ~= "item" then
         if Datamine.Debug.IsDebugEnabled() then
-            error("Invalid link type provided to ItemLinkMixin:Init. Expected 'item', got '" .. linkType .. "'");
+            CallErrorHandler("Invalid link type provided to ItemLinkMixin:Init. Expected 'item', got '" .. linkType .. "'");
         end
         return;
     end

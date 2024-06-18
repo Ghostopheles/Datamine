@@ -155,6 +155,10 @@ function Tooltips.OnTooltipSetItem(tooltip)
     end
 
     local item = Tooltips.ParseItemLink(itemLink);
+    if not item then
+        Tooltips.End();
+        return;
+    end
 
     if Tooltips.ShouldShow("TooltipItemShowItemID") then
         Tooltips.Append("ItemID", item.ItemID);
