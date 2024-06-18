@@ -3,6 +3,7 @@
 ##### Fixed
 * Horrendous temporary toolbar icons are no more
     * Toolbar icons may still be horrendous (I think they're okay)
+* Improved creature viewer a tiny bit - still has a long way to go though
 
 ##### Added
 * Datamine can now add various IDs to tooltips, configurable in the Blizzard settings.

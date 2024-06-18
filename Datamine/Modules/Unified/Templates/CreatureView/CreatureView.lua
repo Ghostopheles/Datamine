@@ -230,6 +230,7 @@ function DatamineCreatureViewMixin:OnLoad()
         self:SetWaitingForCreature(nil);
         self.Model:SetCamera(2);
         self.Model:RefreshCamera();
+        self.Model:SetRotation(0);
     end);
 
     Registry:RegisterCallback(Events.CREATUREVIEW_CREATURE_LOADED, self.OnCreatureLoaded, self);
