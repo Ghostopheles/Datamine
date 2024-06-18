@@ -597,7 +597,7 @@ function Tooltips.OnTooltipSetCurrency(tooltip)
     end
 
     if IsValid(currencyInfo.transferPercentage) then
-        local isTransferable = currencyInfo.transferPercentage > 0;
+        local isTransferable = currencyInfo.isAccountTransferable;
         if Tooltips.ShouldShow("TooltipCurrencyShowTransferable") then
             Tooltips.Append("Transferable", isTransferable);
         end
