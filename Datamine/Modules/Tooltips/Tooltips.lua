@@ -269,7 +269,6 @@ function Tooltips.OnTooltipSetMacro(tooltip)
                 if parsedLink then
                     local macroIndex = GetMacroIndexByName(actionText);
                     actionID = parsedLink.ItemID;
-
                     Tooltips.Append("Macro Index", macroIndex);
                 end
             end
