@@ -137,6 +137,7 @@ function ItemLinkMixin:Init(itemLink)
     end
 
     self.DisplayText = displayText;
+    self.Initialized = true;
 end
 
 ------------
@@ -164,6 +165,8 @@ function AchievementLinkMixin:Init(linkData)
         self[key] = data[i];
         i = i + 1;
     end
+
+    self.Initialized = true;
 end
 
 ------------
@@ -194,6 +197,7 @@ function BattlePetLinkMixin:Init(battlePetLink)
     end
 
     self.DisplayText = displayText;
+    self.Initialized = true;
 end
 
 ------------
@@ -201,13 +205,22 @@ end
 Datamine.Structures = {};
 
 function Datamine.Structures.CreateItemLink(itemLink)
-    return CreateAndInitFromMixin(ItemLinkMixin, itemLink);
+    local obj = CreateAndInitFromMixin(ItemLinkMixin, itemLink);
+    if obj.Initialized then
+        return obj;
+    end
 end
 
 function Datamine.Structures.CreateAchievementLink(achievementLink)
-    return CreateAndInitFromMixin(AchievementLinkMixin, achievementLink);
+    local obj = CreateAndInitFromMixin(AchievementLinkMixin, achievementLink);
+    if obj.Initialized then
+        return obj;
+    end
 end
 
 function Datamine.Structures.CreateBattlePetLink(battlePetLink)
-    return CreateAndInitFromMixin(BattlePetLinkMixin, battlePetLink);
+    local obj = CreateAndInitFromMixin(BattlePetLinkMixin, battlePetLink);
+    if obj.Initialized then
+        return obj;
+    end
 end
