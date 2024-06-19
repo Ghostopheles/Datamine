@@ -254,9 +254,28 @@ function Tooltips.OnTooltipSetMacro(tooltip)
     end
 
     if Tooltips.ShouldShow("TooltipMacroShowMacroAction") then
-        local _, spellID = GetActionInfo(actionSlot);
-        local actionKey = IsItemAction(actionSlot) and "Macro Item Slot" or "Macro Spell";
-        Tooltips.Append(actionKey, spellID);
+        local actionType, actionID, subType = GetActionInfo(actionSlot);
+        local actionKey;
+        if actionType == "macro" then
+            if subType == "spell" then
+                actionKey = "Macro Spell";
+            elseif subType == "" then
+                actionKey = "Macro Index";
+            elseif subType == "item" then
+                actionKey = "Macro Item";
+                local actionText = GetActionText(actionSlot);
+                local _, itemLink = GetMacroItem(actionText);
+                local parsedLink = Tooltips.ParseItemLink(itemLink);
+                if parsedLink then
+                    local macroIndex = GetMacroIndexByName(actionText);
+                    actionID = parsedLink.ItemID;
+
+                    Tooltips.Append("Macro Index", macroIndex);
+                end
+            end
+        end
+
+        Tooltips.Append(actionKey, actionID);
     end
 
     if Tooltips.ShouldShow("TooltipMacroShowMacroIcon") then
@@ -518,6 +537,11 @@ function Tooltips.OnTooltipSetCompanionPet(tooltip)
 
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     local petID = tooltipInfo.getterArgs[1];
+    if not petID then
+        Tooltips.End();
+        return;
+    end
+
     local link = Tooltips.ParseBattlePetLink(C_PetJournal.GetBattlePetLink(petID));
     if not link then
         Tooltips.End();
