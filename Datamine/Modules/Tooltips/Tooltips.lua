@@ -253,33 +253,45 @@ function Tooltips.OnTooltipSetMacro(tooltip)
         Tooltips.Append("Macro Name", macroName);
     end
 
-    if Tooltips.ShouldShow("TooltipMacroShowMacroAction") then
-        local actionType, actionID, subType = GetActionInfo(actionSlot);
-        local actionKey;
-        if actionType == "macro" then
-            if subType == "spell" then
-                actionKey = "Macro Spell";
-            elseif subType == "" then
-                actionKey = "Macro Index";
-            elseif subType == "item" then
-                actionKey = "Macro Item";
-                local actionText = GetActionText(actionSlot);
-                local _, itemLink = GetMacroItem(actionText);
-                local parsedLink = Tooltips.ParseItemLink(itemLink);
-                if parsedLink then
-                    local macroIndex = GetMacroIndexByName(actionText);
-                    actionID = parsedLink.ItemID;
-                    Tooltips.Append("Macro Index", macroIndex);
-                end
-            end
-        end
-
-        Tooltips.Append(actionKey, actionID);
-    end
-
     if Tooltips.ShouldShow("TooltipMacroShowMacroIcon") then
         local icon = GetActionTexture(actionSlot);
         Tooltips.Append("Macro Icon", icon);
+    end
+
+    if Tooltips.ShouldShow("TooltipMacroShowMacroAction") then
+        local actionType, actionID, subType = GetActionInfo(actionSlot);
+        if actionID then
+            local actionKey;
+            if actionType == "macro" then
+                if subType == "spell" then
+                    actionKey = "Macro Spell";
+                elseif subType == "" then
+                    actionKey = "Macro Index";
+                elseif subType == "item" then
+                    actionKey = "Macro Item";
+                    local actionText = GetActionText(actionSlot);
+
+                    local macroIndex = GetMacroIndexByName(actionText);
+                    Tooltips.Append("Macro Index", macroIndex);
+
+                    local _, itemLink = GetMacroItem(actionText);
+                    if itemLink then
+                        local parsedLink = Tooltips.ParseItemLink(itemLink);
+                        if parsedLink then
+                            actionID = parsedLink.ItemID;
+                        end
+                    end
+                elseif subType == "MOUNT" then
+                    local actionText = GetActionText(actionSlot);
+                    local spellID = GetMacroSpell(actionText);
+                    local mountID = C_MountJournal.GetMountFromSpell(spellID);
+                    actionKey = "MountID";
+                    actionID = mountID;
+                end
+            end
+
+            Tooltips.Append(actionKey, actionID);
+        end
     end
 
     Tooltips.End();
