@@ -2,7 +2,6 @@ local S = Datamine.Settings;
 local D = Datamine.Debug;
 
 local Tooltips = {};
-local Hooks = {};
 
 local TAB_SIZE = 2;
 local TAB = strrep(" ", TAB_SIZE);
@@ -35,26 +34,6 @@ end
 function Tooltips.End()
     assert(CURRENT_TOOLTIP, "Attempt to end non-existent tooltip context");
     CURRENT_TOOLTIP = nil;
-end
-
-------------
-
-function Tooltips.HookFunction(funcName, callback)
-    assert(not Hooks[funcName], "Attempt to hook an already hooked function");
-
-    hooksecurefunc(funcName, callback);
-    Hooks[funcName] = true;
-end
-
-function Tooltips.HookMethod(frame, funcName, callback)
-    if not Hooks[frame] then
-        Hooks[frame] = {};
-    end
-
-    assert(not Hooks[frame][funcName], "Attempt to hook an already hooked method");
-
-    hooksecurefunc(frame, funcName, callback);
-    Hooks[frame][funcName] = true;
 end
 
 ------------
