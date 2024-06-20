@@ -10,7 +10,6 @@ local TAB = strrep(" ", TAB_SIZE);
 local CURRENT_TOOLTIP = nil;
 
 local MODEL = CreateFrame("PlayerModel");
-MODEL:SetKeepModelOnHide(true);
 
 ------------
 -- tooltip context management
@@ -129,7 +128,7 @@ function Tooltips.ParseBattlePetLink(battlePetLink)
     return Datamine.Structures.CreateBattlePetLink(battlePetLink);
 end
 
-function Tooltips.GetUnitDisplayID(creatureID)
+function Tooltips.GetCreatureDisplayID(creatureID)
     MODEL:SetCreature(creatureID);
     return MODEL:GetDisplayInfo();
 end
@@ -405,7 +404,7 @@ function Tooltips.OnTooltipSetUnit(tooltip)
         end
 
         if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
-            local displayID = Tooltips.GetUnitDisplayID(creatureID);
+            local displayID = Tooltips.GetCreatureDisplayID(creatureID);
             Tooltips.Append("DisplayID", displayID);
         end
 
