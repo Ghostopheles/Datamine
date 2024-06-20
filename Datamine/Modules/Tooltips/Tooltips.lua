@@ -134,57 +134,72 @@ function Tooltips.OnTooltipSetItem(tooltip)
         Tooltips.Append("ItemID", item.ItemID);
     end
 
-    if item.EnchantID and Tooltips.ShouldShow("TooltipItemShowEnchantID") then
-        Tooltips.Append("EnchantID", item.EnchantID);
-    end
+    if not item.IsKeystone then
+        if item.EnchantID and Tooltips.ShouldShow("TooltipItemShowEnchantID") then
+            Tooltips.Append("EnchantID", item.EnchantID);
+        end
 
-    if item.ExtraEnchantID and Tooltips.ShouldShow("TooltipItemShowExtraEnchantID") then
-        Tooltips.Append("ExtraEnchantID", item.ExtraEnchantID);
-    end
+        if item.ExtraEnchantID and Tooltips.ShouldShow("TooltipItemShowExtraEnchantID") then
+            Tooltips.Append("ExtraEnchantID", item.ExtraEnchantID);
+        end
 
-    if (#item.GemIDs > 0) and Tooltips.ShouldShow("TooltipItemShowGemIDs") then
-        Tooltips.Append("GemIDs", item.GemIDs);
-    end
+        if (#item.GemIDs > 0) and Tooltips.ShouldShow("TooltipItemShowGemIDs") then
+            Tooltips.Append("GemIDs", item.GemIDs);
+        end
 
-    if (item.NumBonusIDs > 0) and Tooltips.ShouldShow("TooltipItemShowBonusIDs") then
-        Tooltips.Append("BonusIDs", item.BonusIDs);
-    end
+        if (item.NumBonusIDs > 0) and Tooltips.ShouldShow("TooltipItemShowBonusIDs") then
+            Tooltips.Append("BonusIDs", item.BonusIDs);
+        end
 
-    if (item.NumModifiers > 0) and Tooltips.ShouldShow("TooltipItemShowModifiers") then
-        Tooltips.AddLine("Modifiers");
-        for _, modifier in pairs(item.Modifiers) do
-            if modifier.Type and modifier.Value then
-                local modifierType = Datamine.GetEnumValueName(Enum.ItemModification, modifier.Type);
-                Tooltips.Append(TAB .. "- " .. modifierType, modifier.Value);
+        if (item.NumModifiers > 0) and Tooltips.ShouldShow("TooltipItemShowModifiers") then
+            Tooltips.AddLine("Modifiers");
+            for _, modifier in pairs(item.Modifiers) do
+                if modifier.Type and modifier.Value then
+                    local modifierType = Datamine.GetEnumValueName(Enum.ItemModification, modifier.Type);
+                    Tooltips.Append(TAB .. "- " .. modifierType, modifier.Value);
+                end
             end
         end
-    end
 
-    if Tooltips.ShouldShow("TooltipItemShowRelicBonuses") then
-        for i=1, 3 do
-            local numKeyName = "Relic" .. i .. "NumBonusIDs";
-            if (item[numKeyName] or 0) > 0 then
-                local keyName = "Relic" .. i .. "BonusIDs";
-                Tooltips.Append(keyName, item[keyName]);
+        if Tooltips.ShouldShow("TooltipItemShowRelicBonuses") then
+            for i=1, 3 do
+                local numKeyName = "Relic" .. i .. "NumBonusIDs";
+                if (item[numKeyName] or 0) > 0 then
+                    local keyName = "Relic" .. i .. "BonusIDs";
+                    Tooltips.Append(keyName, item[keyName]);
+                end
             end
         end
-    end
 
-    if item.ItemContext and Tooltips.ShouldShow("TooltipItemShowItemContext") then
-        local contextType = Datamine.GetEnumValueName(Enum.ItemCreationContext, item.ItemContext);
-        Tooltips.Append("ItemContext", format("%s (%d)", contextType, item.ItemContext));
-    end
+        if item.ItemContext and Tooltips.ShouldShow("TooltipItemShowItemContext") then
+            local contextType = Datamine.GetEnumValueName(Enum.ItemCreationContext, item.ItemContext);
+            Tooltips.Append("ItemContext", format("%s (%d)", contextType, item.ItemContext));
+        end
 
-    if item.CrafterGUID and Tooltips.ShouldShow("TooltipItemShowCrafterGUID") then
-        Tooltips.Append("CrafterGUID", item.CrafterGUID);
-    end
+        if item.CrafterGUID and Tooltips.ShouldShow("TooltipItemShowCrafterGUID") then
+            Tooltips.Append("CrafterGUID", item.CrafterGUID);
+        end
 
-    if Tooltips.ShouldShow("TooltipItemShowItemSpellID") then
-        local itemSpellName, itemSpellID = C_Item.GetItemSpell(item.ItemID);
-        if itemSpellName and itemSpellID then
-            Tooltips.Append("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
+        if Tooltips.ShouldShow("TooltipItemShowItemSpellID") then
+            local itemSpellName, itemSpellID = C_Item.GetItemSpell(item.ItemID);
+            if itemSpellName and itemSpellID then
+                Tooltips.Append("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
+            end
+        end
+    else
+        if Tooltips.ShouldShow("TooltipKeystoneShowChallengeModeID") then
+            Tooltips.Append("ChallengeModeID", item.ChallengeModeID);
+        end
+
+        if Tooltips.ShouldShow("TooltipKeystoneShowLevel") then
+            Tooltips.Append("KeystoneLevel", item.Level);
+        end
+
+        if Tooltips.ShouldShow("TooltipKeystoneShowAffixes") then
+            Tooltips.Append("Affixes", item.Affixes);
         end
     end
+
 
     Tooltips.End();
 end

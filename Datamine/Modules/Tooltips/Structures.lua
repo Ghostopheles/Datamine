@@ -197,6 +197,42 @@ end
 
 ------------
 
+local KEYSTONE_KEYS = {
+    "ItemID",
+    "ChallengeModeID",
+    "Level",
+    "Affixes"
+};
+
+local KeystoneLinkMixin = {};
+
+function KeystoneLinkMixin:Init(keystoneLink)
+    local linkType, linkData, displayText = LinkUtil.ExtractLink(keystoneLink);
+    assert(linkType == "keystone", "Invalid link type");
+
+    local data = strsplittable(":", linkData);
+
+    self.Affixes = {};
+
+    local i = 1;
+    for _, key in pairs(KEYSTONE_KEYS) do
+        if key == "Affixes" then
+            for x = 1, 4 do
+                tinsert(self.Affixes, data[i + x]);
+            end
+        else
+            self[key] = data[i];
+            i = i + 1;
+        end
+    end
+
+    self.IsKeystone = true;
+    self.DisplayText = displayText;
+    self.Initialized = true;
+end
+
+------------
+
 Datamine.Structures = {};
 
 function Datamine.Structures.CreateItemLink(itemLink)
@@ -220,8 +256,16 @@ function Datamine.Structures.CreateBattlePetLink(battlePetLink)
     end
 end
 
+function Datamine.Structures.CreateKeystoneLink(keystoneLink)
+    local obj = CreateAndInitFromMixin(KeystoneLinkMixin, keystoneLink);
+    if obj.Initialized then
+        return obj;
+    end
+end
+
 local Constructors = {
     item = Datamine.Structures.CreateItemLink,
+    keystone = Datamine.Structures.CreateKeystoneLink,
     achievement = Datamine.Structures.CreateAchievementLink,
     battlepet = Datamine.Structures.CreateBattlePetLink,
 };
