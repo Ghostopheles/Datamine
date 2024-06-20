@@ -95,16 +95,8 @@ function Tooltips.Append(key, value)
     Tooltips.AddDoubleLine(left, right);
 end
 
-function Tooltips.ParseItemLink(itemLink)
-    return Datamine.Structures.CreateItemLink(itemLink);
-end
-
-function Tooltips.ParseAchievementLink(achievementLink)
-    return Datamine.Structures.CreateAchievementLink(achievementLink);
-end
-
-function Tooltips.ParseBattlePetLink(battlePetLink)
-    return Datamine.Structures.CreateBattlePetLink(battlePetLink);
+function Tooltips.ParseLink(link)
+    return Datamine.Structures.CreateLink(link);
 end
 
 function Tooltips.GetCreatureDisplayID(creatureID)
@@ -132,7 +124,7 @@ function Tooltips.OnTooltipSetItem(tooltip)
         return;
     end
 
-    local item = Tooltips.ParseItemLink(itemLink);
+    local item = Tooltips.ParseLink(itemLink);
     if not item then
         Tooltips.End();
         return;
@@ -254,7 +246,7 @@ function Tooltips.OnTooltipSetMacro(tooltip)
 
                     local _, itemLink = GetMacroItem(actionText);
                     if itemLink then
-                        local parsedLink = Tooltips.ParseItemLink(itemLink);
+                        local parsedLink = Tooltips.ParseLink(itemLink);
                         if parsedLink then
                             actionID = parsedLink.ItemID;
                         end
@@ -483,7 +475,7 @@ function Tooltips.OnTooltipSetAchievement(tooltip)
     end
 
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
-    local link = Tooltips.ParseAchievementLink(tooltipInfo.getterArgs[1]);
+    local link = Tooltips.ParseLink(tooltipInfo.getterArgs[1]);
     if not link then
         Tooltips.End();
         return;
@@ -531,7 +523,7 @@ function Tooltips.OnTooltipSetCompanionPet(tooltip)
         return;
     end
 
-    local link = Tooltips.ParseBattlePetLink(C_PetJournal.GetBattlePetLink(petID));
+    local link = Tooltips.ParseLink(C_PetJournal.GetBattlePetLink(petID));
     if not link then
         Tooltips.End();
         return;

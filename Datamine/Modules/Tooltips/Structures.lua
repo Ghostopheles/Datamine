@@ -57,12 +57,7 @@ local ItemLinkMixin = {};
 
 function ItemLinkMixin:Init(itemLink)
     local linkType, linkData, displayText = LinkUtil.ExtractLink(itemLink);
-    if linkType ~= "item" then
-        if Datamine.Debug.IsDebugEnabled() then
-            CallErrorHandler("Invalid link type provided to ItemLinkMixin:Init. Expected 'item', got '" .. linkType .. "'");
-        end
-        return;
-    end
+    assert(linkType == "item", "Invalid link type");
 
     self.GemIDs = {};
     self.BonusIDs = {};
@@ -222,5 +217,19 @@ function Datamine.Structures.CreateBattlePetLink(battlePetLink)
     local obj = CreateAndInitFromMixin(BattlePetLinkMixin, battlePetLink);
     if obj.Initialized then
         return obj;
+    end
+end
+
+local Constructors = {
+    item = Datamine.Structures.CreateItemLink,
+    achievement = Datamine.Structures.CreateAchievementLink,
+    battlepet = Datamine.Structures.CreateBattlePetLink,
+};
+
+function Datamine.Structures.CreateLink(link)
+    local linkType = LinkUtil.ExtractLink(link);
+    local constructor = Constructors[linkType];
+    if constructor then
+        return constructor(link);
     end
 end
