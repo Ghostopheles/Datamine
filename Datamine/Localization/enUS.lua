@@ -77,6 +77,12 @@ L["CONFIG_TOOLTIP_SHOW_ITEM_SPELL_NAME"] = "Show Item Spell";
 L["CONFIG_TOOLTIP_SHOW_ITEM_SPELL_TOOLTIP"] = "Show item spell name and ID";
 L["CONFIG_TOOLTIP_SHOW_ITEM_RELIC_BONUSES_NAME"] = "Show Relic Bonuses";
 L["CONFIG_TOOLTIP_SHOW_ITEM_RELIC_BONUSES_TOOLTIP"] = "Show slotted relic bonuses";
+L["CONFIG_TOOLTIP_SHOW_KEYSTONE_CM_ID_NAME"] = "Show Keystone Challenge Mode ID";
+L["CONFIG_TOOLTIP_SHOW_KEYSTONE_CM_ID_TOOLTIP"] = "Show the challenge mode ID for keystone tooltips";
+L["CONFIG_TOOLTIP_SHOW_KEYSTONE_LEVEL_NAME"] = "Show Keystone Level";
+L["CONFIG_TOOLTIP_SHOW_KEYSTONE_LEVEL_TOOLTIP"] = "Show level for keystone tooltips";
+L["CONFIG_TOOLTIP_SHOW_KEYSTONE_AFFIXES_NAME"] = "Show Keystone Affixes";
+L["CONFIG_TOOLTIP_SHOW_KEYSTONE_AFFIXES_TOOLTIP"] = "Show affixes for keystone tooltips";
 
 -- spell tooltips
 

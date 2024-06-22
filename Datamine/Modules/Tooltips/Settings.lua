@@ -134,7 +134,19 @@ local itemSettings = {
         Name = "TooltipItemShowRelicBonuses",
         LocKey = "ITEM_RELIC_BONUSES",
         Default = false,
-    }
+    },
+    [11] = {
+        Name = "TooltipKeystoneShowChallengeModeID",
+        LocKey = "KEYSTONE_CM_ID",
+    },
+    [12] = {
+        Name = "TooltipKeystoneShowLevel",
+        LocKey = "KEYSTONE_LEVEL",
+    },
+    [13] = {
+        Name = "TooltipKeystoneShowAffixes",
+        LocKey = "KEYSTONE_AFFIXES",
+    },
 };
 
 RegisterSettingsTable(itemSettings);

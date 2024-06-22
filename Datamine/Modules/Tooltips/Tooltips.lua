@@ -187,7 +187,6 @@ function Tooltips.OnTooltipSetItem(tooltip)
             end
         end
     else
-        -- TODO: make config entries for these
         if Tooltips.ShouldShow("TooltipKeystoneShowChallengeModeID") then
             Tooltips.Append("ChallengeModeID", item.ChallengeModeID);
         end
