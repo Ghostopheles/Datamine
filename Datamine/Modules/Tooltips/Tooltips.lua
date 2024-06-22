@@ -200,7 +200,6 @@ function Tooltips.OnTooltipSetItem(tooltip)
         end
     end
 
-
     Tooltips.End();
 end
 
