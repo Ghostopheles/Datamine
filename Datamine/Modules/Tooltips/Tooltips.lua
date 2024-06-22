@@ -187,6 +187,7 @@ function Tooltips.OnTooltipSetItem(tooltip)
             end
         end
     else
+        -- TODO: make config entries for these
         if Tooltips.ShouldShow("TooltipKeystoneShowChallengeModeID") then
             Tooltips.Append("ChallengeModeID", item.ChallengeModeID);
         end
@@ -533,7 +534,10 @@ function Tooltips.OnTooltipSetCompanionPet(tooltip)
 
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     local petID = tooltipInfo.getterArgs[1];
-    if not petID then
+    if tooltipInfo.getterName == "GetAction" then
+        _, petID = GetActionInfo(petID);
+    end
+    if not petID or petID == "" then
         Tooltips.End();
         return;
     end
