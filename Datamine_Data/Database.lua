@@ -408,7 +408,7 @@ end
 ---@return CreatureEntry? creatureEntry
 ---@return number? creatureID
 function Database:GetOrCreateCreatureEntryByGUID(guid, name)
-    local unitType, _, _, instanceID, _, ID, _ = strsplit("-", guid);
+    local unitType, unk1, serverID, instanceID, zoneUID, ID, _ = strsplit("-", guid);
     assert(unitType == UNIT_TYPE_CREATURE, "Invalid Creature GUID provided to :GetOrCreateCreatureEntryByGUID");
 
     ID = tonumber(ID);
@@ -432,7 +432,10 @@ function Database:GetOrCreateCreatureEntryByGUID(guid, name)
     end
 
     local CreatureEntry = self:NewCreatureEntry();
-    CreatureEntry.Instances[tonumber(instanceID)] = true;
+
+    if serverID ~= 0 and zoneUID ~= 0 then
+        CreatureEntry.Instances[tonumber(instanceID)] = true;
+    end
     CreatureEntry.Name[locale] = name;
 
     return self:UpdateCreatureEntry(ID, CreatureEntry), ID;
