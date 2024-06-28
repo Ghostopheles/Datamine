@@ -19,6 +19,8 @@
         * Achievements
         * Battle Pets
         * Currencies
+        * GameObjects
+            * Sort of - in order to see GameObject IDs on tooltips, you need to be interacting with the object (i.e. have the mail frame opened) OR have soft interaction enabled and be looking at the object
 
 # Datamine v2.2.1
 
