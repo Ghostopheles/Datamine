@@ -104,6 +104,11 @@ function Tooltips.GetCreatureDisplayID(creatureID)
     return MODEL:GetDisplayInfo();
 end
 
+function Tooltips.GetGObjectIDFromGUID(guid)
+    local gobjectID = select(6, string.split("-", guid));
+    return gobjectID;
+end
+
 ------
 
 -- to add new data points to tooltips, find the appropriate function below (or make a new one)
@@ -647,6 +652,47 @@ function Tooltips.OnTooltipSetCurrency(tooltip)
         Tooltips.Append("HasWarModeBonus", hasWarModeBonus);
     end
 
+    Tooltips.End();
+end
+
+local function IsGObjectGUID(guid)
+    if not guid then
+        return false;
+    end
+
+    local id = string.split("-", guid, 2);
+    return id == "GameObject";
+end
+
+local GOBJECT_TOKENS = {
+    "npc",
+    "softinteract",
+    "softtarget"
+};
+
+function Tooltips.OnTooltipSetObject(tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local guid;
+    for _, token in pairs(GOBJECT_TOKENS) do
+        local _guid = UnitGUID(token);
+        if IsGObjectGUID(_guid) then
+            guid = _guid;
+            break;
+        end
+    end
+
+    if not IsGObjectGUID(guid) then
+        Tooltips.End();
+        return;
+    end
+
+    if Tooltips.ShouldShow("TooltipObjectShowID") then
+        local gobjectID = Tooltips.GetGObjectIDFromGUID(guid);
+        Tooltips.Append("GameObjectID", gobjectID);
+    end
 
     Tooltips.End();
 end
@@ -664,6 +710,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, Tooltips.
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, Tooltips.OnTooltipSetAchievement);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, Tooltips.OnTooltipSetCompanionPet);
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, Tooltips.OnTooltipSetCurrency);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, Tooltips.OnTooltipSetObject);
 
 ------------
 
