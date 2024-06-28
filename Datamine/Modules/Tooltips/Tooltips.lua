@@ -6,7 +6,8 @@ local Tooltips = {};
 local TAB_SIZE = 2;
 local TAB = strrep(" ", TAB_SIZE);
 
-local CURRENT_TOOLTIP = nil;
+local ERROR;
+local CURRENT_TOOLTIP;
 
 local MODEL = CreateFrame("PlayerModel");
 
@@ -31,9 +32,23 @@ function Tooltips.GetCurrentTooltip()
     return CURRENT_TOOLTIP;
 end
 
+function Tooltips.SetLastError(error)
+    assert(CURRENT_TOOLTIP, "Attempt to set error without existing tooltip context");
+    ERROR = error;
+end
+
+function Tooltips.GetLastError()
+    return ERROR;
+end
+
 function Tooltips.End()
     assert(CURRENT_TOOLTIP, "Attempt to end non-existent tooltip context");
     CURRENT_TOOLTIP = nil;
+
+    local err = Tooltips.GetLastError();
+    if err and D.IsDebugEnabled() then
+        CallErrorHandler("Error occurred within tooltip context: " .. err);
+    end
 end
 
 ------------
@@ -115,23 +130,18 @@ end
 -- add the relevant config key to Settings.lua, with lockeys and default value if it's not true
 -- data shouldn't be shown without first going through a Tooltips.ShouldShow check
 
-function Tooltips.OnTooltipSetItem(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetItem()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local itemLink;
     if tooltip.GetItem then
         itemLink = select(2, tooltip:GetItem());
     end
     if not itemLink then
-        Tooltips.End();
         return;
     end
 
     local item = Tooltips.ParseLink(itemLink);
     if not item then
-        Tooltips.End();
         return;
     end
 
@@ -204,36 +214,25 @@ function Tooltips.OnTooltipSetItem(tooltip)
             Tooltips.Append("Affixes", item.Affixes);
         end
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetSpell(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetSpell()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local spellID;
     if tooltip.GetSpell then
         spellID = select(2, tooltip:GetSpell());
     end
     if not spellID then
-        Tooltips.End();
         return;
     end
 
     if Tooltips.ShouldShow("TooltipSpellShowSpellID") then
         Tooltips.Append("SpellID", spellID);
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetMacro(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetMacro()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local tooltipData = tooltip:GetPrimaryTooltipInfo();
     local actionSlot = tooltipData.getterArgs[1];
 
@@ -282,15 +281,10 @@ function Tooltips.OnTooltipSetMacro(tooltip)
             Tooltips.Append(actionKey, actionID);
         end
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetToy(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetToy()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local itemID = tooltip:GetTooltipData().id;
 
     if Tooltips.ShouldShow("TooltipToyShowItemID") then
@@ -308,15 +302,10 @@ function Tooltips.OnTooltipSetToy(tooltip)
         local icon = select(3, C_ToyBox.GetToyInfo(itemID));
         Tooltips.Append("Icon", icon);
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetMount(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetMount()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local mountID = tooltip:GetTooltipData().id;
 
     if Tooltips.ShouldShow("TooltipMountShowMountID") then
@@ -326,7 +315,6 @@ function Tooltips.OnTooltipSetMount(tooltip)
     local mountInfo = {C_MountJournal.GetMountInfoByID(mountID)};
     local spellID = mountInfo[2];
     if not spellID then
-        Tooltips.End();
         return;
     end
 
@@ -371,15 +359,10 @@ function Tooltips.OnTooltipSetMount(tooltip)
     if Tooltips.ShouldShow("TooltipMountShowSpellVisual") then
         Tooltips.Append("SpellVisualKitID", extraMountInfo[8]);
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetUnit(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetUnit()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local _, unit, guid = tooltip:GetUnit();
     local isNPC = string.match(guid, "Creature");
 
@@ -404,15 +387,10 @@ function Tooltips.OnTooltipSetUnit(tooltip)
             Tooltips.Append("Class", className);
         end
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetUnitAura(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetUnitAura()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     local spellID = tooltipInfo.tooltipData.id;
 
@@ -424,7 +402,6 @@ function Tooltips.OnTooltipSetUnitAura(tooltip)
     local aura = C_UnitAuras.GetAuraDataByIndex(unpack(args));
 
     if not aura then
-        Tooltips.End();
         return;
     end
 
@@ -484,19 +461,13 @@ function Tooltips.OnTooltipSetUnitAura(tooltip)
     if Tooltips.ShouldShow("TooltipAuraShowIsPrivate") then
         Tooltips.Append("IsPrivateAura", C_UnitAuras.AuraIsPrivate(spellID));
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetAchievement(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetAchievement()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     local link = Tooltips.ParseLink(tooltipInfo.getterArgs[1]);
     if not link then
-        Tooltips.End();
         return;
     end
 
@@ -525,29 +496,22 @@ function Tooltips.OnTooltipSetAchievement(tooltip)
             Tooltips.Append(format("%s- [%d]", TAB, i), criteria);
         end
     end
-
-    Tooltips.End();
 end
 
 -- companion pet == battle pet for our use case
-function Tooltips.OnTooltipSetCompanionPet(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetCompanionPet()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     local petID = tooltipInfo.getterArgs[1];
     if tooltipInfo.getterName == "GetAction" then
         _, petID = GetActionInfo(petID);
     end
     if not petID or petID == "" then
-        Tooltips.End();
         return;
     end
 
     local link = Tooltips.ParseLink(C_PetJournal.GetBattlePetLink(petID));
     if not link then
-        Tooltips.End();
         return;
     end
 
@@ -582,20 +546,14 @@ function Tooltips.OnTooltipSetCompanionPet(tooltip)
     if link.DisplayID and Tooltips.ShouldShow("TooltipBattlePetShowDisplayID") then
         Tooltips.Append("DisplayID", link.DisplayID);
     end
-
-    Tooltips.End();
 end
 
-function Tooltips.OnTooltipSetCurrency(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetCurrency()
+    local tooltip = Tooltips.GetCurrentTooltip();
     local currencyID = tooltip:GetTooltipData().id;
     local currencyInfo = C_CurrencyInfo.GetCurrencyInfo(currencyID);
 
     if currencyInfo.isHeader then
-        Tooltips.End();
         return;
     end
 
@@ -651,8 +609,6 @@ function Tooltips.OnTooltipSetCurrency(tooltip)
         local hasWarModeBonus = C_CurrencyInfo.DoesWarModeBonusApply(currencyID);
         Tooltips.Append("HasWarModeBonus", hasWarModeBonus);
     end
-
-    Tooltips.End();
 end
 
 local function IsGObjectGUID(guid)
@@ -670,11 +626,7 @@ local GOBJECT_TOKENS = {
     "softtarget"
 };
 
-function Tooltips.OnTooltipSetObject(tooltip)
-    if not Tooltips.Begin(tooltip) then
-        return;
-    end
-
+function Tooltips.OnTooltipSetObject()
     local guid;
     for _, token in pairs(GOBJECT_TOKENS) do
         local _guid = UnitGUID(token);
@@ -685,13 +637,23 @@ function Tooltips.OnTooltipSetObject(tooltip)
     end
 
     if not IsGObjectGUID(guid) then
-        Tooltips.End();
         return;
     end
 
     if Tooltips.ShouldShow("TooltipObjectShowID") then
         local gobjectID = Tooltips.GetGObjectIDFromGUID(guid);
         Tooltips.Append("GameObjectID", gobjectID);
+    end
+end
+
+function Tooltips.Wrap(func, tooltip)
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    local success, err = pcall(func);
+    if not success then
+        Tooltips.SetLastError(err);
     end
 
     Tooltips.End();
@@ -700,17 +662,19 @@ end
 ------------
 -- the joys of not supporting classic omegalul
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, Tooltips.OnTooltipSetItem);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, Tooltips.OnTooltipSetSpell);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Macro, Tooltips.OnTooltipSetMacro);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, Tooltips.OnTooltipSetToy);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, Tooltips.OnTooltipSetMount);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, Tooltips.OnTooltipSetUnit);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, Tooltips.OnTooltipSetUnitAura);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, Tooltips.OnTooltipSetAchievement);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, Tooltips.OnTooltipSetCompanionPet);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, Tooltips.OnTooltipSetCurrency);
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, Tooltips.OnTooltipSetObject);
+local _W = function(func) return function(tooltip) Tooltips.Wrap(func, tooltip); end end;
+
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, _W(Tooltips.OnTooltipSetItem));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, _W(Tooltips.OnTooltipSetSpell));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Macro, _W(Tooltips.OnTooltipSetMacro));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, _W(Tooltips.OnTooltipSetToy));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, _W(Tooltips.OnTooltipSetMount));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, _W(Tooltips.OnTooltipSetUnit));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, _W(Tooltips.OnTooltipSetUnitAura));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, _W(Tooltips.OnTooltipSetAchievement));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, _W(Tooltips.OnTooltipSetCompanionPet));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, _W(Tooltips.OnTooltipSetCurrency));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, _W(Tooltips.OnTooltipSetObject));
 
 ------------
 
