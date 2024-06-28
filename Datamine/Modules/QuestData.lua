@@ -51,6 +51,16 @@ function Datamine.Quest.GetQuestTagInfo(questID)
     return tagInfo;
 end
 
+function Datamine.Quest.GetQuestLink(questID, addToChatFrame)
+    local questTitle = C_QuestLog.GetTitleForQuestID(questID);
+    local link = format("|cffffff00|Hquest:%s:-1:0:0:0|h[%s]|h|r", questID, questTitle);
+    if addToChatFrame then
+        DEFAULT_CHAT_FRAME:AddMessage(link);
+    end
+
+    return link;
+end
+
 function Datamine.Quest.GetQuestAdditionalHighlights(questID)
     local uiMapID, worldQuests, worldQuestsElite, dungeons, treasures = C_QuestLog.GetQuestAdditionalHighlights(questID);
 
@@ -89,6 +99,8 @@ function Datamine.Quest:PrettyDumpQuestInfo(questID)
     questInfo.IsFlaggedComplete = C_QuestLog.IsQuestFlaggedCompleted(questID);
     questInfo.Type = C_QuestLog.GetQuestType(questID);
     questInfo.SuggestedGroupSize = C_QuestLog.GetSuggestedGroupSize(questID);
+    questInfo.IsImportant = C_QuestLog.IsImportantQuest(questID);
+    questInfo.IsLegendary = C_QuestLog.IsLegendaryQuest(questID);
 
     local distanceSq, onContinent = C_QuestLog.GetDistanceSqToQuest(questID);
 
@@ -101,7 +113,9 @@ function Datamine.Quest:PrettyDumpQuestInfo(questID)
 
     if questInfo.TagInfo then
         local worldQuestType = questInfo.TagInfo.worldQuestType;
-        questInfo.TagInfo.worldQuestType = Datamine.GetEnumValueName(Enum.QuestTagType, worldQuestType);
+        if worldQuestType then
+            questInfo.TagInfo.worldQuestType = Datamine.GetEnumValueName(Enum.QuestTagType, worldQuestType);
+        end
     end
 
     local additionalHighlights = Datamine.Quest.GetQuestAdditionalHighlights(questID);
