@@ -493,3 +493,16 @@ local currrencySettings = {
 };
 
 RegisterSettingsTable(currrencySettings);
+
+-- GAME OBJECT TOOLTIPS
+
+S.CreateHeader(category, L.CONFIG_HEADER_GOBJECT_TOOLTIPS);
+
+local gobjectSettings = {
+    [1] = {
+        Name = "TooltipObjectShowID",
+        LocKey = "GOBJECT_ID",
+    },
+};
+
+RegisterSettingsTable(gobjectSettings);

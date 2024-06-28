@@ -1,5 +1,6 @@
 local S = Datamine.Settings;
 local D = Datamine.Debug;
+local L = Datamine.Strings;
 
 local Tooltips = {};
 
@@ -679,3 +680,6 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, _W(Tooltips
 ------------
 
 Datamine.Tooltips = Tooltips;
+
+local helpMessage = L.SLASH_CMD_TOOLTIP_LAST_ERR_HELP;
+Datamine.Slash:RegisterCommand("tooltiperror", function() local err = Tooltips.GetLastError() if err then Datamine.Print("Tooltips", "Pushing error to error handler."); CallErrorHandler(err); end end, helpMessage, "Tooltips");

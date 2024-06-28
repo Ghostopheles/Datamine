@@ -39,6 +39,7 @@ L["CONFIG_HEADER_AURA_TOOLTIPS"] = "Aura Tooltips";
 L["CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS"] = "Achievement Tooltips";
 L["CONFIG_HEADER_BATTLE_PET_TOOLTIPS"] = "Battle Pet Tooltips";
 L["CONFIG_HEADER_CURRENCY_TOOLTIPS"] = "Currency Tooltips";
+L["CONFIG_HEADER_GOBJECT_TOOLTIPS"] = "Game Object Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -225,6 +226,9 @@ L["CONFIG_TOOLTIP_SHOW_CURRENCY_CYCLE_DURATION_TOOLTIP"] = "Show duration of the
 L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_NAME"] = "Show Currency War Mode Bonus";
 L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_TOOLTIP"] = "Show if the currency benefits from the war mode bonus";
 
+L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_NAME"] = "Show Game Object ID";
+L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_TOOLTIP"] = "Show game object ID for the object you are interacting with";
+
 -- end tooltips
 
 L["GENERIC_LOADING"] = "Loading...";
@@ -394,6 +398,7 @@ L["SLASH_CMD_SPELL_INFO_HELP"] = "Retrieve information about a spell.";
 L["SLASH_CMD_TMOG_ITEMMOD_INFO_HELP"] = "Retrieve source info for an ItemModifiedAppearanceID.";
 L["SLASH_CMD_TMOG_ITEMMOD_FROM_ITEMAPP_HELP"] = "Retrieve itemModifiedAppearanceIDs for a given itemAppearanceID.";
 L["SLASH_CMD_SETTINGS_HELP"] = "Open the Datamine settings";
+L["SLASH_CMD_TOOLTIP_LAST_ERR_HELP"] = "Shows the last tooltip error that was captured.";
 
 -- END LOCALIZATION
 
