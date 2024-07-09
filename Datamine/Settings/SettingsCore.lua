@@ -12,6 +12,7 @@ Datamine.Setting = {
     debugTargetInfo = "debugTargetInfo", -- this one is a cvar, hence the weird capitalization
     CollectCreatureData = "CollectCreatureData",
     AutoLoadMapData = "AutoLoadMapData",
+    ShowModelInfo = "ShowModelInfo",
     -- will also include all settings registered externally
 };
 
@@ -20,6 +21,7 @@ local defaultConfig = {
     [Datamine.Setting.debugTargetInfo] = false,
     [Datamine.Setting.CollectCreatureData] = false,
     [Datamine.Setting.AutoLoadMapData] = false,
+    [Datamine.Setting.ShowModelInfo] = true,
     -- will also include all settings registered externally
 };
 
@@ -224,6 +226,19 @@ do
     allSettings[variable] = setting;
 end
 
+do
+    local variable = Datamine.Setting.ShowModelInfo;
+    local variableType = Settings.VarType.Boolean;
+    local name = L.CONFIG_SHOW_MODEL_INFO_NAME;
+    local tooltip = L.CONFIG_SHOW_MODEL_INFO_TOOLTIP;
+
+    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    CreateCheckbox(category, setting, tooltip);
+    Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
+
+    allSettings[variable] = setting;
+end
+
 Settings.RegisterAddOnCategory(category);
 
 ------------
@@ -231,6 +246,12 @@ Settings.RegisterAddOnCategory(category);
 function Datamine.Settings.GetSetting(name)
     if allSettings[name] then
         return allSettings[name]:GetValue();
+    end
+end
+
+function Datamine.Settings.GetSettingObject(name)
+    if allSettings[name] then
+        return allSettings[name];
     end
 end
 

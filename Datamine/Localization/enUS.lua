@@ -19,6 +19,9 @@ L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs y
 L["CONFIG_AUTO_LOAD_MAP_DATA_NAME"] = "Load map data at startup";
 L["CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP"] = "Automatically loads map viewer data at startup. May increase loading times on first login or on reload.";
 
+L["CONFIG_SHOW_MODEL_INFO_NAME"] = "Show Model Info on Model Previews";
+L["CONFIG_SHOW_MODEL_INFO_TOOLTIP"] = "Shows extra model information on the ModelPreviewFrame, often used for the shop.";
+
 -- debug settings
 L["CONFIG_CATEGORY_DEBUG"] = "Debug";
 
@@ -390,6 +393,12 @@ L["TMOG_INFO_ERR_NO_ITEMMODS"] = "No ItemModifiedAppearances found for ItemAppea
 L["TMOG_INFO_RESULT_ITEMMODS"] = "ItemModifiedAppearances for ItemAppearance %d >>"
 
 L["TMOG_INFO_TRY_ON_LINK_TEXT"] = "Try On";
+
+-- Model Info
+
+L["MODEL_INFO_MODEL_SCENE_ID_FORMAT"] = "ModelSceneID: %s";
+L["MODEL_INFO_DISPLAY_ID_FORMAT"] = "DisplayID: %s";
+L["MODEL_INFO_FILEDATAID_FORMAT"] = "FileDataID: %s";
 
 -- Slash Commands
 

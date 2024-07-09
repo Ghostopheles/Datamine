@@ -45,6 +45,7 @@ Modules/QuestData.lua
 Modules/QuestLineData.lua
 Modules/TransmogData.lua
 Modules/AchievementInfo.lua
+Modules/ModelInfo.lua
 
 Modules/Collector/CollectorMixin.lua
 Modules/Collector/Collector.xml
