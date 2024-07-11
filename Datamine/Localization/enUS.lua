@@ -301,7 +301,7 @@ L["THEATER_MODE_CONTROLS_TITLE"] = "Movie Controls";
 L["THEATER_MODE_LOOP_TOGGLE"] = "Loop movie";
 L["THEATER_MODE_LOADING_MOVIE"] = "Loading movie...";
 L["THEATER_MODE_DOWNLOAD_PROGRESS"] = "%d%%";
-L["THEATER_MODE_ERR_PLAY_FAILED"] = "Unable to play movie wiht ID '%s': failed with error code %d (%s).";
+L["THEATER_MODE_ERR_PLAY_FAILED"] = "Unable to play movie '%s': failed with error code %d (%s).";
 L["THEATER_MODE_ERR_INVALID_MOVIE"] = "Movie '%d' does not exist or is otherwise not playable.";
 
 L["EXPLORER_HELP_TEXT_HELP_HEADER"] = "Explorer";
