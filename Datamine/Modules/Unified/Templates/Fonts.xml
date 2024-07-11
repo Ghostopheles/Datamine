@@ -1,57 +1,63 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
     <Font name="DatamineCleanFont" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="12">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="12">
         <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
 
     <Font name="DatamineCleanFontNoShadow" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="12">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="12">
         <Color r="1" g="1" b="1" />
     </Font>
 
+    <Font name="DatamineCleanFontBold" virtual="true"
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Bold.ttf" height="12">
+        <Color r="1" g="1" b="1" />
+        <Shadow x="1.5" y="-1.5" />
+    </Font>
+
     <Font name="DatamineCleanFontSmall" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="10">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="10">
         <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
 
     <Font name="DatamineCleanFontSmallNoShadow" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="10">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="10">
         <Color r="1" g="1" b="1" />
     </Font>
 
     <Font name="DatamineCleanFontLabelSmall" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="5">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="5">
         <Color r="1" g="1" b="1" />
     </Font>
 
     <Font name="DatamineCleanFontSmallish" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="11">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="11">
         <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
 
     <Font name="DatamineCleanFontMedium" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="14">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="14">
         <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
 
     <Font name="DatamineCleanFontMediumNoShadow" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="14">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="14">
         <Color r="1" g="1" b="1" />
     </Font>
 
     <Font name="DatamineCleanFontBig" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="16">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="16">
         <Color r="1" g="1" b="1" />
         <Shadow x="1.5" y="-1.5" />
     </Font>
 
     <Font name="DatamineCleanFontBigNoShadow" virtual="true"
-        font="Interface/AddOns/Datamine/Assets/Roboto-Regular.ttf" height="16">
+        font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="16">
         <Color r="1" g="1" b="1" />
     </Font>
 </Ui>
