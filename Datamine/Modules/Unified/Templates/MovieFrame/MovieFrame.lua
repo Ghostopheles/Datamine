@@ -63,21 +63,22 @@ function DatamineMovieFrameMixin:UpdateSubtitlesAnchor(anchorToSelf)
 end
 
 function DatamineMovieFrameMixin:Play(movieID, byName, resolution)
-    self:Stop();
     self:Show();
 
     local success, errorCode;
     if byName then
+        -- this doesn't work but hey it's here I guess?
         success, errorCode = self:StartMovieByName(movieID, self:ShouldLoop(), resolution);
     else
         success, errorCode = self:StartMovie(movieID, self:ShouldLoop());
     end
 
-    if not success then
+    if success then
+        local canCancel = true;
+        CinematicStarted(Enum.CinematicType.GameMovie, movieID, canCancel);
+    else
         self:HandlePlayError(errorCode, movieID);
         return success, errorCode;
-    else
-        CinematicStarted(Enum.CinematicType.GameMovie, movieID);
     end
 
     self:UpdateSubtitlesAnchor(true);
@@ -88,7 +89,9 @@ end
 
 -- this function does nothing because :StartMovieByName is non-functional
 function DatamineMovieFrameMixin:PlayByName(movieName, resolution)
-    return self:Play(movieName, true, resolution);
+    error(":PlayByName is not supported. Please just use :Play.");
+    local byName = true;
+    return self:Play(movieName, byName, resolution);
 end
 
 function DatamineMovieFrameMixin:Stop(userCancel, errorCode)
@@ -271,8 +274,3 @@ function DatamineTheaterTabMixin:GetLoopMovie()
 end
 
 --------------
-
-
-TEST_LOCALE = L;
-
-
