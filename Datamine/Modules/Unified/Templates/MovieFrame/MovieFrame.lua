@@ -75,6 +75,9 @@ function DatamineMovieFrameMixin:Play(movieID, byName, resolution)
 
     if not success then
         self:HandlePlayError(errorCode, movieID);
+        return success, errorCode;
+    else
+        CinematicStarted(Enum.CinematicType.GameMovie, movieID);
     end
 
     self:UpdateSubtitlesAnchor(true);
@@ -88,9 +91,10 @@ function DatamineMovieFrameMixin:PlayByName(movieName, resolution)
     return self:Play(movieName, true, resolution);
 end
 
-function DatamineMovieFrameMixin:Stop()
+function DatamineMovieFrameMixin:Stop(userCancel, errorCode)
     self:StopMovie();
-    GameMovieFinished();
+    local didError = errorCode ~= nil;
+    CinematicFinished(Enum.CinematicType.GameMovie, userCancel, didError);
 
     if self:IsShown() then
         self:Hide();
@@ -104,7 +108,7 @@ function DatamineMovieFrameMixin:HandlePlayError(errorCode, movieID)
     StaticPopup_Show("ERROR_CINEMATIC");
     local errString = format(L.THEATER_MODE_ERR_PLAY_FAILED, movieID, errorCode, START_MOVIE_ERR_STRINGS[errorCode]);
     Print(errString); -- TODO: Replace with error popup window
-    self:Stop();
+    self:Stop(false, errorCode);
 end
 
 --------------
@@ -222,12 +226,8 @@ function DatamineTheaterTabMixin:LoadAndPlayMovie(movieID)
     end
 
     self:CollapseControls();
-    if IsMovieLocal(movieID) then
-        self:Play(movieID);
-    else
-        self.PlayAfterLoad = true;
-        self:PreloadMovie(movieID);
-    end
+    self.PlayAfterLoad = true;
+    self:PreloadMovie(movieID);
 
     return true;
 end
