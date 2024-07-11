@@ -176,8 +176,8 @@
                             </Button>
                         </Frames>
                     </Frame>
-                    <EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" numeric="true"
-                        autoFocus="false" historyLines="5" mixin="DatamineSearchBoxMixin">
+                    <EditBox parentKey="SearchBox" inherits="DatamineEditBoxTemplate" numeric="true"
+                        autoFocus="false" mixin="DatamineSearchBoxMixin">
                         <Size y="25" />
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeKey="$parent.Header"
