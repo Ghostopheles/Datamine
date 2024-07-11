@@ -51,7 +51,7 @@ function DatamineMapViewerDetailsPanelMixin:OnLoad()
     -- because of how these dumb map grids work the X and Y axes are swapped.
     -- Y is horizontal, X is vertical
     self.CoordHeader:SetText(L.MAPVIEW_DETAILS_HEADER_COORDS);
-    self.CoordHeader.layoutIndex = self.WDTEntry.layoutIndex + 1;
+    self.CoordHeader.layoutIndex = self.GoButton.layoutIndex + 1;
     self.CoordHeader.align = "center";
 
     self.Warning:SetText(L.MAPVIEW_DETAILS_COORDS_WARNING);
