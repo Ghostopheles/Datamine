@@ -645,7 +645,7 @@ function DatamineScrollableDataFrameMixin:Populate(data, dataID)
             elseif key == "Description" and (value ~= "N/A") then
                 extent = 55;
                 maxValueLines = 5;
-                valueJustifyH = "MIDDLE";
+                valueJustifyH = "CENTER";
             end
         end
 
