@@ -281,6 +281,7 @@ function DatamineModelSceneMixin:OnLoad_Custom()
     self.actorTemplate = "DatamineModelSceneActorTemplate";
 
     Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
+    Registry:RegisterCallback(Events.MODEL_SET_BY_UNIT_TOKEN, self.OnModelSetByUnitToken, self);
 
     self:UpdateNativeFormButton();
 end
@@ -338,6 +339,10 @@ end
 
 function DatamineModelSceneMixin:OnDressModel()
     Registry:TriggerEvent(Events.MODEL_DRESSED);
+end
+
+function DatamineModelSceneMixin:OnModelSetByUnitToken(unitToken)
+    self.ModelScene:SetModelByUnit(unitToken);
 end
 
 function DatamineModelSceneMixin:UpdateNativeFormButton()

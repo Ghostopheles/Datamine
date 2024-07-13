@@ -1,6 +1,8 @@
 local L = Datamine.Strings;
 local Constants = Datamine.Constants;
 local DataTypes = Constants.DataTypes;
+local Registry = Datamine.EventRegistry;
+local Events = Datamine.Events;
 
 local moduleName = L.UI_MAIN_MODULE_NAME;
 
@@ -292,7 +294,7 @@ end
 Datamine.CreatureView = {};
 
 function Datamine.CreatureView.SetModelByUnit(unitToken)
-    return Datamine.Unified.GetUI().Workspace.CreatureViewTab.Model:SetUnit(unitToken);
+    Registry:TriggerEvent(Events.MODEL_SET_BY_UNIT_TOKEN, unitToken);
 end
 
 ------------

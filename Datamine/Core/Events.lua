@@ -2,6 +2,7 @@ Datamine.Events = {
     MODEL_RESET = "ModelReset",
     MODEL_LOADED = "ModelLoaded",
     MODEL_LOADED_INTERNAL = "ModelLoadedInternal",
+    MODEL_SET_BY_UNIT_TOKEN = "ModelSetByUnitToken",
     MODEL_VIEW_MODE_CHANGED = "ModelViewModeChanged",
     MODEL_CONTROLS_DEFAULTS_UPDATED = "ModelControlsDefaultsUpdated",
     MODEL_CONTROLS_TRANSMOG_SET_ITEM_SELECTED = "ModelControlsTransmogSetItemSelected",
