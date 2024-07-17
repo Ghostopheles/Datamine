@@ -140,8 +140,8 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
 
 	local width = (bounds.Bottom - bounds.Top) + 1;
 	local height = (bounds.Right - bounds.Left) + 1;
-	local dimensions = max(width, height);
-	local center = floor(dimensions / 2);
+	local dimensionsMax = max(width, height);
+	local dimensionsMin = min(width, height);
 
     local i = 1;
     for _, grid in pairs(mapInfo.Grids) do
@@ -152,20 +152,16 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
 			tile.layoutIndex = i;
 			tile:Init(textureID, y, x);
 
-			if y == center and x == center then
-				self.CenterTile = tile;
-			end
-
 			tinsert(tiles, tile);
 			i = i + 1;
 		end
     end
 
-	local layout = AnchorUtil.CreateGridLayout(GridLayoutMixin.Direction.TopLeftToBottomRight, width);
+	self:UpdateCanvasSize(dimensionsMax);
+
+	local layout = AnchorUtil.CreateGridLayout(GridLayoutMixin.Direction.TopLeftToBottomRight, dimensionsMin);
 	local initialAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self, "TOPLEFT", 0, 0);
 	AnchorUtil.GridLayout(tiles, initialAnchor, layout);
-
-	self:UpdateCanvasSize(dimensions);
 
 	self:Show();
 	Registry:TriggerEvent(Events.MAPVIEW_MAP_LOADED, id, mapInfo);
