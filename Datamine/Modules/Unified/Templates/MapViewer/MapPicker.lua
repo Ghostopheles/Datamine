@@ -70,7 +70,9 @@ function DatamineMapPickerMixin:SetSelectedWDT(wdtID)
     Datamine.MapViewer:LoadWDT(wdtID);
 
     local newFrame = self.MapList.ScrollView:FindFrameByPredicate(FindByWdtID);
-    newFrame.SelectionBorder:Show();
+    if newFrame then
+        newFrame.SelectionBorder:Show();
+    end
 end
 
 function DatamineMapPickerMixin:PopulateMapData()
