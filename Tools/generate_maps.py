@@ -10,6 +10,9 @@ parent_directory = os.path.dirname(os.getcwd())
 ADDON_DIR = os.path.join(parent_directory, "Datamine_Maps")
 OUTPUT_DIR = os.path.join(ADDON_DIR, "Generated")
 
+WOW_DIR = "F:/Games/World of Warcraft"
+FLAVOR = "wow_beta"
+
 TOC_FILE_LIST_LINE_NO = 17
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -92,12 +95,12 @@ def format_map_info(map: Map, map_grids_str: str) -> str:
     return map_info
 
 
-wdt_reader = WDTReader()
+wdt_reader = WDTReader(wow_path=WOW_DIR, product=FLAVOR)
 maps = MAP_DB2
 
 
 def write_map_file(map: Map):
-    if map.WdtFileDataID == 0:
+    if int(map.WdtFileDataID) == 0:
         return
 
     map_grids = wdt_reader.get_file_info(map.WdtFileDataID)

@@ -1,2 +1,3 @@
 httpx[http2]
 numpy
+pycasclib @ git+https://github.com/Ghostopheles/pycasc@master

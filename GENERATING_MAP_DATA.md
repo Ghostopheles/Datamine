@@ -11,13 +11,10 @@ In order to generate map data yourself, you'll need three things:
 In order to tweak the number of threads the script will use, open `Tools/generate_maps.py` and change `MAX_THREADS` from `os.cpu_count()` to a number of your choosing.
 
 > [!NOTE]
-> By default, the script will never redownload files that are already present in the cache. This can be a problem when files are updated. However, as of right now, if any file is out-of-date, you'll need to redownload all of the files from the internet. If you know the `FileDataID` of the WDT, you can manually navigate to the cache at `Tools/dm_tools/cache` and delete the file with that ID to only download that file.
-
-You can override this behavior using the `UPDATE_ALL` variable in `generate_maps.py`. `True` will make it redownload files, `False` will use the cache.
+> By default, the script will read the necessary map files from your existing WoW installation. If you want to generate maps for the beta branch, you need to have it installed locally. Be sure to update the `WOW_DIR` variable in `Tools/generate_maps.py` to point to your WoW installation. You can also change `FLAVOR` just below it to change which game flavor you want to generate maps for.
 
 Once you have your environment set up, you can get started:
 - Inside the base Datamine directory, open a new terminal window and install the requirements from `requirements.txt`
 - Navigate to the `Tools/` directory and run `generate_maps.py`
-  - This will automatically download the necessary files to your machine, parse them, generate Lua files, then put everything in the correct place and update the `Datamine_Maps.toc` file
-  - After you've generated your maps, you can delete the no-longer-needed wdt files from `Tools/dm_tools/cache`, but beware - deleting these files means you'll have to re-download them from the internet next time you generate maps.
+  - This will automatically grab the necessary files from your WoW installation, parse them, generate Lua files, then put everything in the correct place and update the `Datamine_Maps.toc` file
 

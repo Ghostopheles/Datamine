@@ -69,18 +69,22 @@ class WDTReader(FileReader):
     FORMAT = "IIIIIIII"
     TYPE = "WDT"
 
+    def __init__(self, wow_path: str, product: str):
+        self.PRODUCT = product
+        self.CASC_PATH = wow_path
+        super().__init__()
+
     def get_file_info(
         self,
         fdid: int,
         size_x: int = DEFAULT_MAP_SIZE_X,
         size_y: int = DEFAULT_MAP_SIZE_Y,
-        update_file: bool = False,
     ) -> list[WDT]:
-        if fdid == 0:
+        if int(fdid) == 0:
             return
 
         logger.info(f"Fetching map info for file {fdid}...")
-        obj = self.read_by_fdid(fdid, update_file)
+        obj = self.read_by_fdid(fdid)
 
         if not obj:
             return
