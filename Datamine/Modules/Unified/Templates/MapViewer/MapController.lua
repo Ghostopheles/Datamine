@@ -612,10 +612,6 @@ function DatamineMapControllerMixin:OnMapChanged()
 end
 
 function DatamineMapControllerMixin:OnMapLoaded(wdtID, mapInfo)
-	local defaultScrollX, defaultScrollY = 0, 0;
-    self:SetCurrentScroll(defaultScrollX, defaultScrollY);
-    self:SetTargetScroll(defaultScrollX, defaultScrollY);
-
     self:SetEnabled(true);
     self:CreateZoomLevels();
     self:CalculateScaleExtents();
@@ -762,7 +758,7 @@ function DatamineMapControllerMixin:ZoomOut()
 end
 
 function DatamineMapControllerMixin:ResetZoom(mapInfo)
-	local defaultScrollX, defaultScrollY = 0.5, 0.5;
+	local defaultScrollX, defaultScrollY = 0, 0;
     self:SetCurrentScroll(defaultScrollX, defaultScrollY);
     self:SetTargetScroll(defaultScrollX, defaultScrollY);
 
