@@ -11,7 +11,7 @@ ADDON_DIR = os.path.join(parent_directory, "Datamine_Maps")
 OUTPUT_DIR = os.path.join(ADDON_DIR, "Generated")
 
 WOW_DIR = "F:/Games/World of Warcraft"
-FLAVOR = "wow_beta"
+FLAVOR = "wow"
 
 TOC_FILE_LIST_LINE_NO = 17
 
@@ -62,10 +62,13 @@ def format_map_grids(map_grids: list[WDT]):
     mapTextures = f"\n{tabs(2)}MapTextures = {{"
     mapTexturesN = f"\n{tabs(2)}MapTexturesN = {{"
     minimapTextures = f"\n{tabs(2)}MinimapTextures = {{"
+    i = 1
     for grid in map_grids:
         mapTextures += f"\n{tabs(3)}{grid.mapTexture},"
         mapTexturesN += f"\n{tabs(3)}{grid.mapTextureN},"
-        minimapTextures += f"\n{tabs(3)}{grid.minimapTexture},"
+        if int(grid.minimapTexture) != 0:
+            minimapTextures += f"\n{tabs(3)}[{i}]={grid.minimapTexture},"
+        i += 1
 
     mapTextures += f"\n{tabs(2)}}},"
     mapTexturesN += f"\n{tabs(2)}}},"

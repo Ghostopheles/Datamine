@@ -25,6 +25,11 @@ local MAX_TILES = MAX_TILES_X * MAX_TILES_Y;
 ---@class DatamineMaps
 Datamine.Maps = {};
 
+---@return number maxTiles
+function Datamine.Maps.GetMaxTiles()
+    return MAX_TILES;
+end
+
 ---@param mapName string
 ---@return DatamineMapInfo?
 function Datamine.Maps.GetMapInfoByName(mapName)
@@ -112,7 +117,9 @@ local function PreprocessMapDisplayInfo(map)
         HasContent = false,
     };
 
-    for _, grid in pairs(map.Grids.MinimapTextures) do
+
+    for i=1, MAX_TILES do
+        local grid = map.Grids.MinimapTextures[i] or 0;
         local gridData = {
             Y = y,
             X = x,
