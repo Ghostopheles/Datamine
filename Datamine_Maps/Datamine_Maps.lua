@@ -105,7 +105,6 @@ local function PreprocessMapDisplayInfo(map)
         map = info;
     end
 
-    local y, x = 0, 0;
     local mapInfo = {
         Grids = {},
         Bounds = {
@@ -119,6 +118,9 @@ local function PreprocessMapDisplayInfo(map)
 
 
     for i=1, MAX_TILES do
+        local y = floor(i % MAX_TILES_Y);
+        local x = floor(i / MAX_TILES_Y);
+
         local grid = map.Grids.MinimapTextures[i] or 0;
         local gridData = {
             Y = y,
@@ -141,17 +143,6 @@ local function PreprocessMapDisplayInfo(map)
         end
 
         tinsert(mapInfo.Grids, gridData);
-
-        if y < MAX_TILES_Y then
-            y = y + 1;
-        else
-            y = 0;
-            if x < MAX_TILES_X then
-                x = x + 1;
-            else
-                x = 0;
-            end
-        end
     end
 
     return mapInfo;

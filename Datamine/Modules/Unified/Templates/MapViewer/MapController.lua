@@ -85,12 +85,13 @@ function DatamineMapCanvasMixin:OnMapLoaded(wdtID, mapInfo)
     self.MapInfo = mapInfo;
 end
 
-function DatamineMapCanvasMixin:UpdateCanvasSize()
+function DatamineMapCanvasMixin:UpdateCanvasSize(dimensions)
     -- get tile size first, then use the size of the grid to set the canvas size
     local templateInfo = C_XMLUtil.GetTemplateInfo(TILE_TEMPLATE_NAME);
     local w, h = templateInfo.width, templateInfo.height;
-	self:SetWidth(w * MAX_TILES_Y);
-	self:SetHeight(h * MAX_TILES_X);
+	dimensions = Clamp(dimensions or MAX_TILES_Y, 32, MAX_TILES_Y);
+	self:SetWidth(w * dimensions);
+	self:SetHeight(h * dimensions);
 end
 
 function DatamineMapCanvasMixin:Clear()
@@ -126,26 +127,41 @@ function DatamineMapCanvasMixin:LoadMapByWdtID(id)
 
 	local tiles = {};
 
+	local bounds = mapInfo.Bounds;
+	local function IsWithinBounds(x, y)
+		if x <= bounds.Bottom and x >= bounds.Top then
+			if y >= bounds.Left and y <= bounds.Right then
+				return true;
+			end
+		end
+		return false;
+	end
+
+	local dimensions = max((bounds.Bottom - bounds.Top + 1), (bounds.Right - bounds.Left + 1));
+
     local i = 1;
     for _, grid in pairs(mapInfo.Grids) do
         local y, x = grid.Y, grid.X;
-        local textureID = grid.TextureID;
-        local tile = self.TilePool:Acquire();
-		tile.layoutIndex = i;
-        tile:Init(textureID, y, x);
+		if IsWithinBounds(x, y) then
+			local textureID = grid.TextureID;
+			local tile = self.TilePool:Acquire();
+			tile.layoutIndex = i;
+			tile:Init(textureID, y, x);
 
-		if y == 31 and x == 31 then
-			self.CenterTile = tile;
+			if y == 31 and x == 31 then
+				self.CenterTile = tile;
+			end
+
+			tinsert(tiles, tile);
+			i = i + 1;
 		end
-
-		tinsert(tiles, tile);
-        i = i + 1;
     end
 
-	local layout = AnchorUtil.CreateGridLayout(GridLayoutMixin.Direction.TopLeftToBottomRight, MAX_TILES_Y);
+	local layout = AnchorUtil.CreateGridLayout(GridLayoutMixin.Direction.TopLeftToBottomRight, dimensions);
 
 	local initialAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self, "TOPLEFT", 0, 0);
 	AnchorUtil.GridLayout(tiles, initialAnchor, layout);
+	self:UpdateCanvasSize(dimensions);
 
 	self:Show();
 	Registry:TriggerEvent(Events.MAPVIEW_MAP_LOADED, id, mapInfo);
@@ -173,7 +189,7 @@ DatamineMapControllerMixin.LERP_TYPE = {
 };
 
 function DatamineMapControllerMixin:OnLoad()
-    local defaultScrollX, defaultScrollY = 0.5, 0.5;
+    local defaultScrollX, defaultScrollY = 0, 0;
     self:SetCurrentScroll(defaultScrollX, defaultScrollY);
     self:SetTargetScroll(defaultScrollX, defaultScrollY);
     self:SetZoomAmountPerMouseWheelDelta(0.125);
