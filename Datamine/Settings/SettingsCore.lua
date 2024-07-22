@@ -110,7 +110,7 @@ local function RegisterSetting(category, variable, name, defaultValue)
     Datamine.Setting[variable] = variable;
     defaultConfig[variable] = defaultValue;
 
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, DatamineConfig, type(defaultValue), defaultValue);
+    local setting = Settings.RegisterAddOnSetting(category, variable, name, variable, DatamineConfig, type(defaultValue), defaultValue);
     allSettings[variable] = setting;
 
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
