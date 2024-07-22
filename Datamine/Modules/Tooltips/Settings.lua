@@ -506,3 +506,5 @@ local gobjectSettings = {
 };
 
 RegisterSettingsTable(gobjectSettings);
+
+Datamine.Slash:RegisterCommand("tooltips", function() S.OpenSettings(category) end, L.SLASH_CMD_TOOLTIP_SETTINGS_HELP, "tooltips");

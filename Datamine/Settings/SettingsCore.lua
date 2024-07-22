@@ -48,13 +48,13 @@ end
 EventUtil.ContinueOnAddOnLoaded("Datamine", InitSavedVariables);
 
 local function OnSettingChanged(_, setting, value)
-	local variable = setting:GetVariable()
-	DatamineConfig[variable] = value
+	local variable = setting:GetVariable();
     Registry:TriggerEvent(Events.SETTING_CHANGED, variable, value);
 end
 
-local function CreateCVarSetting(category, name, variable, variableType, defaultValue)
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
+local function CreateCVarSetting(category, name, variable, defaultValue)
+    local variableType = type(defaultValue);
+    local setting = Settings.RegisterAddOnSetting(category, name, variable, DatamineConfig, variableType, defaultValue);
 
     local cvarAccessor = CreateCVarAccessor(variable, variableType);
     setting.GetValueInternal = function(self)
@@ -110,7 +110,7 @@ local function RegisterSetting(category, variable, name, defaultValue)
     Datamine.Setting[variable] = variable;
     defaultConfig[variable] = defaultValue;
 
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue);
+    local setting = Settings.RegisterAddOnSetting(category, name, variable, DatamineConfig, type(defaultValue), defaultValue);
     allSettings[variable] = setting;
 
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
@@ -175,11 +175,10 @@ local category = Settings.RegisterVerticalLayoutCategory(Datamine.Constants.Addo
 
 do
     local variable = Datamine.Setting.ChatPrefixColor;
-    local variableType = Settings.VarType.String;
     local name = L.CONFIG_CHAT_PREFIX_COLOR_NAME;
     local tooltip = L.CONFIG_CHAT_PREFIX_COLOR_TOOLTIP;
 
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
 
     CreateColorPickerButtonForSetting(category, setting, name, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
@@ -189,11 +188,10 @@ end
 
 do
     local variable = Datamine.Setting.debugTargetInfo;
-    local variableType = Settings.VarType.Boolean;
     local name = L.CONFIG_DEBUGTARGETINFO_NAME;
     local tooltip = L.CONFIG_DEBUGTARGETINFO_TOOLTIP;
 
-    local setting = CreateCVarSetting(category, name, variable, variableType, defaultConfig[variable]);
+    local setting = CreateCVarSetting(category, name, variable, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
@@ -202,11 +200,10 @@ end
 
 do
     local variable = Datamine.Setting.CollectCreatureData;
-    local variableType = Settings.VarType.Boolean;
     local name = L.CONFIG_CREATUREDATA_NAME;
     local tooltip = L.CONFIG_CREATUREDATA_TOOLTIP;
 
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
@@ -215,11 +212,10 @@ end
 
 do
     local variable = Datamine.Setting.AutoLoadMapData;
-    local variableType = Settings.VarType.Boolean;
     local name = L.CONFIG_AUTO_LOAD_MAP_DATA_NAME;
     local tooltip = L.CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP;
 
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
@@ -228,11 +224,10 @@ end
 
 do
     local variable = Datamine.Setting.ShowModelInfo;
-    local variableType = Settings.VarType.Boolean;
     local name = L.CONFIG_SHOW_MODEL_INFO_NAME;
     local tooltip = L.CONFIG_SHOW_MODEL_INFO_TOOLTIP;
 
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultConfig[variable]);
+    local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
@@ -265,8 +260,9 @@ function Datamine.Settings.GetTopLevelCategory()
     return category;
 end
 
-function Datamine.Settings.OpenSettings()
-    Settings.OpenToCategory(category:GetID());
+function Datamine.Settings.OpenSettings(categoryID)
+    categoryID = categoryID or category:GetID();
+    Settings.OpenToCategory(categoryID);
 end
 
 ------------
