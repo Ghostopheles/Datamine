@@ -5,6 +5,9 @@ local Registry = Datamine.EventRegistry;
 local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox;
 local CreateDropdownInitializer = Settings.CreateDropdownInitializer or Settings.CreateDropDownInitializer;
 
+local version, bild = GetBuildInfo();
+local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
+
 Datamine.Settings = {};
 
 Datamine.Setting = {
@@ -49,12 +52,20 @@ EventUtil.ContinueOnAddOnLoaded("Datamine", InitSavedVariables);
 
 local function OnSettingChanged(_, setting, value)
 	local variable = setting:GetVariable();
+    if not IS_FUTURE then
+        DatamineConfig[variable] = value;
+    end
     Registry:TriggerEvent(Events.SETTING_CHANGED, variable, value);
 end
 
 local function CreateCVarSetting(category, name, variable, defaultValue)
     local variableType = type(defaultValue);
-    local setting = Settings.RegisterAddOnSetting(category, name, variable, DatamineConfig, variableType, defaultValue);
+    local setting;
+    if IS_FUTURE then
+        setting = Settings.RegisterAddOnSetting(category, variable, variable, DatamineConfig, variableType, name, defaultValue);
+    else
+        setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
+    end
 
     local cvarAccessor = CreateCVarAccessor(variable, variableType);
     setting.GetValueInternal = function(self)
@@ -109,8 +120,14 @@ end
 local function RegisterSetting(category, variable, name, defaultValue)
     Datamine.Setting[variable] = variable;
     defaultConfig[variable] = defaultValue;
+    local variableType = type(defaultValue);
 
-    local setting = Settings.RegisterAddOnSetting(category, variable, name, variable, DatamineConfig, type(defaultValue), defaultValue);
+    local setting;
+    if IS_FUTURE then
+        setting = Settings.RegisterAddOnSetting(category, variable, variable, DatamineConfig, variableType, name, defaultValue);
+    else
+        setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
+    end
     allSettings[variable] = setting;
 
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
@@ -261,7 +278,7 @@ function Datamine.Settings.GetTopLevelCategory()
 end
 
 function Datamine.Settings.OpenSettings(categoryID)
-    categoryID = categoryID or category:GetID();
+    categoryID = IS_FUTURE and categoryID or category:GetID();
     Settings.OpenToCategory(categoryID);
 end
 
