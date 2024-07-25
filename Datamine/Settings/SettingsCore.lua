@@ -30,19 +30,32 @@ local defaultConfig = {
 
 local allSettings = {};
 
+local mt = {
+    __index = function(t, k)
+        if DatamineConfig then
+            return DatamineConfig[k];
+        end
+    end,
+    __newindex = function(t, k, v)
+        if DatamineConfig then
+            DatamineConfig[k] = v;
+        else
+            rawset(t, k, v);
+        end
+    end
+};
+local middleman = {};
+setmetatable(middleman, mt);
+
 local function InitSavedVariables()
     if not DatamineConfig then
         DatamineConfig = CopyTable(defaultConfig);
     end
 
-    for name, setting in pairs(allSettings) do
-        local var = DatamineConfig[name];
-
-        if var == nil then
-            DatamineConfig[name] = setting:GetValue();
-        else
-            setting:SetValue(DatamineConfig[name]);
-        end
+    for k, v in pairs(middleman) do
+        DatamineConfig[k] = v;
+        wipe(middleman);
+        setmetatable(middleman, mt);
     end
 
     Datamine.Constants.ChatPrefixColor = CreateColorFromHexString(DatamineConfig.ChatPrefixColor);
@@ -62,7 +75,7 @@ local function CreateCVarSetting(category, name, variable, defaultValue)
     local variableType = type(defaultValue);
     local setting;
     if IS_FUTURE then
-        setting = Settings.RegisterAddOnSetting(category, variable, variable, DatamineConfig, variableType, name, defaultValue);
+        setting = Settings.RegisterAddOnSetting(category, name, variable, variable, middleman, variableType, defaultValue);
     else
         setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
     end
@@ -124,7 +137,7 @@ local function RegisterSetting(category, variable, name, defaultValue)
 
     local setting;
     if IS_FUTURE then
-        setting = Settings.RegisterAddOnSetting(category, variable, variable, DatamineConfig, variableType, name, defaultValue);
+        setting = Settings.RegisterAddOnSetting(category, name, variable, variable, middleman, variableType, defaultValue);
     else
         setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
     end
