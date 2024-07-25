@@ -1,6 +1,7 @@
 # Datamine v2.2.4
 
 * Support for 11.0.0 prepatch
+* Support for 11.0.2.55789
 
 # Datamine v2.2.3
 
