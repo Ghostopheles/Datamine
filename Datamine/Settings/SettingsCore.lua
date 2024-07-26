@@ -28,8 +28,6 @@ local defaultConfig = {
     -- will also include all settings registered externally
 };
 
-local allSettings = {};
-
 local mt = {
     __index = function(t, k)
         if DatamineConfig then
@@ -169,7 +167,6 @@ local function RegisterSetting(category, variable, name, defaultValue)
     else
         setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
     end
-    allSettings[variable] = setting;
 
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
@@ -240,8 +237,6 @@ do
 
     CreateColorPickerButtonForSetting(category, setting, name, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
-
-    allSettings[variable] = setting;
 end
 
 do
@@ -252,8 +247,6 @@ do
     local setting = CreateCVarSetting(category, name, variable, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
-
-    allSettings[variable] = setting;
 end
 
 do
@@ -264,8 +257,6 @@ do
     local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
-
-    allSettings[variable] = setting;
 end
 
 do
@@ -276,8 +267,6 @@ do
     local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
-
-    allSettings[variable] = setting;
 end
 
 do
@@ -288,8 +277,6 @@ do
     local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
     CreateCheckbox(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
-
-    allSettings[variable] = setting;
 end
 
 Settings.RegisterAddOnCategory(category);
