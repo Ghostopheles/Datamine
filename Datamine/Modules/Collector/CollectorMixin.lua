@@ -2,6 +2,13 @@ local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 local Settings = Datamine.Settings;
 
+local function DebugAssert(condition, message)
+    if not Datamine.Debug.IsDebugEnabled() then
+        return;
+    end
+    assert(condition, message);
+end
+
 ---@type DatamineDatabase
 local DATABASE;
 
@@ -270,7 +277,12 @@ end
 
 function DatamineCollectorMixin:ITEM_TEXT_READY()
     local ctx = activeContext;
-    if not ctx or ctx:IsDone() then
+    DebugAssert(ctx, "Missing context in ITEM_TEXT_READY event");
+    if not ctx then
+        return;
+    end
+
+    if ctx:IsDone() then
         return;
     end
 
