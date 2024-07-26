@@ -52,11 +52,19 @@ local function InitSavedVariables()
         DatamineConfig = CopyTable(defaultConfig);
     end
 
-    for k, v in pairs(middleman) do
-        DatamineConfig[k] = v;
-        wipe(middleman);
-        setmetatable(middleman, mt);
+    for k, v in pairs(DatamineConfig) do
+        local variable = k;
+        local setting = Settings.GetSetting(variable);
+        if not setting then
+            setting = Settings.GetSetting("DM_" .. variable);
+        end
+
+        if setting then
+            local immediate = true;
+            setting:SetValue(v, immediate);
+        end
     end
+    wipe(middleman);
 
     Datamine.Constants.ChatPrefixColor = CreateColorFromHexString(DatamineConfig.ChatPrefixColor);
 end
@@ -71,35 +79,55 @@ local function OnSettingChanged(_, setting, value)
     Registry:TriggerEvent(Events.SETTING_CHANGED, variable, value);
 end
 
+local function CreateCVarProxySetting(category, name, variable, defaultValue)
+    local cvar = variable;
+    variable = "DM_" .. variable;
+    local variableType = type(defaultValue);
+    local accessor = CreateCVarAccessor(cvar, variableType);
+
+    local function GetValue()
+        local value = accessor:GetValue();
+        return accessor:ConvertValue(value);
+    end
+
+    local function SetValue(value)
+        accessor:SetValue(value);
+        DatamineConfig[cvar] = value; -- hack fix and I hate it
+        return value;
+    end
+
+    local setting = Settings.RegisterProxySetting(category, variable, variableType, name, defaultValue, GetValue, SetValue);
+    return setting;
+end
+
 local function CreateCVarSetting(category, name, variable, defaultValue)
     local variableType = type(defaultValue);
     local setting;
     if IS_FUTURE then
-        setting = Settings.RegisterAddOnSetting(category, name, variable, variable, middleman, variableType, defaultValue);
+        setting = CreateCVarProxySetting(category, name, variable, defaultValue);
     else
         setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
+        local cvarAccessor = CreateCVarAccessor(variable, variableType);
+        setting.GetValueInternal = function(self)
+            return cvarAccessor:GetValue();
+        end;
+
+        setting.SetValueInternal = function(self, value)
+            assert(type(value) == variableType);
+            self.pendingValue = value;
+            cvarAccessor:SetValue(value);
+            self.pendingValue = nil;
+            return value;
+        end
+
+        setting.GetDefaultValueInternal = function(self)
+            return cvarAccessor:GetDefaultValue();
+        end
+
+        setting.ConvertValueInternal = function(self, value)
+            return cvarAccessor:ConvertValue(value);
+        end
     end
-
-    local cvarAccessor = CreateCVarAccessor(variable, variableType);
-    setting.GetValueInternal = function(self)
-		return cvarAccessor:GetValue();
-	end;
-
-	setting.SetValueInternal = function(self, value)
-		assert(type(value) == variableType);
-		self.pendingValue = value;
-		cvarAccessor:SetValue(value);
-		self.pendingValue = nil;
-		return value;
-	end
-
-	setting.GetDefaultValueInternal = function(self)
-		return cvarAccessor:GetDefaultValue();
-	end
-
-	setting.ConvertValueInternal = function(self, value)
-		return cvarAccessor:ConvertValue(value);
-	end
 
     return setting;
 end
@@ -269,20 +297,17 @@ Settings.RegisterAddOnCategory(category);
 ------------
 
 function Datamine.Settings.GetSetting(name)
-    if allSettings[name] then
-        return allSettings[name]:GetValue();
-    end
+    return Settings.GetValue(name);
 end
 
 function Datamine.Settings.GetSettingObject(name)
-    if allSettings[name] then
-        return allSettings[name];
-    end
+    return Settings.GetSetting(name);
 end
 
 function Datamine.Settings.GetColor(name)
-    if allSettings[name] then
-        return CreateColorFromHexString(allSettings[name]:GetValue());
+    local value = Settings.GetValue(name);
+    if value then
+        return CreateColorFromHexString(value);
     end
 end
 
