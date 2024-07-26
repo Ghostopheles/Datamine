@@ -247,6 +247,7 @@ local _context = {
     text = {},
     guid = nil,
     title = nil,
+    singlePage = false,
     pageCount = DEFAULT_PAGE_COUNT,
     doneReading = false,
     doneResetting = false,
@@ -257,6 +258,7 @@ local function CreateContext()
     local ctx = CopyTable(_context);
     ctx.guid = UnitGUID("npc");
     ctx.title = ItemTextGetItem();
+    ctx.singlePage = not ItemTextHasNextPage();
     return ctx;
 end
 
@@ -273,12 +275,18 @@ function DatamineCollectorMixin:ITEM_TEXT_READY()
     end
 
     if not ctx.doneReading then
-        tinsert(ctx.text, ItemTextGetPage(), ItemTextGetText());
+        local pageNum = tostring(ItemTextGetPage());
+        ctx.text[pageNum] = ItemTextGetText();
         if ItemTextHasNextPage() then
             ctx.pageCount = ctx.pageCount + 1;
             NextPage();
         else
             ctx.doneReading = true;
+            if ctx.singlePage then
+                ctx.doneResetting = true;
+                ItemTextFrame:SetAlpha(1);
+            end
+
             PrevPage();
         end
     elseif not ctx.doneResetting then

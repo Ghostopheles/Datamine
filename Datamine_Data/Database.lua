@@ -616,9 +616,10 @@ function Database:InsertItemText(ctx)
             ID = C_Item.GetItemIDByGUID(guid)
         };
     elseif string.match(guid, "GameObject-") then
+        local gobjectID = select(6, string.split("-", guid));
         source = {
             Type = "GameObject",
-            ID = tonumber(select(6, string.split("-", guid))),
+            ID = tonumber(gobjectID),
         };
     end
 
