@@ -4,6 +4,10 @@ local S = Datamine.Settings;
 local parentCategory = S.GetTopLevelCategory();
 local category = Settings.RegisterVerticalLayoutSubcategory(parentCategory, L.CONFIG_CATEGORY_TOOLTIPS);
 
+local function CreateSubcategory(title)
+    return Settings.RegisterVerticalLayoutSubcategory(category, title);
+end
+
 do
     local variable = "TooltipKeyColor";
     local name = L.CONFIG_TOOLTIP_KEY_COLOR_NAME;
@@ -68,7 +72,8 @@ function S.IsTooltipModifierDown()
     end
 end
 
-local function RegisterSettingsTable(settings)
+local function RegisterSettingsTable(settings, targetCategory)
+    targetCategory = targetCategory or category;
     for _, _setting in ipairs(settings) do
         local variable = _setting.Name;
         local name = L["CONFIG_TOOLTIP_SHOW_" .. _setting.LocKey .. "_NAME"];
@@ -80,14 +85,14 @@ local function RegisterSettingsTable(settings)
             default = true;
         end
 
-        local setting = S.RegisterSetting(category, variable, name, default);
-        S.CreateCheckbox(category, setting, tooltip);
+        local setting = S.RegisterSetting(targetCategory, variable, name, default);
+        S.CreateCheckbox(targetCategory, setting, tooltip);
     end
 end
 
 -- ITEM TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_ITEM_TOOLTIPS);
+local items = CreateSubcategory(L.CONFIG_HEADER_ITEM_TOOLTIPS);
 
 local itemSettings = {
     [1] = {
@@ -149,11 +154,11 @@ local itemSettings = {
     },
 };
 
-RegisterSettingsTable(itemSettings);
+RegisterSettingsTable(itemSettings, items);
 
 -- SPELL TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_SPELL_TOOLTIPS);
+local spells = CreateSubcategory(L.CONFIG_HEADER_SPELL_TOOLTIPS);
 
 local spellSettings = {
     [1] = {
@@ -162,11 +167,11 @@ local spellSettings = {
     }
 };
 
-RegisterSettingsTable(spellSettings);
+RegisterSettingsTable(spellSettings, spells);
 
 -- MACRO TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_MACRO_TOOLTIPS);
+local macros = CreateSubcategory(L.CONFIG_HEADER_MACRO_TOOLTIPS);
 
 local macroSettings = {
     [1] = {
@@ -183,11 +188,11 @@ local macroSettings = {
     },
 };
 
-RegisterSettingsTable(macroSettings);
+RegisterSettingsTable(macroSettings, macros);
 
 -- TOY TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_TOY_TOOLTIPS);
+local toys = CreateSubcategory(L.CONFIG_HEADER_TOY_TOOLTIPS);
 
 local toySettings = {
     [1] = {
@@ -204,11 +209,11 @@ local toySettings = {
     },
 };
 
-RegisterSettingsTable(toySettings);
+RegisterSettingsTable(toySettings, toys);
 
 -- MOUNT TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_MOUNT_TOOLTIPS);
+local mounts = CreateSubcategory(L.CONFIG_HEADER_MOUNT_TOOLTIPS);
 
 local mountSettings = {
     [1] = {
@@ -258,11 +263,11 @@ local mountSettings = {
     },
 };
 
-RegisterSettingsTable(mountSettings);
+RegisterSettingsTable(mountSettings, mounts);
 
 -- UNIT TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_UNIT_TOOLTIPS);
+local units = CreateSubcategory(L.CONFIG_HEADER_UNIT_TOOLTIPS);
 
 local unitSettings = {
     [1] = {
@@ -284,11 +289,11 @@ local unitSettings = {
     }
 };
 
-RegisterSettingsTable(unitSettings);
+RegisterSettingsTable(unitSettings, units);
 
 -- AURA TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_AURA_TOOLTIPS);
+local auras = CreateSubcategory(L.CONFIG_HEADER_AURA_TOOLTIPS);
 
 local auraSettings = {
     [1] = {
@@ -359,11 +364,11 @@ local auraSettings = {
     },
 };
 
-RegisterSettingsTable(auraSettings);
+RegisterSettingsTable(auraSettings, auras);
 
 -- ACHIEVEMENT TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS);
+local achievements = CreateSubcategory(L.CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS);
 
 local achievementSettings = {
     [1] = {
@@ -390,11 +395,11 @@ local achievementSettings = {
     },
 };
 
-RegisterSettingsTable(achievementSettings);
+RegisterSettingsTable(achievementSettings, achievements);
 
 -- BATTLE PET TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_BATTLE_PET_TOOLTIPS);
+local battlePets = CreateSubcategory(L.CONFIG_HEADER_BATTLE_PET_TOOLTIPS);
 
 local battlePetSettings = {
     [1] = {
@@ -437,11 +442,11 @@ local battlePetSettings = {
     },
 };
 
-RegisterSettingsTable(battlePetSettings);
+RegisterSettingsTable(battlePetSettings, battlePets);
 
 -- CURRENCY TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_CURRENCY_TOOLTIPS);
+local currencies = CreateSubcategory(L.CONFIG_HEADER_CURRENCY_TOOLTIPS);
 
 local currrencySettings = {
     [1] = {
@@ -492,11 +497,11 @@ local currrencySettings = {
     },
 };
 
-RegisterSettingsTable(currrencySettings);
+RegisterSettingsTable(currrencySettings, currencies);
 
 -- GAME OBJECT TOOLTIPS
 
-S.CreateHeader(category, L.CONFIG_HEADER_GOBJECT_TOOLTIPS);
+local gobjects = CreateSubcategory(L.CONFIG_HEADER_GOBJECT_TOOLTIPS);
 
 local gobjectSettings = {
     [1] = {
@@ -505,6 +510,44 @@ local gobjectSettings = {
     },
 };
 
-RegisterSettingsTable(gobjectSettings);
+RegisterSettingsTable(gobjectSettings, gobjects);
 
-Datamine.Slash:RegisterCommand("tooltips", function() S.OpenSettings(category) end, L.SLASH_CMD_TOOLTIP_SETTINGS_HELP, "tooltips");
+local childCategories = {
+    item = items,
+    spell = spells,
+    macro = macros,
+    toy = toys,
+    mount = mounts,
+    unit = units,
+    aura = auras,
+    achievement = achievements,
+    battlepet = battlePets,
+    currency = currencies,
+    gobject = gobjects
+};
+
+local function HandleSlash(section)
+    local id;
+    if not section then
+        id = category:GetID();
+    else
+        section = strlower(section);
+        local target = childCategories[section];
+        if not target and strsub(section, -1) == "s" then
+            section = strsub(section, 1, -2);
+            target = childCategories[section];
+        end
+
+        if not target then
+            id = category:GetID();
+        else
+            id = target:GetID();
+        end
+    end
+
+    S.OpenSettings(id);
+end
+
+local args = "[<section>]";
+local help = Datamine.Slash.GenerateHelpStringWithArgs(args, L.SLASH_CMD_TOOLTIP_SETTINGS_HELP);
+Datamine.Slash:RegisterCommand("tt", HandleSlash, help, "tooltips");
