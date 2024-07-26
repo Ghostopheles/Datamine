@@ -113,6 +113,7 @@ end
 
 local DefaultDB = {
     Creature = {},
+    ItemText = {},
 };
 
 local function GetDefaultDB()
@@ -562,4 +563,76 @@ end
 
 function Database:GetAllCreatureEntries()
     return self.DB.Creature;
+end
+
+------------
+-- ITEM TEXT
+
+local ItemTextEntryDefaults = {
+    Title = {},
+    Text = {},
+    Source = {}
+};
+
+local ItemTextEntryMetatable = {
+    __index = function(tbl, key)
+        local default = ItemTextEntryDefaults[key];
+        if default then
+            local defaultValue;
+            if type(default) == "table" then
+                defaultValue = CopyTable(default);
+            else
+                defaultValue = default;
+            end
+            rawset(tbl, key, defaultValue);
+            return rawget(tbl, key);
+        end
+    end
+};
+
+local function ApplyMetatableToItemTextEntry(tbl)
+    setmetatable(tbl, ItemTextEntryMetatable);
+end
+
+local function NewItemTextEntry()
+    local tbl = {};
+    ApplyMetatableToItemTextEntry(tbl);
+    return tbl;
+end
+
+function Database:InsertItemText(ctx)
+    if not self.DB.ItemText then
+        self.DB.ItemText = {};
+    end
+
+    local title = ctx.title;
+    local text = ctx.text;
+    local guid = ctx.guid;
+
+    local source;
+    if string.match(guid, "Item-") then
+        source = {
+            Type = "Item",
+            ID = C_Item.GetItemIDByGUID(guid)
+        };
+    elseif string.match(guid, "GameObject-") then
+        source = {
+            Type = "GameObject",
+            ID = tonumber(select(6, string.split("-", guid))),
+        };
+    end
+
+    local uniqueID = source.Type .. "-" .. source.ID;
+    local entry = self.DB.ItemText[uniqueID];
+    if not entry then
+        entry = NewItemTextEntry();
+    end
+
+    local locale = GetLocale();
+    entry.Title[locale] = title;
+    entry.Text[locale] = text;
+    entry.Source = source;
+
+    self.DB.ItemText[uniqueID] = entry;
+    self:Commit();
 end

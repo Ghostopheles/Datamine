@@ -23,6 +23,10 @@ local EVENTS = {
 
     NAME_PLATE_UNIT_ADDED = "NAME_PLATE_UNIT_ADDED",
     FORBIDDEN_NAME_PLATE_UNIT_ADDED = "FORBIDDEN_NAME_PLATE_UNIT_ADDED",
+
+    ITEM_TEXT_BEGIN = "ITEM_TEXT_BEGIN",
+    ITEM_TEXT_READY = "ITEM_TEXT_READY",
+    ITEM_TEXT_CLOSED = "ITEM_TEXT_CLOSED"
 };
 
 local PH_PLAYER_NAME = "$PLAYER_NAME$";
@@ -225,6 +229,75 @@ end
 
 function DatamineCollectorMixin:FORBIDDEN_NAME_PLATE_UNIT_ADDED(unitToken)
     self:HandleCreatureByUnitToken(unitToken);
+end
+
+------------
+
+local function NextPage()
+    RunNextFrame(function() ItemTextNextPage() end);
+end
+
+local function PrevPage()
+    RunNextFrame(function() ItemTextPrevPage() end);
+end
+
+local DEFAULT_PAGE_COUNT = 0; -- since books are not zero-indexed
+
+local _context = {
+    text = {},
+    guid = nil,
+    title = nil,
+    pageCount = DEFAULT_PAGE_COUNT,
+    doneReading = false,
+    doneResetting = false,
+    IsDone = function(self) return self.doneReading and self.doneResetting; end
+};
+
+local function CreateContext()
+    local ctx = CopyTable(_context);
+    ctx.guid = UnitGUID("npc");
+    ctx.title = ItemTextGetItem();
+    return ctx;
+end
+
+local activeContext;
+function DatamineCollectorMixin:ITEM_TEXT_BEGIN()
+    activeContext = CreateContext();
+    ItemTextFrame:SetAlpha(0);
+end
+
+function DatamineCollectorMixin:ITEM_TEXT_READY()
+    local ctx = activeContext;
+    if not ctx or ctx:IsDone() then
+        return;
+    end
+
+    if not ctx.doneReading then
+        tinsert(ctx.text, ItemTextGetPage(), ItemTextGetText());
+        if ItemTextHasNextPage() then
+            ctx.pageCount = ctx.pageCount + 1;
+            NextPage();
+        else
+            ctx.doneReading = true;
+            PrevPage();
+        end
+    elseif not ctx.doneResetting then
+        ctx.pageCount = ctx.pageCount - 1;
+        if ctx.pageCount == DEFAULT_PAGE_COUNT then
+            ctx.doneResetting = true;
+            ItemTextFrame:SetAlpha(1);
+        end
+        PrevPage();
+    end
+end
+
+function DatamineCollectorMixin:ITEM_TEXT_CLOSED()
+    if not activeContext then
+        return;
+    end
+
+    DATABASE:InsertItemText(activeContext);
+    activeContext = nil;
 end
 
 ------------
