@@ -23,8 +23,6 @@ Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
 Libs/AceLocale-3.0/AceLocale-3.0.xml
 
-DatamineEarlyLoad.lua
-
 Datamine.lua
 
 Localization/enUS.lua
