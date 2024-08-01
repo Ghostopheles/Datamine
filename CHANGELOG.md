@@ -1,5 +1,8 @@
 # Datamine v2.3.0
 
+#### Fixed
+* Greatly reduced map data size, updated included map data for 11.0.2.55959
+
 #### Added
 * Datamine will now log all the readable items you read, like books, plaques, and everything in-between
     * This currently has no UI associated with it, but I'm planning one in the future
