@@ -8,6 +8,10 @@ local CreateDropdownInitializer = Settings.CreateDropdownInitializer or Settings
 local version, bild = GetBuildInfo();
 local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
 
+if C_CVar.GetCVar("debugTargetInfo") == nil then
+    C_CVar.RegisterCVar("debugTargetInfo", 0);
+end
+
 Datamine.Settings = {};
 
 Datamine.Setting = {
