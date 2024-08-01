@@ -163,7 +163,7 @@ local function RegisterSetting(category, variable, name, defaultValue)
 
     local setting;
     if IS_FUTURE then
-        setting = Settings.RegisterAddOnSetting(category, name, variable, variable, middleman, variableType, defaultValue);
+        setting = Settings.RegisterAddOnSetting(category, variable, variable, middleman, variableType, name, defaultValue);
     else
         setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
     end
