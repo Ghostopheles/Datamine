@@ -269,6 +269,13 @@ local function CreateContext()
     return ctx;
 end
 
+local function CreatePage(text, pageNumber)
+    return {
+        Text = text,
+        Page = pageNumber
+    };
+end
+
 local activeContext;
 function DatamineCollectorMixin:ITEM_TEXT_BEGIN()
     activeContext = CreateContext();
@@ -287,8 +294,8 @@ function DatamineCollectorMixin:ITEM_TEXT_READY()
     end
 
     if not ctx.doneReading then
-        local pageNum = tostring(ItemTextGetPage());
-        ctx.text[pageNum] = ItemTextGetText();
+        local pageNum = ItemTextGetPage();
+        ctx.text[pageNum] = CreatePage(ItemTextGetText(), pageNum);
         if ItemTextHasNextPage() then
             ctx.pageCount = ctx.pageCount + 1;
             NextPage();
