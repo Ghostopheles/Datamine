@@ -65,10 +65,10 @@ def format_map_grids(map_grids: list[WDT]):
     i = 1
     for grid in map_grids:
         if int(grid.mapTexture) != 0:
-            mapTextures += f"\n{tabs(3)}{grid.mapTexture},"
+            mapTextures += f"\n{tabs(3)}[{i}]={grid.mapTexture},"
 
         if int(grid.mapTextureN) != 0:
-            mapTexturesN += f"\n{tabs(3)}{grid.mapTextureN},"
+            mapTexturesN += f"\n{tabs(3)}[{i}]={grid.mapTextureN},"
 
         if int(grid.minimapTexture) != 0:
             minimapTextures += f"\n{tabs(3)}[{i}]={grid.minimapTexture},"
