@@ -1007,6 +1007,8 @@ function DatamineUnifiedFrameMixin:OnLoad()
     end);
 
     tinsert(UISpecialFrames, self:GetName());
+
+    self:SetupAnimations();
 end
 
 function DatamineUnifiedFrameMixin:OnShow()
@@ -1023,6 +1025,33 @@ function DatamineUnifiedFrameMixin:OnWorkspaceModeChanged(newMode)
     if self:ShouldResetSizeAndPosition() then
         self:ResetSizeAndPosition();
     end
+end
+
+function DatamineUnifiedFrameMixin:SetupAnimations()
+    local duration = 0.15;
+
+    local animGroup = self:CreateAnimationGroup();
+    animGroup:SetLooping("NONE");
+    animGroup:SetToFinalAlpha(true);
+    animGroup:SetScript("OnPlay", function()
+        if animGroup.State == "SHOWING" then
+            self:Show();
+        end
+    end);
+    animGroup:SetScript("OnFinished", function()
+        if animGroup.State == "HIDING" then
+            self:Hide();
+        end
+    end);
+
+    local alphaAnim = animGroup:CreateAnimation("ALPHA");
+    alphaAnim:SetDuration(duration);
+    alphaAnim:SetFromAlpha(0);
+    alphaAnim:SetToAlpha(1);
+    alphaAnim:SetSmoothing("IN");
+    animGroup.AlphaAnim = alphaAnim;
+
+    self.ShowAnim = animGroup;
 end
 
 function DatamineUnifiedFrameMixin:ShouldResetSizeAndPosition()
@@ -1043,10 +1072,14 @@ function DatamineUnifiedFrameMixin:SetAllowResize(allow)
 end
 
 function DatamineUnifiedFrameMixin:Toggle()
+    self.ShowAnim:Stop();
     if not self:IsShown() then
-        self:Show();
+        self.ShowAnim.State = "SHOWING";
+        self.ShowAnim:Play();
     else
-        self:Hide();
+        self.ShowAnim.State = "HIDING";
+        local reverse = true;
+        self.ShowAnim:Play(reverse);
     end
 end
 
