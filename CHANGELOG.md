@@ -1,3 +1,10 @@
+# Datamine v2.3.0
+
+#### Added
+* Datamine will now log all the readable items you read, like books, plaques, and everything in-between
+    * This currently has no UI associated with it, but I'm planning one in the future
+* Fancy new fade-in and fade-out animations
+
 # Datamine v2.2.4
 
 * Support for 11.0.0 prepatch
