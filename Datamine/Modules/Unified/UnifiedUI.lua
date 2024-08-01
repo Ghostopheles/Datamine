@@ -299,6 +299,25 @@ end
 
 ------------
 
+Datamine.UI = {};
+
+function Datamine.UI.Toggle()
+    local ui = Datamine.Unified.GetUI();
+    ui:Toggle();
+end
+
+function Datamine.UI.Show()
+    local ui = Datamine.Unified.GetUI();
+    ui:Show();
+end
+
+function Datamine.UI.Hide()
+    local ui = Datamine.Unified.GetUI();
+    ui:Hide();
+end
+
+------------
+
 do
     local helpString = L.SLASH_CMD_UI_TOGGLE_HELP;
     Datamine.Slash:RegisterCommand("ui", function() DatamineUnifiedFrame:Toggle(); end, helpString, moduleName);
