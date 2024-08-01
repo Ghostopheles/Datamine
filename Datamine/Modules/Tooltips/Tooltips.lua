@@ -647,6 +647,8 @@ function Tooltips.OnTooltipSetObject()
     end
 end
 
+------------
+
 function Tooltips.Wrap(func, tooltip)
     if not Tooltips.Begin(tooltip) then
         return;
