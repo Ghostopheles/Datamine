@@ -377,6 +377,19 @@ function Tooltips.OnTooltipSetUnit()
             Tooltips.Append("CreatureID", creatureID);
         end
 
+        if D.DebugEnabled then
+            creatureID = tonumber(creatureID);
+            if creatureID then
+                local x, y, distance = ClosestUnitPosition(creatureID);
+                if x and y and distance then
+                    Tooltips.AddLine("Position");
+                    Tooltips.Append(TAB .. "- X:", format("%.2f", x));
+                    Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
+                    Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
+                end
+            end
+        end
+
         if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
             local displayID = Tooltips.GetCreatureDisplayID(creatureID);
             Tooltips.Append("DisplayID", displayID);
