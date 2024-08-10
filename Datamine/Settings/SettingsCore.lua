@@ -150,7 +150,6 @@ local function ShowColorPicker(setting)
 
     local options = {
         swatchFunc = Datamine.Utils.Debounce(0.1, OnColorChanged),
-        opacityFunc = Datamine.Utils.Debounce(0.1, OnColorChanged),
         cancelFunc = OnCancel,
         r = r,
         g = g,
