@@ -42,6 +42,10 @@ function Tooltips.GetLastError()
     return ERROR;
 end
 
+function Tooltips.ClearLastError()
+    ERROR = nil;
+end
+
 function Tooltips.End()
     assert(CURRENT_TOOLTIP, "Attempt to end non-existent tooltip context");
     CURRENT_TOOLTIP = nil;
@@ -49,6 +53,7 @@ function Tooltips.End()
     local err = Tooltips.GetLastError();
     if err and D.IsDebugEnabled() then
         CallErrorHandler("Error occurred within tooltip context: " .. err);
+        Tooltips.ClearLastError();
     end
 end
 
