@@ -25,6 +25,7 @@ move-folders:
   Datamine/Datamine: Datamine
   Datamine/Datamine_Data: Datamine_Data
   Datamine/Datamine_Maps: Datamine_Maps
+  Datamine/Datamine_Static: Datamine_Static
 
 manual-changelog:
   filename: CHANGELOG.md
