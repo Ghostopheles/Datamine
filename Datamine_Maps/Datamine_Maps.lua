@@ -156,7 +156,3 @@ function Datamine.Maps.GetMapDisplayInfoByWdtID(wdtFileDataID)
         return PreprocessMapDisplayInfo(map);
     end
 end
-
-EventUtil.ContinueOnAddOnLoaded(addonName, function()
-    Datamine.EventRegistry:TriggerEvent(Datamine.Events.MAPVIEW_MAP_DATA_LOADED);
-end);

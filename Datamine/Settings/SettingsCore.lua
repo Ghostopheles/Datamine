@@ -325,6 +325,10 @@ EventUtil.ContinueOnAddOnLoaded("Datamine", function()
     end
 end);
 
+EventUtil.ContinueOnAddOnLoaded(DATAMINE_MAPS, function()
+    Datamine.EventRegistry:TriggerEvent(Datamine.Events.MAPVIEW_MAP_DATA_LOADED);
+end);
+
 ------------
 
 do
