@@ -10,8 +10,14 @@ from dm_tools import SHARED_CLIENT_HEADERS, CACHE_PATH, logger
 from dataclasses import dataclass
 
 
+class Schema:
+    @classmethod
+    def new(cls, *args, **kwargs):
+        return cls(*args, **kwargs)
+
+
 @dataclass
-class Map:
+class Map(Schema):
     ID: int
     Directory: str
     MapName_lang: str
@@ -42,13 +48,9 @@ class Map:
     Flags_1: str
     Flags_2: str
 
-    @classmethod
-    def new(cls, *args, **kwargs):
-        return cls(*args, **kwargs)
-
 
 @dataclass
-class ItemBonus:
+class ItemBonus(Schema):
     ID: int
     Value_0: int
     Value_1: int

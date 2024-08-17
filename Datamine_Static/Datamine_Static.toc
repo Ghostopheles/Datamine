@@ -14,3 +14,5 @@
 ## X-Wago-ID: 4N2mb0GL
 
 Datamine_Static.lua
+
+Generated/ItemBonus.lua
