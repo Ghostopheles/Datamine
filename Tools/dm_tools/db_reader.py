@@ -3,7 +3,6 @@
 import os
 import csv
 import time
-import json
 import httpx
 
 from dm_tools import SHARED_CLIENT_HEADERS, CACHE_PATH, logger
@@ -46,6 +45,18 @@ class Map:
     @classmethod
     def new(cls, *args, **kwargs):
         return cls(*args, **kwargs)
+
+
+@dataclass
+class ItemBonus:
+    ID: int
+    Value_0: int
+    Value_1: int
+    Value_2: int
+    Value_3: int
+    ParentItemBonusListID: int
+    Type: int
+    OrderIndex: int
 
 
 DB2_PATH = os.path.join(CACHE_PATH, "db2")
@@ -133,3 +144,4 @@ class DB2:
 
 
 MAP_DB2 = DB2("Map", Map)
+ITEMBONUS_DB2 = DB2("ItemBonus", ItemBonus)
