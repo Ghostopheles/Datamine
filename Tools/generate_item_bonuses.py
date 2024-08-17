@@ -4,6 +4,7 @@ import concurrent.futures
 from dm_tools import (
     get_latest_game_version,
     DB2,
+    Schema,
     ITEMBONUS_DB2,
     ItemBonus,
     ITEMBONUSLIST_DB2,
@@ -54,7 +55,7 @@ def tabs(depth: int):
     return "\t" * depth
 
 
-_TABS = {1: tabs(1), 2: tabs(2), 3: tabs(3)}
+_TABS = {0: "", 1: tabs(1), 2: tabs(2), 3: tabs(3)}
 
 
 def add_files_to_toc():
@@ -80,118 +81,21 @@ def lua_format(tableName: str, data: str):
     )
 
 
-def format_bonuses(bonuses: list[ItemBonus]):
-    all_bonuses = ""
+def format_things(things: list[Schema]):
+    all_things = ""
 
     first_line = True
-    for itemBonus in bonuses:
-        bonus_tbl = f"{_TABS[1]}[{itemBonus.ID}] = {{"
+    for thing in things:
+        thing_tbl = f"{_TABS[1]}[{thing.ID}] = {thing.to_lua_table(tabOffset=1)}"
 
         if not first_line:
-            bonus_tbl = "\n" + bonus_tbl
+            thing_tbl = "\n" + thing_tbl
         else:
             first_line = False
 
-        bonus_tbl += f"\n{_TABS[2]}ID = {itemBonus.ID},"
+        all_things += thing_tbl
 
-        bonus_tbl += f"\n{_TABS[2]}Values = {{"
-        bonus_tbl += f"\n{_TABS[3]}[0] = {itemBonus.Value_0},"
-        bonus_tbl += f"\n{_TABS[3]}[1] = {itemBonus.Value_1},"
-        bonus_tbl += f"\n{_TABS[3]}[2] = {itemBonus.Value_2},"
-        bonus_tbl += f"\n{_TABS[3]}[3] = {itemBonus.Value_3},"
-        bonus_tbl += f"\n{_TABS[2]}" + "},"
-
-        bonus_tbl += (
-            f"\n{_TABS[2]}"
-            + f"ParentItemBonusListID = {itemBonus.ParentItemBonusListID},"
-        )
-        bonus_tbl += f"\n{_TABS[2]}" + f"Type = {itemBonus.Type},"
-        bonus_tbl += f"\n{_TABS[2]}" + f"OrderIndex = {itemBonus.OrderIndex}"
-
-        bonus_tbl += f"\n{_TABS[1]}" + "},"
-
-        all_bonuses += bonus_tbl
-
-    return all_bonuses
-
-
-def format_bonus_lists(bonusLists: list[ItemBonusList]):
-    allBonusLists = ""
-
-    first_line = True
-    for itemBonusList in bonusLists:
-        tbl = f"{_TABS[1]}[{itemBonusList.ID}] = {{"
-
-        if not first_line:
-            tbl = "\n" + tbl
-        else:
-            first_line = False
-
-        tbl += f"\n{_TABS[2]}ID = {itemBonusList.ID},"
-        tbl += f"\n{_TABS[2]}Flags = {itemBonusList.Flags},"
-
-        tbl += f"\n{_TABS[1]}" + "},"
-
-        allBonusLists += tbl
-
-    return allBonusLists
-
-
-def format_bonus_groups(bonusGroups: list[ItemBonusListGroup]):
-    allBonusGroups = ""
-
-    first_line = True
-    for bonusListGroup in bonusGroups:
-        tbl = f"{_TABS[1]}[{bonusListGroup.ID}] = {{"
-
-        if not first_line:
-            tbl = "\n" + tbl
-        else:
-            first_line = False
-
-        tbl += f"\n{_TABS[2]}ID = {bonusListGroup.ID},"
-        tbl += f"\n{_TABS[2]}SequenceSpellID = {bonusListGroup.SequenceSpellID},"
-        tbl += f"\n{_TABS[2]}PlayerConditionID = {bonusListGroup.PlayerConditionID},"
-        tbl += f"\n{_TABS[2]}ItemExtendedCostID = {bonusListGroup.ItemExtendedCostID},"
-        tbl += f"\n{_TABS[2]}ItemLogicalCostGroupID = {bonusListGroup.ItemLogicalCostGroupID},"
-        tbl += f"\n{_TABS[2]}ItemGroupIlvlScalingID = {bonusListGroup.ItemGroupIlvlScalingID},"
-
-        tbl += f"\n{_TABS[1]}" + "},"
-
-        allBonusGroups += tbl
-
-    return allBonusGroups
-
-
-def format_bonus_group_entries(bonusGroupEntries: list[ItemBonusListGroupEntry]):
-    allBonusGroupEntries = ""
-
-    first_line = True
-    for bonusGroupEntry in bonusGroupEntries:
-        tbl = f"{_TABS[1]}[{bonusGroupEntry.ID}] = {{"
-
-        if not first_line:
-            tbl = "\n" + tbl
-        else:
-            first_line = False
-
-        tbl += f"\n{_TABS[2]}ID = {bonusGroupEntry.ID},"
-        tbl += f"\n{_TABS[2]}ItemBonusListGroupID = {bonusGroupEntry.ItemBonusListGroupID},"
-        tbl += f"\n{_TABS[2]}ItemBonusListID = {bonusGroupEntry.ItemBonusListID},"
-        tbl += (
-            f"\n{_TABS[2]}ItemLevelSelectorID = {bonusGroupEntry.ItemLevelSelectorID},"
-        )
-        tbl += f"\n{_TABS[2]}SequenceValue = {bonusGroupEntry.SequenceValue},"
-        tbl += f"\n{_TABS[2]}ItemExtendedCostID = {bonusGroupEntry.ItemExtendedCostID},"
-        tbl += f"\n{_TABS[2]}PlayerConditionID = {bonusGroupEntry.PlayerConditionID},"
-        tbl += f"\n{_TABS[2]}Flags = {bonusGroupEntry.Flags},"
-        tbl += f"\n{_TABS[2]}ItemLogicalCostGroupID = {bonusGroupEntry.ItemLogicalCostGroupID},"
-
-        tbl += f"\n{_TABS[1]}" + "},"
-
-        allBonusGroupEntries += tbl
-
-    return allBonusGroupEntries
+    return all_things
 
 
 def write(tableName: str, db2: DB2, format_func):
@@ -205,22 +109,24 @@ def write(tableName: str, db2: DB2, format_func):
 
 with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
     futures = [
-        executor.submit(write, "ItemBonus", ITEMBONUS_DB2, format_bonuses),
-        executor.submit(write, "ItemBonusList", ITEMBONUSLIST_DB2, format_bonus_lists),
+        executor.submit(write, "ItemBonus", ITEMBONUS_DB2, format_things),
+        executor.submit(write, "ItemBonusList", ITEMBONUSLIST_DB2, format_things),
         executor.submit(
-            write, "ItemBonusListGroup", ITEMBONUSLISTGROUP_DB2, format_bonus_groups
+            write, "ItemBonusListGroup", ITEMBONUSLISTGROUP_DB2, format_things
         ),
         executor.submit(
             write,
             "ItemBonusListGroupEntry",
             ITEMBONUSLISTGROUPENTRY_DB2,
-            format_bonus_group_entries,
+            format_things,
         ),
     ]
 
     for task in concurrent.futures.as_completed(futures):
         if task.exception() is not None:
-            logger.exception(f"Encountered an error handling task: {task.exception()}")
+            logger.exception(
+                f"Encountered an error handling task: {task.exception().__context__}"
+            )
 
     concurrent.futures.wait(futures)
 

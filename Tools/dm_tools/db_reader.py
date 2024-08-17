@@ -7,13 +7,37 @@ import httpx
 
 from dm_tools import SHARED_CLIENT_HEADERS, CACHE_PATH, logger
 
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
+
+
+def tabs(depth: int):
+    return "\t" * depth
+
+
+_TABS = {1: tabs(1), 2: tabs(2), 3: tabs(3)}
 
 
 class Schema:
     @classmethod
     def new(cls, *args, **kwargs):
         return cls(*args, **kwargs)
+
+    def to_lua_table(self, tabOffset: int = 0):
+        tbl = "{"
+
+        for field in fields(self):
+            tabs = _TABS[1 + tabOffset]
+            value = getattr(self, field.name)
+            line = "\n" + tabs + f"{field.name} = {value},"
+
+            if field.type is str:
+                line.replace(value, f"[[{value}]]")
+
+            tbl += line
+
+        tbl += "\n" + _TABS[tabOffset] + "},"
+
+        return tbl
 
 
 @dataclass

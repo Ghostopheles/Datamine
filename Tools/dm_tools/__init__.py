@@ -9,6 +9,7 @@ from .downloader import FileDownloader
 from .listfile import Listfile
 from .reader import FileReader
 from .db_reader import (
+    Schema,
     DB2,
     DB2_DIALECT_NAME,
     MAP_DB2,
