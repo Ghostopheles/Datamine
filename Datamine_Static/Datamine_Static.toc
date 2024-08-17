@@ -16,3 +16,6 @@
 Datamine_Static.lua
 
 Generated/ItemBonus.lua
+Generated/ItemBonusList.lua
+Generated/ItemBonusListGroup.lua
+Generated/ItemBonusListGroupEntry.lua

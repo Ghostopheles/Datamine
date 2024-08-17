@@ -61,6 +61,35 @@ class ItemBonus(Schema):
     OrderIndex: int
 
 
+@dataclass
+class ItemBonusList(Schema):
+    ID: int
+    Flags: int
+
+
+@dataclass
+class ItemBonusListGroup(Schema):
+    ID: int
+    SequenceSpellID: int
+    PlayerConditionID: int
+    ItemExtendedCostID: int
+    ItemLogicalCostGroupID: int
+    ItemGroupIlvlScalingID: int
+
+
+@dataclass
+class ItemBonusListGroupEntry(Schema):
+    ID: int
+    ItemBonusListGroupID: int
+    ItemBonusListID: int
+    ItemLevelSelectorID: int
+    SequenceValue: int
+    ItemExtendedCostID: int
+    PlayerConditionID: int
+    Flags: int
+    ItemLogicalCostGroupID: int
+
+
 DB2_PATH = os.path.join(CACHE_PATH, "db2")
 DB2_INDEX_PATH = os.path.join(DB2_PATH, "index.json")
 DB2_DIALECT_NAME = "db2"
@@ -147,3 +176,6 @@ class DB2:
 
 MAP_DB2 = DB2("Map", Map)
 ITEMBONUS_DB2 = DB2("ItemBonus", ItemBonus)
+ITEMBONUSLIST_DB2 = DB2("ItemBonusList", ItemBonusList)
+ITEMBONUSLISTGROUP_DB2 = DB2("ItemBonusListGroup", ItemBonusListGroup)
+ITEMBONUSLISTGROUPENTRY_DB2 = DB2("ItemBonusListGroupEntry", ItemBonusListGroupEntry)
