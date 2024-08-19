@@ -77,7 +77,7 @@ function DatamineSearchTask:Start()
 end
 
 function DatamineSearchTask:Restart()
-    if self.State ~= SEARCH_STATE.RUNNNG then
+    if self.State ~= SEARCH_STATE.RUNNING then
         return;
     end
 
