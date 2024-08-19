@@ -70,6 +70,10 @@ def add_files_to_toc():
         for file in os.listdir(OUTPUT_DIR):
             if file.endswith(".lua"):
                 f.write(f"Generated/{file}\n")
+            elif os.path.isdir(os.path.join(OUTPUT_DIR, file)):
+                for nested_file in os.listdir(os.path.join(OUTPUT_DIR, file)):
+                    if nested_file.endswith(".lua"):
+                        f.write(f"Generated/{file}/{nested_file}\n")
             else:
                 os.remove(os.path.join(OUTPUT_DIR, file))
 
@@ -107,6 +111,57 @@ def write(tableName: str, db2: DB2, format_func):
         f.write(lua_format(tableName=tableName, data=data))
 
 
+def get_indices_for_listID(listID: int):
+    group_entry_ids = []
+    group_ids = []
+
+    for entry in ITEMBONUSLISTGROUPENTRY_DB2.read():
+        if entry.ItemBonusListID != listID:
+            continue
+
+        group_entry_ids.append(entry.ID)
+        group_ids.append(entry.ItemBonusListGroupID)
+
+    group_entry_ids = [*set(group_entry_ids)]
+    group_ids = [*set(group_ids)]
+
+    return group_ids, group_entry_ids
+
+
+def generate_indices():
+    tbl = "{"
+
+    listIDToGroupEntries = "\n" + _TABS[1] + "ListIDToGroupEntries = {"
+    listIDToGroupIDs = "\n" + _TABS[1] + "ListIDToGroupIDs = {"
+
+    for bonusList in ITEMBONUSLIST_DB2.read():
+        group_ids, group_entry_ids = get_indices_for_listID(bonusList.ID)
+
+        offset = 2
+        listIDToGroupEntries += "\n" + _TABS[offset] + f"[{bonusList.ID}] = {{"
+        listIDToGroupIDs += "\n" + _TABS[offset] + f"[{bonusList.ID}] = {{"
+
+        for entryID in group_entry_ids:
+            listIDToGroupEntries += "\n" + _TABS[offset + 1] + entryID + ","
+
+        for groupID in group_ids:
+            listIDToGroupIDs += "\n" + _TABS[offset + 1] + groupID + ","
+
+        listIDToGroupEntries += "\n" + _TABS[offset] + "};"
+        listIDToGroupIDs += "\n" + _TABS[offset] + "};"
+
+    listIDToGroupEntries += "\n" + _TABS[1] + "};"
+    listIDToGroupIDs += "\n" + _TABS[1] + "};"
+
+    tbl += listIDToGroupEntries
+    tbl += listIDToGroupIDs
+    tbl += "\n" + "};"
+
+    output_file = os.path.join(OUTPUT_DIR, "Indices", "ItemBonus_Indices.lua")
+    with open(output_file, "w") as f:
+        f.write(lua_format(tableName="ItemBonus_Indices", data=tbl))
+
+
 with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
     futures = [
         executor.submit(write, "ItemBonus", ITEMBONUS_DB2, format_things),
@@ -130,4 +185,5 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
 
     concurrent.futures.wait(futures)
 
+generate_indices()
 add_files_to_toc()

@@ -33,7 +33,10 @@ local _, Datamine_Static = ...;
 ---@class DatamineStaticItemBonusModule
 local ItemBonus = {};
 
-local _DATA = Datamine_Static.ItemBonus;
+local _ITEM_BONUS = Datamine_Static.ItemBonus;
+local _ITEM_BONUS_LIST = Datamine_Static.ItemBonusList;
+local _ITEM_BONUS_LIST_GROUP = Datamine_Static.ItemBonusListGroup;
+local _ITEM_BONUS_LIST_GROUP_ENTRY = Datamine_Static.ItemBonusListGroupEntry;
 
 ---@param id number
 ---@return DatamineStaticItemBonus?
@@ -41,7 +44,8 @@ function ItemBonus.GetItemBonusByID(id)
     return _DATA[id];
 end
 
-function ItemBonus.GetItemBonusListGroup(id)
+function ItemBonus.GetItemBonusIDsForList(id)
+
 end
 
 ------------

@@ -15,6 +15,7 @@
 
 Datamine_Static.lua
 
+Generated/Indices/ItemBonus_Indices.lua
 Generated/ItemBonus.lua
 Generated/ItemBonusList.lua
 Generated/ItemBonusListGroup.lua
