@@ -18,7 +18,7 @@
                 <Layers>
                     <Layer level="ARTWORK">
                         <FontString parentKey="TitleText" font="DatamineCleanFontBig">
-                            <Size x="125" />
+                            <Size x="250" />
                             <Anchors>
                                 <Anchor point="TOP" />
                                 <Anchor point="BOTTOM" relativePoint="CENTER" />

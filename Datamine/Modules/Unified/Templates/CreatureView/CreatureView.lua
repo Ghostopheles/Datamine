@@ -123,6 +123,8 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
 
     self.ParentCreatures = parentCreatures;
     self.Populated = true;
+
+    self.TitleBar.TitleText:SetText(format(L.CREATUREVIEW_LIST_TITLE, #allCreatures));
 end
 
 ------------
