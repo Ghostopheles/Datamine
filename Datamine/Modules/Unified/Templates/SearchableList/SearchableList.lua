@@ -37,7 +37,7 @@ function DatamineSearchableEntryMixin:Init(data)
     self:SetCallback(data.Callback);
     self:SetNoHighlight(data.NoHighlight);
     self:SetBackground(data.BackgroundColor, data.HideBackground, data.BackgroundAlpha);
-    self:SetSelected(data.SelectionCallback);
+    self:SetSelected(data.SelectionCallback(self));
     self:SetVariants(data.Variants);
 
     self:Show();
@@ -106,14 +106,7 @@ function DatamineSearchableEntryMixin:GetText()
     return self.Text;
 end
 
-function DatamineSearchableEntryMixin:SetSelected(selectionCallback)
-    if not selectionCallback and not self.Data.SelectionCallback then
-        self.SelectionBorder:Hide();
-        return;
-    end
-
-    local callback = selectionCallback or self.Data.SelectionCallback;
-    local isSelected = callback(self);
+function DatamineSearchableEntryMixin:SetSelected(isSelected)
     self.SelectionBorder:SetShown(isSelected);
 end
 
@@ -159,6 +152,8 @@ function DatamineSearchableListMixin:OnLoad_Base()
     };
 
     ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
+
+    self.SelectionBehavior = ScrollUtil.AddSelectionBehavior(self.ScrollBox, SelectionBehaviorFlags.Intrusive);
 end
 
 function DatamineSearchableListMixin:OnSearchStateChanged(state)
