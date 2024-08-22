@@ -116,7 +116,6 @@ local function PreprocessMapDisplayInfo(map)
         HasContent = false,
     };
 
-
     for i=1, MAX_TILES do
         local y = floor(i % MAX_TILES_Y);
         local x = floor(i / MAX_TILES_Y);
