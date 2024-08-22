@@ -6,6 +6,9 @@
 * Fixed a rare script error at load time
 * Fixed some unintentionally leaky globals
 
+#### Added
+* Added a total creature count to the creature viewer page
+
 # Datamine v2.3.0
 
 #### Fixed
