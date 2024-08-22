@@ -141,13 +141,13 @@ function DatamineSearchableListMixin:OnLoad_Base()
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 
     local anchorsWithScrollBar = {
-        CreateAnchor("TOPLEFT", 4, -4),
-        CreateAnchor("BOTTOMRIGHT", self.ScrollBar, -13, 4),
+        CreateAnchor("TOPLEFT", 2, -2),
+        CreateAnchor("BOTTOMRIGHT", self.ScrollBar, -13, 2),
     };
 
     local anchorsWithoutScrollBar = {
         anchorsWithScrollBar[1],
-        CreateAnchor("BOTTOMRIGHT", -4, 4),
+        CreateAnchor("BOTTOMRIGHT", -2, 0),
     };
 
     ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);

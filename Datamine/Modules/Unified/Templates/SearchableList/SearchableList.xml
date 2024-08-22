@@ -101,8 +101,7 @@
             </Layer>
             <Layer
                 level="BACKGROUND">
-                <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate"
-                    snapToPixelGrid="true" />
+                <Texture parentKey="Background" inherits="DatamineMediumGrayBackgroundTemplate" />
             </Layer>
         </Layers>
         <Scripts>
