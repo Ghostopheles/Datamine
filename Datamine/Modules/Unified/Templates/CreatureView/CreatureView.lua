@@ -94,7 +94,7 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
     end
 
     local function AlphabeticalSort(a, b)
-        return a.Text < b.Text;
+        return strcmputf8i(a.Text, b.Text) < 0;
     end
 
     table.sort(allCreatures, AlphabeticalSort);
