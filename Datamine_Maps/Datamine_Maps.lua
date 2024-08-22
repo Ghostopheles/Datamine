@@ -145,6 +145,17 @@ local function PreprocessMapDisplayInfo(map)
         tinsert(mapInfo.Grids, gridData);
     end
 
+    local width = mapInfo.Bounds.Right - mapInfo.Bounds.Left;
+    local height = mapInfo.Bounds.Top - mapInfo.Bounds.Bottom;
+
+    if width > height then
+        mapInfo.Bounds.Bottom = mapInfo.Bounds.Top + width;
+    end
+
+    if width < height then
+        mapInfo.Bounds.Right = mapInfo.Bounds.Left + height;
+    end
+
     return mapInfo;
 end
 
