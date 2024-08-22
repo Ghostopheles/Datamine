@@ -277,3 +277,9 @@ function Datamine.Utils.Debounce(timeout, callback)
 		calls = calls + 1;
 	end
 end
+
+function Datamine.Utils.DebugError(msg)
+    if Datamine.Debug.IsDebugEnabled() then
+        CallErrorHandler(msg);
+    end
+end
