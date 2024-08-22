@@ -523,7 +523,7 @@ function Tooltips.OnTooltipSetCompanionPet()
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     local petID = tooltipInfo.getterArgs[1];
     if tooltipInfo.getterName == "GetAction" then
-        _, petID = GetActionInfo(petID);
+        petID = select(2, GetActionInfo(petID));
     end
     if not petID or petID == "" then
         return;

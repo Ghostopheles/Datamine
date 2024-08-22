@@ -228,8 +228,8 @@ function DatamineMapControllerMixin:OnMouseDown(button)
     local mouseButtonInfo = self.MouseButtonInfo[button];
     if mouseButtonInfo then
         mouseButtonInfo.Down = true;
-        mouseButtonInfo.LastX, LastY = self:GetCursorPosition();
-        mouseButtonInfo.StartX, StartY = mouseButtonInfo.LastX, mouseButtonInfo.LastY;
+        mouseButtonInfo.LastX, mouseButtonInfo.LastY = self:GetCursorPosition();
+        mouseButtonInfo.StartX, mouseButtonInfo.StartY = mouseButtonInfo.LastX, mouseButtonInfo.LastY;
     end
 
 	local y, x = self:GetWorldCoordinatesFromMapClick();

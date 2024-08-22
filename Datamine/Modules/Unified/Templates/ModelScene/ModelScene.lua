@@ -456,8 +456,6 @@ function DatamineModelSceneMixin:ResetCamera()
     local cameraInfo = C_ModelInfo.GetModelSceneCameraInfoByID(1);
     local camera = self:GetActiveCamera();
 
-    CAMERA_INFO = cameraInfo;
-
     local cameraDefaults = self.CameraDefaults;
     camera:SetTarget(cameraDefaults.target.x, cameraDefaults.target.y, cameraDefaults.target.z);
 
