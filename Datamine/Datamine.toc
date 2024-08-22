@@ -26,6 +26,8 @@ Libs/AceLocale-3.0/AceLocale-3.0.xml
 Datamine.lua
 
 Localization/enUS.lua
+
+Core/TableUtil.lua
 Core/Events.lua
 Core/SlashCommands.lua
 
