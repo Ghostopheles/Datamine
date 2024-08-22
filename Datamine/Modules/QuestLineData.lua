@@ -66,7 +66,7 @@ function Datamine.Questline:OnQuestlineInfoReceived(requestRequired)
 end
 
 function Datamine.Questline:PrettyDumpQuestlineData(questLineInfo)
-    if not questLineInfo or questLineInfo == {} then
+    if not questLineInfo or Datamine.TableUtil.IsEmpty(questLineInfo) then
         Print("No questlines found for map " .. self.LastRequestedUiMapID)
         return;
     end
