@@ -57,22 +57,7 @@ function DatamineMapPickerMixin:LoadMapData()
 end
 
 function DatamineMapPickerMixin:SetSelectedWDT(wdtID)
-    local controller = Datamine.MapViewer.Controller;
-    local function FindByWdtID(_, element)
-        return element.ID == controller:GetDisplayedWDT();
-    end
-
-    local oldFrame = self.MapList.ScrollView:FindFrameByPredicate(FindByWdtID);
-    if oldFrame then
-        oldFrame.SelectionBorder:Hide();
-    end
-
     Datamine.MapViewer:LoadWDT(wdtID);
-
-    local newFrame = self.MapList.ScrollView:FindFrameByPredicate(FindByWdtID);
-    if newFrame then
-        newFrame.SelectionBorder:Show();
-    end
 end
 
 function DatamineMapPickerMixin:PopulateMapData()
@@ -93,6 +78,7 @@ function DatamineMapPickerMixin:PopulateMapData()
             TextScale = 0.9,
             Callback = function(frame)
                 self.MapList.SelectionBehavior:Select(frame);
+                self:SetSelectedWDT(wdtID);
             end,
             BackgroundAlpha = 0.5,
         };

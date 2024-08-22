@@ -37,7 +37,6 @@ function DatamineSearchableEntryMixin:Init(data)
     self:SetCallback(data.Callback);
     self:SetNoHighlight(data.NoHighlight);
     self:SetBackground(data.BackgroundColor, data.HideBackground, data.BackgroundAlpha);
-    self:SetSelected(data.SelectionCallback(self));
     self:SetVariants(data.Variants);
 
     self:Show();
@@ -163,6 +162,7 @@ function DatamineSearchableListMixin:OnSelectionChanged(data, isSelected)
     local f = self.ScrollBox:FindFrame(data);
     if not f then
         Datamine.Utils.DebugError("Frame not found in OnSelectionChanged callback");
+        return;
     end
 
     f:SetSelected(isSelected);

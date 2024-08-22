@@ -41,20 +41,6 @@ function DatamineCreaturePickerMixin:SetupSearchBox()
 end
 
 function DatamineCreaturePickerMixin:SetSelectedCreature(creatureID)
-    local function FindByCreatureID(_, element)
-        return element.ID == self.SelectedCreature;
-    end
-
-    local oldFrame = self.CreatureList.ScrollView:FindFrameByPredicate(FindByCreatureID);
-    if oldFrame then
-        oldFrame.SelectionBorder:Hide();
-    end
-
-    self.SelectedCreature = creatureID;
-
-    local newFrame = self.CreatureList.ScrollView:FindFrameByPredicate(FindByCreatureID);
-    newFrame.SelectionBorder:Show();
-
     self:GetParent():TrySetCreature(creatureID);
 end
 
@@ -68,6 +54,7 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
 
     local function OnClickCallback(frame)
         creatureList.SelectionBehavior:Select(frame);
+        self:SetSelectedCreature(frame.Data.ID);
     end
 
     local allCreatures = {};
@@ -185,10 +172,6 @@ function DatamineCreatureDetailsMixin:SetVariants(variants)
         self:GetParent():TrySetCreature(creatureID);
     end
 
-    local function SelectionCallback(frame)
-        return frame.Data.ID == self:GetParent():GetViewingCreature();
-    end
-
     local allVariants = {};
     local locale = GetLocale();
     for _, tbl in pairs(variants) do
@@ -201,7 +184,6 @@ function DatamineCreatureDetailsMixin:SetVariants(variants)
             Callback = OnClick,
             BackgroundAlpha = 0.5,
             Misc = tbl.CreatureInfo,
-            SelectionCallback = SelectionCallback,
         };
         tinsert(allVariants, data);
     end
