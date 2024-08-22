@@ -202,7 +202,10 @@ end
 
 function DatamineCameraMixin:HandleMouseMovement(mode, delta, snapToValue)
 	if mode == ORBIT_CAMERA_MOUSE_MODE_YAW_ROTATION then
-		self:SetYaw(self:GetYaw() - delta);
+		--self:SetYaw(self:GetYaw() - delta);
+        local actor = self:GetOwningScene():GetActiveActor();
+        local actorYaw = actor:GetYaw();
+        actor:SetYaw(actorYaw + 1 * delta);
 		if snapToValue then
 			self:SnapToTargetInterpolationYaw();
 		end
