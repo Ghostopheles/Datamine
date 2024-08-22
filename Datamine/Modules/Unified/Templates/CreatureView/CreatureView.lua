@@ -1,9 +1,6 @@
 local L = Datamine.Strings;
 local Registry = Datamine.EventRegistry;
 local Events = Datamine.Events;
-local Popup = Datamine.Popup;
-local Search = Datamine.Search;
-local Database = Datamine.Database;
 
 ------------
 
@@ -70,11 +67,7 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
     creatureList.ScrollView:SetPadding(2, 2, 2, 2, 2);
 
     local function OnClickCallback(frame)
-        self:SetSelectedCreature(frame.Data.ID);
-    end
-
-    local function SelectionCallback(frame)
-        return frame.Data.ID == self.SelectedCreature;
+        creatureList.SelectionBehavior:Select(frame);
     end
 
     local allCreatures = {};
@@ -105,7 +98,6 @@ function DatamineCreaturePickerMixin:PopulateCreatures()
                     Callback = OnClickCallback,
                     BackgroundAlpha = 0.5,
                     Misc = creatureInfo,
-                    SelectionCallback = SelectionCallback,
                 };
 
                 parentCreatures[name] = data;

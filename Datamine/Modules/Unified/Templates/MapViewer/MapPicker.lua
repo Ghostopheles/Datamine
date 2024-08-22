@@ -22,7 +22,6 @@ function DatamineMapPickerMixin:OnLoad()
     mapList:SetFailText(nil, L.MAPVIEW_PICKER_SEARCH_FAIL_TEXT);
 
     mapList.LoadButton:SetScript("OnClick", function() self:LoadMapData(); end);
-    mapList.SelectionBehavior:RegisterCallback("OnSelectionChanged", self.OnSelectionChanged, self);
 
     self:SetupSearchBox();
 
@@ -36,15 +35,6 @@ function DatamineMapPickerMixin:OnShow()
 
     self.TitleBar.SearchBox:SetText("");
     self.MapList.ScrollBox:ScrollToBegin();
-end
-
-function DatamineMapPickerMixin:OnSelectionChanged(data, isSelected)
-    local f = self.MapList.ScrollBox:FindFrame(data);
-    if not f then
-        Datamine.Utils.DebugError("Frame not found in OnSelectionChanged callback");
-    end
-
-    f:SetSelected(isSelected);
 end
 
 function DatamineMapPickerMixin:SetupSearchBox()
@@ -105,9 +95,6 @@ function DatamineMapPickerMixin:PopulateMapData()
                 self.MapList.SelectionBehavior:Select(frame);
             end,
             BackgroundAlpha = 0.5,
-            SelectionCallback = function(frame)
-                return self.MapList.SelectionBehavior:IsSelected(frame);
-            end,
         };
 
         tinsert(allMaps, data);

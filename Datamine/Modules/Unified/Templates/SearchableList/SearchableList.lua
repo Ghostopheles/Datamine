@@ -147,13 +147,30 @@ function DatamineSearchableListMixin:OnLoad_Base()
     };
 
     local anchorsWithoutScrollBar = {
-        CreateAnchor("TOPLEFT", 4, -4),
+        anchorsWithScrollBar[1],
         CreateAnchor("BOTTOMRIGHT", -4, 4),
     };
 
     ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithScrollBar, anchorsWithoutScrollBar);
 
     self.SelectionBehavior = ScrollUtil.AddSelectionBehavior(self.ScrollBox, SelectionBehaviorFlags.Intrusive);
+    self.SelectionBehavior:RegisterCallback("OnSelectionChanged", self.OnSelectionChanged, self);
+
+    ScrollUtil.AddAcquiredFrameCallback(self.ScrollBox, self.OnFrameInitialized, self);
+end
+
+function DatamineSearchableListMixin:OnSelectionChanged(data, isSelected)
+    local f = self.ScrollBox:FindFrame(data);
+    if not f then
+        Datamine.Utils.DebugError("Frame not found in OnSelectionChanged callback");
+    end
+
+    f:SetSelected(isSelected);
+end
+
+function DatamineSearchableListMixin:OnFrameInitialized(frame, data)
+    local isSelected = self.SelectionBehavior:IsElementDataSelected(data);
+    frame:SetSelected(isSelected);
 end
 
 function DatamineSearchableListMixin:OnSearchStateChanged(state)
