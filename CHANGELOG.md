@@ -1,3 +1,11 @@
+# Datamine v2.3.1
+
+#### Fixed
+* Models will now actually rotate correctly with the mouse after you move them around
+    * Thanks to the almighty and incredible @Peterodox for this change
+* Fixed a rare script error at load time
+* Fixed some unintentionally leaky globals
+
 # Datamine v2.3.0
 
 #### Fixed
