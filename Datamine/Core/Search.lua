@@ -1,7 +1,6 @@
 local Callbacks = Datamine.Callbacks;
 
 Datamine.Search = {};
-Datamine.Search.Models = {};
 
 local function GenerateSearchableString(str)
 	return strlower(string.trim((string.gsub(str, "%p+", " "))));
@@ -246,7 +245,6 @@ end
 function DatamineSearchableDataProviderMixin:GetSize()
     return self:ShouldUseResults() and #self.Results or #self.Source;
 end
-
 
 ------------
 
