@@ -5,9 +5,13 @@
     * Thanks to the almighty and incredible @Peterodox for this change
 * Fixed a rare script error at load time
 * Fixed some unintentionally leaky globals
+* Fixed some taint issues in the Settings UI
+* Creature viewer sort function has been adjusted for non-english sorting
 
 #### Added
 * Added a total creature count to the creature viewer page
+* Datamine will now display tooltips in the encounter journal for various elements
+* The creature viewer now displays the total number of collected creatures
 
 # Datamine v2.3.0
 
