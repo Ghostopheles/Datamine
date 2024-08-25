@@ -283,3 +283,17 @@ function Datamine.Utils.DebugError(msg)
         CallErrorHandler(msg);
     end
 end
+
+function Datamine.Utils.AddToDevTool(obj, name, defer)
+    if not Datamine.Debug.IsDebugEnabled() then
+        return;
+    end
+
+    if defer then
+        RunNextFrame(function()
+            DevTool:AddData(obj, name);
+        end);
+    else
+        DevTool:AddData(obj, name);
+    end
+end
