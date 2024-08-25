@@ -2,9 +2,6 @@ local L = Datamine.Strings;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
-local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox;
-local CreateDropdownInitializer = Settings.CreateDropdownInitializer or Settings.CreateDropDownInitializer;
-
 local version, bild = GetBuildInfo();
 local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
 
@@ -202,7 +199,7 @@ end
 Datamine.Settings.CreateColorPickerButton = CreateColorPickerButtonForSetting;
 
 local function CreateHeader(category, name)
-    local initializer = Settings.CreateElementInitializer("SettingsListSectionHeaderTemplate", { name = name});
+    local initializer = Settings.CreateSettingsInitializer("SettingsListSectionHeaderTemplate", { name = name });
     local layout = SettingsPanel:GetLayout(category);
     layout:AddInitializer(initializer);
 
@@ -211,14 +208,14 @@ end
 
 Datamine.Settings.CreateHeader = CreateHeader;
 
-local function CreateCheckboxForSetting(category, setting, tooltip)
-    return CreateCheckbox(category, setting, tooltip);
+local function CreateCheckbox(category, setting, tooltip)
+    return Settings.CreateCheckbox(category, setting, tooltip);
 end
 
-Datamine.Settings.CreateCheckbox = CreateCheckboxForSetting;
+Datamine.Settings.CreateCheckbox = CreateCheckbox;
 
 local function CreateDropdown(category, setting, options, tooltip)
-    local initializer = CreateDropdownInitializer(setting, options, tooltip);
+    local initializer = Settings.CreateDropdownInitializer(setting, options, tooltip);
     local layout = SettingsPanel:GetLayout(category);
     layout:AddInitializer(initializer);
 
