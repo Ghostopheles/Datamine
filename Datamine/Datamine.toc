@@ -51,6 +51,8 @@ Modules/EncounterJournal.lua
 Modules/Collector/CollectorMixin.lua
 Modules/Collector/Collector.xml
 
+Modules/Unified/Settings/Explorer.lua
+
 Modules/Unified/UnifiedUI.lua
 Modules/Unified/UnifiedNineSliceLayouts.lua
 Modules/Unified/UnifiedUIMixins.lua

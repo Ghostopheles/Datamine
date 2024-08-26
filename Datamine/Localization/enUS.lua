@@ -28,6 +28,19 @@ L["CONFIG_CATEGORY_DEBUG"] = "Debug";
 L["CONFIG_DEBUG_SHOW_ALL_TOOLTIP_DATA_NAME"] = "Show all tooltip data";
 L["CONFIG_DEBUG_SHOW_ALL_TOOLTIP_DATA_TOOLTIP"] = "Show all tooltip data regardless of tooltip configuration";
 
+-- explorer settings
+
+L["CONFIG_CATEGORY_EXPLORER"] = "Explorer";
+
+L["CONFIG_EXPLORER_USE_MODIFIER_NAME"] = "Enable modified click-to-search";
+L["CONFIG_EXPLORER_USE_MODIFIER_TOOLTIP"] = "Toggles the ability to search for an item in the explorer with a modified item click";
+
+L["CONFIG_EXPLORER_MODIFIER_NAME"] = "Search modifier";
+L["CONFIG_EXPLORER_MODIFIER_TOOLTIP"] = "Clicking on an item while holding this key will search for that item in the item explorer";
+L["CONFIG_EXPLORER_MODIFIER_ALT_TOOLTIP"] = "Search for the target item when holding the " .. ALT_KEY;
+L["CONFIG_EXPLORER_MODIFIER_CTRL_TOOLTIP"] = "Search for the target item when holding the " .. CTRL_KEY;
+L["CONFIG_EXPLORER_MODIFIER_SHIFT_TOOLTIP"] = "Search for the target item when holding the " .. SHIFT_KEY;
+
 -- tooltip settings
 
 L["CONFIG_CATEGORY_TOOLTIPS"] = "Tooltips";

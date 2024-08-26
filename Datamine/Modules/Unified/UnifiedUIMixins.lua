@@ -416,7 +416,7 @@ function DatamineScrollableDataFrameMixin:ShouldHandleModifiedItemClick()
         return false;
     end
 
-    if not IsAltKeyDown() then
+    if not Datamine.Settings.IsExplorerModifierDown() then
         return false;
     end
 
