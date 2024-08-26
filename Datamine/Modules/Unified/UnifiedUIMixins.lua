@@ -366,6 +366,7 @@ local function SortByOrderIndex(a, b)
     return idxA < idxB;
 end
 
+local HooksSetup = false;
 function DatamineScrollableDataFrameMixin:OnLoad()
     -- override base visibility behavior because it's unholy
     local anchorsWithScrollBar = {
@@ -396,11 +397,50 @@ function DatamineScrollableDataFrameMixin:OnLoad()
 
     self.DragDropNineSlice.Center:SetAlpha(0.25);
     self.Background_Base:Hide();
+
+    self:SetupHooks();
 end
 
 function DatamineScrollableDataFrameMixin:OnShow()
     local textType = self.Failed and SEARCH_HELP_TYPE.FAIL or SEARCH_HELP_TYPE.HELP;
     self:ShowHelpText(textType);
+end
+
+function DatamineScrollableDataFrameMixin:ShouldHandleModifiedItemClick()
+    if not self:IsVisible() or not self:IsShown() then
+        return false;
+    end
+
+    local workspace = UI_MAIN.GetUI().Workspace;
+    if workspace:GetMode() ~= workspace.Modes.DEFAULT then
+        return false;
+    end
+
+    if not IsAltKeyDown() then
+        return false;
+    end
+
+    return true;
+end
+
+function DatamineScrollableDataFrameMixin:SetupHooks()
+    if HooksSetup then
+        return;
+    end
+
+    local function Callback(itemLink)
+        if not self:ShouldHandleModifiedItemClick() then
+            return;
+        end
+
+        local item = Datamine.Structures.CreateLink(itemLink);
+        local explorer = self:GetParent();
+        explorer:SetSearchMode(DataTypes.Item);
+        explorer:Search(item.ItemID);
+    end
+
+    hooksecurefunc("HandleModifiedItemClick", Callback);
+    HooksSetup = true;
 end
 
 function DatamineScrollableDataFrameMixin:GLOBAL_MOUSE_UP()
