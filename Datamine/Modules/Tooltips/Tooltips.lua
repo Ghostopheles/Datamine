@@ -130,6 +130,14 @@ function Tooltips.GetGObjectIDFromGUID(guid)
     return gobjectID;
 end
 
+function Tooltips.IsItemEquipLocValid(equipLoc)
+    if equipLoc ~= "" and equipLoc ~= "INVTYPE_NON_EQUIP_IGNORE" and equipLoc ~= "INVTYPE_NON_EQUIP" then
+        return true;
+    end
+
+    return false;
+end
+
 ------
 
 -- to add new data points to tooltips, find the appropriate function below (or make a new one)
@@ -156,6 +164,23 @@ function Tooltips.OnTooltipSetItem()
     end
 
     if not item.IsKeystone then
+        local _, itemType, subType, equipLoc, icon, classID, subclassID = C_Item.GetItemInfoInstant(item.ItemID);
+        if Tooltips.ShouldShow("TooltipItemShowItemClass") then
+            Tooltips.Append("ItemClass", format("%s (%s)", itemType, classID));
+        end
+
+        if Tooltips.ShouldShow("TooltipItemShowItemSubClass") then
+            Tooltips.Append("ItemSubClass", format("%s (%s)", subType, subclassID));
+        end
+
+        if Tooltips.ShouldShow("TooltipItemShowEquipSlot") and Tooltips.IsItemEquipLocValid(equipLoc) then
+            Tooltips.Append("EquipSlot", equipLoc);
+        end
+
+        if Tooltips.ShouldShow("TooltipItemShowIcon") then
+            Tooltips.Append("Icon", icon);
+        end
+
         if item.EnchantID and Tooltips.ShouldShow("TooltipItemShowEnchantID") then
             Tooltips.Append("EnchantID", item.EnchantID);
         end

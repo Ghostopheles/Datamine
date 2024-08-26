@@ -95,60 +95,76 @@ end
 local items = CreateSubcategory(L.CONFIG_HEADER_ITEM_TOOLTIPS);
 
 local itemSettings = {
-    [1] = {
+    {
         Name = "TooltipItemShowItemID",
         LocKey = "ITEM_ID",
     },
-    [2] = {
+    {
         Name = "TooltipItemShowEnchantID",
         LocKey = "ITEM_ENCHANT_ID",
     },
-    [3] = {
+    {
         Name = "TooltipItemShowGemIDs",
         LocKey = "ITEM_GEMS",
     },
-    [4] = {
+    {
         Name = "TooltipItemShowItemContext",
         LocKey = "ITEM_CONTEXT",
         Default = false,
     },
-    [5] = {
+    {
         Name = "TooltipItemShowBonusIDs",
         LocKey = "ITEM_BONUSES",
     },
-    [6] = {
+    {
         Name = "TooltipItemShowModifiers",
         LocKey = "ITEM_MODIFIERS",
         Default = false,
     },
-    [7] = {
+    {
         Name = "TooltipItemShowCrafterGUID",
         LocKey = "ITEM_CRAFTER_GUID",
         Default = false,
     },
-    [8] = {
+    {
         Name = "TooltipItemShowExtraEnchantID",
         LocKey = "ITEM_EXTRA_ENCHANT_ID",
         Default = false,
     },
-    [9] = {
+    {
         Name = "TooltipItemShowItemSpellID",
         LocKey = "ITEM_SPELL",
     },
-    [10] = {
+    {
         Name = "TooltipItemShowRelicBonuses",
         LocKey = "ITEM_RELIC_BONUSES",
         Default = false,
     },
-    [11] = {
+    {
+        Name = "TooltipItemShowItemClass",
+        LocKey = "ITEM_CLASS",
+    },
+    {
+        Name = "TooltipItemShowItemSubClass",
+        LocKey = "ITEM_SUBCLASS",
+    },
+    {
+        Name = "TooltipItemShowEquipSlot",
+        LocKey = "ITEM_EQUIP_SLOT",
+    },
+    {
+        Name = "TooltipItemShowIcon",
+        LocKey = "ITEM_ICON",
+    },
+    {
         Name = "TooltipKeystoneShowChallengeModeID",
         LocKey = "KEYSTONE_CM_ID",
     },
-    [12] = {
+    {
         Name = "TooltipKeystoneShowLevel",
         LocKey = "KEYSTONE_LEVEL",
     },
-    [13] = {
+    {
         Name = "TooltipKeystoneShowAffixes",
         LocKey = "KEYSTONE_AFFIXES",
     },
