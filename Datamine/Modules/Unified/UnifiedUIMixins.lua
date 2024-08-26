@@ -846,19 +846,6 @@ end
 
 -------------
 
-DataminePlayerModelMixin2 = CreateFromMixins(ModelFrameMixin);
-
-function DataminePlayerModelMixin2:ResetModel()
-    self.rotation = self.defaultRotation;
-	self:SetRotation(self.rotation);
-	self:SetPosition(0, 0, 0);
-	self.zoomLevel = self.minZoom;
-	self:SetPortraitZoom(self.zoomLevel);
-    self:SetUnit("player");
-end
-
--------------
-
 DatamineUnifiedModelViewTabMixin = {};
 DatamineUnifiedModelViewTabMixin.Modes = {
     PLAYERMODEL = 1,
