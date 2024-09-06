@@ -192,8 +192,11 @@ Generated/Map_2731.lua
 Generated/Map_2739.lua
 Generated/Map_2767.lua
 Generated/Map_2768.lua
+Generated/Map_2776.lua
 Generated/Map_2782.lua
+Generated/Map_2785.lua
 Generated/Map_2786.lua
+Generated/Map_2792.lua
 Generated/Map_7_DungeonExteriorNeltharionsLair.lua
 Generated/Map_8BoostExperienceAlliance.lua
 Generated/Map_8BoostExperienceHorde.lua
