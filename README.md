@@ -3,7 +3,7 @@
 An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data. Features an advanced and intuitive UI, allowing customization of outfits, includes an in-game map viewer, enables the searching of items and spells, and lets you view models by ID, CreatureDisplayInfoID, and more.
 
 > [!TIP]
-> To open the Datamine UI in-game, you can either use `/dm ui` or click the Datamine entry in the addon compartment. Thea ddon compartment can be found by clicking the tiny button below the calendar button on the minimap.
+> To open the Datamine UI in-game, you can either use `/dm ui` or click the Datamine entry in the addon compartment. The addon compartment can be found by clicking the tiny button below the calendar button on the minimap.
 
 Example:
 ![image](https://github.com/Ghostopheles/Datamine/assets/10636803/f241614b-b28a-4468-8f8a-d21855e59f7a)
