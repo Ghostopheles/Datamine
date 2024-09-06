@@ -1,3 +1,12 @@
+# Datamine v2.3.2
+
+#### Fixed
+* Support for 11.0.5.56487
+
+#### Added
+* Item tooltips now have a few more useful bits of information
+* With the UI open, you can now search for items by using a modified click on the item, configurable in the settings
+
 # Datamine v2.3.1
 
 #### Fixed
