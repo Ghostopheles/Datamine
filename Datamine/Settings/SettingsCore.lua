@@ -100,33 +100,7 @@ local function CreateCVarProxySetting(category, name, variable, defaultValue)
 end
 
 local function CreateCVarSetting(category, name, variable, defaultValue)
-    local variableType = type(defaultValue);
-    local setting;
-    if IS_FUTURE then
-        setting = CreateCVarProxySetting(category, name, variable, defaultValue);
-    else
-        setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
-        local cvarAccessor = CreateCVarAccessor(variable, variableType);
-        setting.GetValueInternal = function(self)
-            return cvarAccessor:GetValue();
-        end;
-
-        setting.SetValueInternal = function(self, value)
-            assert(type(value) == variableType);
-            self.pendingValue = value;
-            cvarAccessor:SetValue(value);
-            self.pendingValue = nil;
-            return value;
-        end
-
-        setting.GetDefaultValueInternal = function(self)
-            return cvarAccessor:GetDefaultValue();
-        end
-
-        setting.ConvertValueInternal = function(self, value)
-            return cvarAccessor:ConvertValue(value);
-        end
-    end
+    local setting = CreateCVarProxySetting(category, name, variable, defaultValue);
 
     return setting;
 end
@@ -160,13 +134,7 @@ local function RegisterSetting(category, variable, name, defaultValue)
     Datamine.Setting[variable] = variable;
     defaultConfig[variable] = defaultValue;
     local variableType = type(defaultValue);
-
-    local setting;
-    if IS_FUTURE then
-        setting = Settings.RegisterAddOnSetting(category, variable, variable, middleman, variableType, name, defaultValue);
-    else
-        setting = Settings.RegisterAddOnSetting(category, name, variable, variableType, defaultValue);
-    end
+    local setting = Settings.RegisterAddOnSetting(category, variable, variable, middleman, variableType, name, defaultValue);
 
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 
