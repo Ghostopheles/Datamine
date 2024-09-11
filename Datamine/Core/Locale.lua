@@ -1,0 +1,1 @@
+Datamine.Strings = LibStub("AceLocale-3.0"):GetLocale("Datamine");

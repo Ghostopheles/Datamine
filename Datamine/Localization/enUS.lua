@@ -432,5 +432,3 @@ L["SLASH_CMD_TOOLTIP_SETTINGS_HELP"] = "Open the tooltip settings, optionally pr
 L["SLASH_CMD_TOOLTIP_LAST_ERR_HELP"] = "Shows the last tooltip error that was captured.";
 
 -- END LOCALIZATION
-
-Datamine.Strings = AceLocale:GetLocale("Datamine", false);

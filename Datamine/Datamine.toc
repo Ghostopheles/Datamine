@@ -27,6 +27,7 @@ Datamine.lua
 
 Localization/enUS.lua
 
+Core/Locale.lua
 Core/TableUtil.lua
 Core/Events.lua
 Core/SlashCommands.lua
