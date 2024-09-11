@@ -8,6 +8,16 @@ local function CreateSubcategory(title)
     return Settings.RegisterVerticalLayoutSubcategory(category, title);
 end
 
+do -- if disabled, all tooltip customizations will be hidden
+    local variable = "TooltipEnableCustomizations";
+    local name = L.CONFIG_TOOLTIP_ENABLE_NAME;
+    local default = true;
+    local setting = S.RegisterSetting(category, variable, name, default);
+    local tooltip = L.CONFIG_TOOLTIP_ENABLE_TOOLTIP;
+
+    S.CreateCheckbox(category, setting, tooltip);
+end
+
 do
     local variable = "TooltipKeyColor";
     local name = L.CONFIG_TOOLTIP_KEY_COLOR_NAME;
