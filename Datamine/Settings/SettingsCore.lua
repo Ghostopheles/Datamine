@@ -51,6 +51,12 @@ local function InitSavedVariables()
         DatamineConfig = CopyTable(defaultConfig);
     end
 
+    for k, v in pairs(defaultConfig) do
+        if DatamineConfig[k] == nil then
+            DatamineConfig[k] = v;
+        end
+    end
+
     for k, v in pairs(DatamineConfig) do
         local variable = k;
         local setting = Settings.GetSetting(variable);
