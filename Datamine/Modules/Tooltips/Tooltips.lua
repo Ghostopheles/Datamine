@@ -395,10 +395,15 @@ end
 function Tooltips.OnTooltipSetUnit()
     local tooltip = Tooltips.GetCurrentTooltip();
     local _, unit, guid = tooltip:GetUnit();
-    local isNPC = string.match(guid, "Creature");
+    local unitType = strsplit("-", guid, 2);
+    local isNPC = unitType == "Creature";
 
     if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
         Tooltips.Append("UnitToken", unit);
+    end
+
+    if Tooltips.ShouldShow("TooltipUnitShowType") then
+        Tooltips.Append("Type", unitType);
     end
 
     if isNPC then

@@ -299,6 +299,10 @@ local unitSettings = {
         LocKey = "UNIT_DISPLAY_ID",
     },
     {
+        Name = "TooltipUnitShowType",
+        LocKey = "UNIT_TYPE",
+    },
+    {
         Name = "TooltipUnitShowNPCClass",
         LocKey = "UNIT_NPC_CLASS",
         Default = false,
