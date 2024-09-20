@@ -285,14 +285,17 @@ function DatamineModelSceneMixin:OnLoad_Custom()
 
     Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
     Registry:RegisterCallback(Events.MODEL_SET_BY_UNIT_TOKEN, self.OnModelSetByUnitToken, self);
+    Registry:RegisterCallback(Events.MODEL_SET_SHEATHE_STATE, self.OnModelSetSheatheState, self);
 
-    self:UpdateNativeFormButton();
+    self.AlternateFormButton:ClearAllPoints();
+    self.AlternateFormButton = nil;
 end
 
 function DatamineModelSceneMixin:OnFirstShow()
     self:SetupPlayerActor();
     self:SetupCamera();
     self:SetupCameraDefaults();
+    self:InitToolbar();
     self.FirstShow = false;
 end
 
@@ -345,32 +348,39 @@ function DatamineModelSceneMixin:OnDressModel()
 end
 
 function DatamineModelSceneMixin:OnModelSetByUnitToken(unitToken)
-    self.ModelScene:SetModelByUnit(unitToken);
+    self:SetModelByUnit(unitToken);
 end
 
-function DatamineModelSceneMixin:UpdateNativeFormButton()
-    local _, raceFileName = UnitRace("player");
-    if raceFileName == "Dracthyr" or raceFileName == "Worgen" then
-        self.NativeFormToggleButton:SetScript("OnClick", function()
-            local useNativeForm = self:GetUseNativeForm();
-            self:SetUseNativeForm(not useNativeForm);
-        end);
+function DatamineModelSceneMixin:OnModelSetSheatheState(sheathed)
+    self:SetModelByUnit(sheathed);
+end
 
-        self.NativeFormToggleButton:SetScript("OnEnter", function()
-            GameTooltip:SetOwner(self.NativeFormToggleButton, "ANCHOR_TOP");
-            GameTooltip:SetText(L.MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT, 1, 1, 1);
-            GameTooltip:Show();
-        end);
+function DatamineModelSceneMixin:InitToolbar()
+    local toolbar = self.Toolbar;
+    do
+        local _, raceFileName = UnitRace("player");
+        if raceFileName == "Dracthyr" or raceFileName == "Worgen" then
+            local function Callback()
+                local useNativeForm = self:GetUseNativeForm();
+                self:SetUseNativeForm(not useNativeForm);
+            end
+            local icon = "interface/icons/ability_racial_visage.blp";
+            local tooltipText = L.MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT;
 
-        self.NativeFormToggleButton:SetScript("OnLeave", function()
-            GameTooltip:Hide();
-        end);
+            toolbar:AddButton(icon, Callback, tooltipText);
+        end
+    end
 
-        self.NativeFormToggleButton:Show();
-        self.NativeFormToggleButton:Enable();
-    else
-        self.NativeFormToggleButton:Hide();
-        self.NativeFormToggleButton:Disable();
+    do
+        local function Callback()
+            local actor = self:GetActiveActor();
+            self:SetSheatheState(not actor:GetSheathed());
+        end
+        local icon = "pvptalents-warmode-swords";
+        local iconScale = 0.5;
+        local tooltipText = L.MODEL_CONTROLS_SHEATHE_BUTTON_TOOLTIP_TEXT;
+
+        toolbar:AddButton(icon, Callback, tooltipText, iconScale);
     end
 end
 
@@ -569,6 +579,16 @@ function DatamineModelSceneMixin:TryOnByTransmogSetID(transmogSetID)
     self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceIDs);
     UI_MAIN.GetModelControls():PopulateTransmogSetPanel(transmogSetID);
     return true;
+end
+
+function DatamineModelSceneMixin:SetSheatheState(sheathed)
+    local actor = self:GetActiveActor();
+    return actor:SetSheathed(sheathed);
+end
+
+function DatamineModelSceneMixin:SetModelByUnit(unitToken)
+    local actor = self:GetActiveActor();
+    return actor:SetModelByUnit(unitToken);
 end
 
 function DatamineModelSceneMixin:SetModelByFileID(fdid)

@@ -283,11 +283,31 @@ end
 
 ------------
 
-Datamine.ModelView = {};
+local ModelView = {};
 
-function Datamine.ModelView.SetModelByUnit(unitToken)
-    return Datamine.Unified.GetModelView().ModelScene:GetPlayerActor():SetModelByUnit(unitToken);
+function ModelView.GetModelScene()
+    return Datamine.Unified.GetModelView().ModelScene;
 end
+
+function ModelView.GetActiveActor()
+    return ModelView.GetModelScene():GetPlayerActor();
+end
+
+function ModelView.SetModelByUnit(unitToken)
+    Registry:TriggerEvent(Events.MODEL_SET_BY_UNIT_TOKEN, unitToken);
+end
+
+function ModelView.SetSheatheState(sheathed)
+    Registry:TriggerEvent(Events.MODEL_SET_SHEATHE_STATE, sheathed);
+end
+
+function ModelView.ToggleSheatheState()
+    local actor = ModelView.GetActiveActor();
+    local sheathed = not actor:GetSheathed();
+    Registry:TriggerEvent(Events.MODEL_SET_SHEATHE_STATE, sheathed);
+end
+
+Datamine.ModelView = ModelView;
 
 ------------
 

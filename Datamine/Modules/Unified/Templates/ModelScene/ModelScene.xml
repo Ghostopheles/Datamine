@@ -232,19 +232,11 @@
                     <Anchor point="TOP" y="-10" />
                 </Anchors>
             </Frame>
-            <Button parentKey="NativeFormToggleButton" inherits="DatamineGenericButtonTemplate"
-                hidden="true" motionScriptsWhileDisabled="false">
-                <Size x="50" y="50" />
+            <Frame parentKey="Toolbar" inherits="DatamineModelSceneToolbarTemplate">
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-15" y="-15" />
                 </Anchors>
-                <Layers>
-                    <Layer level="ARTWORK">
-                        <Texture parentKey="Icon" setAllPoints="true"
-                            file="interface/icons/ability_racial_visage.blp" />
-                    </Layer>
-                </Layers>
-            </Button>
+            </Frame>
         </Frames>
         <Scripts>
             <OnLoad method="OnLoad_Custom" inherit="prepend" />

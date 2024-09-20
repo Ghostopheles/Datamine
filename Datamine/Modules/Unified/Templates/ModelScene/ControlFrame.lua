@@ -78,7 +78,8 @@ function DatamineModelSceneRotateButtonMixin:Init()
 	end
 end
 
---------------------------------------------------
+-------------
+
 DatamineModelSceneResetButtonMixin = CreateFromMixins(ModelSceneResetButtonMixin);
 
 function DatamineModelSceneResetButtonMixin:Init()
