@@ -72,6 +72,10 @@ function Tooltips.ShouldShow(configKey)
         return true;
     end
 
+    if not S.GetSetting("TooltipEnableCustomizations") then
+        return false;
+    end
+
     if S.GetSetting("TooltipUseModifier") then
         if S.IsTooltipModifierDown() then
             return true;
