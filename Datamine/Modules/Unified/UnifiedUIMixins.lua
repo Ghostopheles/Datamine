@@ -1011,13 +1011,15 @@ end
 
 -------------
 
-local DEFAULT_W = 1600;
-local DEFAULT_H = 900;
+local UI_SCALE = 0.65;
 
 DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
-    self:SetSize(DEFAULT_W, DEFAULT_H);
+    local screenSize = C_VideoOptions.GetCurrentGameWindowSize();
+    screenSize:ScaleBy(UI_SCALE);
+
+    self:SetSize(screenSize:GetXY());
     self.TitleContainer.Text:SetText(L.ADDON_TITLE);
 
     Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnWorkspaceModeChanged, self);
