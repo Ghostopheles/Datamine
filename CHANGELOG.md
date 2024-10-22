@@ -1,3 +1,14 @@
+# Datamine v2.3.3
+
+#### Added
+* Support for 11.0.5.57171
+* Button to toggle weapon sheathe state in the model viewer
+* Option to show 'unit type' on NPC/Player tooltips
+* Alien
+
+#### Removed
+* Alien
+
 # Datamine v2.3.2
 
 #### Fixed
