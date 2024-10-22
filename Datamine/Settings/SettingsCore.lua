@@ -2,9 +2,6 @@ local L = Datamine.Strings;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
-local version, bild = GetBuildInfo();
-local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
-
 if C_CVar.GetCVar("debugTargetInfo") == nil then
     C_CVar.RegisterCVar("debugTargetInfo", 0);
 end
@@ -72,9 +69,6 @@ EventUtil.ContinueOnAddOnLoaded("Datamine", InitSavedVariables);
 
 local function OnSettingChanged(_, setting, value)
 	local variable = setting:GetVariable();
-    if not IS_FUTURE then
-        DatamineConfig[variable] = value;
-    end
     Registry:TriggerEvent(Events.SETTING_CHANGED, variable, value);
 end
 
@@ -271,7 +265,6 @@ function Datamine.Settings.GetTopLevelCategory()
 end
 
 function Datamine.Settings.OpenSettings(categoryID)
-    categoryID = IS_FUTURE and categoryID or category:GetID();
     Settings.OpenToCategory(categoryID);
 end
 
