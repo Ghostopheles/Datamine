@@ -286,6 +286,7 @@ function DatamineModelSceneMixin:OnLoad_Custom()
     Registry:RegisterCallback(Events.MODEL_LOADED_INTERNAL, self.OnModelLoaded_Internal, self);
     Registry:RegisterCallback(Events.MODEL_SET_BY_UNIT_TOKEN, self.OnModelSetByUnitToken, self);
     Registry:RegisterCallback(Events.MODEL_SET_SHEATHE_STATE, self.OnModelSetSheatheState, self);
+    Registry:RegisterCallback(Events.MODEL_FORM_CHANGED, self.OnModelFormChanged, self);
 
     self.AlternateFormButton:ClearAllPoints();
     self.AlternateFormButton = nil;
@@ -353,6 +354,12 @@ end
 
 function DatamineModelSceneMixin:OnModelSetSheatheState(sheathed)
     self:SetModelByUnit(sheathed);
+end
+
+function DatamineModelSceneMixin:OnModelFormChanged()
+    local actor = self:GetActiveActor();
+    local actorOffsets = self:GetPlayerActorPositionOffsets();
+    actor:SetPosition(actorOffsets.x, actorOffsets.y, actorOffsets.z);
 end
 
 function DatamineModelSceneMixin:InitToolbar()
@@ -489,6 +496,7 @@ function DatamineModelSceneMixin:SetUseNativeForm(useNativeForm, noRefresh)
     if not noRefresh then
         self:SetupPlayerActor(true);
     end
+    Registry:TriggerEvent(Events.MODEL_FORM_CHANGED);
 end
 
 function DatamineModelSceneMixin:GetUseNativeForm()
