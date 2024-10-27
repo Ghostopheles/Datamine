@@ -1,3 +1,9 @@
+# Datamine v2.3.4
+
+#### Fixed
+* Fixed a bug that prevented the transmog set panel from loading items correctly
+* Fixed a bug that caused models to be placed incorrectly when switching between alternate forms
+
 # Datamine v2.3.3
 
 #### Added
