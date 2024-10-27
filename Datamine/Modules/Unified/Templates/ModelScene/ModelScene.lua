@@ -1201,10 +1201,7 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
         local sourceIDs = set.Slots[invSlot];
         if sourceIDs then
             for _, sourceID in pairs(sourceIDs) do
-                local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(sourceID);
                 local data = {
-                    Text = itemLink,
-                    IsOwned = isCollected,
                     IsSelected = itemTransmogInfoList[invSlot].appearanceID == sourceID,
                     SourceID = sourceID,
                     InvSlot = invSlot,
@@ -1212,6 +1209,7 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
                     RequestedExtent = 15;
                 };
                 tab:Insert(data);
+
                 numSourcesForSlot = numSourcesForSlot + 1;
                 itemsAdded = true;
             end

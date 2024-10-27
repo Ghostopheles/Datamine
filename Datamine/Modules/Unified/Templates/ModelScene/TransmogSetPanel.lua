@@ -12,9 +12,21 @@ end
 
 function DatamineModelControlsTransmogSetItemEntryMixin:Init(node)
     self.Data = node:GetData();
-    self:SetText(self.Data.Text);
-    self:SetOwned(self.Data.IsOwned);
     self:SetSelected(self.Data.IsSelected);
+
+    local _, _, _, _, isCollected, itemLink = C_TransmogCollection.GetAppearanceSourceInfo(self.Data.SourceID);
+    if C_Item.IsItemDataCachedByID(itemLink) then
+        self:SetText(itemLink);
+        self:SetOwned(isCollected);
+    else
+        local item = Item:CreateFromItemLink(itemLink);
+        item:ContinueOnItemLoad(function()
+            local data = {C_TransmogCollection.GetAppearanceSourceInfo(self.Data.SourceID)};
+            local isOwned, text = data[5], data[6];
+            self:SetText(text);
+            self:SetOwned(isOwned);
+        end);
+    end
 end
 
 function DatamineModelControlsTransmogSetItemEntryMixin:SetText(text)
