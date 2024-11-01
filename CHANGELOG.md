@@ -4,6 +4,12 @@
 * Fixed a bug that prevented the transmog set panel from loading items correctly
 * Fixed a bug that caused models to be placed incorrectly when switching between alternate forms
 
+#### Added
+* Maps for 11.0.7.57361
+
+#### Removed
+* Alien
+
 # Datamine v2.3.3
 
 #### Added
