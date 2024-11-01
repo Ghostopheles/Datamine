@@ -200,6 +200,7 @@ Generated/Map_2792.lua
 Generated/Map_7_DungeonExteriorNeltharionsLair.lua
 Generated/Map_8BoostExperienceAlliance.lua
 Generated/Map_8BoostExperienceHorde.lua
+Generated/Map_AbandonedMines.lua
 Generated/Map_ABPhase1.lua
 Generated/Map_ABPhase2.lua
 Generated/Map_ABWinter.lua
