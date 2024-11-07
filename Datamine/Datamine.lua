@@ -177,12 +177,12 @@ function Datamine.IsInDanger()
     local inMythicKeystone = C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive();
     local inCombat = InCombatLockdown();
 
+    if inCombat then
+        return true;
+    end
+
     if inInstance then
-        if instanceType == "raid" and IsInRaid() then
-            if inCombat then
-                return true;
-            end
-        elseif inMythicKeystone then
+        if (instanceType == "raid" and IsInRaid()) or inMythicKeystone then
             return true;
         end
     end
