@@ -250,7 +250,7 @@ end
 
 function Datamine.Unified.GetExplorerSearchModeName()
     local searchMode = Datamine.Unified.GetExplorerSearchMode();
-    return Datamine.GetEnumValueName(DataTypes, searchMode);
+    return Datamine.Utils.GetEnumValueName(DataTypes, searchMode);
 end
 
 function Datamine.Unified.GetExplorerDataID()

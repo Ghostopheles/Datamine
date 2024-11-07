@@ -2,7 +2,7 @@ local moduleName = "Theater";
 local L = Datamine.Strings;
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end;
 
 ---TODO: create a static popup style error message window for play errors

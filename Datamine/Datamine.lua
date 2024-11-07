@@ -34,7 +34,7 @@ local PrintSettings = {
 
 -- utilities
 
-function Datamine.GetEnumValueName(enum, value)
+function Datamine.Utils.GetEnumValueName(enum, value)
     local GetName = EnumUtil.GenerateNameTranslation(enum);
     return GetName(value);
 end
@@ -95,7 +95,7 @@ local function IsSettingString(str)
     return tContains(PrintSettings, str);
 end
 
-function Datamine.Print(module, ...)
+function Datamine.Utils.Print(module, ...)
     if not module and not ... then
         return;
     end
@@ -117,7 +117,7 @@ function Datamine.Print(module, ...)
     print(prefix .. message);
 end
 
-function Datamine.Dump(module, tableTitle, message)
+function Datamine.Utils.Dump(module, tableTitle, message)
     if type(tableTitle) == "table" then
         message = tableTitle;
         tableTitle = nil;
@@ -128,7 +128,7 @@ function Datamine.Dump(module, tableTitle, message)
     DevTools_Dump(message);
 end
 
-function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message, showQuotes)
+function Datamine.Utils.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, message, showQuotes)
     if not message then
         return;
     end
@@ -164,7 +164,7 @@ function Datamine.DumpTableWithDisplayKeys(module, tableTitle, displayKeys, mess
     end
 end
 
-function Datamine.WrapTextInParenthesis(text, withLeadingSpace)
+function Datamine.Utils.WrapTextInParenthesis(text, withLeadingSpace)
     if withLeadingSpace then
         return " (" .. text .. ")";
     else
@@ -172,7 +172,7 @@ function Datamine.WrapTextInParenthesis(text, withLeadingSpace)
     end
 end
 
-function Datamine.IsInDanger()
+function Datamine.Utils.IsInDanger()
     local inInstance, instanceType = IsInInstance();
     local inMythicKeystone = C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive();
     local inCombat = InCombatLockdown();
@@ -201,15 +201,15 @@ StaticPopupDialogs["DATAMINE_CONFIRM_RELOAD"] = {
 	showAlert = true,
 };
 
-function Datamine.QuickReload()
-    if Datamine.IsInDanger() then
+function Datamine.Utils.QuickReload()
+    if Datamine.Utils.IsInDanger() then
         StaticPopup_Show("DATAMINE_CONFIRM_RELOAD");
     else
         C_UI.Reload();
     end
 end
 
-function Datamine.ToggleDeprecationFallbacks()
+function Datamine.Utils.ToggleDeprecationFallbacks()
     local cvar = "loadDeprecationFallbacks";
     local value = C_CVar.GetCVarBool(cvar);
     local newValue = value and 0 or 1;
@@ -224,12 +224,12 @@ function Datamine.Utils.Profile(func, ...)
     local output = func(...);
     local stop = debugprofilestop();
     local outString = format("Executed in %dms.", stop - start);
-    Datamine.Print("Profiling", outString);
+    Datamine.Utils.Print("Profiling", outString);
     return output;
 end
 
 local function _P(...)
-    Datamine.Print("Utils", ...);
+    Datamine.Utils.Print("Utils", ...);
 end
 
 function Datamine.Utils.PrintWorldPos()
@@ -244,7 +244,7 @@ end
 function Datamine.Utils.GetUnitCreatureID(unitToken)
     local guid = UnitGUID(unitToken);
     if not guid then
-        Datamine.Print("Utils")
+        Datamine.Utils.Print("Utils")
         return;
     end
     local creatureID = select(6, strsplit("-", guid));

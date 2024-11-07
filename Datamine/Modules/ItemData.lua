@@ -62,11 +62,11 @@ local ExpansionNames = {
 Datamine.Item.ExpansionNames = ExpansionNames;
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end;
 
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
-    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, ItemInfoKeys, ...);
+    Datamine.Utils.DumpTableWithDisplayKeys(moduleName, tableTitle, ItemInfoKeys, ...);
 end;
 
 function Datamine.Item:Init()

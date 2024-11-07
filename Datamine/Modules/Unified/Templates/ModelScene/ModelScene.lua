@@ -1408,7 +1408,7 @@ function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
         CanEnchant = tostring(canEnchant),
         Icon = icon,
         IsCollected = tostring(isCollected),
-        ItemSubType = Datamine.GetEnumValueName(Enum.ItemArmorSubclass, (itemSubTypeIndex)) .. " (" .. itemSubTypeIndex .. ")",
+        ItemSubType = Datamine.Utils.GetEnumValueName(Enum.ItemArmorSubclass, (itemSubTypeIndex)) .. " (" .. itemSubTypeIndex .. ")",
     };
 
     for k, v in pairs(transmogInfo) do

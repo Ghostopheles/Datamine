@@ -3,11 +3,11 @@ local L = Datamine.Strings;
 local moduleName = L.TMOG_INFO_MODULE_NAME;
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end;
 
 local Dump = function(tableTitle, ...)
-    Datamine.Dump(moduleName, tableTitle, ...);
+    Datamine.Utils.Dump(moduleName, tableTitle, ...);
 end;
 
 local TransmogInfoKeys = {
@@ -22,7 +22,7 @@ local TransmogInfoKeys = {
 };
 
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
-    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, ...);
+    Datamine.Utils.DumpTableWithDisplayKeys(moduleName, tableTitle, ...);
 end;
 
 ---@class DatamineTransmog
@@ -72,7 +72,7 @@ end
 
 function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
     local sourceInfo = C_TransmogCollection.GetSourceInfo(itemModifiedAppearanceID)
-    sourceInfo.categoryID = Datamine.GetEnumValueName(Enum.TransmogCollectionType, sourceInfo.categoryID);
+    sourceInfo.categoryID = Datamine.Utils.GetEnumValueName(Enum.TransmogCollectionType, sourceInfo.categoryID);
     local _, _, _, itemEquipLoc, _ = GetItemInfoInstant(sourceInfo.itemID);
     local outputTable = {};
 
@@ -80,13 +80,13 @@ function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
     outputTable.ItemID = self:GetItemIDLink(sourceInfo.itemID);
 
     if sourceInfo.quality then
-        outputTable.Quality = Datamine.GetEnumValueName(Enum.ItemQuality, sourceInfo.quality);
+        outputTable.Quality = Datamine.Utils.GetEnumValueName(Enum.ItemQuality, sourceInfo.quality);
     end
 
     if itemEquipLoc then
         outputTable.InventoryType = itemEquipLoc;
     else
-        outputTable.InventoryType = Datamine.GetEnumValueName(Enum.InventoryType, sourceInfo.invType);
+        outputTable.InventoryType = Datamine.Utils.GetEnumValueName(Enum.InventoryType, sourceInfo.invType);
     end
 
     if sourceInfo.useError then
@@ -94,7 +94,7 @@ function Datamine.Transmog:GetAppearanceSourceInfo(itemModifiedAppearanceID)
     end
 
     if sourceInfo.useErrorType then
-        outputTable.UseErrorType = Datamine.GetEnumValueName(Enum.TransmogUseErrorType, sourceInfo.useErrorType);
+        outputTable.UseErrorType = Datamine.Utils.GetEnumValueName(Enum.TransmogUseErrorType, sourceInfo.useErrorType);
     end
 
     if sourceInfo.sourceType then

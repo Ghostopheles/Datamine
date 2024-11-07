@@ -2,7 +2,7 @@
 local moduleName = "Links";
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end
 
 local LINK_CODE = "garrmission:datamine";

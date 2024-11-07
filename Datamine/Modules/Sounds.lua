@@ -1,5 +1,5 @@
 local moduleName = "Sounds";
-local Print = function(...) Datamine.Print(moduleName, ...) end;
+local Print = function(...) Datamine.Utils.Print(moduleName, ...) end;
 
 Datamine.Sounds = CreateFrame("Frame");
 Datamine.Sounds:RegisterEvent("SOUNDKIT_FINISHED");

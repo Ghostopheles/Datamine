@@ -16,15 +16,15 @@ local QuestInfoKeys = {
 };
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end;
 
 local Dump = function(tableTitle, ...)
-    Datamine.Dump(moduleName, tableTitle, ...);
+    Datamine.Utils.Dump(moduleName, tableTitle, ...);
 end;
 
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
-    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, QuestInfoKeys, ...);
+    Datamine.Utils.DumpTableWithDisplayKeys(moduleName, tableTitle, QuestInfoKeys, ...);
 end;
 
 function Datamine.Questline:Init()
@@ -75,12 +75,12 @@ function Datamine.Questline:PrettyDumpQuestlineData(questLineInfo)
     local questLinkPrefix = "questInfo";
 
     if not self.LastRequestedQuestID then
-        Print("Questlines for map " .. self.LastRequestedUiMapID .. Datamine.WrapTextInParenthesis(mapName, true) .. "  >>");
+        Print("Questlines for map " .. self.LastRequestedUiMapID .. Datamine.Utils.WrapTextInParenthesis(mapName, true) .. "  >>");
         for _, quest in pairs(questLineInfo) do
             local questName = QuestUtils_GetQuestName(quest.questID);
 
             if quest.floorLocation then
-                quest.floorLocation = Datamine.GetEnumValueName(Enum.QuestLineFloorLocation, quest.floorLocation) .. Datamine.WrapTextInParenthesis(quest.floorLocation, true);
+                quest.floorLocation = Datamine.Utils.GetEnumValueName(Enum.QuestLineFloorLocation, quest.floorLocation) .. Datamine.Utils.WrapTextInParenthesis(quest.floorLocation, true);
             end
 
             local questLink = Datamine.Links.GenerateLinkWithCallback(questLinkPrefix .. Datamine.Links.SEPARATOR .. quest.questID, quest.questID, Datamine.Quest.HandleLink);
@@ -88,12 +88,12 @@ function Datamine.Questline:PrettyDumpQuestlineData(questLineInfo)
             Dump(questName .. " " .. questLink .. " >>", quest);
         end
     else
-        Print("Questline info for map " .. self.LastRequestedUiMapID .. Datamine.WrapTextInParenthesis(mapName, true) .. " and quest " .. self.LastRequestedQuestID);
+        Print("Questline info for map " .. self.LastRequestedUiMapID .. Datamine.Utils.WrapTextInParenthesis(mapName, true) .. " and quest " .. self.LastRequestedQuestID);
         local quest = questLineInfo;
         local questName = QuestUtils_GetQuestName(quest.questID);
 
         if quest.floorLocation then
-            quest.floorLocation = Datamine.GetEnumValueName(Enum.QuestLineFloorLocation, quest.floorLocation) .. Datamine.WrapTextInParenthesis(quest.floorLocation, true);
+            quest.floorLocation = Datamine.Utils.GetEnumValueName(Enum.QuestLineFloorLocation, quest.floorLocation) .. Datamine.Utils.WrapTextInParenthesis(quest.floorLocation, true);
         end
 
         local questLink = Datamine.Links.GenerateLinkWithCallback(questLinkPrefix .. Datamine.Links.SEPARATOR .. quest.questID, quest.questID, Datamine.Quest.HandleLink);

@@ -1,11 +1,11 @@
 SLASH_DMINE1, SLASH_DMINE2 = "/dm", "/datamine"
 
 local Print = function(...)
-    Datamine.Print("Slash", ...);
+    Datamine.Utils.Print("Slash", ...);
 end
 
 local RawPrint = function(...)
-    Datamine.Print("none", ...);
+    Datamine.Utils.Print("none", ...);
 end
 
 local DEFAULT_MODULE_NAME = "None";

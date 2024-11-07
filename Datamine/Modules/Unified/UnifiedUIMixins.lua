@@ -873,7 +873,7 @@ function DatamineUnifiedExplorerTabMixin:SetSearchMode(searchMode)
 end
 
 function DatamineUnifiedExplorerTabMixin:OnSearchModeChanged()
-    local searchModeStr = Datamine.GetEnumValueName(DataTypes, self:GetSearchMode());
+    local searchModeStr = Datamine.Utils.GetEnumValueName(DataTypes, self:GetSearchMode());
     self.SearchBox.Instructions:SetText("Enter " .. searchModeStr .. "ID...");
     self.SearchBox:SetText("");
 end

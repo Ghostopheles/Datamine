@@ -3,11 +3,11 @@ Datamine.Quest = CreateFrame("Frame");
 local moduleName = "QuestData";
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end;
 
 local Dump = function(tableTitle, ...)
-    Datamine.Dump(moduleName, tableTitle, ...);
+    Datamine.Utils.Dump(moduleName, tableTitle, ...);
 end;
 
 function Datamine.Quest:Init()
@@ -41,11 +41,11 @@ function Datamine.Quest.GetQuestTagInfo(questID)
     end
 
     if tagInfo.worldQuestType then
-        tagInfo.worldQuestType = Datamine.GetEnumValueName(Enum.QuestTagType, tagInfo.worldQuestType) .. " (" .. tagInfo.worldQuestType .. ")";
+        tagInfo.worldQuestType = Datamine.Utils.GetEnumValueName(Enum.QuestTagType, tagInfo.worldQuestType) .. " (" .. tagInfo.worldQuestType .. ")";
     end
 
     if tagInfo.quality then
-        tagInfo.quality = Datamine.GetEnumValueName(Enum.WorldQuestQuality, tagInfo.quality) .. " (" .. tagInfo.quality .. ")";
+        tagInfo.quality = Datamine.Utils.GetEnumValueName(Enum.WorldQuestQuality, tagInfo.quality) .. " (" .. tagInfo.quality .. ")";
     end
 
     return tagInfo;
@@ -114,7 +114,7 @@ function Datamine.Quest:PrettyDumpQuestInfo(questID)
     if questInfo.TagInfo then
         local worldQuestType = questInfo.TagInfo.worldQuestType;
         if worldQuestType then
-            questInfo.TagInfo.worldQuestType = Datamine.GetEnumValueName(Enum.QuestTagType, worldQuestType);
+            questInfo.TagInfo.worldQuestType = Datamine.Utils.GetEnumValueName(Enum.QuestTagType, worldQuestType);
         end
     end
 

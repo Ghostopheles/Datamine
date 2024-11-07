@@ -41,7 +41,7 @@ local CriteriaInfoKeys = {
 Datamine.Achievement.CriteriaInfoKeys = CriteriaInfoKeys;
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end
 
 local function CreateTable(keys, data)

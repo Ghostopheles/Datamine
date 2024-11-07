@@ -201,7 +201,7 @@ function Tooltips.OnTooltipSetItem()
             Tooltips.AddLine("Modifiers");
             for _, modifier in pairs(item.Modifiers) do
                 if modifier.Type and modifier.Value then
-                    local modifierType = Datamine.GetEnumValueName(Enum.ItemModification, modifier.Type);
+                    local modifierType = Datamine.Utils.GetEnumValueName(Enum.ItemModification, modifier.Type);
                     Tooltips.Append(TAB .. "- " .. modifierType, modifier.Value);
                 end
             end
@@ -218,7 +218,7 @@ function Tooltips.OnTooltipSetItem()
         end
 
         if item.ItemContext and Tooltips.ShouldShow("TooltipItemShowItemContext") then
-            local contextType = Datamine.GetEnumValueName(Enum.ItemCreationContext, item.ItemContext);
+            local contextType = Datamine.Utils.GetEnumValueName(Enum.ItemCreationContext, item.ItemContext);
             Tooltips.Append("ItemContext", format("%s (%d)", contextType, item.ItemContext));
         end
 
@@ -732,4 +732,4 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, _W(Tooltips
 Datamine.Tooltips = Tooltips;
 
 local helpMessage = L.SLASH_CMD_TOOLTIP_LAST_ERR_HELP;
-Datamine.Slash:RegisterCommand("tooltiperror", function() local err = Tooltips.GetLastError() if err then Datamine.Print("Tooltips", "Pushing error to error handler."); CallErrorHandler(err); end end, helpMessage, "Tooltips");
+Datamine.Slash:RegisterCommand("tooltiperror", function() local err = Tooltips.GetLastError() if err then Datamine.Utils.Print("Tooltips", "Pushing error to error handler."); CallErrorHandler(err); end end, helpMessage, "Tooltips");

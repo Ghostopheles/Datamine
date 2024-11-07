@@ -31,15 +31,15 @@ Datamine.Spell.SpellInfoKeys = {
 local SpellInfoKeys = Datamine.Spell.SpellInfoKeys;
 
 local Print = function(...)
-    Datamine.Print(moduleName, ...);
+    Datamine.Utils.Print(moduleName, ...);
 end;
 
 local Dump = function(tableTitle, ...)
-    Datamine.Dump(moduleName, tableTitle, ...);
+    Datamine.Utils.Dump(moduleName, tableTitle, ...);
 end;
 
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
-    Datamine.DumpTableWithDisplayKeys(moduleName, tableTitle, SpellInfoKeys, ...);
+    Datamine.Utils.DumpTableWithDisplayKeys(moduleName, tableTitle, SpellInfoKeys, ...);
 end;
 
 function Datamine.Spell:Init()
