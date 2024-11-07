@@ -3,6 +3,6 @@
         DatamineUnifiedFrame:Toggle();
     </Binding>
     <Binding name="Quick Reload" category="Datamine">
-        Datamine.QuickReload();
+        Datamine.Utils.QuickReload();
     </Binding>
 </Bindings>
