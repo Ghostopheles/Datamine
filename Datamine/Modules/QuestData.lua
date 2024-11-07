@@ -100,7 +100,7 @@ function Datamine.Quest:PrettyDumpQuestInfo(questID)
     questInfo.Type = C_QuestLog.GetQuestType(questID);
     questInfo.SuggestedGroupSize = C_QuestLog.GetSuggestedGroupSize(questID);
     questInfo.IsImportant = C_QuestLog.IsImportantQuest(questID);
-    questInfo.IsLegendary = C_QuestLog.IsLegendaryQuest(questID);
+    questInfo.IsLegendary = C_QuestInfoSystem.GetQuestClassification(questID) == Enum.QuestClassification.Legendary;
 
     local distanceSq, onContinent = C_QuestLog.GetDistanceSqToQuest(questID);
 
