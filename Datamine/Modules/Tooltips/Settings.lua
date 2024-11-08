@@ -157,6 +157,14 @@ local itemSettings = {
         LocKey = "ITEM_ICON",
     },
     {
+        Name = "TooltipItemShowAppearanceID",
+        LocKey = "APPEARANCE_ID",
+    },
+    {
+        Name = "TooltipItemShowModifiedAppearanceID",
+        LocKey = "MODIFIED_APPEARANCE_ID",
+    },
+    {
         Name = "TooltipKeystoneShowChallengeModeID",
         LocKey = "KEYSTONE_CM_ID",
     },

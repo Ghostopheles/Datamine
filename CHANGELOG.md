@@ -6,6 +6,7 @@
 * Updated the 'danger' conditions for the quick reload keybind to be less malicious
 
 #### Added
+* Item AppearanceIDs and ItemModifiedAppearanceIDs can now be enabled for item tooltips
 * Quest ID can now be shown on various quest tooltips
 * Map for 11.0.7.57409
 

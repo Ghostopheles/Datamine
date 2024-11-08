@@ -232,6 +232,15 @@ function Tooltips.OnTooltipSetItem()
                 Tooltips.Append("ItemSpell", format("%s (%d)", itemSpellName, itemSpellID));
             end
         end
+
+        local itemAppearanceID, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemLink);
+        if itemAppearanceID and Tooltips.ShouldShow("TooltipItemShowAppearanceID") then
+            Tooltips.Append("AppearanceID", itemAppearanceID);
+        end
+
+        if itemModifiedAppearanceID and Tooltips.ShouldShow("TooltipItemShowModifiedAppearanceID") then
+            Tooltips.Append("ModifiedAppearanceID", itemModifiedAppearanceID);
+        end
     else
         if Tooltips.ShouldShow("TooltipKeystoneShowChallengeModeID") then
             Tooltips.Append("ChallengeModeID", item.ChallengeModeID);
