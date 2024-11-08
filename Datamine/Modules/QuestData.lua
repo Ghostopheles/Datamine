@@ -99,8 +99,9 @@ function Datamine.Quest:PrettyDumpQuestInfo(questID)
     questInfo.IsFlaggedComplete = C_QuestLog.IsQuestFlaggedCompleted(questID);
     questInfo.Type = C_QuestLog.GetQuestType(questID);
     questInfo.SuggestedGroupSize = C_QuestLog.GetSuggestedGroupSize(questID);
-    questInfo.IsImportant = C_QuestLog.IsImportantQuest(questID);
-    questInfo.IsLegendary = C_QuestInfoSystem.GetQuestClassification(questID) == Enum.QuestClassification.Legendary;
+
+    local classification = C_QuestInfoSystem.GetQuestClassification(questID)
+    questInfo.Classification = format("%s (%d)", Datamine.Utils.GetEnumValueName(Enum.QuestClassification, classification), classification);
 
     local distanceSq, onContinent = C_QuestLog.GetDistanceSqToQuest(questID);
 
