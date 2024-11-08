@@ -532,6 +532,21 @@ local gobjectSettings = {
 
 RegisterSettingsTable(gobjectSettings, gobjects);
 
+-- QUEST TOOLTIPS
+
+local quests = CreateSubcategory(L.CONFIG_HEADER_QUEST_TOOLTIPS);
+
+local questSettings = {
+    {
+        Name = "TooltipQuestShowQuestID",
+        LocKey = "QUEST_ID",
+    },
+};
+
+RegisterSettingsTable(questSettings, quests);
+
+------------
+
 local childCategories = {
     item = items,
     spell = spells,
@@ -543,7 +558,8 @@ local childCategories = {
     achievement = achievements,
     battlepet = battlePets,
     currency = currencies,
-    gobject = gobjects
+    gobject = gobjects,
+    quest = quests
 };
 
 local function HandleSlash(section)

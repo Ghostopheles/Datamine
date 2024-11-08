@@ -56,6 +56,7 @@ L["CONFIG_HEADER_ACHIEVEMENT_TOOLTIPS"] = "Achievement Tooltips";
 L["CONFIG_HEADER_BATTLE_PET_TOOLTIPS"] = "Battle Pet Tooltips";
 L["CONFIG_HEADER_CURRENCY_TOOLTIPS"] = "Currency Tooltips";
 L["CONFIG_HEADER_GOBJECT_TOOLTIPS"] = "Game Object Tooltips";
+L["CONFIG_HEADER_QUEST_TOOLTIPS"] = "Quest Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -254,6 +255,9 @@ L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_TOOLTIP"] = "Show if the curre
 
 L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_NAME"] = "Show Game Object ID";
 L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_TOOLTIP"] = "Show game object ID for the object you are interacting with";
+
+L["CONFIG_TOOLTIP_SHOW_QUEST_ID_NAME"] = "Show Quest ID";
+L["CONFIG_TOOLTIP_SHOW_QUEST_ID_TOOLTIP"] = "Show the quest ID for the quest displayed in the tooltip";
 
 -- end tooltips
 

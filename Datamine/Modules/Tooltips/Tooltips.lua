@@ -695,6 +695,18 @@ function Tooltips.OnTooltipSetObject()
     end
 end
 
+function Tooltips.OnTooltipSetQuest(questID)
+    if not questID then
+        local tooltip = Tooltips.GetCurrentTooltip();
+        local data = tooltip:GetTooltipData();
+        questID = data.id;
+    end
+
+    if Tooltips.ShouldShow("TooltipQuestShowQuestID") then
+        Tooltips.Append("QuestID", questID);
+    end
+end
+
 ------------
 
 function Tooltips.Wrap(func, tooltip)
@@ -706,6 +718,40 @@ function Tooltips.Wrap(func, tooltip)
     if not success then
         Tooltips.SetLastError(err);
     end
+
+    Tooltips.End();
+end
+
+local TOOLTIP_LEAVE_TICKER;
+
+function Tooltips.StartOnLeaveTickerForObject(object, callback)
+    TOOLTIP_LEAVE_TICKER = C_Timer.NewTicker(0, function()
+        if GetMouseFoci()[1] ~= object and GetMouseFoci()[2] ~= object then
+            callback(object);
+            TOOLTIP_LEAVE_TICKER:Cancel();
+            TOOLTIP_LEAVE_TICKER = nil;
+        end
+    end);
+end
+
+function Tooltips.WrapOwnTooltip(func, owner, manageVisibility)
+    local tooltip = GameTooltip;
+    if not Tooltips.Begin(tooltip) then
+        return;
+    end
+
+    if manageVisibility then
+        tooltip:ClearAllPoints();
+        tooltip:SetPoint("TOPRIGHT", owner, "TOPLEFT", 0, 0);
+        tooltip:SetOwner(owner, "ANCHOR_PRESERVE");
+    end
+
+    local success, err = pcall(func);
+    if not success then
+        Tooltips.SetLastError(err);
+    end
+
+    tooltip:Show();
 
     Tooltips.End();
 end
@@ -726,6 +772,42 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Achievement, _W(Too
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, _W(Tooltips.OnTooltipSetCompanionPet));
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, _W(Tooltips.OnTooltipSetCurrency));
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, _W(Tooltips.OnTooltipSetObject));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Quest, _W(Tooltips.OnTooltipSetQuest));
+
+-- the joys of tooltips that sidestep the above system
+local PTRAddonLoaded = C_AddOns.IsAddOnLoaded("Blizzard_PTRFeedback");
+
+local callbackNames = {
+    "TaskPOI.TooltipShown",
+    "MapCanvas.QuestPin.OnEnter",
+    "QuestMapLogTitleButton.OnEnter",
+    "OnQuestBlockHeader.OnEnter",
+};
+
+if not PTRAddonLoaded then
+    for _, callbackName in ipairs(callbackNames) do
+        EventRegistry:RegisterCallback(callbackName, function(_, block, blockID)
+            Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(blockID); end, block, true);
+        end);
+    end
+else
+    -- have to do some diabolical shit to avoid the PTR issue reporter from stomping our tooltips
+    hooksecurefunc(PTR_IssueReporter, "Init", function()
+        local callbacksTbl = EventRegistry:GetCallbackTable(2);
+        for _, callbackName in ipairs(callbackNames) do
+            local callbacks = callbacksTbl[callbackName];
+            if callbacks and callbacks[PTR_IssueReporter] then
+                local originalCallback = callbacks[PTR_IssueReporter];
+                local function newCallback(...)
+                    local args = {...};
+                    originalCallback(unpack(args));
+                    Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(args[3]); end, args[2]);
+                end
+                callbacks[PTR_IssueReporter] = newCallback;
+            end
+        end
+    end);
+end
 
 ------------
 
