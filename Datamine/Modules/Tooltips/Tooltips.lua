@@ -793,10 +793,14 @@ local callbackNames = {
     "OnQuestBlockHeader.OnEnter",
 };
 
+local callbacksToManageVisiblity = {
+    ["OnQuestBlockHeader.OnEnter"] = true
+};
+
 if not PTRAddonLoaded then
     for _, callbackName in ipairs(callbackNames) do
         EventRegistry:RegisterCallback(callbackName, function(_, block, blockID)
-            Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(blockID); end, block, true);
+            Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(blockID); end, block, callbacksToManageVisiblity[callbackName]);
         end);
     end
 else
