@@ -107,10 +107,11 @@ maps = MAP_DB2
 
 
 def write_map_file(map: Map):
-    if int(map.WdtFileDataID) == 0:
+    fdid = int(map.WdtFileDataID)
+    if fdid == 0:
         return
 
-    map_grids = wdt_reader.get_file_info(map.WdtFileDataID)
+    map_grids = wdt_reader.get_file_info(fdid)
 
     if not map_grids:
         return
@@ -121,11 +122,7 @@ def write_map_file(map: Map):
     map_name = map.Directory.replace(" ", "")
     output_file = os.path.join(OUTPUT_DIR, f"Map_{map_name}.lua")
     with open(output_file, "w") as f:
-        f.write(
-            lua_format(
-                wdtFileDataID=map.WdtFileDataID, map_name=map_name, map_info=map_info
-            )
-        )
+        f.write(lua_format(wdtFileDataID=fdid, map_name=map_name, map_info=map_info))
 
 
 _maps = []
