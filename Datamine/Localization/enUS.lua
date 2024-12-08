@@ -280,6 +280,8 @@ L["GENERIC_NO"] = "No";
 L["GENERIC_OKAY"] = "Ok";
 L["GENERIC_CONTINUE"] = "Continue";
 
+L["RESIZE_BUTTON_HINT_TOOLTIP"] = "Double-click to reset frame size and position";
+
 L["SEARCH_FAILED_HEADER"] = "Search Failed";
 L["SEARCH_FAILED_TEXT"] = "No results found.";
 

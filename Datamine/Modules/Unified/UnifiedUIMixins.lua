@@ -1012,6 +1012,7 @@ end
 -------------
 
 local UI_SCALE = 0.55;
+local RESIZE_HINT_POPUP_DELAY = 0.45;
 
 DatamineUnifiedFrameMixin = {};
 
@@ -1024,20 +1025,9 @@ function DatamineUnifiedFrameMixin:OnLoad()
     Registry:RegisterCallback(Events.UI_SIZE_RESET, self.OnResetSize, self);
     EventUtil.ContinueOnAddOnLoaded("Datamine", function() self:OnAddonLoaded() end);
 
-    self.ResizeButton:SetScript("OnMouseDown", function()
-        Registry:TriggerEvent(Events.UI_RESIZE_START);
-    end);
-
-    self.ResizeButton:SetScript("OnMouseUp", function()
-        Registry:TriggerEvent(Events.UI_RESIZE_END);
-    end);
-
-    self.ResizeButton:SetScript("OnDoubleClick", function()
-        Registry:TriggerEvent(Events.UI_SIZE_RESET);
-    end);
-
     tinsert(UISpecialFrames, self:GetName());
 
+    self:SetupResizeButton();
     self:SetupAnimations();
 end
 
@@ -1092,6 +1082,39 @@ function DatamineUnifiedFrameMixin:CalculateDefaultFrameSize()
     local screenSize = C_VideoOptions.GetCurrentGameWindowSize();
     screenSize:ScaleBy(UI_SCALE);
     return screenSize:GetXY();
+end
+
+function DatamineUnifiedFrameMixin:SetupResizeButton()
+    self.ResizeButton:SetScript("OnMouseDown", function()
+        Registry:TriggerEvent(Events.UI_RESIZE_START);
+    end);
+
+    self.ResizeButton:SetScript("OnMouseUp", function()
+        Registry:TriggerEvent(Events.UI_RESIZE_END);
+    end);
+
+    self.ResizeButton:SetScript("OnDoubleClick", function()
+        Registry:TriggerEvent(Events.UI_SIZE_RESET);
+    end);
+
+    local timer;
+    self.ResizeButton:SetScript("OnEnter", function()
+        timer = C_Timer.NewTimer(RESIZE_HINT_POPUP_DELAY, function()
+            GameTooltip:SetOwner(self.ResizeButton, "ANCHOR_CURSOR");
+            GameTooltip:SetText(L.RESIZE_BUTTON_HINT_TOOLTIP, 1, 1, 1, 1);
+            GameTooltip:Show();
+        end);
+    end);
+
+    self.ResizeButton:SetScript("OnLeave", function()
+        if timer and not timer:IsCancelled() then
+            timer:Cancel();
+        end
+
+        if GameTooltip:IsOwned(self.ResizeButton) then
+            GameTooltip:Hide();
+        end
+    end);
 end
 
 function DatamineUnifiedFrameMixin:SetupAnimations()
