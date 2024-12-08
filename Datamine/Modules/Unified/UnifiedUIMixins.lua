@@ -1016,23 +1016,24 @@ local UI_SCALE = 0.55;
 DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
-    local screenSize = C_VideoOptions.GetCurrentGameWindowSize();
-    screenSize:ScaleBy(UI_SCALE);
-
-    self:SetSize(screenSize:GetXY());
     self.TitleContainer.Text:SetText(L.ADDON_TITLE);
 
     Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnWorkspaceModeChanged, self);
+    Registry:RegisterCallback(Events.UI_RESIZE_START, self.OnResizeStart, self);
+    Registry:RegisterCallback(Events.UI_RESIZE_END, self.OnResizeEnd, self);
+    Registry:RegisterCallback(Events.UI_SIZE_RESET, self.OnResetSize, self);
+    EventUtil.ContinueOnAddOnLoaded("Datamine", function() self:OnAddonLoaded() end);
 
     self.ResizeButton:SetScript("OnMouseDown", function()
-        self.ShouldResetFrameSize = true;
-        self.ResizeBorder:Show();
-        self:StartSizing();
+        Registry:TriggerEvent(Events.UI_RESIZE_START);
     end);
 
     self.ResizeButton:SetScript("OnMouseUp", function()
-        self.ResizeBorder:Hide();
-        self:StopMovingOrSizing();
+        Registry:TriggerEvent(Events.UI_RESIZE_END);
+    end);
+
+    self.ResizeButton:SetScript("OnDoubleClick", function()
+        Registry:TriggerEvent(Events.UI_SIZE_RESET);
     end);
 
     tinsert(UISpecialFrames, self:GetName());
@@ -1047,13 +1048,50 @@ function DatamineUnifiedFrameMixin:OnHide()
     Registry:TriggerEvent(Events.UI_MAIN_HIDE);
 end
 
-function DatamineUnifiedFrameMixin:OnWorkspaceModeChanged(newMode)
-    local modes = self.Workspace.Modes;
-    self:SetAllowResize(newMode == modes.MAPS);
-
-    if self:ShouldResetSizeAndPosition() then
-        self:ResetSizeAndPosition();
+function DatamineUnifiedFrameMixin:OnAddonLoaded()
+    -- check if we have a saved frame size and set the size accordingly
+    local width, height;
+    if not Datamine.Settings.HasSavedFrameSize() then
+        width, height = self:CalculateDefaultFrameSize();
+        Datamine.Settings.SetSavedFrameSize(width, height);
+    else
+        width, height = Datamine.Settings.GetSavedFrameSize();
     end
+    self:SetSize(width, height);
+end
+
+function DatamineUnifiedFrameMixin:OnResizeStart()
+    self.ResizeBorder:Show();
+    self:StartSizing();
+end
+
+function DatamineUnifiedFrameMixin:OnResizeEnd()
+    self.ResizeBorder:Hide();
+    self:StopMovingOrSizing();
+
+    local screenSize = C_VideoOptions.GetCurrentGameWindowSize();
+    local w, h = self:GetSize();
+    w = Clamp(w, 10, screenSize.x);
+    h = Clamp(h, 10, screenSize.y);
+
+    Datamine.Settings.SetSavedFrameSize(self:GetSize());
+end
+
+function DatamineUnifiedFrameMixin:OnResetSize()
+    local w, h = self:CalculateDefaultFrameSize();
+    Datamine.Settings.SetSavedFrameSize(w, h);
+    self:SetSize(w, h);
+    self:ClearAllPoints();
+    self:SetPoint("CENTER");
+end
+
+function DatamineUnifiedFrameMixin:OnWorkspaceModeChanged(newMode)
+end
+
+function DatamineUnifiedFrameMixin:CalculateDefaultFrameSize()
+    local screenSize = C_VideoOptions.GetCurrentGameWindowSize();
+    screenSize:ScaleBy(UI_SCALE);
+    return screenSize:GetXY();
 end
 
 function DatamineUnifiedFrameMixin:SetupAnimations()

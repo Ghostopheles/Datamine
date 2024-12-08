@@ -340,7 +340,7 @@
     </Frame>
 
     <Frame name="DatamineUnifiedFrame" parent="UIParent" toplevel="true" movable="true"
-        resizable="false" hidden="true" mixin="DatamineUnifiedFrameMixin">
+        resizable="true" hidden="true" mixin="DatamineUnifiedFrameMixin">
         <Size x="1366" y="768" />
         <Anchors>
             <Anchor point="CENTER" />
@@ -378,8 +378,8 @@
                     <Anchor point="TOPRIGHT" />
                 </Anchors>
             </Button>
-            <Button parentKey="ResizeButton" inherits="DatamineGenericButtonTemplate" hidden="true"
-                frameStrata="DIALOG">
+            <Button parentKey="ResizeButton" inherits="DatamineGenericButtonTemplate"
+                frameStrata="DIALOG" dontSavePosition="true">
                 <Size x="25" y="25" />
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" />

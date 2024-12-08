@@ -285,7 +285,7 @@ function Datamine.Utils.DebugError(msg)
 end
 
 function Datamine.Utils.AddToDevTool(obj, name, defer)
-    if not Datamine.Debug.IsDebugEnabled() then
+    if not Datamine.Debug.IsDebugEnabled() or not DevTool then
         return;
     end
 

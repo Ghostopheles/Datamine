@@ -15,12 +15,15 @@ Datamine.Events = {
     SEARCH_BEGIN = "SearchBegin",
     WORKSPACE_MODE_CHANGED = "WorkspaceModeChanged",
     UI_MAIN_HIDE = "UIMainHide",
+    UI_RESIZE_START = "UIResizeStart",
+    UI_RESIZE_END = "UIResizeEnd",
+    UI_SIZE_RESET = "UISizeReset",
     SETTING_CHANGED = "SettingChanged",
     MAPVIEW_MAP_CHANGED = "MapViewMapChanged",
     MAPVIEW_MAP_LOADED = "MapViewMapLoaded",
     MAPVIEW_MAP_DATA_LOADED = "MapViewMapDataLoaded",
     MAPVIEW_RIGHT_CLICK = "MapViewRightClick",
-    CREATUREVIEW_CREATURE_LOADED = "CreatureViewCreatureLoaded"
+    CREATUREVIEW_CREATURE_LOADED = "CreatureViewCreatureLoaded",
 };
 
 local function GenerateCallbackEvents()

@@ -14,6 +14,7 @@ Datamine.Setting = {
     CollectCreatureData = "CollectCreatureData",
     AutoLoadMapData = "AutoLoadMapData",
     ShowModelInfo = "ShowModelInfo",
+    UIFrameSize = "UIFrameSize"
     -- will also include all settings registered externally
 };
 
@@ -23,6 +24,7 @@ local defaultConfig = {
     [Datamine.Setting.CollectCreatureData] = false,
     [Datamine.Setting.AutoLoadMapData] = false,
     [Datamine.Setting.ShowModelInfo] = true,
+    [Datamine.Setting.UIFrameSize] = nil,
     -- will also include all settings registered externally
 };
 
@@ -272,6 +274,33 @@ end
 
 function Datamine.Settings.OpenSettings(categoryID)
     Settings.OpenToCategory(categoryID);
+end
+
+function Datamine.Settings.HasSavedFrameSize()
+    local savedSize = DatamineConfig.UIFrameSize;
+    if not savedSize then
+        return false;
+    end
+
+    if not savedSize.Width or savedSize.Width < 10 then
+        return false;
+    elseif not savedSize.Height or savedSize.Height < 10 then
+        return false;
+    end
+
+    return true;
+end
+
+function Datamine.Settings.GetSavedFrameSize()
+    local savedSize = DatamineConfig.UIFrameSize;
+    return savedSize.Width, savedSize.Height;
+end
+
+function Datamine.Settings.SetSavedFrameSize(width, height)
+    DatamineConfig.UIFrameSize = {
+        Width = width,
+        Height = height
+    };
 end
 
 ------------
