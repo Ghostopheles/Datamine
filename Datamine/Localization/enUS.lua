@@ -288,7 +288,7 @@ L["SEARCH_FAILED_TEXT"] = "No results found.";
 L["WORKSPACE_MODE_EXPLORER"] = "Explorer";
 L["WORKSPACE_MODE_MOVIE"] = "Theater";
 L["WORKSPACE_MODE_MAPS"] = "Maps";
-L["WORKSPACE_MODE_STORAGE"] = "Storage";
+L["WORKSPACE_MODE_STORAGE"] = "Creatures";
 L["WORKSPACE_MODE_CREATURES"] = "Creatures";
 
 L["MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT"] = "Toggle Alternate Form";

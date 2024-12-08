@@ -102,7 +102,7 @@
                 <Layers>
                     <Layer level="ARTWORK">
                         <FontString parentKey="Title" font="DatamineCleanFont" justifyH="CENTER"
-                            text="$CREATURE DETAILS$" setAllPoints="true" />
+                            text="$CREATURE DETAILS (wip)$" setAllPoints="true" />
                     </Layer>
                     <Layer level="BACKGROUND">
                         <Texture parentKey="Background"
