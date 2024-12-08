@@ -10,3 +10,4 @@
 
 #### Removed
 * Alien
+* The popup for loading map data

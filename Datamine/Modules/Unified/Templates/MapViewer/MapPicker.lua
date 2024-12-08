@@ -45,15 +45,9 @@ function DatamineMapPickerMixin:SetupSearchBox()
 end
 
 function DatamineMapPickerMixin:LoadMapData()
-    local function LoadMaps()
-        if not C_AddOns.IsAddOnLoaded("Datamine_Maps") then
-            C_AddOns.LoadAddOn("Datamine_Maps");
-        end
+    if not C_AddOns.IsAddOnLoaded("Datamine_Maps") then
+        C_AddOns.LoadAddOn("Datamine_Maps");
     end
-
-    local title = L.MAPVIEW_LOAD_WARNING_TITLE;
-    local text = L.MAPVIEW_LOAD_WARNING_TEXT;
-    Popup.ShowPopup(title, text, LoadMaps, Popup.PopupType.SINGLE);
 end
 
 function DatamineMapPickerMixin:SetSelectedWDT(wdtID)
