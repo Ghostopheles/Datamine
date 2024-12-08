@@ -61,6 +61,9 @@ L["CONFIG_HEADER_QUEST_TOOLTIPS"] = "Quest Tooltips";
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
 
+L["CONFIG_TOOLTIP_ENABLE_NAME"] = "Enable Tooltip Info";
+L["CONFIG_TOOLTIP_ENABLE_TOOLTIP"] = "If enabled, adds extra information to most tooltips in-game";
+
 L["CONFIG_TOOLTIP_VALUE_COLOR_NAME"] = "Data Value Color";
 L["CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP"] = "Color of the data values on tooltips";
 
