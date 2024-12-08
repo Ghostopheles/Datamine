@@ -77,6 +77,7 @@ end
 local function HookFrames()
     ModelPreviewFrame.Display:HookScript("OnShow", OnModelPreviewShow);
     ModelPreviewFrame.Display:HookScript("OnHide", OnModelPreviewHide);
+    hooksecurefunc("ModelPreviewFrame_ShowModelInternal", function() OnModelPreviewShow(ModelPreviewFrame.Display) end);
 end
 
 local function OnSettingChanged(_, setting, value)
