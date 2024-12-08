@@ -1011,7 +1011,7 @@ end
 
 -------------
 
-local UI_SCALE = 0.65;
+local UI_SCALE = 0.55;
 
 DatamineUnifiedFrameMixin = {};
 
