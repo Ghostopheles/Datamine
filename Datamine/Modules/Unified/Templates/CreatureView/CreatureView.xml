@@ -191,7 +191,7 @@
                 <Anchors>
                     <Anchor point="TOPLEFT" x="4" relativeKey="$parent.CreaturePicker"
                         relativePoint="TOPRIGHT" />
-                    <Anchor point="BOTTOMRIGHT" />
+                    <Anchor point="BOTTOMRIGHT" x="-4" />
                 </Anchors>
                 <Layers>
                     <Layer level="BACKGROUND">
