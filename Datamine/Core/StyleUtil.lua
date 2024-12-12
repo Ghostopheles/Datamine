@@ -1,30 +1,65 @@
 ---@class DatamineStyleUtil
 local StyleUtil = {};
 
-local function CreateLine(parent, startPoint, endPoint, color, thickness)
-    local line = parent:CreateLine();
-    line:SetStartPoint(startPoint);
-    line:SetEndPoint(endPoint);
-    line:SetThickness(thickness);
-    line:SetColorTexture(color:GetRGBA());
+---@enum DatamineStyleUtilSide
+StyleUtil.Side = {
+    LEFT = 1,
+    RIGHT = 2,
+    TOP = 3,
+    BOTTOM = 4,
+    ALL = 5,
+};
 
-    return line;
-end
+local BORDER_THICKNESS = 2;
 
----@param parent FrameScriptObject
----@param color ColorMixin?
----@param thickness number?
-function StyleUtil.AddBorder(parent, color, thickness)
-    color = color or DatamineDarkGray;
-    thickness = thickness or 2;
+local SIDE_TO_START_POINT = {
+    [StyleUtil.Side.LEFT] = "BOTTOMLEFT",
+    [StyleUtil.Side.RIGHT] = "BOTTOMRIGHT",
+    [StyleUtil.Side.TOP] = "TOPLEFT",
+    [StyleUtil.Side.BOTTOM] = "BOTTOMLEFT",
+};
 
-    local border = {};
-    border.Left = CreateLine(parent, "BOTTOMLEFT", "TOPLEFT", color, thickness);
-    border.Bottom = CreateLine(parent, "BOTTOMLEFT", "BOTTOMRIGHT", color, thickness);
-    border.Right = CreateLine(parent, "BOTTOMRIGHT", "TOPRIGHT", color, thickness);
-    border.Top = CreateLine(parent, "TOPLEFT", "TOPRIGHT", color, thickness);
+local SIDE_TO_END_POINT = {
+    [StyleUtil.Side.LEFT] = "TOPLEFT",
+    [StyleUtil.Side.RIGHT] = "TOPRIGHT",
+    [StyleUtil.Side.TOP] = "TOPRIGHT",
+    [StyleUtil.Side.BOTTOM] = "BOTTOMRIGHT",
+};
 
-    return border;
+---Adds a border to the given frame on each given side
+---@param frame frame
+---@param sides? DatamineStyleUtilSide | DatamineStyleUtilSide[]
+---@param borderColor? ColorMixin
+---@param thickness? number
+function StyleUtil.AddBorder(frame, sides, borderColor, thickness)
+    sides = sides or StyleUtil.Side.ALL;
+    borderColor = borderColor or DatamineDarkGray;
+    thickness = thickness or BORDER_THICKNESS;
+
+    if type(sides) ~= "table" then
+        if sides == StyleUtil.Side.ALL then
+            sides = {
+                StyleUtil.Side.LEFT,
+                StyleUtil.Side.RIGHT,
+                StyleUtil.Side.TOP,
+                StyleUtil.Side.BOTTOM,
+            };
+        else
+            sides = {sides};
+        end
+    end
+
+    for _, side in pairs(sides) do
+        local line = frame:CreateLine(nil, "ARTWORK");
+
+        local startPoint, endPoint = SIDE_TO_START_POINT[side], SIDE_TO_END_POINT[side];
+
+        line:SetStartPoint(startPoint, frame);
+        line:SetEndPoint(endPoint, frame);
+
+        line:SetThickness(thickness);
+        line:SetColorTexture(borderColor:GetRGBA());
+    end
 end
 
 ------------
