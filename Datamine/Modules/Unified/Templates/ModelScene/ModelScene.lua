@@ -1028,6 +1028,8 @@ function DatamineModelControlsTreeMixin:OnLoad()
     Registry:RegisterCallback(Events.MODEL_LOADED, self.OnModelLoaded, self);
     Registry:RegisterCallback(Events.MODEL_DRESSED, self.OnOutfitUpdated, self);
     Registry:RegisterCallback(Events.MODEL_OUTFIT_UPDATED, self.OnOutfitUpdated, self);
+
+    Datamine.StyleUtil.AddBorder(self);
 end
 
 function DatamineModelControlsTreeMixin:OnShow()
