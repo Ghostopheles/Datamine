@@ -135,7 +135,7 @@
                     justifyH="CENTER" justifyV="MIDDLE" text="DETAILS"
                     outline="THICK" hidden="true">
                     <Anchors>
-                        <Anchor point="TOP" relativeKey="$parent.HelpText"
+                        <Anchor point="TOP" relativeKey="$parent.FailHeader"
                             relativePoint="BOTTOM" y="-3" />
                     </Anchors>
                     <Color r="0.45" g="0.45" b="0.45" a="1" />

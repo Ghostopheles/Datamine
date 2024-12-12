@@ -286,6 +286,15 @@ function DatamineSearchableListMixin:SetSearchDataSource(data, dataKey)
     self:Reset();
 end
 
+function DatamineSearchableListMixin:SetHelpText(header, text)
+    if not self.HelpText then
+        return;
+    end
+
+    self.HelpText:SetText(header);
+    self.HelpTextDetails:SetText(text);
+end
+
 function DatamineSearchableListMixin:SetFailText(header, text)
     self.FailHeader:SetText(header or L.SEARCH_FAILED_HEADER);
     self.FailText:SetText(text or L.SEARCH_FAILED_TEXT);

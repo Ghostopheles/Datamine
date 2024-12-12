@@ -391,9 +391,9 @@ L["MAPVIEW_DETAILS_DESC_TITLE"] = "Description";
 
 L["CREATUREVIEW_DETAILS_TITLE"] = "Creature Details";
 L["CREATUREVIEW_LIST_TITLE"] = "Creatures (%d total)";
-L["CREATUREVIEW_LIST_SEARCH_FAIL_TEXT"] = "$Search Failed$";
-L["CREATUREVIEW_TEXT_HELP_HEADER"] = "$Header$";
-L["CREATUREVIEW_TEXT_HELP"] = "$Help$";
+L["CREATUREVIEW_LIST_SEARCH_FAIL_TEXT"] = "No creatures found.|nEnsure 'Collect creature data'|nis enabled in the Datamine settings.";
+L["CREATUREVIEW_TEXT_HELP_HEADER"] = "No creatures logged.";
+L["CREATUREVIEW_TEXT_HELP"] = "In order to begin logging creatures to display here, enable 'Collect Creature Data' in the Datamine settings.";
 L["CREATUREVIEW_LOADING"] = "Loading Creature...";
 
 -- MODULES --

@@ -13,9 +13,7 @@ function DatamineCreaturePickerMixin:OnLoad()
     titleBar.TitleText:SetText(L.CREATUREVIEW_LIST_TITLE);
     creatureList.Background_Base:Hide();
 
-    creatureList.HelpText:SetText(L.CREATUREVIEW_TEXT_HELP_HEADER);
-    creatureList.HelpTextDetails:SetText(L.CREATUREVIEW_TEXT_HELP);
-
+    creatureList:SetHelpText(L.CREATUREVIEW_TEXT_HELP_HEADER, L.CREATUREVIEW_TEXT_HELP);
     creatureList:SetFailText(nil, L.CREATUREVIEW_LIST_SEARCH_FAIL_TEXT);
 
     self:SetupSearchBox();
