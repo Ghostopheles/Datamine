@@ -367,9 +367,9 @@
                 <Size y="30" />
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.TitleContainer"
-                        relativePoint="BOTTOMLEFT" />
+                        relativePoint="BOTTOMLEFT" y="-4" />
                     <Anchor point="TOPRIGHT" relativeKey="$parent.TitleContainer"
-                        relativePoint="BOTTOMRIGHT" />
+                        relativePoint="BOTTOMRIGHT" y="-4" />
                 </Anchors>
             </Frame>
             <Button parentKey="CloseButton" inherits="DatamineCloseButtonTemplate">
@@ -395,9 +395,9 @@
             <Frame parentKey="Workspace" inherits="DatamineWorkspaceTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.Toolbar"
-                        relativePoint="BOTTOMLEFT" x="5" y="-5" />
+                        relativePoint="BOTTOMLEFT" x="5" y="-2" />
                     <Anchor point="TOPRIGHT" relativeKey="$parent.Toolbar"
-                        relativePoint="BOTTOMRIGHT" x="-5" y="-5" />
+                        relativePoint="BOTTOMRIGHT" x="-5" y="-2" />
                     <Anchor point="BOTTOMLEFT" x="5" y="5" />
                     <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
                 </Anchors>

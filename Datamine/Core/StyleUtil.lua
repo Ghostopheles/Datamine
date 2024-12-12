@@ -49,6 +49,7 @@ function StyleUtil.AddBorder(frame, sides, borderColor, thickness)
         end
     end
 
+    local lines = {};
     for _, side in pairs(sides) do
         local line = frame:CreateLine(nil, "ARTWORK");
 
@@ -59,7 +60,27 @@ function StyleUtil.AddBorder(frame, sides, borderColor, thickness)
 
         line:SetThickness(thickness);
         line:SetColorTexture(borderColor:GetRGBA());
+        lines[side] = line;
     end
+
+    return lines;
+end
+
+---Adds a styled background to the given frame
+---@param frame frame
+---@param bgColor? ColorMixin
+function StyleUtil.AddBackground(frame, bgColor)
+    bgColor = bgColor or DatamineDarkGray;
+
+    if frame.Background then
+        return frame.Background;
+    end
+
+    frame.Background = frame:CreateTexture(nil, "BACKGROUND");
+    frame.Background:SetColorTexture(bgColor:GetRGBA());
+    frame.Background:SetAllPoints();
+
+    return frame.Background;
 end
 
 ------------

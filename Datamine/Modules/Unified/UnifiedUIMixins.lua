@@ -1,4 +1,5 @@
 local L = Datamine.Strings;
+local StyleUtil = Datamine.StyleUtil;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
@@ -167,6 +168,13 @@ DatamineToolbarMixin = {};
 
 function DatamineToolbarMixin:OnLoad()
     self.Buttons = {};
+
+    -- setup a nice separator
+    local line = self:CreateLine(nil, "ARTWORK");
+    line:SetStartPoint("TOP", -200, 3);
+    line:SetEndPoint("TOP", 200, 3);
+    line:SetThickness(2);
+    line:SetColorTexture(DatamineDarkGray:GetRGBA());
 end
 
 function DatamineToolbarMixin:AddButton(atlasOrTexturePath, callback, tooltipText)
@@ -1019,6 +1027,13 @@ DatamineUnifiedFrameMixin = {};
 
 function DatamineUnifiedFrameMixin:OnLoad()
     self.TitleContainer.Text:SetText(L.ADDON_TITLE);
+    local bg = Datamine.StyleUtil.AddBackground(self.TitleContainer);
+    bg:ClearAllPoints();
+    local text = self.TitleContainer.Text;
+    bg:SetPoint("TOPLEFT", text, "TOPLEFT", -35, 2);
+    bg:SetPoint("BOTTOMRIGHT", text, "BOTTOMRIGHT", 35, -2);
+
+    Datamine.StyleUtil.AddBorder(self);
 
     Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnWorkspaceModeChanged, self);
     Registry:RegisterCallback(Events.UI_RESIZE_START, self.OnResizeStart, self);

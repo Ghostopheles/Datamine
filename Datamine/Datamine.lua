@@ -1,5 +1,6 @@
 local addonName, Datamine_Internal = ...;
 
+---@class Datamine
 Datamine = {};
 
 Datamine.Constants = {};
