@@ -55,8 +55,13 @@ function StyleUtil.AddBorder(frame, sides, borderColor, thickness)
 
         local startPoint, endPoint = SIDE_TO_START_POINT[side], SIDE_TO_END_POINT[side];
 
-        line:SetStartPoint(startPoint, frame);
-        line:SetEndPoint(endPoint, frame);
+        local offsetX, offsetY = 0, 0;
+        if side == StyleUtil.Side.LEFT or side == StyleUtil.Side.RIGHT  then
+            offsetY = 1;
+        end
+
+        line:SetStartPoint(startPoint, frame, offsetX, -offsetY);
+        line:SetEndPoint(endPoint, frame, offsetX, offsetY);
 
         line:SetThickness(thickness);
         line:SetColorTexture(borderColor:GetRGBA());
