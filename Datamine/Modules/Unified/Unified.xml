@@ -181,7 +181,7 @@
                         <Size y="25" />
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeKey="$parent.Header"
-                                relativePoint="BOTTOMLEFT" x="5" />
+                                relativePoint="BOTTOMLEFT" x="3" />
                             <Anchor point="TOPRIGHT" relativeKey="$parent.Header"
                                 relativePoint="BOTTOMRIGHT" x="-5" />
                         </Anchors>

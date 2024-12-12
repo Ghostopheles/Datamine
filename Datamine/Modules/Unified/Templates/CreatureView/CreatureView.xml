@@ -29,7 +29,7 @@
                 <Frames>
                     <EditBox parentKey="SearchBox" inherits="DatamineEditBoxTemplate">
                         <Anchors>
-                            <Anchor point="TOPLEFT" relativePoint="LEFT" x="10" />
+                            <Anchor point="TOPLEFT" relativePoint="LEFT" x="8" />
                             <Anchor point="BOTTOMRIGHT" x="-4" />
                         </Anchors>
                     </EditBox>
@@ -38,8 +38,8 @@
             <Frame parentKey="CreatureList" inherits="DatamineSearchableListTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.TitleBar"
-                        relativePoint="BOTTOMLEFT" x="6" y="-2" />
-                    <Anchor point="BOTTOMRIGHT" x="-6" y="4" />
+                        relativePoint="BOTTOMLEFT" x="4" />
+                    <Anchor point="BOTTOMRIGHT" x="-4" y="4" />
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
