@@ -268,6 +268,15 @@ L["CONFIG_TOOLTIP_SHOW_QUEST_ID_TOOLTIP"] = "Show the quest ID for the quest dis
 
 -- end tooltips
 
+-- model viewer settings
+
+L["CONFIG_CATEGORY_MODELVIEWER"] = "Model Viewer";
+
+L["CONFIG_MODELVIEWER_BG_COLOR_NAME"] = "Background Color";
+L["CONFIG_MODELVIEWER_BG_COLOR_TOOLTIP"] = "Change the background color used in the Datamine model viewer";
+
+-- end model viewer settings
+
 L["GENERIC_LOADING"] = "Loading...";
 L["GENERIC_SEARCHING"] = "Searching...";
 L["GENERIC_EMPTY"] = "Empty";
@@ -293,6 +302,7 @@ L["WORKSPACE_MODE_CREATURES"] = "Creatures";
 
 L["MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT"] = "Toggle Alternate Form";
 L["MODEL_CONTROLS_SHEATHE_BUTTON_TOOLTIP_TEXT"] = "Toggle Weapon Sheathe";
+L["MODEL_CONTROLS_CHANGE_BG_COLOR_TOOLTIP_TEXT"] = "Change Background Color";
 
 L["MODEL_CONTROLS_TAB_TITLE_TRANSFORM"] = "Transform";
 L["MODEL_CONTROLS_TAB_TITLE_OUTFIT"] = "Outfit";

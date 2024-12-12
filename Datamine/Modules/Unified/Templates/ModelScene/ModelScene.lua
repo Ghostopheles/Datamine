@@ -290,6 +290,9 @@ function DatamineModelSceneMixin:OnLoad_Custom()
 
     self.AlternateFormButton:ClearAllPoints();
     self.AlternateFormButton = nil;
+
+    -- handle background color setting changes
+    Registry:RegisterCallback(Events.SETTING_CHANGED, self.OnSettingChanged, self);
 end
 
 function DatamineModelSceneMixin:OnFirstShow()
@@ -297,6 +300,8 @@ function DatamineModelSceneMixin:OnFirstShow()
     self:SetupCamera();
     self:SetupCameraDefaults();
     self:InitToolbar();
+    self:LoadSettings();
+
     self.FirstShow = false;
 end
 
@@ -362,9 +367,32 @@ function DatamineModelSceneMixin:OnModelFormChanged()
     actor:SetPosition(actorOffsets.x, actorOffsets.y, actorOffsets.z);
 end
 
+function DatamineModelSceneMixin:OnSettingChanged(variable, value)
+    if variable == "ModelViewerBackgroundColor" then
+        local bg = self:GetParent().Background;
+        local color = CreateColorFromHexString(value);
+        bg:SetColorTexture(color:GetRGBA());
+    end
+end
+
 function DatamineModelSceneMixin:InitToolbar()
     local toolbar = self.Toolbar;
-    do
+
+    do -- customize bg color
+        local function Callback()
+            local setting = Datamine.Settings.GetSettingObject("ModelViewerBackgroundColor");
+            Datamine.Settings.ShowColorPickerForSetting(setting);
+        end
+        local icon = "colorblind-colorwheel";
+        local tooltipText = L.MODEL_CONTROLS_CHANGE_BG_COLOR_TOOLTIP_TEXT;
+
+        local button = toolbar:AddButton(icon, Callback, tooltipText);
+        button.Icon:ClearAllPoints();
+        button.Icon:SetPoint("TOPLEFT", 2, -2);
+        button.Icon:SetPoint("BOTTOMRIGHT", -2, 2);
+    end
+
+    do -- alternate form button
         local _, raceFileName = UnitRace("player");
         if raceFileName == "Dracthyr" or raceFileName == "Worgen" then
             local function Callback()
@@ -378,7 +406,7 @@ function DatamineModelSceneMixin:InitToolbar()
         end
     end
 
-    do
+    do -- weapon sheathe
         local function Callback()
             local actor = self:GetActiveActor();
             self:SetSheatheState(not actor:GetSheathed());
@@ -389,6 +417,12 @@ function DatamineModelSceneMixin:InitToolbar()
 
         toolbar:AddButton(icon, Callback, tooltipText, iconScale);
     end
+end
+
+function DatamineModelSceneMixin:LoadSettings()
+    local bgColor = Datamine.Settings.GetSetting("ModelViewerBackgroundColor");
+    local bg = self:GetParent().Background;
+    bg:SetColorTexture(CreateColorFromHexString(bgColor):GetRGBA());
 end
 
 function DatamineModelSceneMixin:StartPanning()

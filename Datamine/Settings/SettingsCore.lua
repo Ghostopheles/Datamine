@@ -132,6 +132,8 @@ local function ShowColorPicker(setting)
     ColorPickerFrame:SetupColorPickerAndShow(options);
 end
 
+Datamine.Settings.ShowColorPickerForSetting = ShowColorPicker;
+
 local function RegisterSetting(category, variable, name, defaultValue)
     Datamine.Setting[variable] = variable;
     defaultConfig[variable] = defaultValue;

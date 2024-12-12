@@ -10,7 +10,7 @@
                 <Texture parentKey="Icon" setAllPoints="true" />
             </Layer>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Border" atlas="glues-characterSelect-card-all-BG"
+                <Texture parentKey="Background" inherits="DatamineLightGrayBackgroundTemplate"
                     setAllPoints="true" />
             </Layer>
         </Layers>

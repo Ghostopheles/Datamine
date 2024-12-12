@@ -27,9 +27,13 @@ end
 function DatamineModelSceneToolbarButtonMixin:SetIcon(iconTexture, scale)
     local isAtlas = C_Texture.GetAtlasID(iconTexture) ~= 0;
     if isAtlas then
-        self.Icon:SetAtlas(iconTexture);
+        self.Icon:SetAtlas(iconTexture, false);
     else
         self.Icon:SetTexture(iconTexture);
+    end
+
+    if scale then
+        self.Icon:SetScale(scale);
     end
 end
 
@@ -53,11 +57,12 @@ function DatamineModelSceneToolbarMixin:OnLoad()
     self.InitialAnchor = AnchorUtil.CreateAnchor("TOPRIGHT", self, "TOPRIGHT", 0, 0);
 
     self:SetWidth(35);
+    Datamine.StyleUtil.AddBorder(self);
 end
 
-function DatamineModelSceneToolbarMixin:AddButton(icon, callback, tooltipText)
+function DatamineModelSceneToolbarMixin:AddButton(icon, callback, tooltipText, iconScale)
     local button = self.ButtonPool:Acquire();
-    button:SetIcon(icon);
+    button:SetIcon(icon, iconScale);
     button:SetCallback(callback);
     button:SetTooltipText(tooltipText);
 

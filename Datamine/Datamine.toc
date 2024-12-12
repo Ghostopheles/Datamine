@@ -67,6 +67,7 @@ Modules/Unified/Templates/PopupBox/PopupBox.lua
 Modules/Unified/Templates/PopupBox/PopupBox.xml
 Modules/Unified/Templates/ContextMenu/ContextMenu.lua
 Modules/Unified/Templates/ContextMenu/ContextMenu.xml
+Modules/Unified/Templates/ModelScene/Settings/ModelViewer.lua
 Modules/Unified/Templates/ModelScene/ControlFrame.lua
 Modules/Unified/Templates/ModelScene/ControlFrame.xml
 Modules/Unified/Templates/ModelScene/Toolbar.lua
