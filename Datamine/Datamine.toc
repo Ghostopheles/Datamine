@@ -38,6 +38,7 @@ Settings/DebugSettings.lua
 Core/Links.lua
 Core/Console.lua
 Core/Search.lua
+Core/StyleUtil.lua
 
 Modules/Sounds.lua
 Modules/ItemData.lua

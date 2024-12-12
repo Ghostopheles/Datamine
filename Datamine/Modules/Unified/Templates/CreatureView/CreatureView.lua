@@ -114,6 +114,10 @@ function DatamineCreatureDetailsMixin:OnLoad()
     self.SelectedVariant = nil;
 
     Registry:RegisterCallback(Events.CREATUREVIEW_CREATURE_LOADED, self.OnCreatureLoaded, self);
+
+    self.TitleBar.Title:SetText(L.CREATUREVIEW_DETAILS_TITLE);
+
+    Datamine.StyleUtil.AddBorder(self);
 end
 
 function DatamineCreatureDetailsMixin:SetupStrings()
@@ -161,8 +165,6 @@ function DatamineCreatureDetailsMixin:OnCreatureLoaded()
     if not variants or self.SelectedVariant then
         return;
     end
-
-    --self:SetVariants(variants);
 end
 
 function DatamineCreatureDetailsMixin:SetVariants(variants)
