@@ -138,8 +138,8 @@
             <Frame parentKey="ExplorerTab" mixin="DatamineUnifiedExplorerTabMixin">
                 <Size x="300" />
                 <Anchors>
-                    <Anchor point="TOPLEFT" x="5" y="-5" />
-                    <Anchor point="BOTTOMLEFT" x="5" y="5" />
+                    <Anchor point="TOPLEFT" x="4" y="-4" />
+                    <Anchor point="BOTTOMLEFT" x="4" y="4" />
                 </Anchors>
                 <Frames>
                     <Frame parentKey="Header" inherits="DatamineTitleContainerTemplate">
