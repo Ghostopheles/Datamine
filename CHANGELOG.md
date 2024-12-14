@@ -11,3 +11,6 @@
     - Decorations
 - Cleaned up the creature viewer UI to be a bit nicer to look at
 - Fixed some jarring lack of explanation for the creature list functionality
+
+#### Fixed
+- Fixed an issue that would cause an error when the addon loads on a fresh install

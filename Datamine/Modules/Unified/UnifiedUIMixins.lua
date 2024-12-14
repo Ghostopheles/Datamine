@@ -1039,7 +1039,7 @@ function DatamineUnifiedFrameMixin:OnLoad()
     Registry:RegisterCallback(Events.UI_RESIZE_START, self.OnResizeStart, self);
     Registry:RegisterCallback(Events.UI_RESIZE_END, self.OnResizeEnd, self);
     Registry:RegisterCallback(Events.UI_SIZE_RESET, self.OnResetSize, self);
-    EventUtil.ContinueOnAddOnLoaded("Datamine", function() self:OnAddonLoaded() end);
+    Registry:RegisterCallback(Events.CONFIG_LOADED, self.OnConfigLoaded, self);
 
     tinsert(UISpecialFrames, self:GetName());
 
@@ -1054,7 +1054,7 @@ function DatamineUnifiedFrameMixin:OnHide()
     Registry:TriggerEvent(Events.UI_MAIN_HIDE);
 end
 
-function DatamineUnifiedFrameMixin:OnAddonLoaded()
+function DatamineUnifiedFrameMixin:OnConfigLoaded()
     -- check if we have a saved frame size and set the size accordingly
     local width, height;
     if not Datamine.Settings.HasSavedFrameSize() then

@@ -71,6 +71,7 @@ local function InitSavedVariables()
     wipe(middleman);
 
     Datamine.Constants.ChatPrefixColor = CreateColorFromHexString(DatamineConfig.ChatPrefixColor);
+    Registry:TriggerEvent(Events.CONFIG_LOADED);
 end
 
 EventUtil.ContinueOnAddOnLoaded("Datamine", InitSavedVariables);
