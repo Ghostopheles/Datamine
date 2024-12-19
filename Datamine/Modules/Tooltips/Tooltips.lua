@@ -862,7 +862,7 @@ EventRegistry:RegisterCallback("AchievementFrameAchievement.OnEnter", OnAchievem
 EventRegistry:RegisterCallback("AchievementFrameAchievement.OnLeave", OnAchievementLeave);
 EventUtil.ContinueOnAddOnLoaded("Blizzard_AchievementUI", function() -- ensure the tooltips hide correctly when the achievement frame is closed
     AchievementFrame:HookScript("OnHide", function()
-        if GameTooltip:IsOwned(LAST_ACHIEVEMENT_TOOLTIP_OWNER) then
+        if LAST_ACHIEVEMENT_TOOLTIP_OWNER and GameTooltip:IsOwned(LAST_ACHIEVEMENT_TOOLTIP_OWNER) then
             GameTooltip:Hide();
             LAST_ACHIEVEMENT_TOOLTIP_OWNER = nil;
         end
