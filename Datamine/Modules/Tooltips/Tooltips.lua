@@ -525,37 +525,43 @@ function Tooltips.OnTooltipSetUnitAura()
     end
 end
 
-function Tooltips.OnTooltipSetAchievement()
-    local tooltip = Tooltips.GetCurrentTooltip();
-    local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
-    local link = Tooltips.ParseLink(tooltipInfo.getterArgs[1]);
-    if not link then
-        return;
-    end
+function Tooltips.OnTooltipSetAchievement(achievementID)
+    if not achievementID then
+        local tooltip = Tooltips.GetCurrentTooltip();
+        local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
+        local link = Tooltips.ParseLink(tooltipInfo.getterArgs[1]);
+        if not link then
+            return;
+        end
 
-    if Tooltips.ShouldShow("TooltipAchievementShowID") then
-        Tooltips.Append("AchievementID", link.ID);
-    end
+        if Tooltips.ShouldShow("TooltipAchievementShowID") then
+            Tooltips.Append("AchievementID", link.ID);
+        end
 
-    if Tooltips.ShouldShow("TooltipAchievementShowPlayerGUID") then
-        Tooltips.Append("PlayerGUID", link.PlayerGUID);
-    end
+        if Tooltips.ShouldShow("TooltipAchievementShowPlayerGUID") then
+            Tooltips.Append("PlayerGUID", link.PlayerGUID);
+        end
 
-    local isCompleted = link.Completed == 1;
-    if Tooltips.ShouldShow("TooltipAchievementShowCompleted") then
-        Tooltips.Append("IsCompleted", isCompleted);
-    end
+        local isCompleted = link.Completed == 1;
+        if Tooltips.ShouldShow("TooltipAchievementShowCompleted") then
+            Tooltips.Append("IsCompleted", isCompleted);
+        end
 
-    if isCompleted and Tooltips.ShouldShow("TooltipAchievementShowDate") then
-        local month, day, year = link.Month, link.Day, link.Year;
-        Tooltips.Append("Date", format("%d/%d/%d", month, day, year));
-    end
+        if isCompleted and Tooltips.ShouldShow("TooltipAchievementShowDate") then
+            local month, day, year = link.Month, link.Day, link.Year;
+            Tooltips.Append("Date", format("%d/%d/%d", month, day, year));
+        end
 
-    if Tooltips.ShouldShow("TooltipAchievementShowCriteria") then
-        Tooltips.AddLine("Criteria");
-        for i=1, 4 do
-            local criteria = link["Criteria"..i];
-            Tooltips.Append(format("%s- [%d]", TAB, i), criteria);
+        if Tooltips.ShouldShow("TooltipAchievementShowCriteria") then
+            Tooltips.AddLine("Criteria");
+            for i=1, 4 do
+                local criteria = link["Criteria"..i];
+                Tooltips.Append(format("%s- [%d]", TAB, i), criteria);
+            end
+        end
+    else
+        if Tooltips.ShouldShow("TooltipAchievementShowID") then
+            Tooltips.Append("AchievementID", achievementID);
         end
     end
 end
@@ -747,7 +753,7 @@ function Tooltips.StartOnLeaveTickerForObject(object, callback)
     end);
 end
 
-function Tooltips.WrapOwnTooltip(func, owner, manageVisibility)
+function Tooltips.WrapOwnTooltip(func, owner, manageVisibility, anchor)
     local tooltip = GameTooltip;
     if not Tooltips.Begin(tooltip) then
         return;
@@ -755,8 +761,12 @@ function Tooltips.WrapOwnTooltip(func, owner, manageVisibility)
 
     if manageVisibility then
         tooltip:ClearAllPoints();
-        tooltip:SetPoint("TOPRIGHT", owner, "TOPLEFT", 0, 0);
-        tooltip:SetOwner(owner, "ANCHOR_PRESERVE");
+        if not anchor then
+            tooltip:SetPoint("TOPRIGHT", owner, "TOPLEFT", 0, 0);
+            tooltip:SetOwner(owner, "ANCHOR_PRESERVE");
+        else
+            tooltip:SetOwner(owner, anchor);
+        end
     end
 
     local success, err = pcall(func);
@@ -825,6 +835,39 @@ else
         end
     end);
 end
+
+------------
+--- achievement frame tooltips
+
+local LAST_ACHIEVEMENT_TOOLTIP_OWNER;
+local function OnAchievementEnter(_, self)
+    if not self:IsVisible() then
+        return;
+    end
+
+    local data = self:GetData();
+    Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetAchievement(data.id); end, self, true, "ANCHOR_RIGHT");
+    LAST_ACHIEVEMENT_TOOLTIP_OWNER = self;
+end
+
+local function OnAchievementLeave(_, self)
+    if self and not self:IsVisible() then
+        return;
+    end
+
+    GameTooltip:Hide();
+end
+
+EventRegistry:RegisterCallback("AchievementFrameAchievement.OnEnter", OnAchievementEnter);
+EventRegistry:RegisterCallback("AchievementFrameAchievement.OnLeave", OnAchievementLeave);
+EventUtil.ContinueOnAddOnLoaded("Blizzard_AchievementUI", function() -- ensure the tooltips hide correctly when the achievement frame is closed
+    AchievementFrame:HookScript("OnHide", function()
+        if GameTooltip:IsOwned(LAST_ACHIEVEMENT_TOOLTIP_OWNER) then
+            GameTooltip:Hide();
+            LAST_ACHIEVEMENT_TOOLTIP_OWNER = nil;
+        end
+    end);
+end);
 
 ------------
 
