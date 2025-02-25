@@ -13,7 +13,7 @@ OUTPUT_DIR = os.path.join(ADDON_DIR, "Generated")
 WOW_DIR = "F:/Games/World of Warcraft"
 FLAVOR = "wowt"
 
-TOC_FILE_LIST_LINE_NO = 17
+TOC_FILE_LIST_LINE_NO = 19
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

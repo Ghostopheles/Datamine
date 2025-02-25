@@ -7,6 +7,8 @@
 ## AllowLoad: Game
 ## AllowLoadGameType: mainline
 
+## Group: Datamine
+
 ## RequiredDeps: Datamine_Data
 ## OptionalDeps: DevTool
 

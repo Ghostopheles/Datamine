@@ -1,9 +1,11 @@
-## Interface: 110005
+## Interface: 110100
 ## Title: |cfffc037bDatamine_Minimaps|r
 ## Notes: Map data for the Datamine addon.
 ## Author: Ghostopheles
 ## Version: @project-version@
 ## LoadOnDemand: 1
+
+## Group: Datamine
 
 ## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
 
