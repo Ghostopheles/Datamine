@@ -9,6 +9,18 @@
 
 ## Group: Datamine
 
+## Category-enUS: Development Tools
+## Category-deDE: Entwicklungstools
+## Category-esES: Herramientas de Desarrollo
+## Category-esMX: Herramientas de Desarrollo
+## Category-frFR: Outils de Développement
+## Category-itIT:
+## Category-koKR:
+## Category-ptBR: Ferramentas de Desenvolvimento
+## Category-ruRU: Инструменты разработки
+## Category-zhCN: 开发工具
+## Category-zhTW:
+
 ## RequiredDeps: Datamine_Data
 ## OptionalDeps: DevTool
 
