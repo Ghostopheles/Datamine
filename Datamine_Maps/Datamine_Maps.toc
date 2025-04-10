@@ -1,4 +1,4 @@
-## Interface: 110100
+## Interface: 110105
 ## Title: |cfffc037bDatamine_Minimaps|r
 ## Notes: Map data for the Datamine addon.
 ## Author: Ghostopheles
