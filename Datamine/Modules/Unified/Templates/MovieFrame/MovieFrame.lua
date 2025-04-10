@@ -47,6 +47,7 @@ end
 
 -- anchorToSelf essentially just means - should the subtitles be anchored to our MovieFrame or the default one
 function DatamineMovieFrameMixin:UpdateSubtitlesAnchor(anchorToSelf)
+    SubtitlesFrame:ClearAllPoints();
     if anchorToSelf then
         SubtitlesFrame:SetPoint("BOTTOMLEFT", self);
         SubtitlesFrame:SetPoint("BOTTOMRIGHT", self);
