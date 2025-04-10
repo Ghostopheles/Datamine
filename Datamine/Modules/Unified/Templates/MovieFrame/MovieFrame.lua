@@ -157,6 +157,7 @@ function DatamineMovieControlsMixin:OnLoad()
 end
 
 function DatamineMovieControlsMixin:OnShow()
+    LayoutMixin.OnShow(self);
     local parent = self:GetParent();
     self.SubtitleToggle:SetChecked(parent:GetEnableSubtitles());
     self.LoopToggle:SetChecked(parent:GetLoopMovie());
