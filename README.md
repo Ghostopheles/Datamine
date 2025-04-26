@@ -6,7 +6,7 @@ An addon designed to make in-game data more accessible by reducing barriers arou
 > To open the Datamine UI in-game, you can either use `/dm ui` or click the Datamine entry in the addon compartment (or use a keybind). The addon compartment can be found by clicking the tiny button below the calendar button on the minimap.
 
 Example:
-![image](https://github.com/Ghostopheles/Datamine/assets/10636803/f241614b-b28a-4468-8f8a-d21855e59f7a)
+![image](https://github.com/user-attachments/assets/fe4e3252-c5cc-41a3-b878-521cdb7834db)
 
 # Features
 
@@ -14,6 +14,8 @@ Example:
 Datamine adds a plethora of useful information to (almost) all tooltips in the game. This includes things like SpellIDs for spell tooltips, ItemIDs for items, etc.
 
 The tooltip info is entirely customizable, meaning you only see what you want to see, or you could optionally disable the system entirely.
+
+![image](https://github.com/user-attachments/assets/e474e338-7298-4adf-9a5c-102f27aa7770)
 
 ## Explorer
 
