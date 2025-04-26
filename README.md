@@ -1,14 +1,19 @@
 # Datamine
 
-An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data. Features an advanced and intuitive UI, allowing customization of outfits, includes an in-game map viewer, enables the searching of items and spells, and lets you view models by ID, CreatureDisplayInfoID, and more.
+An addon designed to make in-game data more accessible by reducing barriers around the availability of certain data. Features in-depth tooltip information and customization, an advanced and intuitive UI, allowing customization of outfits, includes an in-game map viewer, enables the searching of items and spells, and lets you view models by ID, CreatureDisplayInfoID, and more.
 
 > [!TIP]
-> To open the Datamine UI in-game, you can either use `/dm ui` or click the Datamine entry in the addon compartment. The addon compartment can be found by clicking the tiny button below the calendar button on the minimap.
+> To open the Datamine UI in-game, you can either use `/dm ui` or click the Datamine entry in the addon compartment (or use a keybind). The addon compartment can be found by clicking the tiny button below the calendar button on the minimap.
 
 Example:
 ![image](https://github.com/Ghostopheles/Datamine/assets/10636803/f241614b-b28a-4468-8f8a-d21855e59f7a)
 
 # Features
+
+## Tooltips
+Datamine adds a plethora of useful information to (almost) all tooltips in the game. This includes things like SpellIDs for spell tooltips, ItemIDs for items, etc.
+
+The tooltip info is entirely customizable, meaning you only see what you want to see, or you could optionally disable the system entirely.
 
 ## Explorer
 
@@ -41,9 +46,7 @@ In the theater tab, you can play pre-rendered movies in-game using their MovieID
 The map viewer lets you view the minimap textures for any in-game map by either clicking it's name from the map picker, or by navigating to a MapID or WDT FileDataID using the details panel.
 
 > [!IMPORTANT]
-> In order to use the map viewer, Datamine requires access to external data. I'll include a baseline set of data in each release. To help keep people up-to-date, I've included [instructions](GENERATING_MAP_DATA.md) to generate your own map data.
-
-The map viewer is highly experimental and may have some performance issues, though in my experience, performance was unaffected.
+> The map viewer is currently defunct (stuck in the past, lacking newer map content) while I fix my tooling.
 
 ## Slash Commands
 
