@@ -142,6 +142,16 @@ function Tooltips.IsItemEquipLocValid(equipLoc)
     return false;
 end
 
+function Tooltips.IsCurrentTooltipTraitEntryTooltip()
+    local tooltip = Tooltips.GetCurrentTooltip();
+    if not tooltip then
+        return false;
+    end
+
+    local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
+    return tooltipInfo.getterName == "GetTraitEntry";
+end
+
 ------
 
 -- to add new data points to tooltips, find the appropriate function below (or make a new one)
@@ -260,18 +270,161 @@ function Tooltips.OnTooltipSetItem()
     end
 end
 
+function Tooltips.AppendTraitEntryInfo(configID, traitEntryID)
+    assert(Tooltips.GetCurrentTooltip(), "Attempt to append trait entry info without active tooltip context.");
+
+    if Tooltips.ShouldShow("TooltipTraitShowTraitEntryID") then
+        Tooltips.Append("TraitEntryID", traitEntryID);
+    end
+
+    local entryInfo = C_Traits.GetEntryInfo(configID, traitEntryID);
+
+    local entryEnumName = Datamine.Utils.GetEnumValueName(Enum.TraitNodeEntryType, entryInfo.type);
+    local entryType = format("%s (%d)", entryEnumName, entryInfo.type);
+    if Tooltips.ShouldShow("TooltipTraitShowTraitEntryType") then
+        Tooltips.Append("TraitEntryType", entryType);
+    end
+
+    local definitionID = entryInfo.definitionID;
+    if definitionID and Tooltips.ShouldShow("TooltipTraitShowDefinitionID") then
+        Tooltips.Append("TraitDefinitionID", definitionID);
+    end
+
+    local subTreeID = entryInfo.subTreeID;
+    if subTreeID and Tooltips.ShouldShow("TooltipTraitShowSubTreeID") then
+        Tooltips.Append("TraitSubTreeID", subTreeID);
+    end
+
+    local hasErrors = entryInfo.isDisplayError;
+    if hasErrors and Tooltips.ShouldShow("TooltipTraitShowErrors") then
+        Tooltips.AddLine("TraitErrors");
+        for _, conditionID in ipairs(entryInfo.conditionIDs) do
+            Tooltips.AddLine(TAB .. "-" .. conditionID);
+        end
+    end
+end
+
+function Tooltips.AppendTraitTreeCurrencyInfo(configID, traitTreeID)
+    local excludeStagedChanges = true;
+    local treeCurrencyInfo = C_Traits.GetTreeCurrencyInfo(configID, traitTreeID, excludeStagedChanges);
+    Tooltips.AddLine("TraitTreeCurrencies");
+    for i, treeCurrency in ipairs(treeCurrencyInfo) do
+        local key = format("%s-[%d] TraitCurrencyID", TAB, i);
+        Tooltips.Append(key, treeCurrency.traitCurrencyID);
+
+        local _, _, currencyTypesID, _ = C_Traits.GetTraitCurrencyInfo(treeCurrency.traitCurrencyID);
+        if currencyTypesID then
+            local currencyTypesKey = format("%s %s- CurrencyID", TAB, TAB);
+            Tooltips.Append(currencyTypesKey, currencyTypesID);
+        end
+    end
+end
+
+function Tooltips.OnTooltipSetClassTalentTraitEntry()
+    local tooltip = Tooltips.GetCurrentTooltip();
+    if not tooltip then
+        return;
+    end
+
+    -- for trait tree entries
+    local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
+    local traitEntryID, traitRank = unpack(tooltipInfo.getterArgs);
+    if Tooltips.ShouldShow("TooltipTraitShowTraitRank") then
+        Tooltips.Append("TraitRank", traitRank);
+    end
+
+    -- do you want to drink from the firehose?
+    local configID = C_ClassTalents.GetActiveConfigID();
+    if not configID then
+        return;
+    end
+
+    Tooltips.AppendTraitEntryInfo(configID, traitEntryID);
+end
+
+function Tooltips.OnTooltipSetProfSpecPath(configID, pathID)
+    local tooltip = Tooltips.GetCurrentTooltip();
+    if not tooltip then
+        return;
+    end
+
+    local traitEntryID = C_ProfSpecs.GetSpendEntryForPath(pathID);
+    Tooltips.AppendTraitEntryInfo(configID, traitEntryID);
+
+    if Tooltips.ShouldShow("TooltipTraitShowProfSpecPathID") then
+        Tooltips.Append("ProfSpecPathID", pathID);
+    end
+
+    if Tooltips.ShouldShow("TooltipTraitShowProfSpecPathState") then
+        local state = C_ProfSpecs.GetStateForPath(pathID, configID);
+        local stateEnumName = Datamine.Utils.GetEnumValueName(Enum.ProfessionsSpecPathState, state);
+        Tooltips.Append("ProfSpecPathState", format("%s (%d)", stateEnumName, state));
+    end
+end
+
+function Tooltips.OnTooltipSetProfSpecPerk(configID, perkID)
+    local tooltip = Tooltips.GetCurrentTooltip();
+    if not tooltip then
+        return;
+    end
+
+    local traitEntryID = C_ProfSpecs.GetEntryIDForPerk(perkID);
+    Tooltips.AppendTraitEntryInfo(configID, traitEntryID);
+
+    if Tooltips.ShouldShow("TooltipTraitShowProfSpecPerkID") then
+        Tooltips.Append("ProfSpecPerkID", perkID);
+    end
+
+    if Tooltips.ShouldShow("TooltipTraitShowProfSpecPerkState") then
+        local state = C_ProfSpecs.GetStateForPerk(perkID, configID);
+        local stateEnumName = Datamine.Utils.GetEnumValueName(Enum.ProfessionsSpecPerkState, state);
+        Tooltips.Append("ProfSpecPerkState", format("%s (%d)", stateEnumName, state));
+    end
+end
+
+function Tooltips.OnTooltipSetProfSpecTree(configID, traitTreeID)
+    local tooltip = Tooltips.GetCurrentTooltip();
+    if not tooltip then
+        return;
+    end
+
+    if Tooltips.ShouldShow("TooltipTraitShowTreeID") then
+        Tooltips.Append("TraitTreeID", traitTreeID);
+    end
+
+    if Tooltips.ShouldShow("TooltipTraitShowSystemID") then
+        local systemID = C_Traits.GetSystemIDByTreeID(traitTreeID);
+        Tooltips.Append("TraitSystemID", systemID);
+    end
+
+    if Tooltips.ShouldShow("TooltipTraitShowTreeCurrencyInfo") then
+        Tooltips.AppendTraitTreeCurrencyInfo(configID, traitTreeID);
+    end
+
+    if Tooltips.ShouldShow("TooltipTraitShowProfSpecTabState") then
+        local state = C_ProfSpecs.GetStateForTab(traitTreeID, configID);
+        local stateEnumName = Datamine.Utils.GetEnumValueName(Enum.ProfessionsSpecTabState, state);
+        Tooltips.Append("ProfSpecTabState", format("%s (%d)", stateEnumName, state));
+    end
+end
+
 function Tooltips.OnTooltipSetSpell()
     local tooltip = Tooltips.GetCurrentTooltip();
     local spellID;
     if tooltip.GetSpell then
         spellID = select(2, tooltip:GetSpell());
     end
+
     if not spellID then
         return;
     end
 
     if Tooltips.ShouldShow("TooltipSpellShowSpellID") then
         Tooltips.Append("SpellID", spellID);
+    end
+
+    if Tooltips.IsCurrentTooltipTraitEntryTooltip() then
+        Tooltips.OnTooltipSetClassTalentTraitEntry();
     end
 end
 
@@ -870,7 +1023,47 @@ EventUtil.ContinueOnAddOnLoaded("Blizzard_AchievementUI", function() -- ensure t
 end);
 
 ------------
+--- profession spec trait tooltips
 
+local function GetCurrentProfSpecConfigID()
+    return ProfessionsFrame and ProfessionsFrame.SpecPage and ProfessionsFrame.SpecPage.configID;
+end
+
+local function OnSpecPathEntered(_, pathID, _)
+    Tooltips.Begin(GameTooltip);
+
+    local configID = GetCurrentProfSpecConfigID();
+    Tooltips.OnTooltipSetProfSpecPath(configID, pathID);
+    GameTooltip:Show(); -- to fix sizing issues
+
+    Tooltips.End();
+end
+
+local function OnSpecPerkEntered(_, perkID)
+    Tooltips.Begin(GameTooltip);
+
+    local configID = GetCurrentProfSpecConfigID();
+    Tooltips.OnTooltipSetProfSpecPerk(configID, perkID);
+    GameTooltip:Show();
+
+    Tooltips.End();
+end
+
+local function OnSpecTabEntered(_, traitTreeID)
+    Tooltips.Begin(GameTooltip);
+
+    local configID = GetCurrentProfSpecConfigID();
+    Tooltips.OnTooltipSetProfSpecTree(configID, traitTreeID);
+    GameTooltip:Show();
+
+    Tooltips.End();
+end
+
+EventRegistry:RegisterCallback("ProfessionSpecs.SpecPathEntered", OnSpecPathEntered);
+EventRegistry:RegisterCallback("ProfessionSpecs.SpecPerkEntered", OnSpecPerkEntered);
+EventRegistry:RegisterCallback("ProfessionSpecs.SpecTabEntered", OnSpecTabEntered);
+
+------------
 Datamine.Tooltips = Tooltips;
 
 local helpMessage = L.SLASH_CMD_TOOLTIP_LAST_ERR_HELP;

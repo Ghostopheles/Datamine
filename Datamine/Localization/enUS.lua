@@ -57,6 +57,7 @@ L["CONFIG_HEADER_BATTLE_PET_TOOLTIPS"] = "Battle Pet Tooltips";
 L["CONFIG_HEADER_CURRENCY_TOOLTIPS"] = "Currency Tooltips";
 L["CONFIG_HEADER_GOBJECT_TOOLTIPS"] = "Game Object Tooltips";
 L["CONFIG_HEADER_QUEST_TOOLTIPS"] = "Quest Tooltips";
+L["CONFIG_HEADER_TRAIT_TOOLTIPS"] = "Trait Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -265,6 +266,35 @@ L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_TOOLTIP"] = "Show game object ID for the objec
 
 L["CONFIG_TOOLTIP_SHOW_QUEST_ID_NAME"] = "Show Quest ID";
 L["CONFIG_TOOLTIP_SHOW_QUEST_ID_TOOLTIP"] = "Show the quest ID for the quest displayed in the tooltip";
+
+L["CONFIG_TOOLTIP_SHOW_ENTRY_ID_NAME"] = "Show Trait Entry ID";
+L["CONFIG_TOOLTIP_SHOW_ENTRY_ID_TOOLTIP"] = "Show the trait entry ID for the currently displayed trait in the tooltip";
+L["CONFIG_TOOLTIP_SHOW_SYSTEM_ID_NAME"] = "Show Trait System ID";
+L["CONFIG_TOOLTIP_SHOW_SYSTEM_ID_TOOLTIP"] = "Show the trait system ID in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_TREE_ID_NAME"] = "Show Trait Tree ID";
+L["CONFIG_TOOLTIP_SHOW_TREE_ID_TOOLTIP"] = "Show the trait tree ID in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_TREE_CURRENCY_INFO_NAME"] = "Show Trait Tree Currency Info";
+L["CONFIG_TOOLTIP_SHOW_TREE_CURRENCY_INFO_TOOLTIP"] = "Show info for the various trait currencies in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_RANK_NAME"] = "Show Trait Rank";
+L["CONFIG_TOOLTIP_SHOW_RANK_TOOLTIP"] = "Show the trait rank in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_ENTRY_TYPE_NAME"] = "Show Trait Entry Type";
+L["CONFIG_TOOLTIP_SHOW_ENTRY_TYPE_TOOLTIP"] = "Show the trait entry type in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_DEFINITION_ID_NAME"] = "Show Trait Definition ID";
+L["CONFIG_TOOLTIP_SHOW_DEFINITION_ID_TOOLTIP"] = "Show the trait definition ID in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_SUBTREE_ID_NAME"] = "Show Trait SubTree ID";
+L["CONFIG_TOOLTIP_SHOW_SUBTREE_ID_TOOLTIP"] = "Show the trait subtree ID in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_ERRORS_NAME"] = "Show Trait Errors";
+L["CONFIG_TOOLTIP_SHOW_ERRORS_TOOLTIP"] = "Show the trait entry errors in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PATH_ID_NAME"] = "Show ProfSpec Path ID";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PATH_ID_TOOLTIP"] = "Show the profession specialization path ID in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PATH_STATE_NAME"] = "Show ProfSpec Path State";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PATH_STATE_TOOLTIP"] = "Show the profession specialization path state in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PERK_ID_NAME"] = "Show ProfSpec Perk ID";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PERK_ID_TOOLTIP"] = "Show the profession specialization perk ID in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PERK_STATE_NAME"] = "Show ProfSpec Perk State";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PERK_STATE_TOOLTIP"] = "Show the profession specialization perk state in the tooltip when applicable";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_TAB_STATE_NAME"] = "Show ProfSpec Tab State";
+L["CONFIG_TOOLTIP_SHOW_PROFSPEC_TAB_STATE_TOOLTIP"] = "Show the profession specialization tab state in the tooltip when applicable";
 
 -- end tooltips
 

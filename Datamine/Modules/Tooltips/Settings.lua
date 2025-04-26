@@ -563,6 +563,77 @@ local questSettings = {
 
 RegisterSettingsTable(questSettings, quests);
 
+-- TRAIT TOOLTIPS
+
+local traits = CreateSubcategory(L.CONFIG_HEADER_TRAIT_TOOLTIPS);
+
+local traitSettings = {
+    {
+        Name = "TooltipTraitShowTraitEntryID",
+        LocKey = "ENTRY_ID",
+    },
+    {
+        Name = "TooltipTraitShowSystemID",
+        LocKey = "SYSTEM_ID",
+    },
+    {
+        Name = "TooltipTraitShowTreeID",
+        LocKey = "TREE_ID",
+    },
+    {
+        Name = "TooltipTraitShowTreeCurrencyInfo",
+        LocKey = "TREE_CURRENCY_INFO",
+        Default = false,
+    },
+    {
+        Name = "TooltipTraitShowTraitRank",
+        LocKey = "RANK",
+        Default = false,
+    },
+    {
+        Name = "TooltipTraitShowTraitEntryType",
+        LocKey = "ENTRY_TYPE",
+    },
+    {
+        Name = "TooltipTraitShowDefinitionID",
+        LocKey = "DEFINITION_ID",
+    },
+    {
+        Name = "TooltipTraitShowSubTreeID",
+        LocKey = "SUBTREE_ID",
+    },
+    {
+        Name = "TooltipTraitShowErrors",
+        LocKey = "ERRORS",
+        Default = false,
+    },
+    {
+        Name = "TooltipTraitShowProfSpecPathID",
+        LocKey = "PROFSPEC_PATH_ID",
+    },
+    {
+        Name = "TooltipTraitShowProfSpecPathState",
+        LocKey = "PROFSPEC_PATH_STATE",
+        Default = false,
+    },
+    {
+        Name = "TooltipTraitShowProfSpecPerkID",
+        LocKey = "PROFSPEC_PERK_ID",
+    },
+    {
+        Name = "TooltipTraitShowProfSpecPerkState",
+        LocKey = "PROFSPEC_PERK_STATE",
+        Default = false,
+    },
+    {
+        Name = "TooltipTraitShowProfSpecTabState",
+        LocKey = "PROFSPEC_TAB_STATE",
+        Default = false,
+    }
+};
+
+RegisterSettingsTable(traitSettings, traits);
+
 ------------
 
 local childCategories = {
@@ -577,7 +648,8 @@ local childCategories = {
     battlepet = battlePets,
     currency = currencies,
     gobject = gobjects,
-    quest = quests
+    quest = quests,
+    traits = traits
 };
 
 local function HandleSlash(section)
