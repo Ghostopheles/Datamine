@@ -254,12 +254,7 @@ function DatamineDataFrameElementMixin:Init(node)
 
     local orderIndex = data.OrderIndex;
 
-    if Datamine.Debug.IsDebugEnabled() then
-        local dbgKey = format("[%d] %s:", orderIndex, key);
-        self.KeyText:SetText(dbgKey);
-    else
-        self.KeyText:SetText(key);
-    end
+    self.KeyText:SetText(key);
     self.ValueText:SetText(value);
 
     if self.KeyText:IsTruncated() then
