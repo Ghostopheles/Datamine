@@ -2,6 +2,7 @@
 
 #### Added
 - Trait tooltip info, including:
+    - TraitNodeID
     - TraitEntryID
     - TraitSystemID
     - TraitTreeID
@@ -11,8 +12,8 @@
     - TraitDefinitionID
     - TraitSubTreeID
     - TraitErrors
-    - ProfSpecPathID
+    - ProfSpecPathNodeID
     - ProfSpecPathState
-    - ProfSpecPerkID
+    - ProfSpecPerkNodeID
     - ProfSpecPerkState
     - ProfSpecTabState
