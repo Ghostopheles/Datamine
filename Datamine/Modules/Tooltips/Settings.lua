@@ -569,6 +569,10 @@ local traits = CreateSubcategory(L.CONFIG_HEADER_TRAIT_TOOLTIPS);
 
 local traitSettings = {
     {
+        Name = "TooltipTraitShowTraitNodeID",
+        LocKey = "NODE_ID",
+    },
+    {
         Name = "TooltipTraitShowTraitEntryID",
         LocKey = "ENTRY_ID",
     },

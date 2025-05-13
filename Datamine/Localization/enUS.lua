@@ -267,6 +267,8 @@ L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_TOOLTIP"] = "Show game object ID for the objec
 L["CONFIG_TOOLTIP_SHOW_QUEST_ID_NAME"] = "Show Quest ID";
 L["CONFIG_TOOLTIP_SHOW_QUEST_ID_TOOLTIP"] = "Show the quest ID for the quest displayed in the tooltip";
 
+L["CONFIG_TOOLTIP_SHOW_NODE_ID_NAME"] = "Show Trait Node ID";
+L["CONFIG_TOOLTIP_SHOW_NODE_ID_TOOLTIP"] = "Show the trait node ID for the currently displayed trait in the tooltip";
 L["CONFIG_TOOLTIP_SHOW_ENTRY_ID_NAME"] = "Show Trait Entry ID";
 L["CONFIG_TOOLTIP_SHOW_ENTRY_ID_TOOLTIP"] = "Show the trait entry ID for the currently displayed trait in the tooltip";
 L["CONFIG_TOOLTIP_SHOW_SYSTEM_ID_NAME"] = "Show Trait System ID";

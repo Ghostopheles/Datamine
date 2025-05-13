@@ -270,8 +270,26 @@ function Tooltips.OnTooltipSetItem()
     end
 end
 
-function Tooltips.AppendTraitEntryInfo(configID, traitEntryID)
+function Tooltips.AppendTraitEntryInfo(configID, traitEntryID, skipNodeID)
     assert(Tooltips.GetCurrentTooltip(), "Attempt to append trait entry info without active tooltip context.");
+
+    if Tooltips.ShouldShow("TooltipShowTraitNodeID") and not skipNodeID then
+        local tooltip = Tooltips.GetCurrentTooltip();
+        local owner = tooltip:GetOwner();
+        local nodeInfo = owner.nodeInfo;
+        local nodeID;
+        if nodeInfo  then
+            nodeID = nodeInfo.ID;
+        elseif owner.GetNodeID then
+            nodeID = owner:GetNodeID();
+        elseif owner.GetNodeInfo then
+            nodeID = owner:GetNodeInfo().ID;
+        end
+
+        if nodeID then
+            Tooltips.Append("TraitNodeID", nodeID);
+        end
+    end
 
     if Tooltips.ShouldShow("TooltipTraitShowTraitEntryID") then
         Tooltips.Append("TraitEntryID", traitEntryID);
@@ -349,10 +367,11 @@ function Tooltips.OnTooltipSetProfSpecPath(configID, pathID)
     end
 
     local traitEntryID = C_ProfSpecs.GetSpendEntryForPath(pathID);
-    Tooltips.AppendTraitEntryInfo(configID, traitEntryID);
+    local skipNodeID = true;
+    Tooltips.AppendTraitEntryInfo(configID, traitEntryID, skipNodeID);
 
     if Tooltips.ShouldShow("TooltipTraitShowProfSpecPathID") then
-        Tooltips.Append("ProfSpecPathID", pathID);
+        Tooltips.Append("ProfSpecPathNodeID", pathID);
     end
 
     if Tooltips.ShouldShow("TooltipTraitShowProfSpecPathState") then
@@ -369,10 +388,11 @@ function Tooltips.OnTooltipSetProfSpecPerk(configID, perkID)
     end
 
     local traitEntryID = C_ProfSpecs.GetEntryIDForPerk(perkID);
-    Tooltips.AppendTraitEntryInfo(configID, traitEntryID);
+    local skipNodeID = true;
+    Tooltips.AppendTraitEntryInfo(configID, traitEntryID, skipNodeID);
 
     if Tooltips.ShouldShow("TooltipTraitShowProfSpecPerkID") then
-        Tooltips.Append("ProfSpecPerkID", perkID);
+        Tooltips.Append("ProfSpecPerkNodeID", perkID);
     end
 
     if Tooltips.ShouldShow("TooltipTraitShowProfSpecPerkState") then
