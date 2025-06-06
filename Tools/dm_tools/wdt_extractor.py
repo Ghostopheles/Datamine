@@ -87,6 +87,7 @@ class WDTReader(FileReader):
         obj = self.read_by_fdid(fdid)
 
         if not obj:
+            logger.warning(f"File {fdid} not found or is empty")
             return
 
         start = obj.find(WDT_FILE_INFO_MARKER) + WDT_FILE_INFO_MARKER_SIZE
