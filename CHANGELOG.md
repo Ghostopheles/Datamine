@@ -17,3 +17,6 @@
     - ProfSpecPerkNodeID
     - ProfSpecPerkState
     - ProfSpecTabState
+
+#### Updated
+- Updated bundled map data for build 11.1.7.61131
