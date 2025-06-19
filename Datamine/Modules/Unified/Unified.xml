@@ -204,7 +204,7 @@
                             <OnEnterPressed method="OnEnterPressed" />
                         </Scripts>
                     </EditBox>
-                    <Frame parentKey="DataFrame" inherits="DatamineScrollableDataFrameTemplate">
+                    <Frame parentKey="DataFrame" inherits="DatamineItemViewerTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeKey="$parent.SearchBox"
                                 relativePoint="BOTTOMLEFT" x="-4" />

@@ -104,6 +104,8 @@ Modules/Unified/Templates/MapViewer/MapViewer.lua
 Modules/Unified/Templates/MapViewer/MapViewer.xml
 Modules/Unified/Templates/CreatureView/CreatureView.lua
 Modules/Unified/Templates/CreatureView/CreatureView.xml
+Modules/Unified/Templates/ItemView/ItemViewer.lua
+Modules/Unified/Templates/ItemView/ItemViewer.xml
 
 Modules/Unified/Unified.xml
 

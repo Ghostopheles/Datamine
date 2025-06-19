@@ -1,0 +1,113 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Frame name="DatamineItemViewerElementTemplate" virtual="true" hyperlinksEnabled="true"
+        mixin="DatamineItemViewerElementMixin">
+        <Size y="25" />
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="KeyText" font="DatamineCleanFontNoShadow" justifyH="LEFT"
+                    justifyV="MIDDLE">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="ValueText" font="DatamineCleanFontNoShadow" justifyH="RIGHT"
+                    justifyV="MIDDLE" maxLines="2">
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" />
+                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOM" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background">
+                    <Color r="0.25" g="0.25" b="0.25" a="0.35" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnHyperlinkEnter method="OnHyperlinkEnter" />
+            <OnHyperlinkLeave method="OnHyperlinkLeave" />
+            <OnHyperlinkClick method="OnHyperlinkClick" />
+        </Scripts>
+    </Frame>
+
+    <Frame name="DatamineItemViewerTemplate" mixin="DatamineItemViewerMixin" virtual="true">
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Title" font="DatamineCleanFont" text="TITLE" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOP" y="-15" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" inherits="DatamineDarkGrayBackgroundTemplate" />
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="HelpText" font="DatamineCleanFont"
+                    wordwrap="false"
+                    justifyH="CENTER" justifyV="MIDDLE" text="TEXT HERE"
+                    outline="THICK">
+                    <Anchors>
+                        <Anchor point="CENTER" y="20" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+                <FontString parentKey="HelpTextDetails"
+                    font="DatamineCleanFontSmall"
+                    wordwrap="true"
+                    justifyH="CENTER" justifyV="MIDDLE" text="DETAILS"
+                    outline="THICK">
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent.HelpText"
+                            relativePoint="BOTTOM" y="-3" />
+                    </Anchors>
+                    <Color r="0.45" g="0.45" b="0.45" a="1" />
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <ItemButton parentKey="Icon" enableMouse="false" hidden="true">
+                <Anchors>
+                    <Anchor point="RIGHT" relativeKey="$parent.Title" relativePoint="LEFT" x="-8" />
+                </Anchors>
+            </ItemButton>
+            <Frame parentKey="LoadingSpinner" inherits="OutlineLoadingSpinnerTemplate" hidden="true">
+                <Anchors>
+                    <Anchor point="CENTER" y="10" />
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString parentKey="Text" font="DatamineCleanFontSmall" text="Loading...">
+                            <Anchors>
+                                <Anchor point="TOP" relativePoint="BOTTOM" y="-8" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="DragDropNineSlice"
+                inherits="NineSlicePanelTemplate" hidden="true">
+                <KeyValues>
+                    <KeyValue key="layoutType" value="DatamineBlueHighlight" />
+                </KeyValues>
+            </Frame>
+            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList" />
+            <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-7" y="-4" />
+                    <Anchor point="BOTTOMRIGHT" x="-7" y="7" />
+                </Anchors>
+            </EventFrame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
+            <OnEvent method="OnEvent" />
+        </Scripts>
+    </Frame>
+
+</Ui>
