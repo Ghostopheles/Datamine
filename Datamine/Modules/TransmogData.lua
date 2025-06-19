@@ -6,21 +6,6 @@ local Print = function(...)
     Datamine.Utils.Print(moduleName, ...);
 end;
 
-local Dump = function(tableTitle, ...)
-    Datamine.Utils.Dump(moduleName, tableTitle, ...);
-end;
-
-local TransmogInfoKeys = {
-    L.TMOG_INFO_KEYS_SOURCE_TYPE,
-    L.TMOG_INFO_KEYS_INVENTORY_TYPE,
-    L.TMOG_INFO_KEYS_VISUALID,
-    L.TMOG_INFO_KEYS_ISCOLLECTED,
-    L.TMOG_INFO_KEYS_SOURCEID,
-    L.TMOG_INFO_KEYS_ITEMID,
-    L.TMOG_INFO_KEYS_CATEGORYID,
-    L.TMOG_INFO_KEYS_ITEMMODID,
-};
-
 local DumpTableWithDisplayKeys = function(tableTitle, ...)
     Datamine.Utils.DumpTableWithDisplayKeys(moduleName, tableTitle, ...);
 end;
