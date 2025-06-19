@@ -777,137 +777,6 @@ end
 
 -------------
 
-DatamineModelControlsLabelledEditBoxRowMixin = {};
-
-function DatamineModelControlsLabelledEditBoxRowMixin:Init(node)
-    local data = node:GetData();
-    self.Title:SetText(data.Text);
-    self.ControlID = data.ControlID;
-    self.DataFetch = data.DataFetch;
-    self.GetDefaults = data.DefaultsFunc;
-
-    self.Callback = function()
-        local x, y, z = self:GetXYZ();
-        data.Callback(x, y, z);
-    end;
-
-    self.Overlord = data.OverlordFrame
-
-    self:Register();
-    self:SetDefaults();
-    self:SetTargets();
-
-    self.Initialized = true;
-
-    self:Update();
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:OnLoad()
-    self.IsDefaults = {
-        [self.X] = true,
-        [self.Y] = true,
-        [self.Z] = true
-    };
-
-    self.UpdatedCallback = function(editBox) self:CheckDefaults(editBox) end;
-
-    self.X:HookScript("OnTextChanged", self.UpdatedCallback);
-    self.Y:HookScript("OnTextChanged", self.UpdatedCallback);
-    self.Z:HookScript("OnTextChanged", self.UpdatedCallback);
-
-    Registry:RegisterCallback(Events.MODEL_CONTROLS_DEFAULTS_UPDATED, self.OnModelControlsDefaultsUpdated, self);
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:OnModelControlsDefaultsUpdated()
-    self:SetDefaults();
-    self.UpdatedCallback(self.X);
-    self.UpdatedCallback(self.Y);
-    self.UpdatedCallback(self.Z);
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:OnShow()
-    self.X:Enable();
-    self.Y:Enable();
-    self.Z:Enable();
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:OnHide()
-    self.X:Disable();
-    self.Y:Disable();
-    self.Z:Disable();
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:GetXYZ()
-    local x, y, z = self.X:GetText(), self.Y:GetText(), self.Z:GetText();
-    return x, y, z;
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:Register()
-    self.Overlord[self.ControlID] = self;
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:Update(force)
-    if not self:IsShown() and not force then
-        return;
-    end
-
-    if not self.Initialized then
-        return;
-    end
-
-    local x, y, z = self.DataFetch();
-    self.X:SetTextUnfiltered(x or 0);
-    self.Y:SetTextUnfiltered(y or 0);
-    self.Z:SetTextUnfiltered(z or 0);
-
-    -- need to toggle the X editbox because there's some fucked up shit going on
-    self.X:Hide();
-    self.X:Show();
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:SetDefaults()
-    local x, y, z = self.GetDefaults();
-    self.X:SetDefaultValue(x);
-    self.Y:SetDefaultValue(y);
-    self.Z:SetDefaultValue(z);
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:SetTargets()
-    local target = self.Callback;
-    self.X:SetCallback(target);
-    self.Y:SetCallback(target);
-    self.Z:SetCallback(target);
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:CheckDefaults(editBox)
-    if editBox.RevertTextOnFocusLoss then
-        return;
-    end
-
-    self.IsDefaults[editBox] = editBox:GetText() == editBox:GetDefaultValue();
-
-    for _, isDefault in pairs(self.IsDefaults) do
-        if not isDefault then
-            self:SetResetButtonShown(true);
-            return;
-        end
-    end
-
-    self:SetResetButtonShown(false);
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:SetResetButtonShown(shown)
-    self.ResetButton:SetShown(shown)
-end
-
-function DatamineModelControlsLabelledEditBoxRowMixin:ResetEditBoxes()
-    self.X:Reset();
-    self.Y:Reset();
-    self.Z:Reset();
-end
-
--------------
-
 DatamineModelControlsTreeMixin = {};
 
 DatamineModelControlsTreeMixin.ArmorSlotNames = {
@@ -951,43 +820,7 @@ function DatamineModelControlsTreeMixin:GetScene()
     return DatamineUnifiedFrame.Workspace.ModelViewTab.ModelScene;
 end
 
-function DatamineModelControlsTreeMixin:GetCameraXYZ()
-    local camera = self.ModelScene:GetActiveCamera();
-    local x, y, z = camera:GetYaw(), camera:GetPitch(), camera:GetRoll();
-    return x, y, z;
-end
-
-function DatamineModelControlsTreeMixin:GetActorPosition()
-    local actor = self.ModelScene:GetActiveActor();
-    if not actor then
-        return;
-    end
-
-    return actor:GetPosition();
-end
-
-function DatamineModelControlsTreeMixin:GetActorRotation()
-    local actor = self.ModelScene:GetActiveActor();
-    if not actor then
-        return;
-    end
-
-    return actor:GetYaw(), actor:GetPitch(), actor:GetRoll();
-end
-
-function DatamineModelControlsTreeMixin:GetCameraOrientation()
-    local camera = self.ModelScene:GetActiveCamera();
-    return camera:GetYaw(), camera:GetPitch(), camera:GetRoll();
-end
-
 function DatamineModelControlsTreeMixin:OnLoad()
-    self.TransformTab = self:AddTopLevelItem({
-        Text = L.MODEL_CONTROLS_TAB_TITLE_TRANSFORM,
-        IsTopLevel = true,
-        CanExpand = true,
-        BackgroundColor = DatamineMediumGray,
-    });
-
     local function OutfitSort(a, b)
         local idxA = tIndexOf(Transmog.ArmorSlotVisualOrder, a.data.SlotID);
         local idxB = tIndexOf(Transmog.ArmorSlotVisualOrder, b.data.SlotID);
@@ -1013,14 +846,11 @@ function DatamineModelControlsTreeMixin:OnLoad()
         BackgroundColor = DatamineMediumGray,
     });
 
-    self:SetupLocationControls();
-    self:SetupCameraControls();
     self:SetupAdvancedPanel();
     self:SetupTransmogSetPanel();
 
     self:SetDoUpdate(false);
 
-    self.TransformTab:SetCollapsed(true);
     self.OutfitTab:SetCollapsed(true);
     self.TransmogSetTab:SetCollapsed(true);
 
@@ -1041,20 +871,12 @@ function DatamineModelControlsTreeMixin:OnUpdate()
         return;
     end
 
-    if self.DoUpdate then
-        self:UpdateLocationControls();
-        self:UpdateCameraControls();
-    end
-
     if self.OutfitDirty then
         self:UpdateOutfit();
     end
 end
 
 function DatamineModelControlsTreeMixin:OnModelLoaded()
-    self:SetEditBoxDefaults();
-    self:UpdateLocationControls();
-    self:UpdateCameraControls();
 end
 
 function DatamineModelControlsTreeMixin:OnModelReset()
@@ -1063,61 +885,6 @@ end
 
 function DatamineModelControlsTreeMixin:OnOutfitUpdated()
     self:MarkOutfitDirty();
-end
-
-function DatamineModelControlsTreeMixin:SetupLocationControls()
-    local function LocationCallback(x, y, z)
-        local actor = self.ModelScene:GetActiveActor();
-        actor:SetPosition(x, y, z);
-    end
-
-    local function GetLocationDefaults()
-        if not self.EditBoxDefaults then
-            self:SetEditBoxDefaults();
-        end
-
-        local defaults = self.EditBoxDefaults.LocationControls;
-        return defaults.x, defaults.y, defaults.z;
-    end
-
-    self.TransformTab:Insert({
-        Text = L.MODEL_CONTROLS_TRANSFORM_TRANSLATE,
-        ControlID = "LocationControls",
-        DataFetch = function() return self:GetActorPosition(); end,
-        Callback = LocationCallback,
-        DefaultsFunc = GetLocationDefaults,
-        OverlordFrame = self,
-        Template = "DatamineModelControlsLabelledEditBoxRowTemplate",
-    });
-end
-
-function DatamineModelControlsTreeMixin:SetupCameraControls()
-    local function CameraViewCallback(x, y, z)
-        local camera = self.ModelScene:GetActiveCamera();
-        camera:SetYaw(x);
-        camera:SetPitch(y);
-        camera:SetRoll(z);
-        camera:UpdateCameraOrientationAndPosition();
-    end
-
-    local function GetCameraViewDefaults()
-        if not self.EditBoxDefaults then
-            self:SetEditBoxDefaults();
-        end
-
-        local defaults = self.EditBoxDefaults.CameraControls;
-        return defaults.x, defaults.y, defaults.z;
-    end
-
-    self.TransformTab:Insert({
-        Text = L.MODEL_CONTROLS_TRANSFORM_CAMERA,
-        ControlID = "CameraControls",
-        DataFetch = function() return self:GetCameraOrientation(); end,
-        Callback = CameraViewCallback,
-        DefaultsFunc = GetCameraViewDefaults,
-        OverlordFrame = self,
-        Template = "DatamineModelControlsLabelledEditBoxRowTemplate",
-    });
 end
 
 function DatamineModelControlsTreeMixin:MarkOutfitDirty()
@@ -1339,55 +1106,6 @@ function DatamineModelControlsTreeMixin:SetDoUpdate(doUpdate)
 end
 
 function DatamineModelControlsTreeMixin:OnEnterPressed()
-end
-
-function DatamineModelControlsTreeMixin:SetEditBoxDefaults()
-    local actor = self.ModelScene:GetActiveActor();
-    local camera = self.ModelScene:GetActiveCamera();
-
-    local xT, yT, zT = actor:GetPosition();
-    local xC, yC, zC = camera:GetYaw(), camera:GetPitch(), camera:GetRoll();
-    local xCPos, yCPos, zCPos = camera:GetPosition();
-
-    self.EditBoxDefaults = {
-        LocationControls = {
-            x = xT,
-            y = yT,
-            z = zT,
-        },
-        CameraControls = {
-            x = xC,
-            y = yC,
-            z = zC,
-        },
-        CameraPosition = {
-            x = xCPos,
-            y = yCPos,
-            z = zCPos,
-        },
-    };
-
-    Registry:TriggerEvent(Events.MODEL_CONTROLS_DEFAULTS_UPDATED);
-end
-
-function DatamineModelControlsTreeMixin:GetEditBoxDefaults(controlID)
-    return self.EditBoxDefaults and self.EditBoxDefaults[controlID] or nil;
-end
-
-function DatamineModelControlsTreeMixin:UpdateLocationControls()
-    if not self.LocationControls then
-        return;
-    end
-
-    self.LocationControls:Update();
-end
-
-function DatamineModelControlsTreeMixin:UpdateCameraControls()
-    if not self.CameraControls then
-        return;
-    end
-
-    self.CameraControls:Update();
 end
 
 -------------

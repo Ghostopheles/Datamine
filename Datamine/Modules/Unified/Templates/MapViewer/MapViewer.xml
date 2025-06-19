@@ -2,14 +2,9 @@
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
     <EditBox name="DatamineMapViewMinimalEditBoxTemplate"
-        inherits="DatamineModelControlsEditBoxTemplate"
+        inherits="InputBoxTemplate" autoFocus="false" historyLines="3"
+        font="DatamineCleanFont"
         virtual="true">
-        <Scripts>
-            <OnEnterPressed function="nop" />
-            <OnEditFocusGained function="nop" />
-            <OnEditFocusLost function="nop" />
-            <OnChar function="nop" />
-        </Scripts>
     </EditBox>
 
     <Frame name="DatamineMapViewLabelledEditBoxTemplate" virtual="true">
