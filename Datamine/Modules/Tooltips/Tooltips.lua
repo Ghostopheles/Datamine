@@ -971,8 +971,6 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, _W(Tooltips
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Quest, _W(Tooltips.OnTooltipSetQuest));
 
 -- the joys of tooltips that sidestep the above system
-local PTRAddonLoaded = C_AddOns.IsAddOnLoaded("Blizzard_PTRFeedback");
-
 local callbackNames = {
     "TaskPOI.TooltipShown",
     "MapCanvas.QuestPin.OnEnter",
@@ -984,29 +982,10 @@ local callbacksToManageVisiblity = {
     ["OnQuestBlockHeader.OnEnter"] = true
 };
 
-if not PTRAddonLoaded then
-    for _, callbackName in ipairs(callbackNames) do
-        EventRegistry:RegisterCallback(callbackName, function(_, block, blockID)
-            Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(blockID); end, block, callbacksToManageVisiblity[callbackName]);
-        end);
-    end
-else
-    -- have to skip some diabolical shit to avoid the PTR issue reporter breaking entirely
-    -- hooksecurefunc(PTR_IssueReporter, "Init", function()
-    --     local callbacksTbl = EventRegistry:GetCallbackTable(2);
-    --     for _, callbackName in ipairs(callbackNames) do
-    --         local callbacks = callbacksTbl[callbackName];
-    --         if callbacks and callbacks[PTR_IssueReporter] then
-    --             local originalCallback = callbacks[PTR_IssueReporter];
-    --             local function newCallback(...)
-    --                 local args = {...};
-    --                 originalCallback(unpack(args));
-    --                 Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(args[3]); end, args[2]);
-    --             end
-    --             callbacks[PTR_IssueReporter] = newCallback;
-    --         end
-    --     end
-    -- end);
+for _, callbackName in ipairs(callbackNames) do
+    EventRegistry:RegisterCallback(callbackName, function(_, block, blockID)
+        Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(blockID); end, block, callbacksToManageVisiblity[callbackName]);
+    end);
 end
 
 ------------
