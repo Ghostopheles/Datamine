@@ -27,6 +27,17 @@ function DatamineModelControlsTransmogSetItemEntryMixin:Init(node)
             self:SetOwned(isOwned);
         end);
     end
+
+    -- setup tooltips for the 'is this thing owned' icon
+    self.Icon:SetScript("OnEnter", function()
+        local tooltipText = self:GetOwned() and TRANSMOGRIFY_TOOLTIP_APPEARANCE_KNOWN or TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN;
+        DatamineTooltip:SetOwner(self.Icon, "ANCHOR_RIGHT");
+        DatamineTooltip:SetText(tooltipText, 1, 1, 1);
+        DatamineTooltip:Show();
+    end);
+    self.Icon:SetScript("OnLeave", function()
+        DatamineTooltip:Hide();
+    end);
 end
 
 function DatamineModelControlsTransmogSetItemEntryMixin:SetText(text)
@@ -36,6 +47,11 @@ end
 function DatamineModelControlsTransmogSetItemEntryMixin:SetOwned(isOwned)
     local icon = isOwned and OWNED_ATLAS or UNOWNED_ATLAS;
     self.Icon:SetAtlas(icon);
+    self.IsOwned = isOwned;
+end
+
+function DatamineModelControlsTransmogSetItemEntryMixin:GetOwned()
+    return self.IsOwned;
 end
 
 function DatamineModelControlsTransmogSetItemEntryMixin:SetSelected(isSelected)
