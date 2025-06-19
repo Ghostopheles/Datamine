@@ -156,20 +156,19 @@ end
 -- some utility functions
 
 ---@param itemModifiedAppearanceID number
----@return number invType
+---@return number? invType
 function Datamine.Transmog:GetSlotTypeForAppearanceID(itemModifiedAppearanceID)
     local sourceInfo = C_TransmogCollection.GetSourceInfo(itemModifiedAppearanceID);
 
-    return sourceInfo.invType;
+    return sourceInfo and sourceInfo.invType or nil;
 end
 
 ---@param itemModifiedAppearanceID number
----@return number invSlotID
+---@return number? invSlotID
 function Datamine.Transmog:GetSlotIDForAppearanceID(itemModifiedAppearanceID)
     local invType = self:GetSlotTypeForAppearanceID(itemModifiedAppearanceID);
-    local invSlot = C_Transmog.GetSlotForInventoryType(invType);
 
-    return invSlot;
+    return invType and C_Transmog.GetSlotForInventoryType(invType) or nil;
 end
 
 ---@param slotID number
@@ -235,32 +234,33 @@ function Datamine.Transmog:GetAppearancesBySlotForSet(transmogSetID)
     for _, source in pairs(sources) do
         local isDefault = primaryAppearances[source] or false;
         local invSlot = self:GetSlotIDForAppearanceID(source);
+        if invSlot then
+            local category = C_TransmogCollection.GetCategoryForItem(source);
+            local _, isWeapon, _, canMainHand, canOffHand = C_TransmogCollection.GetCategoryInfo(category);
 
-        local category = C_TransmogCollection.GetCategoryForItem(source);
-        local _, isWeapon, _, canMainHand, canOffHand = C_TransmogCollection.GetCategoryInfo(category);
+            transmogSet.Appearances[source] = {
+                IsDefault = isDefault,
+                InvSlot = invSlot,
+                IsWeapon = isWeapon,
+                CanMainHand = canMainHand,
+                CanOffhand = canOffHand,
+            };
 
-        transmogSet.Appearances[source] = {
-            IsDefault = isDefault,
-            InvSlot = invSlot,
-            IsWeapon = isWeapon,
-            CanMainHand = canMainHand,
-            CanOffhand = canOffHand,
-        };
-
-        if not transmogSet.Slots[invSlot] then
-            transmogSet.Slots[invSlot] = {};
-        end
-
-        tinsert(transmogSet.Slots[invSlot], source);
-
-        if canOffHand then
-            if not transmogSet.Slots[INVSLOT_OFFHAND] then
-                transmogSet.Slots[INVSLOT_OFFHAND] = {};
+            if not transmogSet.Slots[invSlot] then
+                transmogSet.Slots[invSlot] = {};
             end
-            tinsert(transmogSet.Slots[INVSLOT_OFFHAND], source);
-        end
 
-        transmogSet.Defaults[source] = isDefault;
+            tinsert(transmogSet.Slots[invSlot], source);
+
+            if canOffHand then
+                if not transmogSet.Slots[INVSLOT_OFFHAND] then
+                    transmogSet.Slots[INVSLOT_OFFHAND] = {};
+                end
+                tinsert(transmogSet.Slots[INVSLOT_OFFHAND], source);
+            end
+
+            transmogSet.Defaults[source] = isDefault;
+        end
     end
 
     return transmogSet;
