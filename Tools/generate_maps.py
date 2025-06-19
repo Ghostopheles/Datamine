@@ -11,7 +11,7 @@ ADDON_DIR = os.path.join(parent_directory, "Datamine_Maps")
 OUTPUT_DIR = os.path.join(ADDON_DIR, "Generated")
 
 WOW_DIR = "F:/Games/World of Warcraft"
-FLAVOR = "wowt"
+FLAVOR = "wowxptr"
 
 TOC_FILE_LIST_LINE_NO = 19
 

@@ -192,6 +192,7 @@ Generated/Map_2710.lua
 Generated/Map_2713.lua
 Generated/Map_2716.lua
 Generated/Map_2731.lua
+Generated/Map_2738.lua
 Generated/Map_2739.lua
 Generated/Map_2759.lua
 Generated/Map_2767.lua
@@ -205,12 +206,15 @@ Generated/Map_2786.lua
 Generated/Map_2792.lua
 Generated/Map_2796.lua
 Generated/Map_2801.lua
+Generated/Map_2803.lua
+Generated/Map_2810.lua
 Generated/Map_2815.lua
 Generated/Map_2818.lua
 Generated/Map_2819.lua
 Generated/Map_2826.lua
 Generated/Map_2827.lua
 Generated/Map_2828.lua
+Generated/Map_2830.lua
 Generated/Map_2831.lua
 Generated/Map_2834.lua
 Generated/Map_2836.lua
@@ -218,6 +222,7 @@ Generated/Map_2837.lua
 Generated/Map_2847.lua
 Generated/Map_2849.lua
 Generated/Map_2851.lua
+Generated/Map_2951.lua
 Generated/Map_7_DungeonExteriorNeltharionsLair.lua
 Generated/Map_8BoostExperienceAlliance.lua
 Generated/Map_8BoostExperienceHorde.lua
