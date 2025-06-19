@@ -991,22 +991,22 @@ if not PTRAddonLoaded then
         end);
     end
 else
-    -- have to do some diabolical shit to avoid the PTR issue reporter from stomping our tooltips
-    hooksecurefunc(PTR_IssueReporter, "Init", function()
-        local callbacksTbl = EventRegistry:GetCallbackTable(2);
-        for _, callbackName in ipairs(callbackNames) do
-            local callbacks = callbacksTbl[callbackName];
-            if callbacks and callbacks[PTR_IssueReporter] then
-                local originalCallback = callbacks[PTR_IssueReporter];
-                local function newCallback(...)
-                    local args = {...};
-                    originalCallback(unpack(args));
-                    Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(args[3]); end, args[2]);
-                end
-                callbacks[PTR_IssueReporter] = newCallback;
-            end
-        end
-    end);
+    -- have to skip some diabolical shit to avoid the PTR issue reporter breaking entirely
+    -- hooksecurefunc(PTR_IssueReporter, "Init", function()
+    --     local callbacksTbl = EventRegistry:GetCallbackTable(2);
+    --     for _, callbackName in ipairs(callbackNames) do
+    --         local callbacks = callbacksTbl[callbackName];
+    --         if callbacks and callbacks[PTR_IssueReporter] then
+    --             local originalCallback = callbacks[PTR_IssueReporter];
+    --             local function newCallback(...)
+    --                 local args = {...};
+    --                 originalCallback(unpack(args));
+    --                 Tooltips.WrapOwnTooltip(function() Tooltips.OnTooltipSetQuest(args[3]); end, args[2]);
+    --             end
+    --             callbacks[PTR_IssueReporter] = newCallback;
+    --         end
+    --     end
+    -- end);
 end
 
 ------------
