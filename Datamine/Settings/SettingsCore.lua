@@ -276,7 +276,7 @@ function Datamine.Settings.GetTopLevelCategory()
 end
 
 function Datamine.Settings.OpenSettings(categoryID)
-    Settings.OpenToCategory(categoryID);
+    Settings.OpenToCategory(categoryID or category:GetID());
 end
 
 function Datamine.Settings.HasSavedFrameSize()
