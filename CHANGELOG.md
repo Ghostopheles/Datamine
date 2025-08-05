@@ -2,6 +2,7 @@
 
 #### Added
 - Tooltips for the 'is this appearance collected' icons on the model viewer's transmog set panel.
+- ruRU localization, courtesy of Hubbotu/ZamestoTV
 
 #### Removed
 - Removed the 'transform' tab on the model viewer.
