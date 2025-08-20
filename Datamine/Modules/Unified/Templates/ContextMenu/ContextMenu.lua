@@ -54,18 +54,18 @@ function DatamineContextMenuMixin:OnLoad()
     self.MaxHeight = 500;
     self.MaxEntries = 20;
 
-    self.DataProvider = CreateDataProvider();
-
-    self.ScrollView = CreateScrollBoxListLinearView();
-    self.ScrollView:SetDataProvider(self.DataProvider);
-    self.ScrollView:SetElementExtent(15);
-
     local function Initializer(button, data)
         button:Init(data);
     end
 
     self.ScrollView:SetElementInitializer("DatamineContextMenuEntryTemplate", Initializer);
     self.ScrollBar:SetHideIfUnscrollable(true);
+
+    self.DataProvider = CreateDataProvider();
+
+    self.ScrollView = CreateScrollBoxListLinearView();
+    self.ScrollView:SetDataProvider(self.DataProvider);
+    self.ScrollView:SetElementExtent(15);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 

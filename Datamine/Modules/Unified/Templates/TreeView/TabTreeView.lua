@@ -84,12 +84,6 @@ end
 DatamineTabTreeViewMixin = {};
 
 function DatamineTabTreeViewMixin:OnLoad_Base()
-    self.DataProvider = CreateTreeDataProvider();
-
-    self.ScrollView = CreateScrollBoxListTreeListView();
-    self.ScrollView:SetDataProvider(self.DataProvider);
-    self.ScrollView:SetPanExtent(20);
-
     local TOP_LEVEL_EXTENT = 20;
     local DEFAULT_EXTENT = 20;
     self.ScrollView:SetElementExtentCalculator(function(_, elementData)
@@ -115,6 +109,12 @@ function DatamineTabTreeViewMixin:OnLoad_Base()
 		local template = data.Template;
 		factory(template, Initializer);
 	end);
+
+    self.DataProvider = CreateTreeDataProvider();
+
+    self.ScrollView = CreateScrollBoxListTreeListView();
+    self.ScrollView:SetDataProvider(self.DataProvider);
+    self.ScrollView:SetPanExtent(20);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 
