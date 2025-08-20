@@ -122,6 +122,8 @@ end
 DatamineSearchableListMixin = {};
 
 function DatamineSearchableListMixin:OnLoad_Base()
+    self.ScrollView = CreateScrollBoxListLinearView();
+
     local DEFAULT_EXTENT = 20;
     self.ScrollView:SetPanExtent(DEFAULT_EXTENT);
     self.ScrollView:SetElementExtent(DEFAULT_EXTENT);
@@ -135,7 +137,7 @@ function DatamineSearchableListMixin:OnLoad_Base()
 
     self.DataProvider = CreateDataProvider();
 
-    self.ScrollView = CreateScrollBoxListLinearView();
+    
     self.ScrollView:SetDataProvider(self.DataProvider);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
