@@ -10,6 +10,7 @@ Datamine.Events = {
     MODEL_OUTFIT_UPDATED = "ModelOutfitUpdated",
     MODEL_DRESSED = "ModelDressed",
     MODEL_FORM_CHANGED = "ModelFormChanged",
+    MODEL_RACE_CHANGED = "ModelRaceChanged",
     SEARCH_MODE_CHANGED = "SearchModeChanged",
     SEARCH_RESULT = "SearchResult",
     SEARCH_BEGIN = "SearchBegin",

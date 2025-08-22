@@ -550,6 +550,19 @@ function DatamineModelSceneMixin:GetUseNativeForm()
     return self.UseNativeForm;
 end
 
+function DatamineModelSceneMixin:SetCustomRaceID(customRaceID)
+    self.CustomRaceID = customRaceID;
+
+    -- custom race doesn't apply unless we refresh the model twice...
+    self:SetupPlayerActor(true);
+    self:SetupPlayerActor(true);
+    Registry:TriggerEvent(Events.MODEL_RACE_CHANGED);
+end
+
+function DatamineModelSceneMixin:GetCustomRaceID()
+    return self.CustomRaceID;
+end
+
 function DatamineModelSceneMixin:GetActiveActor()
     return self.ActiveActor;
 end
@@ -579,8 +592,9 @@ function DatamineModelSceneMixin:SetupPlayerActor(force)
     local hideWeapons = false;
     local useNativeForm = self:GetUseNativeForm();
     local holdBowString = true;
+    local customRaceID = self:GetCustomRaceID();
 
-    actor:SetModelByUnit("player", sheatheWeapons, autoDress, hideWeapons, useNativeForm, holdBowString);
+    actor:SetModelByUnit("player", sheatheWeapons, autoDress, hideWeapons, useNativeForm, holdBowString, customRaceID);
     actor:SetAnimationBlendOperation(Enum.ModelBlendOperation.None);
     actor:SetUseCenterForOrigin(true, true, true);
     actor:SetYaw(self.PlayerActorDefaults.Yaw);
@@ -1110,6 +1124,14 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Text = L.MODEL_CONTROLS_ADVANCED_PLAY_ANIMKIT,
         Instructions = L.MODEL_CONTROLS_ADVANCED_PLAY_ANIMKIT_HELP,
         Callback = function(akid) return self:GetScene():PlayAnimKit(akid) end,
+        Template = template,
+        RequestedExtent = extent,
+    });
+
+    self.AdvancedTab:Insert({
+        Text = L.MODEL_CONTROLS_ADVANCED_SET_CUSTOM_RACEID,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_SET_CUSTOM_RACEID_HELP,
+        Callback = function(crid) return self:GetScene():SetCustomRaceID(crid) end,
         Template = template,
         RequestedExtent = extent,
     });
