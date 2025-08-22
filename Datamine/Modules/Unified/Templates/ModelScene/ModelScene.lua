@@ -417,6 +417,19 @@ function DatamineModelSceneMixin:InitToolbar()
 
         toolbar:AddButton(icon, Callback, tooltipText, iconScale);
     end
+
+    do -- transmog skin
+        local function Callback()
+            local actor = self:GetActiveActor();
+            actor:SetUseTransmogSkin(not actor:GetUseTransmogSkin());
+            local force = true;
+            self:SetupPlayerActor(force);
+        end
+        local icon = "poi-transmogrifier";
+        local tooltipText = L.MODEL_CONTROLS_TOGGLE_TRANSMOG_SKIN_TOOLTIP_TEXT;
+
+        toolbar:AddButton(icon, Callback, tooltipText);
+    end
 end
 
 function DatamineModelSceneMixin:LoadSettings()
