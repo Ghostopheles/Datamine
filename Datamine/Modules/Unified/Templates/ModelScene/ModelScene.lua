@@ -1056,13 +1056,14 @@ end
 
 function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
     local template = "DatamineModelControlsAdvancedPanelEntryTemplate";
+    local extent = 40;
 
     self.AdvancedTab:Insert({
         Text = L.MODEL_CONTROLS_ADVANCED_SET_BY_FDID,
         Instructions = L.MODEL_CONTROLS_ADVANCED_SET_BY_FDID_HELP,
         Callback = function(fdid) return self:GetScene():SetModelByFileID(fdid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 
     self.AdvancedTab:Insert({
@@ -1070,7 +1071,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Instructions = L.MODEL_CONTROLS_ADVANCED_SET_BY_DIID_HELP,
         Callback = function(cdid) return self:GetScene():SetModelByCreatureDisplayID(cdid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 
     self.AdvancedTab:Insert({
@@ -1078,7 +1079,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Instructions = L.MODEL_CONTROLS_ADVANCED_TRY_ON_ITEMID_HELP,
         Callback = function(iid) return self:GetScene():TryOnByItemID(iid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 
     self.AdvancedTab:Insert({
@@ -1086,7 +1087,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Instructions = L.MODEL_CONTROLS_ADVANCED_TRY_ON_ITEMMODID_HELP,
         Callback = function(imaid) return self:GetScene():TryOnByItemModifiedAppearanceID(imaid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 
     self.AdvancedTab:Insert({
@@ -1094,7 +1095,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Instructions = L.MODEL_CONTROLS_ADVANCED_TRY_ON_TMOGSET_HELP,
         Callback = function(tsid) return self:GetScene():TryOnByTransmogSetID(tsid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 
     self.AdvancedTab:Insert({
@@ -1102,7 +1103,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Instructions = L.MODEL_CONTROLS_ADVANCED_APPLY_SPELLVISKIT_HELP,
         Callback = function(svkid) return self:GetScene():ApplySpellVisualKit(svkid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 
     self.AdvancedTab:Insert({
@@ -1110,7 +1111,7 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Instructions = L.MODEL_CONTROLS_ADVANCED_PLAY_ANIMKIT_HELP,
         Callback = function(akid) return self:GetScene():PlayAnimKit(akid) end,
         Template = template,
-        RequestedExtent = 40,
+        RequestedExtent = extent,
     });
 end
 
