@@ -23,10 +23,23 @@ L["CONFIG_SHOW_MODEL_INFO_NAME"] = "Show Model Info on Model Previews";
 L["CONFIG_SHOW_MODEL_INFO_TOOLTIP"] = "Shows extra model information on the ModelPreviewFrame, often used for the shop.";
 
 -- debug settings
+
 L["CONFIG_CATEGORY_DEBUG"] = "Debug";
 
 L["CONFIG_DEBUG_SHOW_ALL_TOOLTIP_DATA_NAME"] = "Show all tooltip data";
 L["CONFIG_DEBUG_SHOW_ALL_TOOLTIP_DATA_TOOLTIP"] = "Show all tooltip data regardless of tooltip configuration";
+
+-- console settings
+L["CONFIG_CATEGORY_CONSOLE"] = "Console";
+
+L["CONFIG_CONSOLE_FONT_NAME"] = "Console Font";
+L["CONFIG_CONSOLE_FONT_TOOLTIP"] = "Font used by the in-game developer console";
+
+L["CONFIG_CONSOLE_FONT_DEFAULT_NAME"] = "Blizzard Default";
+L["CONFIG_CONSOLE_FONT_DEFAULT_TOOLTIP"] = "The default console font provided by Blizzard.";
+
+L["CONFIG_CONSOLE_FONT_CUSTOM_NAME"] = "Datamine Console Font";
+L["CONFIG_CONSOLE_FONT_CUSTOM_TOOLTIP"] = "The custom console font provided by Datamine.";
 
 -- explorer settings
 

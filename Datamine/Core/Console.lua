@@ -1,5 +1,5 @@
 ---@type LibDevConsole
-local console = Datamine.Console;
+local console = LibStub:GetLibrary("LibDevConsole");
 
 local commandType = Enum.ConsoleCommandType;
 local commandCategory = Enum.ConsoleCategory;
@@ -45,47 +45,52 @@ local function SetChrModel(number)
 end
 
 local function DumpBuildInfo()
+    local buildInfo = {};
+
+    local function AddEntry(key, value)
+        tinsert(buildInfo, {key = key, value = value});
+    end
+
     local buildVersion, buildNumber, buildDate, interfaceVersion = GetBuildInfo();
-    local publicBuild = tostring(IsPublicBuild());
-    local testBuild = tostring(IsTestBuild());
-    local debugBuild = tostring(IsDebugBuild());
-    local windowsClient = tostring(IsWindowsClient());
-    local linuxClient = tostring(IsLinuxClient());
-    local macClient = tostring(IsMacClient());
-    local GMClient = tostring(IsGMClient());
-    local bit64Client = tostring(Is64BitClient());
-    local scriptsAllowed = tostring(not C_AddOns.GetScriptsDisallowedForBeta());
+    AddEntry("Version", buildVersion);
+    AddEntry("Build", buildNumber);
+    AddEntry("Build Date", buildDate);
+    AddEntry("Interface", interfaceVersion);
+    AddEntry("spacer");
+    AddEntry("Public Client", tostring(IsPublicBuild()));
+    AddEntry("Test Client", tostring(IsTestBuild()));
+    AddEntry("Public Test Client", tostring(IsPublicTestClient()));
+    AddEntry("Debug Client", tostring(IsDebugBuild()));
+    AddEntry("Windows Client", tostring(IsWindowsClient()));
+    AddEntry("Linux Client", tostring(IsLinuxClient()));
+    AddEntry("Mac Client", tostring(IsMacClient()));
+    AddEntry("GM Client", tostring(IsGMClient()));
+    AddEntry("64bit Client", tostring(Is64BitClient()));
+    AddEntry("spacer");
+    AddEntry("Scripts Allowed", tostring(not C_AddOns.GetScriptsDisallowedForBeta()));
+    AddEntry("Supports Clip Cursor", tostring(SupportsClipCursor()));
 
-    local buildInfoStringFormat = [[Client Build Info
-      Version:          %s
-      Build:            %s
-      Build Date:       %s
-      Interface:        %s
-      Public Build:     %s
-      Test Build:       %s
-      Debug Build:      %s
-      Windows Client:   %s
-      Linux Client:     %s
-      Mac Client:       %s
-      GM Client:        %s
-      64bit Client:     %s
-      Scripts Allowed:  %s]]
+    local maxKeyLength = 0;
+    for _, entry in pairs(buildInfo) do
+        if #entry.key > maxKeyLength then
+            maxKeyLength = #entry.key;
+        end
+    end
 
-    local buildInfoString = format(buildInfoStringFormat,
-        buildVersion,
-        buildNumber,
-        buildDate,
-        interfaceVersion,
-        publicBuild,
-        testBuild,
-        debugBuild,
-        windowsClient,
-        linuxClient,
-        macClient,
-        GMClient,
-        bit64Client,
-        scriptsAllowed
-    );
+    local buildInfoString = "Client Build Info:\n";
+    local padding = 4; -- in spaces
+    local tabLength = 3; -- in spaces
+    local tab = string.rep(" ", tabLength);
+    for _, entry in ipairs(buildInfo) do
+        local key, value = entry.key, entry.value;
+        local line;
+        if key ~= "spacer" then
+            line = string.format("%-" .. (maxKeyLength + padding) .. "s : %s\n", key, value);
+        else
+            line = string.rep("-", 10) .. "\n";
+        end
+        buildInfoString = buildInfoString .. tab .. line;
+    end
 
     console.AddEcho(buildInfoString);
 

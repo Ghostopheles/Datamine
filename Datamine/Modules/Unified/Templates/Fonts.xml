@@ -60,4 +60,8 @@
         font="Interface/AddOns/Datamine/Assets/Fonts/Inter_Tight/InterTight-Regular.ttf" height="16">
         <Color r="1" g="1" b="1" />
     </Font>
+
+    <Font name="DatamineConsoleFont"
+        font="Interface/AddOns/Datamine/Assets/Fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf"
+        height="12" justifyH="LEFT" />
 </Ui>

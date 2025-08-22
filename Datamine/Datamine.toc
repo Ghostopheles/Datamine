@@ -47,6 +47,7 @@ Core/Events.lua
 Core/SlashCommands.lua
 
 Settings/SettingsCore.lua
+Settings/ConsoleSettings.lua
 Settings/DebugSettings.lua
 
 Core/Links.lua

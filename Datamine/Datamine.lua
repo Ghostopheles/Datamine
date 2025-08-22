@@ -12,7 +12,6 @@ Datamine.Constants.DataTypes = {
 };
 
 Datamine.Utils = {};
-Datamine.Console = LibStub:GetLibrary("LibDevConsole");
 Datamine.Debug = {};
 
 --@debug
