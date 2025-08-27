@@ -11,7 +11,7 @@ do
     local default = DatamineVeryLightGray:GenerateHexColor();
 
     local setting = S.RegisterSetting(category, variable, name, default);
-    S.CreateColorPickerButton(category, setting, name, tooltip);
+    S.CreateColorPickerButton(category, setting, tooltip);
 end
 
 ------------

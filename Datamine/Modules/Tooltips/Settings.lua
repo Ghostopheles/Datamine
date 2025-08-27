@@ -25,7 +25,7 @@ do
     local setting = S.RegisterSetting(category, variable, name, default);
     local tooltip = L.CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP;
 
-    S.CreateColorPickerButton(category, setting, name, tooltip);
+    S.CreateColorPickerButton(category, setting, tooltip);
 end
 
 do
@@ -35,7 +35,7 @@ do
     local setting = S.RegisterSetting(category, variable, name, default);
     local tooltip = L.CONFIG_TOOLTIP_VALUE_COLOR_TOOLTIP;
 
-    S.CreateColorPickerButton(category, setting, name, tooltip);
+    S.CreateColorPickerButton(category, setting, tooltip);
 end
 
 local useModifierSetting, useModifierInitializer;

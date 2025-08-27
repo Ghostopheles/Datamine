@@ -148,24 +148,11 @@ end
 
 Datamine.Settings.RegisterSetting = RegisterSetting;
 
-local function CreateColorPickerButtonForSetting(category, setting, name, tooltip, buttonText, noSearchTags)
-    buttonText = buttonText or L.CONFIG_COLOR_PICKER_TEXT;
-
-    local function OnButtonClick(button, buttonName, down)
-        ShowColorPicker(setting);
-    end
-
-    local searchTags;
-    if noSearchTags then
-        searchTags = false;
-    else
-        searchTags = true;
-    end
-
-    local initializer = CreateSettingsButtonInitializer(name, buttonText, OnButtonClick, tooltip, searchTags);
+local function CreateColorPickerButtonForSetting(category, setting, tooltip)
+    local data = Settings.CreateSettingInitializerData(setting, {}, tooltip);
+    local initializer = Settings.CreateSettingInitializer("DatamineColorSwatchSettingTemplate", data);
     local layout = SettingsPanel:GetLayout(category);
     layout:AddInitializer(initializer);
-
     return initializer;
 end
 
@@ -208,7 +195,7 @@ do
 
     local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
 
-    CreateColorPickerButtonForSetting(category, setting, name, tooltip);
+    CreateColorPickerButtonForSetting(category, setting, tooltip);
     Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
 end
 

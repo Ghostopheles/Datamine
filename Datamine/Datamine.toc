@@ -46,6 +46,7 @@ Core/TableUtil.lua
 Core/Events.lua
 Core/SlashCommands.lua
 
+Settings/SettingsTemplates.xml
 Settings/SettingsCore.lua
 Settings/ConsoleSettings.lua
 Settings/DebugSettings.lua
