@@ -11,3 +11,4 @@
 
 #### Updated
 - Updated the `GetBuildInfo` console command
+- Updated the color picker settings to use a color swatch instead of a generic red button
