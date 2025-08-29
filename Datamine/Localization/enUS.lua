@@ -71,6 +71,7 @@ L["CONFIG_HEADER_CURRENCY_TOOLTIPS"] = "Currency Tooltips";
 L["CONFIG_HEADER_GOBJECT_TOOLTIPS"] = "Game Object Tooltips";
 L["CONFIG_HEADER_QUEST_TOOLTIPS"] = "Quest Tooltips";
 L["CONFIG_HEADER_TRAIT_TOOLTIPS"] = "Trait Tooltips";
+L["CONFIG_HEADER_AREAPOI_TOOLTIPS"] = "Area POI Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -274,11 +275,17 @@ L["CONFIG_TOOLTIP_SHOW_CURRENCY_CYCLE_DURATION_TOOLTIP"] = "Show duration of the
 L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_NAME"] = "Show Currency War Mode Bonus";
 L["CONFIG_TOOLTIP_SHOW_CURRENCY_HAS_WARMODE_BONUS_TOOLTIP"] = "Show if the currency benefits from the war mode bonus";
 
+-- gobject tooltips
+
 L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_NAME"] = "Show Game Object ID";
 L["CONFIG_TOOLTIP_SHOW_GOBJECT_ID_TOOLTIP"] = "Show game object ID for the object you are interacting with";
 
+-- quest pin tooltips
+
 L["CONFIG_TOOLTIP_SHOW_QUEST_ID_NAME"] = "Show Quest ID";
 L["CONFIG_TOOLTIP_SHOW_QUEST_ID_TOOLTIP"] = "Show the quest ID for the quest displayed in the tooltip";
+
+-- profession UI tooltips
 
 L["CONFIG_TOOLTIP_SHOW_NODE_ID_NAME"] = "Show Trait Node ID";
 L["CONFIG_TOOLTIP_SHOW_NODE_ID_TOOLTIP"] = "Show the trait node ID for the currently displayed trait in the tooltip";
@@ -310,6 +317,19 @@ L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PERK_STATE_NAME"] = "Show ProfSpec Perk State";
 L["CONFIG_TOOLTIP_SHOW_PROFSPEC_PERK_STATE_TOOLTIP"] = "Show the profession specialization perk state in the tooltip when applicable";
 L["CONFIG_TOOLTIP_SHOW_PROFSPEC_TAB_STATE_NAME"] = "Show ProfSpec Tab State";
 L["CONFIG_TOOLTIP_SHOW_PROFSPEC_TAB_STATE_TOOLTIP"] = "Show the profession specialization tab state in the tooltip when applicable";
+
+-- area poi tooltips
+
+L["CONFIG_TOOLTIP_SHOW_AREAPOI_ID_NAME"] = "Show Area POI ID";
+L["CONFIG_TOOLTIP_SHOW_AREAPOI_ID_TOOLTIP"] = "Show the Area POI ID for the currently shown map pin";
+L["CONFIG_TOOLTIP_SHOW_FACTION_ID_NAME"] = "Show Faction ID";
+L["CONFIG_TOOLTIP_SHOW_FACTION_ID_TOOLTIP"] = "Show the faction ID for the currently shown map pin, if applicable";
+L["CONFIG_TOOLTIP_SHOW_WIDGETSET_ID_NAME"] = "Show Tooltip Widget Set ID";
+L["CONFIG_TOOLTIP_SHOW_WIDGETSET_ID_TOOLTIP"] = "Show the tooltip widget set ID for the currently shown map pin";
+L["CONFIG_TOOLTIP_SHOW_ICON_WIDGETSET_ID_NAME"] = "Show Icon Widget Set ID";
+L["CONFIG_TOOLTIP_SHOW_ICON_WIDGETSET_ID_TOOLTIP"] = "Show the icon widget set ID for the currently shown map pin";
+L["CONFIG_TOOLTIP_SHOW_ATLAS_NAME_NAME"] = "Show Atlas Name";
+L["CONFIG_TOOLTIP_SHOW_ATLAS_NAME_TOOLTIP"] = "Show the atlas name for the currently shown map pin";
 
 -- end tooltips
 

@@ -638,6 +638,35 @@ local traitSettings = {
 
 RegisterSettingsTable(traitSettings, traits);
 
+-- AREA POI TOOLTIPS
+
+local areaPoi = CreateSubcategory(L.CONFIG_HEADER_AREAPOI_TOOLTIPS);
+
+local areaPoiSettings = {
+    {
+        Name = "TooltipAreaPOIShowID",
+        LocKey = "AREAPOI_ID",
+    },
+    {
+        Name = "TooltipAreaPOIShowFactionID",
+        LocKey = "FACTION_ID",
+    },
+    {
+        Name = "TooltipAreaPOIShowWidgetSet",
+        LocKey = "WIDGETSET_ID",
+    },
+    {
+        Name = "TooltipAreaPOIShowIconWidgetSet",
+        LocKey = "ICON_WIDGETSET_ID",
+    },
+    {
+        Name = "TooltipAreaPOIShowAtlas",
+        LocKey = "ATLAS_NAME",
+    },
+};
+
+RegisterSettingsTable(areaPoiSettings, areaPoi);
+
 ------------
 
 local childCategories = {
@@ -653,7 +682,8 @@ local childCategories = {
     currency = currencies,
     gobject = gobjects,
     quest = quests,
-    traits = traits
+    traits = traits,
+    areapoi = areaPoi
 };
 
 local function HandleSlash(section)

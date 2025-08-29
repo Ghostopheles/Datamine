@@ -6,6 +6,9 @@
 - Added an entry box that allows setting a custom RaceID for the player model in the model viewer
 - Added a toggle for the UseTransmogSkin option on the model viewer
 
+##### Tooltips
+- Added tooltip support for Area POI map pins
+
 ##### Console
 - Added an option to change the font used by the in-game developer console
 

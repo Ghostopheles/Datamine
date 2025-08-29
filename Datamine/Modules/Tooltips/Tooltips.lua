@@ -899,6 +899,31 @@ function Tooltips.OnTooltipSetQuest(questID)
     end
 end
 
+function Tooltips.OnTooltipSetAreaPOI(areaPoiID)
+    if Tooltips.ShouldShow("TooltipAreaPOIShowID") then
+        Tooltips.Append("AreaPoiID", areaPoiID);
+    end
+
+    local uiMapID = WorldMapFrame:GetMapID();
+    local poiInfo = C_AreaPoiInfo.GetAreaPOIInfo(uiMapID, areaPoiID);
+
+    if poiInfo.factionID and Tooltips.ShouldShow("TooltipAreaPOIShowFactionID") then
+        Tooltips.Append("FactionID", poiInfo.factionID);
+    end
+
+    if poiInfo.tooltipWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowWidgetSet") then
+        Tooltips.Append("TooltipWidgetSetID", poiInfo.tooltipWidgetSet);
+    end
+
+    if poiInfo.iconWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowIconWidgetSet") then
+        Tooltips.Append("IconWidgetSetID", poiInfo.iconWidgetSet);
+    end
+
+    if poiInfo.atlasName and Tooltips.ShouldShow("TooltipAreaPOIShowAtlas") then
+        Tooltips.Append("AtlasName", poiInfo.atlasName);
+    end
+end
+
 ------------
 
 function Tooltips.Wrap(func, tooltip)
@@ -1061,6 +1086,44 @@ end
 EventRegistry:RegisterCallback("ProfessionSpecs.SpecPathEntered", OnSpecPathEntered);
 EventRegistry:RegisterCallback("ProfessionSpecs.SpecPerkEntered", OnSpecPerkEntered);
 EventRegistry:RegisterCallback("ProfessionSpecs.SpecTabEntered", OnSpecTabEntered);
+
+------------
+-- area poi tooltips
+
+local function OnAreaPOIEntered(areaPoiID)
+    Tooltips.Begin(GameTooltip);
+
+    Tooltips.OnTooltipSetAreaPOI(areaPoiID);
+    GameTooltip:Show();
+
+    Tooltips.End();
+end
+
+local function OnMapPinEntered(_, pin)
+    if not pin.GetPoiInfo then
+        return;
+    end
+
+    if not GameTooltip:IsShown() then
+        return;
+    end
+
+    local areaPoiID;
+    if pin.GetAreaPoiID then
+        areaPoiID = pin:GetAreaPoiID();
+    elseif pin.GetPoiInfo then
+        local poiInfo = pin:GetPoiInfo();
+        areaPoiID = poiInfo and poiInfo.areaPoiID;
+    end
+
+    if not areaPoiID then
+        return;
+    end
+
+    OnAreaPOIEntered(areaPoiID);
+end
+
+EventRegistry:RegisterCallback("MapLegendPinOnEnter", OnMapPinEntered);
 
 ------------
 Datamine.Tooltips = Tooltips;
