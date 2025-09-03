@@ -553,8 +553,6 @@ end
 function DatamineModelSceneMixin:SetCustomRaceID(customRaceID)
     self.CustomRaceID = customRaceID;
 
-    -- custom race doesn't apply unless we refresh the model twice...
-    self:SetupPlayerActor(true);
     self:SetupPlayerActor(true);
     Registry:TriggerEvent(Events.MODEL_RACE_CHANGED);
 end
