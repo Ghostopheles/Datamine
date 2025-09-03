@@ -137,7 +137,6 @@ function DatamineSearchableListMixin:OnLoad_Base()
 
     self.DataProvider = CreateDataProvider();
 
-    
     self.ScrollView:SetDataProvider(self.DataProvider);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
