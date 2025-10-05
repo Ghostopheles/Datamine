@@ -152,6 +152,23 @@ function Tooltips.IsCurrentTooltipTraitEntryTooltip()
     return tooltipInfo.getterName == "GetTraitEntry";
 end
 
+function Tooltips.GetCreatureIDFromGUID(guid)
+    local creatureID = select(6, strsplit("-", guid));
+    return tonumber(creatureID);
+end
+
+function Tooltips.GetUnitCreatureID(unitToken)
+    local creatureID;
+    if UnitCreatureID then
+        creatureID = UnitCreatureID(unitToken);
+    else
+        local guid = UnitGUID(unitToken);
+        creatureID = Tooltips.GetCreatureIDFromGUID(guid);
+    end
+
+    return creatureID;
+end
+
 ------
 
 -- to add new data points to tooltips, find the appropriate function below (or make a new one)
@@ -593,13 +610,12 @@ function Tooltips.OnTooltipSetUnit()
     end
 
     if isNPC then
-        local creatureID = Datamine.Database:GetCreatureIDFromGUID(guid);
+        local creatureID = Tooltips.GetUnitCreatureID(unit);
         if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
             Tooltips.Append("CreatureID", creatureID);
         end
 
         if D.DebugEnabled then
-            creatureID = tonumber(creatureID);
             if creatureID then
                 local x, y, distance = ClosestUnitPosition(creatureID);
                 if x and y and distance then
