@@ -579,3 +579,28 @@ function Database:InsertItemText(ctx)
     self.DB.ItemText[uniqueID] = entry;
     self:Commit();
 end
+
+------------
+-- VENDORS
+
+-- creatureID
+-- creature name
+-- list of items
+
+---@class DatamineDataVendorItemCost
+---@field CurrencyID number
+---@field Amount number
+
+---@class DatamineDataVendorItem
+---@field ItemID number
+---@field ItemName string
+---@field Quantity number
+---@field Cost table
+
+---@class DatamineDataVendor
+---@field CreatureID number
+---@field CreatureName string
+---@field Items DatamineDataVendorItem[]
+
+function Database:InsertVendorEntry(entry)
+end
