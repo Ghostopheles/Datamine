@@ -631,12 +631,6 @@ function Tooltips.OnTooltipSetUnit()
             local displayID = Tooltips.GetCreatureDisplayID(creatureID);
             Tooltips.Append("DisplayID", displayID);
         end
-
-        if Tooltips.ShouldShow("TooltipUnitShowNPCClass") then
-            local _, class = C_PlayerInfo.GetClass({guid=guid});
-            local className = LocalizedClassList()[class];
-            Tooltips.Append("Class", className);
-        end
     end
 end
 

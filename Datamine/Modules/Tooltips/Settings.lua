@@ -319,11 +319,6 @@ local unitSettings = {
     {
         Name = "TooltipUnitShowType",
         LocKey = "UNIT_TYPE",
-    },
-    {
-        Name = "TooltipUnitShowNPCClass",
-        LocKey = "UNIT_NPC_CLASS",
-        Default = false,
     }
 };
 
