@@ -21,7 +21,7 @@
 ## Category-zhCN: 开发工具
 ## Category-zhTW:
 
-# ## RequiredDeps: Datamine_Data
+## RequiredDeps: Datamine_Data
 ## OptionalDeps: DevTool
 
 ## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
@@ -66,8 +66,8 @@ Modules/AchievementInfo.lua
 Modules/ModelInfo.lua
 Modules/EncounterJournal.lua
 
-#Modules/Collector/CollectorMixin.lua
-#Modules/Collector/Collector.xml
+Modules/Collector/CollectorMixin.lua
+Modules/Collector/Collector.xml
 
 Modules/Unified/Settings/Explorer.lua
 

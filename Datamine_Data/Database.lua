@@ -5,35 +5,6 @@ local Database = select(2, ...);
 
 local UNIT_TYPE_CREATURE = "Creature";
 
-local UNIT_FLAGS = {
-    [COMBATLOG_OBJECT_AFFILIATION_MASK] = {
-		[COMBATLOG_OBJECT_AFFILIATION_MINE] = "Affiliation: Mine",
-		[COMBATLOG_OBJECT_AFFILIATION_PARTY] = "Affiliation: Party",
-		[COMBATLOG_OBJECT_AFFILIATION_RAID] = "Affiliation: Raid",
-		[COMBATLOG_OBJECT_AFFILIATION_OUTSIDER] = "Affiliation: Outsider",
-	},
-	[COMBATLOG_OBJECT_REACTION_MASK] = {
-		[COMBATLOG_OBJECT_REACTION_FRIENDLY] = "Friendly",
-		[COMBATLOG_OBJECT_REACTION_NEUTRAL] = "Neutral",
-		[COMBATLOG_OBJECT_REACTION_HOSTILE] = "Hostile",
-	},
-	[COMBATLOG_OBJECT_CONTROL_MASK] = {
-		[COMBATLOG_OBJECT_CONTROL_PLAYER] = "Control: Player",
-		[COMBATLOG_OBJECT_CONTROL_NPC] = "Control: NPC",
-	},
-	[COMBATLOG_OBJECT_TYPE_MASK] = {
-		[COMBATLOG_OBJECT_TYPE_PLAYER] = "Type: Player",
-		[COMBATLOG_OBJECT_TYPE_NPC] = "Type: NPC",
-		[COMBATLOG_OBJECT_TYPE_PET] = "Type: Pet",
-		[COMBATLOG_OBJECT_TYPE_GUARDIAN] = "Type: Guardian",
-		[COMBATLOG_OBJECT_TYPE_OBJECT] = "Type: Object",
-	},
-};
-
-local UNIT_FLAGS_ORDER = {
-    REACTION = "Reactions"
-};
-
 ------------
 
 local function DebugAssert(condition, message)
@@ -460,35 +431,6 @@ function Database:UpdateCreatureEntryWithTooltipData(tooltipData)
     end
 
     self:UpdateCreatureEntry(creatureID, entry);
-end
-
-function Database:UpdateCreatureEntryWithUnitFlags(creatureID, unitFlags)
-    local entry = self:GetCreatureEntryByID(creatureID);
-    if not entry then
-        entry = self:NewCreatureEntry();
-    end
-
-    for flagType, entryKey in pairs(UNIT_FLAGS_ORDER) do
-        local playerFaction, infoTable;
-        if flagType == "REACTION" then
-            playerFaction = UnitFactionGroup("player");
-            infoTable = entry[entryKey];
-        end
-
-        if not infoTable or not infoTable[playerFaction] then
-            local mask = _G["COMBATLOG_OBJECT_"..flagType.."_MASK"];
-            local bitfield = bit.band(unitFlags, mask);
-            local info = UNIT_FLAGS[mask][bitfield];
-
-            if infoTable and playerFaction then
-                infoTable[playerFaction] = info;
-            else
-                entry[entryKey] = info;
-            end
-        end
-    end
-
-    self:Commit();
 end
 
 function Database:UpdateCreatureEntryWithNameByGUID(guid, name)

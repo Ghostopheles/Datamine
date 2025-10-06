@@ -33,7 +33,9 @@ local EVENTS = {
 
     ITEM_TEXT_BEGIN = "ITEM_TEXT_BEGIN",
     ITEM_TEXT_READY = "ITEM_TEXT_READY",
-    ITEM_TEXT_CLOSED = "ITEM_TEXT_CLOSED"
+    ITEM_TEXT_CLOSED = "ITEM_TEXT_CLOSED",
+
+    MERCHANT_SHOW = "MERCHANT_SHOW"
 };
 
 local PH_PLAYER_NAME = "$PLAYER_NAME$";
@@ -139,48 +141,6 @@ end
 
 function DatamineCollectorMixin:CHAT_MSG_MONSTER_WHISPER(...)
     self:HandleBroadcastText(...);
-end
-
-------------
--- caching
-
-function DatamineCollectorMixin:COMBAT_LOG_EVENT_UNFILTERED()
-    local _, subEvent, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _ = CombatLogGetCurrentEventInfo();
-    if sourceGUID and sourceGUID:match("Creature") then
-        self:HandleCreatureFromCombatLog(sourceGUID, sourceName, sourceFlags, subEvent);
-    end
-
-    if destGUID and destGUID:match("Creature") then
-        self:HandleCreatureFromCombatLog(destGUID, destName, destFlags, subEvent, true);
-    end
-end
-
-local SUBEVENTS_TO_TRACK = {
-    RANGE = true,
-    SPELL = true,
-};
-
-function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, subevent, skipLogSpell)
-    name = name ~= "" and name or nil;
-    local entry, ID = DATABASE:GetOrCreateCreatureEntryByGUID(guid, name);
-    if not entry or not ID then
-        return;
-    end
-
-    DATABASE:UpdateCreatureEntryWithUnitFlags(ID, flags);
-
-    -- dont wanna add the spell if the creature is the target
-    if skipLogSpell then
-        return;
-    end
-
-    local prefix = strsplit("_", subevent, 2);
-    if SUBEVENTS_TO_TRACK[prefix] then
-        local spellID = select(12, CombatLogGetCurrentEventInfo());
-        if type(spellID) ~= "number" then return end;
-        if entry.Spells[spellID] then return end;
-        DATABASE:AddCreatureSpell(ID, spellID);
-    end
 end
 
 ------------
@@ -325,6 +285,28 @@ function DatamineCollectorMixin:ITEM_TEXT_CLOSED()
 
     DATABASE:InsertItemText(activeContext);
     activeContext = nil;
+end
+
+------------
+
+function DatamineCollectorMixin:MERCHANT_SHOW()
+    local vendorName = UnitName("npc");
+    local numAvailableItems = GetMerchantNumItems();
+
+    local items = {};
+    for i=1, numAvailableItems do
+        local info = C_MerchantFrame.GetItemInfo(i);
+        if info.currencyID then
+            info.name, info.texture, info.numAvailable = CurrencyContainerUtil.GetCurrencyContainerInfo(info.currencyID, info.numAvailable, info.name, info.texture);
+        end
+
+        local item = {
+            Name = info.name,
+            Quantity = info.numAvailable,
+            CurrencyID = info.currencyID,
+        }
+    end
+
 end
 
 ------------
