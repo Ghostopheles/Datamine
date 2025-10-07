@@ -609,7 +609,7 @@ function Tooltips.OnTooltipSetUnit()
         Tooltips.Append("Type", unitType);
     end
 
-    if isNPC then
+    if isNPC and (unit and not issecretvalue(unit)) then
         local creatureID = Tooltips.GetUnitCreatureID(unit);
         if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
             Tooltips.Append("CreatureID", creatureID);

@@ -98,6 +98,10 @@ end
 function DatamineCollectorMixin:HandleBroadcastText(...)
     local text, name, language, name2 = ...;
 
+    if issecretvalue(text) then
+        return;
+    end
+
     -- replace player name and class with generic identifiers
     local function ReplaceNameAndClass(word)
         if word == GetUnitName("player", false) or word == GetUnitName("player", true) then
@@ -164,6 +168,10 @@ function DatamineCollectorMixin:HandleCreatureByUnitToken(unitToken)
         self:HandlePlayer(unitToken);
     else
         local guid = UnitGUID(unitToken);
+        if issecretvalue(guid) then
+            return;
+        end
+
         if guid and guid:match("Creature") then
             self:HandleCreature(guid);
         end
