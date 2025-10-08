@@ -17,8 +17,12 @@ Datamine_Maps[846613] = {
     CosmeticParentMapID = -1,
     Grids = {
 		MapTextures = {
+			[1173]=2656747,
+			[1236]=2656755,
 		},
 		MapTexturesN = {
+			[1173]=2656749,
+			[1236]=2656757,
 		},
 		MinimapTextures = {
 			[1173]=791614,

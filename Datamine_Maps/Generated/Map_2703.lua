@@ -5,7 +5,7 @@
 local _, Datamine_Maps = ...;
 
 Datamine_Maps[5493025] = {
-    MapName = "11.0 Warband Testing",
+    MapName = "11.0 Warband Screen",
     MapID = 2703,
     Directory = [[2703]],
     MapDescription0 = [[]],

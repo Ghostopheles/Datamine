@@ -5,14 +5,14 @@
 local _, Datamine_Maps = ...;
 
 Datamine_Maps[2752780] = {
-    MapName = "Hearthstone Tavern",
+    MapName = "Arcantina",
     MapID = 2195,
     Directory = [[2195]],
     MapDescription0 = [[]],
     MapDescription1 = [[]],
     MapType = 1,
     InstanceType = 0,
-    ExpansionID = 7,
+    ExpansionID = 11,
     ParentMapID = -1,
     CosmeticParentMapID = -1,
     Grids = {
