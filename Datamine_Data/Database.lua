@@ -584,10 +584,6 @@ end
 ------------
 -- VENDORS
 
--- creatureID
--- creature name
--- list of items
-
 ---@class DatamineDataVendorItemCostItem
 ---@field ItemID number
 ---@field Amount number
