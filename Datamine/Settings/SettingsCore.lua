@@ -305,8 +305,22 @@ function Datamine.Settings.SetSavedFrameSize(width, height)
     };
 end
 
+function Datamine.Settings.ShouldCollectCreatureData()
+    return Datamine.Settings.GetSetting(Datamine.Setting.CollectCreatureData);
+end
+
 function Datamine.Settings.ShouldCollectVendorData()
     return Datamine.Settings.GetSetting(Datamine.Setting.CollectVendorData);
+end
+
+function Datamine.Settings.ShouldCollectAnyData()
+    local collectCreatureData = Datamine.Settings.GetSetting(Datamine.Setting.CollectCreatureData);
+    local collectVendorData = Datamine.Settings.GetSetting(Datamine.Setting.CollectVendorData);
+    if collectCreatureData or collectVendorData then
+        return true;
+    end
+
+    return false;
 end
 
 ------------

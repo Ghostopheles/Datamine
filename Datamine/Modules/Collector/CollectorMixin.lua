@@ -80,16 +80,16 @@ function DatamineCollectorMixin:RegisterDatabase(db)
     end
 end
 
+function DatamineCollectorMixin:UpdateCollectionState()
+    self.EnableCollection = Datamine.Settings.ShouldCollectAnyData();
+end
+
 function DatamineCollectorMixin:OnAddonLoaded()
-    self.EnableCollection = Settings.GetSetting(Datamine.Setting.CollectCreatureData);
+    self:UpdateCollectionState();
 end
 
 function DatamineCollectorMixin:OnSettingChanged(setting, newValue)
-    if setting ~= Datamine.Setting.CollectCreatureData then
-        return;
-    end
-
-    self.EnableCollection = newValue;
+    self:UpdateCollectionState();
 end
 
 ------------

@@ -596,14 +596,16 @@ end
 ---@class DatamineDataVendorItem
 ---@field ItemID number
 ---@field ItemName string
+---@field ItemClass Enum.ItemClass
 ---@field ItemSubClass number
 ---@field Quantity number
 ---@field Cost DatamineDataVendorItemCost
+---@field LockReason? string
 
 ---@class DatamineDataVendorPosition
 ---@field UiMapID number
----@field X number
----@field Y number
+---@field X? number
+---@field Y? number
 
 ---@class DatamineDataVendor
 ---@field CreatureID number
