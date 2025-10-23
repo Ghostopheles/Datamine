@@ -14,7 +14,8 @@ Datamine.Setting = {
     CollectCreatureData = "CollectCreatureData",
     AutoLoadMapData = "AutoLoadMapData",
     ShowModelInfo = "ShowModelInfo",
-    UIFrameSize = "UIFrameSize"
+    UIFrameSize = "UIFrameSize",
+    CollectVendorData = "CollectVendorData"
     -- will also include all settings registered externally
 };
 
@@ -25,6 +26,7 @@ local defaultConfig = {
     [Datamine.Setting.AutoLoadMapData] = false,
     [Datamine.Setting.ShowModelInfo] = true,
     [Datamine.Setting.UIFrameSize] = nil,
+    [Datamine.Setting.CollectVendorData] = false,
     -- will also include all settings registered externally
 };
 
@@ -220,6 +222,16 @@ do
 end
 
 do
+    local variable = Datamine.Setting.CollectVendorData;
+    local name = L.CONFIG_VENDORDATA_NAME;
+    local tooltip = L.CONFIG_VENDORDATA_TOOLTIP;
+
+    local setting = RegisterSetting(category, variable, name, defaultConfig[variable]);
+    CreateCheckbox(category, setting, tooltip);
+    Settings.SetOnValueChangedCallback(variable, OnSettingChanged);
+end
+
+do
     local variable = Datamine.Setting.AutoLoadMapData;
     local name = L.CONFIG_AUTO_LOAD_MAP_DATA_NAME;
     local tooltip = L.CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP;
@@ -291,6 +303,10 @@ function Datamine.Settings.SetSavedFrameSize(width, height)
         Width = width,
         Height = height
     };
+end
+
+function Datamine.Settings.ShouldCollectVendorData()
+    return Datamine.Settings.GetSetting(Datamine.Setting.CollectVendorData);
 end
 
 ------------

@@ -297,24 +297,101 @@ end
 
 ------------
 
+local function GetErrorTextForMerchantItem(index)
+    local tooltipInfo = C_TooltipInfo.GetMerchantItem(index);
+    for _, line in ipairs(tooltipInfo.lines) do
+        if line.type == Enum.TooltipDataLineType.None then
+            if RED_FONT_COLOR:IsRGBEqualTo(line.leftColor) then
+                return line.leftText;
+            end
+        end
+    end
+end
+
 function DatamineCollectorMixin:MERCHANT_SHOW()
-    local vendorName = UnitName("npc");
+    if not Datamine.Settings.ShouldCollectVendorData() then
+        return;
+    end
+
+    local vendorEntry = {
+        CreatureID = UnitCreatureID("npc"),
+        CreatureName = UnitName("npc"),
+        Items = {}
+    };
+
     local numAvailableItems = GetMerchantNumItems();
 
-    local items = {};
     for i=1, numAvailableItems do
+        local itemID = GetMerchantItemID(i);
+        local classID, subclassID = select(6, C_Item.GetItemInfoInstant(itemID));
         local info = C_MerchantFrame.GetItemInfo(i);
         if info.currencyID then
             info.name, info.texture, info.numAvailable = CurrencyContainerUtil.GetCurrencyContainerInfo(info.currencyID, info.numAvailable, info.name, info.texture);
         end
 
-        local item = {
-            Name = info.name,
-            Quantity = info.numAvailable,
+        if info.price and not info.currencyID then
+            info.currencyID = -1;
+        end
+
+        local cost = {
             CurrencyID = info.currencyID,
-        }
+            Amount = info.price,
+        };
+
+        local numRequiredItems = GetMerchantItemCostInfo(i);
+        if numRequiredItems > 0 then
+            cost.ItemCost = {};
+            for j=1, numRequiredItems do
+                local quantity, itemLink = select(2, GetMerchantItemCostItem(i, j));
+                if itemLink then
+                    local reqItemID = C_Item.GetItemInfoInstant(itemLink);
+                    tinsert(cost.ItemCost, {
+                        ItemID = reqItemID,
+                        Amount = quantity
+                    });
+                end
+            end
+        end
+
+        local item = {
+            ItemID = itemID,
+            ItemName = info.name,
+            ItemClass = classID,
+            ItemSubClass = subclassID,
+            Quantity = info.numAvailable,
+            Cost = cost
+        };
+
+        if not info.isPurchasable then
+            local errorText = GetErrorTextForMerchantItem(i);
+            item.LockReason = errorText;
+        end
+
+        tinsert(vendorEntry.Items, item);
     end
 
+    if #vendorEntry.Items == 0 then
+        return;
+    end
+
+    local uiMapID = C_Map.GetBestMapForUnit("player");
+    local x, y, _, mapID = UnitPosition("player");
+
+    if x and y then
+        local newUiMapID, mapPos = C_Map.GetMapPosFromWorldPos(mapID, {x=x, y=y}, uiMapID);
+
+        vendorEntry.Position = {
+            UiMapID = newUiMapID,
+            X = mapPos.x * 100,
+            Y = mapPos.y * 100,
+        };
+    else
+        vendorEntry.Position = {
+            UiMapID = uiMapID,
+        };
+    end
+
+    DATABASE:InsertVendorEntry(vendorEntry);
 end
 
 ------------

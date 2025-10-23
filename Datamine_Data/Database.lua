@@ -85,6 +85,7 @@ end
 local DefaultDB = {
     Creature = {},
     ItemText = {},
+    Vendors = {}
 };
 
 local function GetDefaultDB()
@@ -587,20 +588,43 @@ end
 -- creature name
 -- list of items
 
----@class DatamineDataVendorItemCost
----@field CurrencyID number
+---@class DatamineDataVendorItemCostItem
+---@field ItemID number
 ---@field Amount number
+
+---@class DatamineDataVendorItemCost
+---@field CurrencyID? number
+---@field Amount? number
+---@field ItemCost? DatamineDataVendorItemCostItem[]
 
 ---@class DatamineDataVendorItem
 ---@field ItemID number
 ---@field ItemName string
+---@field ItemSubClass number
 ---@field Quantity number
----@field Cost table
+---@field Cost DatamineDataVendorItemCost
+
+---@class DatamineDataVendorPosition
+---@field UiMapID number
+---@field X number
+---@field Y number
 
 ---@class DatamineDataVendor
 ---@field CreatureID number
 ---@field CreatureName string
 ---@field Items DatamineDataVendorItem[]
+---@field Position DatamineDataVendorPosition
 
 function Database:InsertVendorEntry(entry)
+    if not self.DB.Vendors then
+        self.DB.Vendors = {};
+    end
+
+    local existingEntry = self.DB.Vendors[entry.CreatureID];
+    if existingEntry then
+        local newEntry = Mixin(existingEntry, entry);
+        self.DB.Vendors[entry.CreatureID] = newEntry;
+    else
+        self.DB.Vendors[entry.CreatureID] = entry;
+    end 
 end
