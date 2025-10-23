@@ -618,11 +618,5 @@ function Database:InsertVendorEntry(entry)
         self.DB.Vendors = {};
     end
 
-    local existingEntry = self.DB.Vendors[entry.CreatureID];
-    if existingEntry then
-        local newEntry = Mixin(existingEntry, entry);
-        self.DB.Vendors[entry.CreatureID] = newEntry;
-    else
-        self.DB.Vendors[entry.CreatureID] = entry;
-    end 
+    self.DB.Vendors[entry.CreatureID] = entry;
 end

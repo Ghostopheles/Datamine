@@ -309,6 +309,12 @@ local function GetErrorTextForMerchantItem(index)
 end
 
 function DatamineCollectorMixin:MERCHANT_SHOW()
+    C_Timer.After(0.15, function()
+        self:CollectMerchantData();
+    end);
+end
+
+function DatamineCollectorMixin:CollectMerchantData()
     if not Datamine.Settings.ShouldCollectVendorData() then
         return;
     end
@@ -364,6 +370,7 @@ function DatamineCollectorMixin:MERCHANT_SHOW()
 
         if not info.isPurchasable then
             local errorText = GetErrorTextForMerchantItem(i);
+            assert(errorText ~= "Retrieving item information", "Attempting to log unloaded item. Please tell Ghost.");
             item.LockReason = errorText;
         end
 
