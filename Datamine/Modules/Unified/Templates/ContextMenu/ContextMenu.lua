@@ -45,6 +45,8 @@ end
 
 -------------
 
+local MENU_ENTRY_EXTENT = 15;
+
 DatamineContextMenuMixin = {};
 
 function DatamineContextMenuMixin:OnLoad()
@@ -66,7 +68,7 @@ function DatamineContextMenuMixin:OnLoad()
     self.DataProvider = CreateDataProvider();
 
     self.ScrollView:SetDataProvider(self.DataProvider);
-    self.ScrollView:SetElementExtent(15);
+    self.ScrollView:SetElementExtent(MENU_ENTRY_EXTENT);
 
     ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 
@@ -110,9 +112,8 @@ function DatamineContextMenuMixin:GetOwner()
 end
 
 function DatamineContextMenuMixin:UpdateSize()
-    -- height
     local elementCount = self.DataProvider:GetSize();
-    local elementHeight = self.ScrollView:GetElementExtent();
+    local elementHeight = MENU_ENTRY_EXTENT;
     local spacing = 4;
     local height = (elementHeight * elementCount) + spacing;
     if height > self.MaxHeight then
