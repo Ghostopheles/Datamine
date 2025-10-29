@@ -662,6 +662,27 @@ local areaPoiSettings = {
 
 RegisterSettingsTable(areaPoiSettings, areaPoi);
 
+-- HOUSING TOOLTIPS
+
+local housing = CreateSubcategory(L.CONFIG_HEADER_HOUSING_TOOLTIPS);
+
+local housingSettings = {
+    {
+        Name = "TooltipHousingShowDecorRecordID",
+        LocKey = "DECOR_RECORD_ID",
+    },
+    {
+        Name = "TooltipHousingShowDecorEntryType",
+        LocKey = "DECOR_ENTRY_TYPE",
+    },
+    {
+        Name = "TooltipHousingShowDecorSubType",
+        LocKey = "DECOR_ENTRY_SUBTYPE",
+    }
+};
+
+RegisterSettingsTable(housingSettings, housing);
+
 ------------
 
 local childCategories = {
@@ -678,7 +699,8 @@ local childCategories = {
     gobject = gobjects,
     quest = quests,
     traits = traits,
-    areapoi = areaPoi
+    areapoi = areaPoi,
+    housing = housing
 };
 
 local function HandleSlash(section)

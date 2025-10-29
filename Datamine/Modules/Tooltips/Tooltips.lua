@@ -1136,6 +1136,63 @@ end
 EventRegistry:RegisterCallback("MapLegendPinOnEnter", OnMapPinEntered);
 
 ------------
+--- house decor catalog tooltips
+
+local HookedDecorFrames = {};
+
+local function OnHouseDecorCatalogItemEnter(entry)
+    if not entry or not entry.GetData then
+        return;
+    end
+
+    Tooltips.Begin(GameTooltip);
+
+    local data = entry:GetData().entryID;
+
+    if Tooltips.ShouldShow("TooltipHousingShowDecorRecordID") then
+        Tooltips.Append("RecordID", data.recordID);
+    end
+
+    if Tooltips.ShouldShow("TooltipHousingShowDecorEntryType") then
+        local entryTypeName = Datamine.Utils.GetEnumValueName(Enum.HousingCatalogEntryType, data.entryType);
+        Tooltips.Append("EntryType", format("%s (%s)", entryTypeName, data.entryType));
+    end
+
+    if Tooltips.ShouldShow("TooltipHousingShowDecorSubType") then
+        local entrySubtypeName = Datamine.Utils.GetEnumValueName(Enum.HousingCatalogEntrySubtype, data.entrySubtype);
+        Tooltips.Append("EntrySubtype", format("%s (%s)", entrySubtypeName, data.entrySubtype));
+    end
+
+    -- this line might be useless idk
+    -- Tooltips.Append("EntrySubtypeIdentifier", data.subtypeIdentifier);
+    GameTooltip:Show();
+
+    Tooltips.End();
+end
+
+local function SetupDecorEntryTooltip(_, entry)
+    if HookedDecorFrames[entry] then
+        return;
+    end
+
+    entry:HookScript("OnEnter", OnHouseDecorCatalogItemEnter);
+    HookedDecorFrames[entry] = true;
+end
+
+local function SetupHouseDecorCatalogTooltips(frame)
+    local iterateExisting = true;
+    ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, SetupDecorEntryTooltip, nil, iterateExisting);
+end
+
+EventUtil.ContinueOnAddOnLoaded("Blizzard_HouseEditor", function()
+    SetupHouseDecorCatalogTooltips(HouseEditorFrame.StoragePanel.OptionsContainer);
+end);
+
+EventUtil.ContinueOnAddOnLoaded("Blizzard_HousingDashboard", function()
+    SetupHouseDecorCatalogTooltips(HousingDashboardFrame.CatalogContent.OptionsContainer);
+end);
+
+------------
 Datamine.Tooltips = Tooltips;
 
 local helpMessage = L.SLASH_CMD_TOOLTIP_LAST_ERR_HELP;
