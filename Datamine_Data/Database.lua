@@ -202,28 +202,24 @@ function TooltipDataManager:UpdateTooltipDataByGUID(guid)
 end
 
 function TooltipDataManager:RequestNameForCreatureByGUID(guid)
-    local name = C_PlayerInfo.GetClass({guid=guid});
-    if ValidateName(name) then
-        Database:UpdateCreatureEntryWithNameByGUID(guid, name);
+    local name;
+    local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
+    if not tooltipData then
+        self.WaitingForGUID = guid;
+        return;
+    end
+
+    for _, line in pairs(tooltipData.lines) do
+        if line.type == Enum.TooltipDataLineType.UnitName then
+            name = line.leftText;
+            break;
+        end
+    end
+
+    if not ValidateName(name) then
+        self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
     else
-        local tooltipData = C_TooltipInfo.GetHyperlink(format("unit:%s", guid));
-        if not tooltipData then
-            self.WaitingForGUID = guid;
-            return;
-        end
-
-        for _, line in pairs(tooltipData.lines) do
-            if line.type == Enum.TooltipDataLineType.UnitName then
-                name = line.leftText;
-                break;
-            end
-        end
-
-        if not ValidateName(name) then
-            self.TooltipInstanceIDCache[tooltipData.dataInstanceID] = guid;
-        else
-            Database:UpdateCreatureEntryWithTooltipData(tooltipData);
-        end
+        Database:UpdateCreatureEntryWithTooltipData(tooltipData);
     end
 end
 
