@@ -1,6 +1,7 @@
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
-local Settings = Datamine.Settings;
+
+local issecretvalue = issecretvalue or function() return false; end;
 
 local function DebugAssert(condition, message)
     if not Datamine.Debug.IsDebugEnabled() then

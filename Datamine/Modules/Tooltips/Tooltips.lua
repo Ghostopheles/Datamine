@@ -12,6 +12,8 @@ local CURRENT_TOOLTIP;
 
 local MODEL = CreateFrame("PlayerModel");
 
+local issecretvalue = issecretvalue or function() return false; end;
+
 ------------
 -- tooltip context management
 
