@@ -923,7 +923,7 @@ function Tooltips.OnTooltipSetAreaPOI(areaPoiID)
         if poiInfo.factionID and Tooltips.ShouldShow("TooltipAreaPOIShowFactionID") then
             Tooltips.Append("FactionID", poiInfo.factionID);
         end
-s
+
         if poiInfo.tooltipWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowWidgetSet") then
             Tooltips.Append("TooltipWidgetSetID", poiInfo.tooltipWidgetSet);
         end
