@@ -919,20 +919,22 @@ function Tooltips.OnTooltipSetAreaPOI(areaPoiID)
     local uiMapID = WorldMapFrame:GetMapID();
     local poiInfo = C_AreaPoiInfo.GetAreaPOIInfo(uiMapID, areaPoiID);
 
-    if poiInfo.factionID and Tooltips.ShouldShow("TooltipAreaPOIShowFactionID") then
-        Tooltips.Append("FactionID", poiInfo.factionID);
-    end
+    if poiInfo then
+        if poiInfo.factionID and Tooltips.ShouldShow("TooltipAreaPOIShowFactionID") then
+            Tooltips.Append("FactionID", poiInfo.factionID);
+        end
+s
+        if poiInfo.tooltipWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowWidgetSet") then
+            Tooltips.Append("TooltipWidgetSetID", poiInfo.tooltipWidgetSet);
+        end
 
-    if poiInfo.tooltipWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowWidgetSet") then
-        Tooltips.Append("TooltipWidgetSetID", poiInfo.tooltipWidgetSet);
-    end
+        if poiInfo.iconWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowIconWidgetSet") then
+            Tooltips.Append("IconWidgetSetID", poiInfo.iconWidgetSet);
+        end
 
-    if poiInfo.iconWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowIconWidgetSet") then
-        Tooltips.Append("IconWidgetSetID", poiInfo.iconWidgetSet);
-    end
-
-    if poiInfo.atlasName and Tooltips.ShouldShow("TooltipAreaPOIShowAtlas") then
-        Tooltips.Append("AtlasName", poiInfo.atlasName);
+        if poiInfo.atlasName and Tooltips.ShouldShow("TooltipAreaPOIShowAtlas") then
+            Tooltips.Append("AtlasName", poiInfo.atlasName);
+        end
     end
 end
 
