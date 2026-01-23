@@ -171,6 +171,27 @@ function Tooltips.GetUnitCreatureID(unitToken)
     return creatureID;
 end
 
+-- returns our best guess at the current valid unit token in situations where the actual token is secret
+function Tooltips.GetRelevantUnitToken()
+	local foci = GetMouseFoci();
+	if not foci or #foci == 0 then
+		return "mouseover";
+	end
+
+	local relevantFrame = foci[1];
+	local unit = relevantFrame.GetAttribute and relevantFrame:GetAttribute("unit");
+	if not UnitExists(unit) then
+		if UnitExists("softenemy") then
+			return "softenemy";
+		elseif UnitExists("softinteract") then
+			return "softinteract";
+		end
+		unit = "mouseover";
+	end
+
+	return unit;
+end
+
 ------
 
 -- to add new data points to tooltips, find the appropriate function below (or make a new one)
@@ -605,7 +626,7 @@ function Tooltips.OnTooltipSetUnit()
 	end
 
 	if issecretvalue(unit) then
-		unit = "mouseover";
+		unit = Tooltips.GetRelevantUnitToken();
 	end
 
     if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
@@ -620,26 +641,28 @@ function Tooltips.OnTooltipSetUnit()
 	end
 
     local creatureID = Tooltips.GetUnitCreatureID(unit);
-    if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
-        Tooltips.Append("CreatureID", creatureID);
-    end
-
-	if not issecretvalue(creatureID) then
-		if D.DebugEnabled then
-			if creatureID then
-				local x, y, distance = ClosestUnitPosition(creatureID);
-				if x and y and distance then
-					Tooltips.AddLine("Position");
-					Tooltips.Append(TAB .. "- X:", format("%.2f", x));
-					Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
-					Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
-				end
-			end
+	if creatureID then
+		if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
+			Tooltips.Append("CreatureID", creatureID);
 		end
 
-		if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
-			local displayID = Tooltips.GetCreatureDisplayID(creatureID);
-			Tooltips.Append("DisplayID", displayID);
+		if not issecretvalue(creatureID) then
+			if D.DebugEnabled then
+				if creatureID then
+					local x, y, distance = ClosestUnitPosition(creatureID);
+					if x and y and distance then
+						Tooltips.AddLine("Position");
+						Tooltips.Append(TAB .. "- X:", format("%.2f", x));
+						Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
+						Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
+					end
+				end
+			end
+
+			if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
+				local displayID = Tooltips.GetCreatureDisplayID(creatureID);
+				Tooltips.Append("DisplayID", displayID);
+			end
 		end
 	end
 end
