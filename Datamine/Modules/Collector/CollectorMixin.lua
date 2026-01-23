@@ -1,6 +1,7 @@
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
-local Settings = Datamine.Settings;
+
+local issecretvalue = issecretvalue or function() return false; end;
 
 local function DebugAssert(condition, message)
     if not Datamine.Debug.IsDebugEnabled() then
@@ -21,7 +22,7 @@ local EVENTS = {
 
     UPDATE_MOUSEOVER_UNIT = "UPDATE_MOUSEOVER_UNIT",
 
-    COMBAT_LOG_EVENT_UNFILTERED = "COMBAT_LOG_EVENT_UNFILTERED",
+    --COMBAT_LOG_EVENT_UNFILTERED = "COMBAT_LOG_EVENT_UNFILTERED",
 
     PLAYER_SOFT_ENEMY_CHANGED = "PLAYER_SOFT_ENEMY_CHANGED",
     PLAYER_SOFT_FRIEND_CHANGED = "PLAYER_SOFT_FRIEND_CHANGED",
@@ -33,7 +34,9 @@ local EVENTS = {
 
     ITEM_TEXT_BEGIN = "ITEM_TEXT_BEGIN",
     ITEM_TEXT_READY = "ITEM_TEXT_READY",
-    ITEM_TEXT_CLOSED = "ITEM_TEXT_CLOSED"
+    ITEM_TEXT_CLOSED = "ITEM_TEXT_CLOSED",
+
+    MERCHANT_SHOW = "MERCHANT_SHOW"
 };
 
 local PH_PLAYER_NAME = "$PLAYER_NAME$";
@@ -78,16 +81,16 @@ function DatamineCollectorMixin:RegisterDatabase(db)
     end
 end
 
+function DatamineCollectorMixin:UpdateCollectionState()
+    self.EnableCollection = Datamine.Settings.ShouldCollectAnyData();
+end
+
 function DatamineCollectorMixin:OnAddonLoaded()
-    self.EnableCollection = Settings.GetSetting(Datamine.Setting.CollectCreatureData);
+    self:UpdateCollectionState();
 end
 
 function DatamineCollectorMixin:OnSettingChanged(setting, newValue)
-    if setting ~= Datamine.Setting.CollectCreatureData then
-        return;
-    end
-
-    self.EnableCollection = newValue;
+    self:UpdateCollectionState();
 end
 
 ------------
@@ -95,6 +98,10 @@ end
 
 function DatamineCollectorMixin:HandleBroadcastText(...)
     local text, name, language, name2 = ...;
+
+    if issecretvalue(text) then
+        return;
+    end
 
     -- replace player name and class with generic identifiers
     local function ReplaceNameAndClass(word)
@@ -142,48 +149,6 @@ function DatamineCollectorMixin:CHAT_MSG_MONSTER_WHISPER(...)
 end
 
 ------------
--- caching
-
-function DatamineCollectorMixin:COMBAT_LOG_EVENT_UNFILTERED()
-    local _, subEvent, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _ = CombatLogGetCurrentEventInfo();
-    if sourceGUID and sourceGUID:match("Creature") then
-        self:HandleCreatureFromCombatLog(sourceGUID, sourceName, sourceFlags, subEvent);
-    end
-
-    if destGUID and destGUID:match("Creature") then
-        self:HandleCreatureFromCombatLog(destGUID, destName, destFlags, subEvent, true);
-    end
-end
-
-local SUBEVENTS_TO_TRACK = {
-    RANGE = true,
-    SPELL = true,
-};
-
-function DatamineCollectorMixin:HandleCreatureFromCombatLog(guid, name, flags, subevent, skipLogSpell)
-    name = name ~= "" and name or nil;
-    local entry, ID = DATABASE:GetOrCreateCreatureEntryByGUID(guid, name);
-    if not entry or not ID then
-        return;
-    end
-
-    DATABASE:UpdateCreatureEntryWithUnitFlags(ID, flags);
-
-    -- dont wanna add the spell if the creature is the target
-    if skipLogSpell then
-        return;
-    end
-
-    local prefix = strsplit("_", subevent, 2);
-    if SUBEVENTS_TO_TRACK[prefix] then
-        local spellID = select(12, CombatLogGetCurrentEventInfo());
-        if type(spellID) ~= "number" then return end;
-        if entry.Spells[spellID] then return end;
-        DATABASE:AddCreatureSpell(ID, spellID);
-    end
-end
-
-------------
 -- more ways to capture creatures for the cache
 
 function DatamineCollectorMixin:HandleCreature(guid)
@@ -204,6 +169,10 @@ function DatamineCollectorMixin:HandleCreatureByUnitToken(unitToken)
         self:HandlePlayer(unitToken);
     else
         local guid = UnitGUID(unitToken);
+        if issecretvalue(guid) then
+            return;
+        end
+
         if guid and guid:match("Creature") then
             self:HandleCreature(guid);
         end
@@ -325,6 +294,112 @@ function DatamineCollectorMixin:ITEM_TEXT_CLOSED()
 
     DATABASE:InsertItemText(activeContext);
     activeContext = nil;
+end
+
+------------
+
+local function GetErrorTextForMerchantItem(index)
+    local tooltipInfo = C_TooltipInfo.GetMerchantItem(index);
+    for _, line in ipairs(tooltipInfo.lines) do
+        if line.type == Enum.TooltipDataLineType.None then
+            if RED_FONT_COLOR:IsRGBEqualTo(line.leftColor) then
+                return line.leftText;
+            end
+        end
+    end
+end
+
+function DatamineCollectorMixin:MERCHANT_SHOW()
+    C_Timer.After(0.15, function()
+        self:CollectMerchantData();
+    end);
+end
+
+function DatamineCollectorMixin:CollectMerchantData()
+    if not Datamine.Settings.ShouldCollectVendorData() then
+        return;
+    end
+
+    local vendorEntry = {
+        CreatureID = UnitCreatureID("npc"),
+        CreatureName = UnitName("npc"),
+        Items = {}
+    };
+
+    local numAvailableItems = GetMerchantNumItems();
+
+    for i=1, numAvailableItems do
+        local itemID = GetMerchantItemID(i);
+        local classID, subclassID = select(6, C_Item.GetItemInfoInstant(itemID));
+        local info = C_MerchantFrame.GetItemInfo(i);
+        if info.currencyID then
+            info.name, info.texture, info.numAvailable = CurrencyContainerUtil.GetCurrencyContainerInfo(info.currencyID, info.numAvailable, info.name, info.texture);
+        end
+
+        if info.price and not info.currencyID then
+            info.currencyID = -1;
+        end
+
+        local cost = {
+            CurrencyID = info.currencyID,
+            Amount = info.price,
+        };
+
+        local numRequiredItems = GetMerchantItemCostInfo(i);
+        if numRequiredItems > 0 then
+            cost.ItemCost = {};
+            for j=1, numRequiredItems do
+                local quantity, itemLink = select(2, GetMerchantItemCostItem(i, j));
+                if itemLink then
+                    local reqItemID = C_Item.GetItemInfoInstant(itemLink);
+                    tinsert(cost.ItemCost, {
+                        ItemID = reqItemID,
+                        Amount = quantity
+                    });
+                end
+            end
+        end
+
+        local item = {
+            ItemID = itemID,
+            ItemName = info.name,
+            ItemClass = classID,
+            ItemSubClass = subclassID,
+            Quantity = info.numAvailable,
+            Cost = cost
+        };
+
+        if not info.isPurchasable then
+            local errorText = GetErrorTextForMerchantItem(i);
+            assert(errorText ~= "Retrieving item information", "Attempting to log unloaded item. Please tell Ghost.");
+            item.LockReason = errorText;
+        end
+
+        tinsert(vendorEntry.Items, item);
+    end
+
+    if #vendorEntry.Items == 0 then
+        return;
+    end
+
+    local uiMapID = C_Map.GetBestMapForUnit("player");
+    local x, y, _, mapID = UnitPosition("player");
+
+    if x and y then
+        local newUiMapID, mapPos = C_Map.GetMapPosFromWorldPos(mapID, {x=x, y=y}, uiMapID);
+
+        vendorEntry.Position = {
+            UiMapID = newUiMapID,
+            X = mapPos.x * 100,
+            Y = mapPos.y * 100,
+        };
+    else
+        vendorEntry.Position = {
+            UiMapID = uiMapID,
+        };
+    end
+
+    DATABASE:InsertVendorEntry(vendorEntry);
 end
 
 ------------

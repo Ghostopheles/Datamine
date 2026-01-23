@@ -12,6 +12,8 @@ local CURRENT_TOOLTIP;
 
 local MODEL = CreateFrame("PlayerModel");
 
+local issecretvalue = issecretvalue or function(...) return false; end;
+
 ------------
 -- tooltip context management
 
@@ -150,6 +152,23 @@ function Tooltips.IsCurrentTooltipTraitEntryTooltip()
 
     local tooltipInfo = tooltip:GetPrimaryTooltipInfo();
     return tooltipInfo.getterName == "GetTraitEntry";
+end
+
+function Tooltips.GetCreatureIDFromGUID(guid)
+    local creatureID = select(6, strsplit("-", guid));
+    return tonumber(creatureID);
+end
+
+function Tooltips.GetUnitCreatureID(unitToken)
+    local creatureID;
+    if UnitCreatureID then
+        creatureID = UnitCreatureID(unitToken);
+    else
+        local guid = UnitGUID(unitToken);
+        creatureID = Tooltips.GetCreatureIDFromGUID(guid);
+    end
+
+    return creatureID;
 end
 
 ------
@@ -581,46 +600,39 @@ end
 function Tooltips.OnTooltipSetUnit()
     local tooltip = Tooltips.GetCurrentTooltip();
     local _, unit, guid = tooltip:GetUnit();
-    local unitType = strsplit("-", guid, 2);
-    local isNPC = unitType == "Creature";
+	if not unit or issecretvalue(unit) then
+		return;
+	end
 
     if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
         Tooltips.Append("UnitToken", unit);
     end
 
-    if Tooltips.ShouldShow("TooltipUnitShowType") then
+	local unitType = strsplit("-", guid, 2);
+    if unitType and Tooltips.ShouldShow("TooltipUnitShowType") then
         Tooltips.Append("Type", unitType);
     end
 
-    if isNPC then
-        local creatureID = Datamine.Database:GetCreatureIDFromGUID(guid);
-        if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
-            Tooltips.Append("CreatureID", creatureID);
-        end
+    local creatureID = Tooltips.GetUnitCreatureID(unit);
+    if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
+        Tooltips.Append("CreatureID", creatureID);
+    end
 
-        if D.DebugEnabled then
-            creatureID = tonumber(creatureID);
-            if creatureID then
-                local x, y, distance = ClosestUnitPosition(creatureID);
-                if x and y and distance then
-                    Tooltips.AddLine("Position");
-                    Tooltips.Append(TAB .. "- X:", format("%.2f", x));
-                    Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
-                    Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
-                end
+    if D.DebugEnabled then
+        if creatureID then
+            local x, y, distance = ClosestUnitPosition(creatureID);
+            if x and y and distance then
+                Tooltips.AddLine("Position");
+                Tooltips.Append(TAB .. "- X:", format("%.2f", x));
+                Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
+                Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
             end
         end
+    end
 
-        if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
-            local displayID = Tooltips.GetCreatureDisplayID(creatureID);
-            Tooltips.Append("DisplayID", displayID);
-        end
-
-        if Tooltips.ShouldShow("TooltipUnitShowNPCClass") then
-            local _, class = C_PlayerInfo.GetClass({guid=guid});
-            local className = LocalizedClassList()[class];
-            Tooltips.Append("Class", className);
-        end
+    if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
+        local displayID = Tooltips.GetCreatureDisplayID(creatureID);
+        Tooltips.Append("DisplayID", displayID);
     end
 end
 
@@ -907,20 +919,22 @@ function Tooltips.OnTooltipSetAreaPOI(areaPoiID)
     local uiMapID = WorldMapFrame:GetMapID();
     local poiInfo = C_AreaPoiInfo.GetAreaPOIInfo(uiMapID, areaPoiID);
 
-    if poiInfo.factionID and Tooltips.ShouldShow("TooltipAreaPOIShowFactionID") then
-        Tooltips.Append("FactionID", poiInfo.factionID);
-    end
+    if poiInfo then
+        if poiInfo.factionID and Tooltips.ShouldShow("TooltipAreaPOIShowFactionID") then
+            Tooltips.Append("FactionID", poiInfo.factionID);
+        end
 
-    if poiInfo.tooltipWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowWidgetSet") then
-        Tooltips.Append("TooltipWidgetSetID", poiInfo.tooltipWidgetSet);
-    end
+        if poiInfo.tooltipWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowWidgetSet") then
+            Tooltips.Append("TooltipWidgetSetID", poiInfo.tooltipWidgetSet);
+        end
 
-    if poiInfo.iconWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowIconWidgetSet") then
-        Tooltips.Append("IconWidgetSetID", poiInfo.iconWidgetSet);
-    end
+        if poiInfo.iconWidgetSet and Tooltips.ShouldShow("TooltipAreaPOIShowIconWidgetSet") then
+            Tooltips.Append("IconWidgetSetID", poiInfo.iconWidgetSet);
+        end
 
-    if poiInfo.atlasName and Tooltips.ShouldShow("TooltipAreaPOIShowAtlas") then
-        Tooltips.Append("AtlasName", poiInfo.atlasName);
+        if poiInfo.atlasName and Tooltips.ShouldShow("TooltipAreaPOIShowAtlas") then
+            Tooltips.Append("AtlasName", poiInfo.atlasName);
+        end
     end
 end
 
@@ -1124,6 +1138,63 @@ local function OnMapPinEntered(_, pin)
 end
 
 EventRegistry:RegisterCallback("MapLegendPinOnEnter", OnMapPinEntered);
+
+------------
+--- house decor catalog tooltips
+
+local HookedDecorFrames = {};
+
+local function OnHouseDecorCatalogItemEnter(entry)
+    if not entry or not entry.GetData then
+        return;
+    end
+
+    Tooltips.Begin(GameTooltip);
+
+    local data = entry:GetData().entryID;
+
+    if Tooltips.ShouldShow("TooltipHousingShowDecorRecordID") then
+        Tooltips.Append("RecordID", data.recordID);
+    end
+
+    if Tooltips.ShouldShow("TooltipHousingShowDecorEntryType") then
+        local entryTypeName = Datamine.Utils.GetEnumValueName(Enum.HousingCatalogEntryType, data.entryType);
+        Tooltips.Append("EntryType", format("%s (%s)", entryTypeName, data.entryType));
+    end
+
+    if Tooltips.ShouldShow("TooltipHousingShowDecorSubType") then
+        local entrySubtypeName = Datamine.Utils.GetEnumValueName(Enum.HousingCatalogEntrySubtype, data.entrySubtype);
+        Tooltips.Append("EntrySubtype", format("%s (%s)", entrySubtypeName, data.entrySubtype));
+    end
+
+    -- this line might be useless idk
+    -- Tooltips.Append("EntrySubtypeIdentifier", data.subtypeIdentifier);
+    GameTooltip:Show();
+
+    Tooltips.End();
+end
+
+local function SetupDecorEntryTooltip(_, entry)
+    if HookedDecorFrames[entry] then
+        return;
+    end
+
+    entry:HookScript("OnEnter", OnHouseDecorCatalogItemEnter);
+    HookedDecorFrames[entry] = true;
+end
+
+local function SetupHouseDecorCatalogTooltips(frame)
+    local iterateExisting = true;
+    ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, SetupDecorEntryTooltip, nil, iterateExisting);
+end
+
+EventUtil.ContinueOnAddOnLoaded("Blizzard_HouseEditor", function()
+    SetupHouseDecorCatalogTooltips(HouseEditorFrame.StoragePanel.OptionsContainer);
+end);
+
+EventUtil.ContinueOnAddOnLoaded("Blizzard_HousingDashboard", function()
+    SetupHouseDecorCatalogTooltips(HousingDashboardFrame.CatalogContent.OptionsContainer);
+end);
 
 ------------
 Datamine.Tooltips = Tooltips;

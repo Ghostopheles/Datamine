@@ -929,6 +929,7 @@ DatamineWorkspaceMixin.Modes = {
     MOVIE = 4,
     MAPS = 5,
     CREATURE = 6,
+    CURVES = 7
 };
 
 function DatamineWorkspaceMixin:OnLoad()
@@ -950,6 +951,9 @@ function DatamineWorkspaceMixin:OnLoad()
         [self.Modes.CREATURE] = {
             self.CreatureViewTab,
         },
+        [self.Modes.CURVES] = {
+            self.CurveViewerTab,
+        }
     };
 
     Registry:RegisterCallback(Events.WORKSPACE_MODE_CHANGED, self.OnModeChanged, self);
@@ -974,9 +978,15 @@ function DatamineWorkspaceMixin:OnLoad()
         toolbar:AddButton(UI_MAIN.GetIconPath("map-marker"), cb, tooltipText);
     end
 
+    --do disabling for initial midnight release
+    --    local tooltipText = L.WORKSPACE_MODE_STORAGE;
+    --    local cb = function() self:SetMode(self.Modes.CREATURE); end;
+    --    toolbar:AddButton(UI_MAIN.GetIconPath("database"), cb, tooltipText);
+    --end
+
     do
-        local tooltipText = L.WORKSPACE_MODE_STORAGE;
-        local cb = function() self:SetMode(self.Modes.CREATURE); end;
+        local tooltipText = L.WORKSPACE_MODE_CURVES;
+        local cb = function() self:SetMode(self.Modes.CURVES); end;
         toolbar:AddButton(UI_MAIN.GetIconPath("database"), cb, tooltipText);
     end
 end

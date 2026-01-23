@@ -1,4 +1,4 @@
-## Interface: 110205
+## Interface: 110207, 120000
 ## Title: |cfffc037bDatamine_Minimaps|r
 ## Notes: Map data for the Datamine addon.
 ## Author: Ghostopheles
@@ -182,6 +182,7 @@ Generated/Map_2688.lua
 Generated/Map_2689.lua
 Generated/Map_2690.lua
 Generated/Map_2692.lua
+Generated/Map_2694.lua
 Generated/Map_2695.lua
 Generated/Map_2698.lua
 Generated/Map_2699.lua
@@ -192,25 +193,36 @@ Generated/Map_2710.lua
 Generated/Map_2713.lua
 Generated/Map_2716.lua
 Generated/Map_2731.lua
+Generated/Map_2735.lua
+Generated/Map_2736.lua
 Generated/Map_2738.lua
 Generated/Map_2739.lua
 Generated/Map_2759.lua
 Generated/Map_2767.lua
 Generated/Map_2768.lua
 Generated/Map_2769.lua
+Generated/Map_2771.lua
 Generated/Map_2773.lua
 Generated/Map_2776.lua
 Generated/Map_2782.lua
+Generated/Map_2783.lua
 Generated/Map_2785.lua
 Generated/Map_2786.lua
 Generated/Map_2792.lua
+Generated/Map_2794.lua
 Generated/Map_2796.lua
+Generated/Map_2799.lua
 Generated/Map_2801.lua
 Generated/Map_2803.lua
+Generated/Map_2805.lua
 Generated/Map_2810.lua
+Generated/Map_2811.lua
+Generated/Map_2813.lua
 Generated/Map_2815.lua
 Generated/Map_2818.lua
 Generated/Map_2819.lua
+Generated/Map_2820.lua
+Generated/Map_2825.lua
 Generated/Map_2826.lua
 Generated/Map_2827.lua
 Generated/Map_2828.lua
@@ -222,8 +234,34 @@ Generated/Map_2837.lua
 Generated/Map_2847.lua
 Generated/Map_2849.lua
 Generated/Map_2851.lua
+Generated/Map_2857.lua
+Generated/Map_2858.lua
+Generated/Map_2859.lua
+Generated/Map_2874.lua
+Generated/Map_2907.lua
+Generated/Map_2912.lua
+Generated/Map_2913.lua
+Generated/Map_2915.lua
+Generated/Map_2923.lua
+Generated/Map_2927.lua
+Generated/Map_2928.lua
+Generated/Map_2933.lua
+Generated/Map_2939.lua
+Generated/Map_2950.lua
 Generated/Map_2951.lua
+Generated/Map_2952.lua
+Generated/Map_2953.lua
 Generated/Map_2954.lua
+Generated/Map_2961.lua
+Generated/Map_2962.lua
+Generated/Map_2963.lua
+Generated/Map_2964.lua
+Generated/Map_2965.lua
+Generated/Map_2966.lua
+Generated/Map_2972.lua
+Generated/Map_2979.lua
+Generated/Map_2987.lua
+Generated/Map_3003.lua
 Generated/Map_7_DungeonExteriorNeltharionsLair.lua
 Generated/Map_8BoostExperienceAlliance.lua
 Generated/Map_8BoostExperienceHorde.lua

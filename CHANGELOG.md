@@ -1,18 +1,15 @@
-# Datamine 2.4.6
+# Datamine 2.4.7
 
 #### Added
 
-##### Model Viewer
-- Added an entry box that allows setting a custom RaceID for the player model in the model viewer
-- Added a toggle for the UseTransmogSkin option on the model viewer
+##### Housing Tooltips
+- Datamine can now display relevant information on the tooltips for decor entries in the housing catalogs
 
-##### Tooltips
-- Added tooltip support for Area POI map pins
-
-##### Console
-- Added an option to change the font used by the in-game developer console
+##### Data Collection
+- Datamine can now log vendor inventories and locations when enabled in the settings
 
 #### Updated
-- Updated the `GetBuildInfo` console command
-- Updated the color picker settings to use a color swatch instead of a generic red button
-- Updated maps for 11.2.5.62785
+- Updated maps for 12.0.0.63724
+
+#### Fixed
+- Fixed various issues with tooltips and secret values

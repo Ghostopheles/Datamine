@@ -4,7 +4,7 @@ import struct
 
 from dataclasses import dataclass
 
-from dm_tools import logger, FileReader
+from dm_tools import logger, FileReader, FileDownloader
 
 
 DEFAULT_MAP_SIZE_X = 64
@@ -87,8 +87,14 @@ class WDTReader(FileReader):
         obj = self.read_by_fdid(fdid)
 
         if not obj:
-            logger.warning(f"File {fdid} not found or is empty")
-            return
+            logger.warning(f"File {fdid} not found or is empty, attempting download")
+            file_path = FileDownloader.download(fdid)
+            if file_path is not None:
+                with open(file_path, "rb") as f:
+                    obj = f.read()
+            else:
+                logger.warning(f"File {fdid} not found")
+                return
 
         start = obj.find(WDT_FILE_INFO_MARKER) + WDT_FILE_INFO_MARKER_SIZE
         entry_size = struct.calcsize(self.FORMAT)

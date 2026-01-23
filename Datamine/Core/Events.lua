@@ -25,7 +25,10 @@ Datamine.Events = {
     MAPVIEW_MAP_DATA_LOADED = "MapViewMapDataLoaded",
     MAPVIEW_RIGHT_CLICK = "MapViewRightClick",
     CREATUREVIEW_CREATURE_LOADED = "CreatureViewCreatureLoaded",
-    CONFIG_LOADED = "ConfigLoaded"
+    CONFIG_LOADED = "ConfigLoaded",
+    CURVEVIEWER_PLOT_CURVE = "CurveViewerPlotCurve",
+    CURVEVIEWER_CLEAR_CURVE = "CurveViewerClearCurve",
+    CURVEVIEWER_APPEARANCE_UPDATED = "CurveViewerAppearanceUpdated",
 };
 
 local function GenerateCallbackEvents()

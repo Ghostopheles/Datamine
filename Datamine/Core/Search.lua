@@ -247,6 +247,10 @@ function DatamineSearchableDataProviderMixin:GetSize()
     return self:ShouldUseResults() and #self.Results or #self.Source;
 end
 
+function DatamineSearchableDataProviderMixin:IsVirtual()
+    return true;
+end
+
 
 ------------
 

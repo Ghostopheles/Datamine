@@ -16,6 +16,9 @@ L["CONFIG_DEBUGTARGETINFO_TOOLTIP"] = "Toggles the display of debug tooltips in 
 L["CONFIG_CREATUREDATA_NAME"] = "Collect creature data";
 L["CONFIG_CREATUREDATA_TOOLTIP"] = "Collects and stores information about NPCs you encounter in the world. May impact performance slightly.";
 
+L["CONFIG_VENDORDATA_NAME"] = "Collect vendor data";
+L["CONFIG_VENDORDATA_TOOLTIP"] = "Collects and stores the available inventory for mechant NPCs. Will generate a lot of data.";
+
 L["CONFIG_AUTO_LOAD_MAP_DATA_NAME"] = "Load map data at startup";
 L["CONFIG_AUTO_LOAD_MAP_DATA_TOOLTIP"] = "Automatically loads map viewer data at startup. May increase loading times on first login or on reload.";
 
@@ -72,6 +75,7 @@ L["CONFIG_HEADER_GOBJECT_TOOLTIPS"] = "Game Object Tooltips";
 L["CONFIG_HEADER_QUEST_TOOLTIPS"] = "Quest Tooltips";
 L["CONFIG_HEADER_TRAIT_TOOLTIPS"] = "Trait Tooltips";
 L["CONFIG_HEADER_AREAPOI_TOOLTIPS"] = "Area POI Tooltips";
+L["CONFIG_HEADER_HOUSING_TOOLTIPS"] = "Housing Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -331,6 +335,15 @@ L["CONFIG_TOOLTIP_SHOW_ICON_WIDGETSET_ID_TOOLTIP"] = "Show the icon widget set I
 L["CONFIG_TOOLTIP_SHOW_ATLAS_NAME_NAME"] = "Show Atlas Name";
 L["CONFIG_TOOLTIP_SHOW_ATLAS_NAME_TOOLTIP"] = "Show the atlas name for the currently shown map pin";
 
+-- housing tooltips
+
+L["CONFIG_TOOLTIP_SHOW_DECOR_RECORD_ID_NAME"] = "Show Decor Record ID";
+L["CONFIG_TOOLTIP_SHOW_DECOR_RECORD_ID_TOOLTIP"] = "Show the Decor Record ID for the currently highlighted decor entry";
+L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_TYPE_NAME"] = "Show Decor Entry Type";
+L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_TYPE_TOOLTIP"] = "Show the Entry Type of the currently highlighted decor entry";
+L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_SUBTYPE_NAME"] = "Show Decor Entry Subtype";
+L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_SUBTYPE_TOOLTIP"] = "Show the Entry Subtype for the currently highlighted decor entry";
+
 -- end tooltips
 
 -- model viewer settings
@@ -364,6 +377,7 @@ L["WORKSPACE_MODE_MOVIE"] = "Theater";
 L["WORKSPACE_MODE_MAPS"] = "Maps";
 L["WORKSPACE_MODE_STORAGE"] = "Creatures";
 L["WORKSPACE_MODE_CREATURES"] = "Creatures";
+L["WORKSPACE_MODE_CURVES"] = "Curves";
 
 L["MODEL_CONTROLS_ALT_FORM_BUTTON_TOOLTIP_TEXT"] = "Toggle Alternate Form";
 L["MODEL_CONTROLS_SHEATHE_BUTTON_TOOLTIP_TEXT"] = "Toggle Weapon Sheathe";

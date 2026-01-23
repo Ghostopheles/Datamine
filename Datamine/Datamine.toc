@@ -1,9 +1,10 @@
-## Interface: 110205
+## Interface: 110207, 120000
 ## Title: |cfffc037bDatamine|r
 ## Notes: A tool for increasing data accessibility.
 ## Author: Ghostopheles
 ## Version: @project-version@
 ## SavedVariables: DatamineConfig
+## LoadSavedVariablesFirst: 1
 ## AllowLoad: Game
 ## AllowLoadGameType: mainline
 
@@ -108,6 +109,8 @@ Modules/Unified/Templates/CreatureView/CreatureView.lua
 Modules/Unified/Templates/CreatureView/CreatureView.xml
 Modules/Unified/Templates/ItemView/ItemViewer.lua
 Modules/Unified/Templates/ItemView/ItemViewer.xml
+Modules/Unified/Templates/CurveViewer/CurveViewer.lua
+Modules/Unified/Templates/CurveViewer/CurveViewer.xml
 
 Modules/Unified/Unified.xml
 
