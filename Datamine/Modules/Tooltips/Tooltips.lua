@@ -600,40 +600,48 @@ end
 function Tooltips.OnTooltipSetUnit()
     local tooltip = Tooltips.GetCurrentTooltip();
     local _, unit, guid = tooltip:GetUnit();
-	if not unit or issecretvalue(unit) then
+	if not unit then
 		return;
+	end
+
+	if issecretvalue(unit) then
+		unit = "mouseover";
 	end
 
     if Tooltips.ShouldShow("TooltipUnitShowUnitToken") then
         Tooltips.Append("UnitToken", unit);
     end
 
-	local unitType = strsplit("-", guid, 2);
-    if unitType and Tooltips.ShouldShow("TooltipUnitShowType") then
-        Tooltips.Append("Type", unitType);
-    end
+	if not issecretvalue(guid) then
+		local unitType = strsplit("-", guid, 2);
+		if unitType and Tooltips.ShouldShow("TooltipUnitShowType") then
+			Tooltips.Append("Type", unitType);
+		end
+	end
 
     local creatureID = Tooltips.GetUnitCreatureID(unit);
     if Tooltips.ShouldShow("TooltipUnitShowCreatureID") then
         Tooltips.Append("CreatureID", creatureID);
     end
 
-    if D.DebugEnabled then
-        if creatureID then
-            local x, y, distance = ClosestUnitPosition(creatureID);
-            if x and y and distance then
-                Tooltips.AddLine("Position");
-                Tooltips.Append(TAB .. "- X:", format("%.2f", x));
-                Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
-                Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
-            end
-        end
-    end
+	if not issecretvalue(creatureID) then
+		if D.DebugEnabled then
+			if creatureID then
+				local x, y, distance = ClosestUnitPosition(creatureID);
+				if x and y and distance then
+					Tooltips.AddLine("Position");
+					Tooltips.Append(TAB .. "- X:", format("%.2f", x));
+					Tooltips.Append(TAB .. "- Y:", format("%.2f", y));
+					Tooltips.Append(TAB .. "- Distance:", format("%.2f", distance));
+				end
+			end
+		end
 
-    if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
-        local displayID = Tooltips.GetCreatureDisplayID(creatureID);
-        Tooltips.Append("DisplayID", displayID);
-    end
+		if Tooltips.ShouldShow("TooltipUnitShowDisplayID") then
+			local displayID = Tooltips.GetCreatureDisplayID(creatureID);
+			Tooltips.Append("DisplayID", displayID);
+		end
+	end
 end
 
 function Tooltips.OnTooltipSetUnitAura()
