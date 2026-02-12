@@ -23,6 +23,7 @@ local ItemInfoKeys = {
     "ExpacID",
     "ItemSetID",
     "IsCraftingReagent",
+	"ItemDescription",
 
     -- Some extra custom values
 
