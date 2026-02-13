@@ -683,6 +683,42 @@ local housingSettings = {
 
 RegisterSettingsTable(housingSettings, housing);
 
+-- OUTFIT TOOLTIPS
+
+local outfits = CreateSubcategory(L.CONFIG_HEADER_OUTFITS_TOOLTIPS);
+
+local outfitsSettings = {
+    {
+        Name = "TooltipOutfitShowID",
+        LocKey = "OUTFIT_ID",
+    },
+	{
+        Name = "TooltipOutfitShowIconID",
+        LocKey = "ICON_ID",
+    },
+	{
+        Name = "TooltipOutfitShowSituations",
+        LocKey = "SITUATIONS",
+    },
+	{
+        Name = "TooltipOutfitShowIsDisabled",
+        LocKey = "IS_DISABLED",
+		Default = false,
+    },
+	{
+        Name = "TooltipOutfitShowIsEventOutfit",
+        LocKey = "IS_EVENT",
+		Default = false,
+    },
+	{
+        Name = "TooltipOutfitShowIsLocked",
+        LocKey = "IS_LOCKED",
+		Default = false,
+    },
+};
+
+RegisterSettingsTable(outfitsSettings, outfits);
+
 ------------
 
 local childCategories = {

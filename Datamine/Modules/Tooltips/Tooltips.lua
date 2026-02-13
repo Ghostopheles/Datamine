@@ -969,6 +969,40 @@ function Tooltips.OnTooltipSetAreaPOI(areaPoiID)
     end
 end
 
+function Tooltips.OnTooltipSetOutfit()
+	local tooltip = Tooltips.GetCurrentTooltip();
+	local outfitID = tooltip:GetTooltipData().id;
+
+	if Tooltips.ShouldShow("TooltipOutfitShowID") then
+		Tooltips.Append("OutfitID", outfitID);
+	end
+
+	local outfitInfo = C_TransmogOutfitInfo.GetOutfitInfo(outfitID);
+	if Tooltips.ShouldShow("TooltipOutfitShowIconID") then
+		Tooltips.Append("IconID", outfitInfo.icon);
+	end
+
+	if #outfitInfo.situationCategories > 0 and Tooltips.ShouldShow("TooltipOutfitShowIconID") then
+		Tooltips.AddLine("Situation Categories");
+		for i, v in ipairs(outfitInfo.situationCategories) do
+			Tooltips.Append(format("%s- [%d]", TAB, i), v);
+		end
+	end
+
+	if Tooltips.ShouldShow("TooltipOutfitShowIsDisabled") then
+		Tooltips.Append("IsDisabled", outfitInfo.isDisabled);
+	end
+
+	if Tooltips.ShouldShow("TooltipOutfitShowIsEventOutfit") then
+		Tooltips.Append("IsEventOutfit", outfitInfo.isEventOutfit);
+	end
+
+	local isLocked = C_TransmogOutfitInfo.IsLockedOutfit(outfitID);
+	if Tooltips.ShouldShow("TooltipOutfitShowIsLocked") then
+		Tooltips.Append("IsLocked", isLocked);
+	end
+end
+
 ------------
 
 function Tooltips.Wrap(func, tooltip)
@@ -1039,6 +1073,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, _W(To
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, _W(Tooltips.OnTooltipSetCurrency));
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Object, _W(Tooltips.OnTooltipSetObject));
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Quest, _W(Tooltips.OnTooltipSetQuest));
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Outfit, _W(Tooltips.OnTooltipSetOutfit));
 
 -- the joys of tooltips that sidestep the above system
 local callbackNames = {

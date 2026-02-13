@@ -2,14 +2,9 @@
 
 #### Added
 
-##### Housing Tooltips
-- Datamine can now display relevant information on the tooltips for decor entries in the housing catalogs
-
-##### Data Collection
-- Datamine can now log vendor inventories and locations when enabled in the settings
-
-#### Updated
-- Updated maps for 12.0.0.63724
+##### Outfit Tooltips
+- Datamine can now display relevant information on the tooltips for outfit action buttons
 
 #### Fixed
 - Fixed various issues with tooltips and secret values
+- Fixed an issue with item lookups

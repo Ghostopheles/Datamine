@@ -76,6 +76,7 @@ L["CONFIG_HEADER_QUEST_TOOLTIPS"] = "Quest Tooltips";
 L["CONFIG_HEADER_TRAIT_TOOLTIPS"] = "Trait Tooltips";
 L["CONFIG_HEADER_AREAPOI_TOOLTIPS"] = "Area POI Tooltips";
 L["CONFIG_HEADER_HOUSING_TOOLTIPS"] = "Housing Tooltips";
+L["CONFIG_HEADER_OUTFITS_TOOLTIPS"] = "Outfit Tooltips";
 
 L["CONFIG_TOOLTIP_KEY_COLOR_NAME"] = "Data Key Color";
 L["CONFIG_TOOLTIP_KEY_COLOR_TOOLTIP"] = "Color of the data keys on tooltips";
@@ -343,6 +344,21 @@ L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_TYPE_NAME"] = "Show Decor Entry Type";
 L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_TYPE_TOOLTIP"] = "Show the Entry Type of the currently highlighted decor entry";
 L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_SUBTYPE_NAME"] = "Show Decor Entry Subtype";
 L["CONFIG_TOOLTIP_SHOW_DECOR_ENTRY_SUBTYPE_TOOLTIP"] = "Show the Entry Subtype for the currently highlighted decor entry";
+
+-- outfit tooltips
+
+L["CONFIG_TOOLTIP_SHOW_OUTFIT_ID_NAME"] = "Show Outfit ID";
+L["CONFIG_TOOLTIP_SHOW_OUTFIT_ID_TOOLTIP"] = "Show Outfit ID for the currently focused outfit entry";
+L["CONFIG_TOOLTIP_SHOW_ICON_ID_NAME"] = "Show Outfit Icon ID";
+L["CONFIG_TOOLTIP_SHOW_ICON_ID_TOOLTIP"] = "Show Outfit Icon ID for the currently focused outfit entry";
+L["CONFIG_TOOLTIP_SHOW_SITUATIONS_NAME"] = "Show Situations";
+L["CONFIG_TOOLTIP_SHOW_SITUATIONS_TOOLTIP"] = "Show the Situations applied to the outfit";
+L["CONFIG_TOOLTIP_SHOW_IS_DISABLED_NAME"] = "Show is Disabled";
+L["CONFIG_TOOLTIP_SHOW_IS_DISABLED_TOOLTIP"] = "Show whether the focused outfit is disabled";
+L["CONFIG_TOOLTIP_SHOW_IS_EVENT_NAME"] = "Show is Event Outfit";
+L["CONFIG_TOOLTIP_SHOW_IS_EVENT_TOOLTIP"] = "Show if the outfit is an event outfit";
+L["CONFIG_TOOLTIP_SHOW_IS_LOCKED_NAME"] = "Show is Locked";
+L["CONFIG_TOOLTIP_SHOW_IS_LOCKED_TOOLTIP"] = "Show if the outfit is locked";
 
 -- end tooltips
 
