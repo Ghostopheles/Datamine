@@ -341,9 +341,9 @@
             <Frame parentKey="CreatureViewTab" inherits="DatamineCreatureViewTemplate"
                 setAllPoints="true"
                 hidden="true" />
-            <Frame parentKey="CurveViewerTab" inherits="DatamineCurveViewerTabTemplate"
+            <!--<Frame parentKey="CurveViewerTab" inherits="DatamineCurveViewerTabTemplate"
                 setAllPoints="true"
-                hidden="true" />
+                hidden="true" />-->
         </Frames>
         <Layers>
             <Layer level="BACKGROUND">
