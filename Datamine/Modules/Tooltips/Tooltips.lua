@@ -717,7 +717,7 @@ function Tooltips.OnTooltipSetUnitAura()
         Tooltips.Append("AuraInstanceID", aura.auraInstanceID);
     end
 
-    if (aura.applications > 0) and Tooltips.ShouldShow("TooltipAuraShowStacks") then
+    if canaccessvalue(aura.applications) and (aura.applications > 0) and Tooltips.ShouldShow("TooltipAuraShowStacks") then
         Tooltips.Append("Stacks", aura.applications);
     end
 
@@ -729,7 +729,7 @@ function Tooltips.OnTooltipSetUnitAura()
         Tooltips.Append("FromPlayerOrPet", aura.isFromPlayerOrPlayerPet);
     end
 
-    if aura.points and #aura.points > 0 and Tooltips.ShouldShow("TooltipAuraShowPoints") then
+    if aura.points and canaccesstable(aura.points) and #aura.points > 0 and Tooltips.ShouldShow("TooltipAuraShowPoints") then
         Tooltips.AddLine("Points");
         for k, v in pairs(aura.points) do
             Tooltips.Append(format(TAB .. "- [%d]", k), v);
