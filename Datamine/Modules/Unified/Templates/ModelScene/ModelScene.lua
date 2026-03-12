@@ -1137,6 +1137,22 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Template = template,
         RequestedExtent = extent,
     });
+
+	self.AdvancedTab:Insert({
+        Text = L.MODEL_CONTROLS_ADVANCED_VIEW_MOUNT,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_VIEW_MOUNT_HELP,
+        Callback = function(mountID) return self:GetScene():ViewMount(mountID) end,
+        Template = template,
+        RequestedExtent = extent,
+    });
+
+	self.AdvancedTab:Insert({
+        Text = L.MODEL_CONTROLS_ADVANCED_VIEW_PET,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_VIEW_PET_HELP,
+        Callback = function(displayID) return self:GetScene():ViewPet(displayID) end,
+        Template = template,
+        RequestedExtent = extent,
+    });
 end
 
 function DatamineModelControlsTreeMixin:SetDoUpdate(doUpdate)
