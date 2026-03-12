@@ -3,6 +3,7 @@
 #### Added
 - Added housing decor previewing in the model viewer
 - Trying on items or previewing decor will now automatically populate the explorer panel with the relevant item info
+- Updated included maps for build 12.0.5.66330
 
 #### Fixed
 - Fixed an issue with trying on profession tools by item ID
