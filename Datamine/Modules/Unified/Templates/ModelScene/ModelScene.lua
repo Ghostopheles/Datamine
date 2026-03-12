@@ -645,7 +645,18 @@ end
 
 function DatamineModelSceneMixin:TryOnByItemID(itemID)
     local _, itemModifiedAppearanceID = C_TransmogCollection.GetItemInfo(itemID);
-    return self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceID);
+	if itemModifiedAppearanceID then
+		local invSlot = C_Item.GetItemInventoryTypeByID(itemID);
+		return self:TryOnByItemModifiedAppearanceID(itemModifiedAppearanceID, invSlot);
+	else
+		local _, itemLink = C_Item.GetItemInfo(itemID);
+		if itemLink then
+			local actor = self:GetActiveActor();
+			if actor:TryOn(itemLink) == Enum.ItemTryOnReason.Success then
+				PopulateExplorerWithItemID(itemID);
+			end
+		end
+	end
 end
 
 function DatamineModelSceneMixin:TryOnByTransmogSetID(transmogSetID)
