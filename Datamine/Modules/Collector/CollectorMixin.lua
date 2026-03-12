@@ -1,3 +1,5 @@
+local addonName = ...;
+
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
@@ -60,7 +62,7 @@ function DatamineCollectorMixin:OnLoad()
     end
 
     Registry:RegisterCallback(Events.SETTING_CHANGED, self.OnSettingChanged, self);
-    EventUtil.ContinueOnAddOnLoaded("Datamine", function() self:OnAddonLoaded(); end);
+    EventUtil.ContinueOnAddOnLoaded(addonName, function() self:OnAddonLoaded(); end);
 end
 
 function DatamineCollectorMixin:OnEvent(event, ...)
