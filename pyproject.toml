@@ -1,0 +1,14 @@
+[project]
+name = "datamine"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "httpx[http2]>=0.28.1",
+    "numpy>=2.4.3",
+    "pycasclib",
+]
+
+[tool.uv.sources]
+pycasclib = { git = "https://github.com/Ghostopheles/pycasc", rev = "master" }

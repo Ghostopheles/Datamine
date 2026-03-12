@@ -1,16 +1,18 @@
 import os
 import concurrent.futures
 
+from pathlib import Path
+
 from dm_tools import WDTReader, WDT, MAP_DB2, Map
 
 MAX_THREADS = os.cpu_count()
 
-parent_directory = os.path.dirname(os.getcwd())
-ADDON_DIR = os.path.join(parent_directory, "Datamine_Maps")
-OUTPUT_DIR = os.path.join(ADDON_DIR, "Generated")
+parent_directory = Path.cwd()
+ADDON_DIR = parent_directory / "Datamine_Maps"
+OUTPUT_DIR = ADDON_DIR / "Generated"
 
 WOW_DIR = "F:/Games/World of Warcraft"
-FLAVOR = "wow_beta"
+FLAVOR = "wowt"
 
 TOC_FILE_LIST_LINE_NO = 19
 
