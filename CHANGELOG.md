@@ -3,7 +3,7 @@
 #### Added
 - Added entry boxes to preview mounts and pets in the model viewer
 
-#### Fixed
+#### Fixed (thanks Rae for finding all of these)
 - Fixed many, many issues with the outfit display
 - Fixed more issues with the transmog set panel
 	- As a side note, for some sets this panel may be empty - but blame Blizzard, not me
