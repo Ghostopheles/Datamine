@@ -1192,15 +1192,14 @@ end
 
 function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
     local node = self:GetElementData();
-    local categoryID, visualID, canEnchant, icon, isCollected, itemLink, _, _, itemSubTypeIndex = C_TransmogCollection.GetAppearanceSourceInfo(self.data.AppearanceID);
+	local info = C_TransmogCollection.GetAppearanceSourceInfo(self.data.AppearanceID);
     local transmogInfo = {
         AppearanceID = self.data.AppearanceID;
-        CategoryID = categoryID,
-        VisualID = visualID,
-        CanEnchant = tostring(canEnchant),
-        Icon = icon,
-        IsCollected = tostring(isCollected),
-        ItemSubType = Datamine.Utils.GetEnumValueName(Enum.ItemArmorSubclass, (itemSubTypeIndex)) .. " (" .. itemSubTypeIndex .. ")",
+        CategoryID = info.category,
+        CanHaveIllusion = tostring(info.canHaveIllusion),
+        Icon = info.icon,
+        IsCollected = tostring(info.isCollected),
+        ItemSubType = Datamine.Utils.GetEnumValueName(Enum.ItemArmorSubclass, (info.itemSubclass)) .. " (" .. info.itemSubclass .. ")",
     };
 
     for k, v in pairs(transmogInfo) do
@@ -1216,9 +1215,8 @@ function DatamineModelControlsOutfitPanelEntryMixin:SetupPopulatedSlot()
         end
     end
 
-    self.Text:SetText(itemLink);
-
-    self.Icon:SetItem(itemLink);
+    self.Text:SetText(info.itemLink);
+    self.Icon:SetItem(info.itemLink);
     self.Icon:SetScript("OnClick", function() self:GetElementData():ToggleCollapsed() end);
 
     self:SetScript("OnHyperlinkClick", self.OnHyperlinkClick);
