@@ -65,7 +65,7 @@
                 PlaySound(SOUNDKIT.TUTORIAL_POPUP);
 
                 if result ~= nil then
-                    self.clearButton.texture:Hide();
+                    self.clearButton.Icon:Hide();
 
                     if result == true then
                         self.CheckAnim:Stop();
@@ -75,7 +75,7 @@
                         self.FailAnim:Play();
                     end
 
-                    C_Timer.After(0.6, function() self.clearButton.texture:Show(); end);
+                    C_Timer.After(0.6, function() self.clearButton.Icon:Show(); end);
                 end
 			</OnEnterPressed>
         </Scripts>
