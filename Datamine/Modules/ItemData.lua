@@ -147,6 +147,7 @@ function Datamine.Item:GetFormattedItemData(itemID)
 
     local itemSpellName, itemSpellID = GetItemSpell(itemID);
 
+	-- these two may be nil
     tinsert(itemData, itemSpellName);
     tinsert(itemData, itemSpellID);
 

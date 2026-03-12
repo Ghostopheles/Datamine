@@ -133,10 +133,6 @@ function Datamine.Utils.DumpTableWithDisplayKeys(module, tableTitle, displayKeys
         return;
     end
 
-    if displayKeys then
-        assert(#displayKeys == #message, "DisplayKeys and Table length mismatch.");
-    end
-
     local prefix = GenerateDumpPrefix(module, tableTitle);
     print(prefix);
 
