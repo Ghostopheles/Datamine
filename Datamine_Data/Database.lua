@@ -413,7 +413,11 @@ end
 ---@param tooltipData TooltipData
 function Database:UpdateCreatureEntryWithTooltipData(tooltipData)
     local creatureID = self:GetCreatureIDFromGUID(tooltipData.guid);
-    assert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
+    DebugAssert(creatureID, "Unable to extract ID from TOOLTIP_DATA_UPDATE guid");
+
+	if not creatureID then
+		return;
+	end
 
     local entry = self:GetCreatureEntryByID(creatureID);
     if not entry then
