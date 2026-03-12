@@ -316,6 +316,12 @@ end
 function Datamine.Settings.ShouldCollectAnyData()
     local collectCreatureData = Datamine.Settings.GetSetting(Datamine.Setting.CollectCreatureData);
     local collectVendorData = Datamine.Settings.GetSetting(Datamine.Setting.CollectVendorData);
+
+	local pvpActive = C_RestrictedActions.IsAddOnRestrictionActive(Enum.AddOnRestrictionType.PvPMatch);
+	if pvpActive then
+		return false;
+	end
+
     if collectCreatureData or collectVendorData then
         return true;
     end
