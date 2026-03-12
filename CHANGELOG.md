@@ -1,10 +1,12 @@
-# Datamine 2.4.9
+# Datamine 2.5.0
 
 #### Added
-- Added entry boxes to preview mounts and pets in the model viewer
+- Added housing decor previewing in the model viewer
+- Trying on items or previewing decor will now automatically populate the explorer panel with the relevant item info
 
-#### Fixed (thanks Rae for finding all of these)
-- Fixed many, many issues with the outfit display
-- Fixed more issues with the transmog set panel
-	- As a side note, for some sets this panel may be empty - but blame Blizzard, not me
-- Fixed an issue with the `/dm item` command throwing unhelpful errors
+#### Fixed
+- Fixed an issue with trying on profession tools by item ID
+- Fixed (maybe) issues with the collector module throwing errors during PvP matches
+- Fixed an error related to creature IDs and `TOOLTIP_DATA_UPDATE` mumbo jumbo
+- Fixed a rare error caused by pressing enter on certain edit boxes
+- Fixed an index error related to decor catalog tooltips
