@@ -682,6 +682,23 @@ function DatamineModelSceneMixin:PlayAnimKit(akid)
     return actor:PlayAnimationKit(akid);
 end
 
+function DatamineModelSceneMixin:ViewDecor(decorID)
+	local entryType = Enum.HousingCatalogEntryType.Decor;
+	local getOwnedInfo = false;
+	local catalogEntry = C_HousingCatalog.GetCatalogEntryInfoByRecordID(entryType, decorID, getOwnedInfo);
+
+	if not catalogEntry then
+		Datamine.Utils.Print("ModelView", "Unable to fetch decor info for record " .. tostring(decorID));
+		return;
+	end
+
+	local fdid = catalogEntry.asset;
+	local itemID = catalogEntry.itemID;
+
+	local actor = self:GetActiveActor();
+	return actor:SetModelByFileID(fdid);
+end
+
 -------------
 
 DatamineModelControlsEditBoxMixin = {};
@@ -1150,6 +1167,14 @@ function DatamineModelControlsTreeMixin:SetupAdvancedPanel()
         Text = L.MODEL_CONTROLS_ADVANCED_VIEW_PET,
         Instructions = L.MODEL_CONTROLS_ADVANCED_VIEW_PET_HELP,
         Callback = function(displayID) return self:GetScene():ViewPet(displayID) end,
+        Template = template,
+        RequestedExtent = extent,
+    });
+
+	self.AdvancedTab:Insert({
+        Text = L.MODEL_CONTROLS_ADVANCED_VIEW_DECOR,
+        Instructions = L.MODEL_CONTROLS_ADVANCED_VIEW_DECOR_HELP,
+        Callback = function(decorID) return self:GetScene():ViewDecor(decorID) end,
         Template = template,
         RequestedExtent = extent,
     });
