@@ -198,10 +198,14 @@ function Datamine.Transmog:AppearanceCanBeHidden(itemModifiedAppearanceID)
 end
 
 ---@param transmogSetID number
----@return table transmogSet
+---@return table? transmogSet
 function Datamine.Transmog:GetAppearancesBySlotForSet(transmogSetID)
     local transmogSet = {};
     local setInfo = C_TransmogSets.GetSetInfo(transmogSetID);
+
+	if not setInfo then
+		return;
+	end
 
     transmogSet.ID = setInfo.setID;
     transmogSet.Name = setInfo.name;

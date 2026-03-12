@@ -1017,6 +1017,10 @@ function DatamineModelControlsTreeMixin:PopulateTransmogSetPanel(transmogSetID)
     local itemTransmogInfoList = actor:GetItemTransmogInfoList();
     local set = Transmog:GetAppearancesBySlotForSet(transmogSetID);
 
+	if not set then
+		return;
+	end
+
     local itemsAdded = false;
     local hasSlotWithMoreThanTwoItems = false;
 
