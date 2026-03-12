@@ -113,7 +113,6 @@ Generated/Map_2481.lua
 Generated/Map_2482.lua
 Generated/Map_2504.lua
 Generated/Map_2509.lua
-Generated/Map_2511.lua
 Generated/Map_2512.lua
 Generated/Map_2515.lua
 Generated/Map_2516.lua
@@ -262,6 +261,13 @@ Generated/Map_2972.lua
 Generated/Map_2979.lua
 Generated/Map_2987.lua
 Generated/Map_3003.lua
+Generated/Map_3009.lua
+Generated/Map_3014.lua
+Generated/Map_3022.lua
+Generated/Map_3026.lua
+Generated/Map_3027.lua
+Generated/Map_3038.lua
+Generated/Map_3074.lua
 Generated/Map_7_DungeonExteriorNeltharionsLair.lua
 Generated/Map_8BoostExperienceAlliance.lua
 Generated/Map_8BoostExperienceHorde.lua
@@ -350,7 +356,6 @@ Generated/Map_BlackrockDepthsDarkIron2.lua
 Generated/Map_BlackrockDepthsDarkIronHub.lua
 Generated/Map_BlackrockFoundryRaid.lua
 Generated/Map_BlackrockFoundryTrainDepot.lua
-Generated/Map_BlackrockMountainBrawl.lua
 Generated/Map_BlackRockSpire.lua
 Generated/Map_BlackRockSpire_4_0.lua
 Generated/Map_BlackrookHoldArena.lua
@@ -594,7 +599,6 @@ Generated/Map_Northrend.lua
 Generated/Map_NorthrendBG.lua
 Generated/Map_OgreCompound.lua
 Generated/Map_OnyxiaLairInstance.lua
-Generated/Map_OrgrimmarArena.lua
 Generated/Map_OrgrimmarGunshipPandariaStart.lua
 Generated/Map_OrgrimmarInstance.lua
 Generated/Map_OrgrimmarRaid.lua
@@ -643,7 +647,6 @@ Generated/Map_ShrineofAvianaDefenseScenario.lua
 Generated/Map_ShwayderLand.lua
 Generated/Map_SiegeOfOrgrimmarZone.lua
 Generated/Map_Silithus.lua
-Generated/Map_SilithusBG.lua
 Generated/Map_SilithusPhase01.lua
 Generated/Map_SilvermoonCity.lua
 Generated/Map_SkywallDungeon.lua

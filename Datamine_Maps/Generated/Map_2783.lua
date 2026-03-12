@@ -5,7 +5,7 @@
 local _, Datamine_Maps = ...;
 
 Datamine_Maps[5890928] = {
-    MapName = "11.2.7 House Interior [TESTING]",
+    MapName = "Home Interior",
     MapID = 2783,
     Directory = [[2783]],
     MapDescription0 = [[]],
