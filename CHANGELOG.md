@@ -1,10 +1,10 @@
-# Datamine 2.4.8
+# Datamine 2.4.9
 
 #### Added
-
-##### Outfit Tooltips
-- Datamine can now display relevant information on the tooltips for outfit action buttons
+- Added entry boxes to preview mounts and pets in the model viewer
 
 #### Fixed
-- Fixed various issues with tooltips and secret values
-- Fixed an issue with item lookups
+- Fixed many, many issues with the outfit display
+- Fixed more issues with the transmog set panel
+	- As a side note, for some sets this panel may be empty - but blame Blizzard, not me
+- Fixed an issue with the `/dm item` command throwing unhelpful errors
