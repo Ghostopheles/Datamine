@@ -106,8 +106,6 @@ Modules/Unified/Templates/CreatureView/CreatureView.lua
 Modules/Unified/Templates/CreatureView/CreatureView.xml
 Modules/Unified/Templates/ItemView/ItemViewer.lua
 Modules/Unified/Templates/ItemView/ItemViewer.xml
-#Modules/Unified/Templates/CurveViewer/CurveViewer.lua
-#Modules/Unified/Templates/CurveViewer/CurveViewer.xml
 
 Modules/Unified/Unified.xml
 
