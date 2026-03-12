@@ -6,8 +6,15 @@ local Transmog = Datamine.Transmog;
 local UI_MAIN = Datamine.Unified;
 local PI = math.pi;
 
+------------
 
--------------
+local function PopulateExplorerWithItemID(itemID)
+	local explorer = UI_MAIN.GetExplorer();
+    explorer:SetSearchMode(Datamine.Constants.DataTypes.Item);
+    explorer:Search(itemID);
+end
+
+------------
 -- this section was written by @Peterodox <3
 
 local Projector = {};
@@ -107,7 +114,7 @@ function Projector:CaptureParameters(modelscene)
     self.from3DX, self.from3DY, self.from3DZ = self:GetProjectedCursor3DPosition();
 end
 
--------------
+------------
 
 DatamineModelSceneActorMixin = CreateFromMixins(ModelSceneActorMixin);
 
@@ -129,7 +136,7 @@ function DatamineModelSceneActorMixin:GetScaledActiveBoundingBox()
     end
 end
 
--------------
+------------
 
 local DATAMINE_CAMERA_NAME = "DatamineOrbitCamera"
 DatamineCameraMixin = CreateFromMixins(OrbitCameraMixin);
@@ -245,7 +252,7 @@ function DatamineCameraMixin:HandleMouseMovement(mode, delta, snapToValue)
 	end
 end
 
--------------
+------------
 
 DatamineModelSceneMixin = {};
 
@@ -626,6 +633,11 @@ function DatamineModelSceneMixin:TryOnByItemModifiedAppearanceID(appearanceIDs, 
         end
     else
         actor:TryOn(appearanceIDs, invSlot);
+
+		local sourceInfo = C_TransmogCollection.GetSourceInfo(appearanceIDs);
+		if sourceInfo then
+			PopulateExplorerWithItemID(sourceInfo.itemID);
+		end
     end
 
     Registry:TriggerEvent(Events.MODEL_OUTFIT_UPDATED);
@@ -1001,10 +1013,7 @@ end
 
 function DatamineModelControlsTreeMixin:SearchItemByAppearanceID(itemModifiedAppearanceID)
     local itemID = Transmog:GetItemIDForAppearanceID(itemModifiedAppearanceID);
-    local explorer = UI_MAIN.GetExplorer();
-
-    explorer:SetSearchMode(Datamine.Constants.DataTypes.Item);
-    explorer:Search(itemID);
+    PopulateExplorerWithItemID(itemID);
 end
 
 function DatamineModelControlsTreeMixin:SetupTransmogSetPanel()
