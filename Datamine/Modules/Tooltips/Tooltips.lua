@@ -1215,9 +1215,12 @@ local function OnHouseDecorCatalogItemEnter(entry)
         return;
     end
 
-    Tooltips.Begin(GameTooltip);
+	local data = entry:GetData().entryID;
+	if not data then
+		return;
+	end
 
-    local data = entry:GetData().entryID;
+    Tooltips.Begin(GameTooltip);
 
     if Tooltips.ShouldShow("TooltipHousingShowDecorRecordID") then
         Tooltips.Append("RecordID", data.recordID);
