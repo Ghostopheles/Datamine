@@ -11,3 +11,4 @@
 - Fixed an error related to creature IDs and `TOOLTIP_DATA_UPDATE` mumbo jumbo
 - Fixed a rare error caused by pressing enter on certain edit boxes
 - Fixed an index error related to decor catalog tooltips
+- Fixed an issue related to secret creatures spewing sacred texts
