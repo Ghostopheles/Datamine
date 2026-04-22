@@ -1,4 +1,4 @@
-## Interface: 120001, 120005
+## Interface: 120005
 ## Title: |cfffc037bDatamine|r
 ## Notes: A tool for increasing data accessibility.
 ## Author: Ghostopheles
