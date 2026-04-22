@@ -101,7 +101,7 @@ end
 function DatamineCollectorMixin:HandleBroadcastText(...)
     local text, name, language, name2 = ...;
 
-    if issecretvalue(text) then
+    if issecretvalue(text) or issecretvalue(name) or issecretvalue(language) or issecretvalue(name2) then
         return;
     end
 
