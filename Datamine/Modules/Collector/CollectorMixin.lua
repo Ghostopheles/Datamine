@@ -3,8 +3,6 @@ local addonName = ...;
 local Events = Datamine.Events;
 local Registry = Datamine.EventRegistry;
 
-local issecretvalue = issecretvalue or function() return false; end;
-
 local function DebugAssert(condition, message)
     if not Datamine.Debug.IsDebugEnabled() then
         return;
@@ -91,19 +89,17 @@ function DatamineCollectorMixin:OnAddonLoaded()
     self:UpdateCollectionState();
 end
 
-function DatamineCollectorMixin:OnSettingChanged(setting, newValue)
+function DatamineCollectorMixin:OnSettingChanged()
     self:UpdateCollectionState();
 end
 
 ------------
 -- broadcast text handling
 
-function DatamineCollectorMixin:HandleBroadcastText(...)
-    local text, name, language, name2 = ...;
-
-    if issecretvalue(text) or issecretvalue(name) or issecretvalue(language) or issecretvalue(name2) then
-        return;
-    end
+function DatamineCollectorMixin:HandleBroadcastText(text, name, language, name2)
+    if C_ChatInfo.InChatMessagingLockdown() then
+		return;
+	end
 
     -- replace player name and class with generic identifiers
     local function ReplaceNameAndClass(word)
@@ -163,18 +159,14 @@ function DatamineCollectorMixin:HandlePlayer(unitToken)
 end
 
 function DatamineCollectorMixin:HandleCreatureByUnitToken(unitToken)
-    if not UnitExists(unitToken) then
-        return;
-    end
+	if not UnitExists(unitToken) or C_Secrets.ShouldUnitIdentityBeSecret(unitToken) then
+		return;
+	end
 
     if UnitIsPlayer(unitToken) then
         self:HandlePlayer(unitToken);
     else
         local guid = UnitGUID(unitToken);
-        if issecretvalue(guid) then
-            return;
-        end
-
         if guid and guid:match("Creature") then
             self:HandleCreature(guid);
         end
