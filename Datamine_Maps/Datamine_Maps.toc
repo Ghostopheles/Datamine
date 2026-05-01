@@ -261,13 +261,17 @@ Generated/Map_2972.lua
 Generated/Map_2979.lua
 Generated/Map_2987.lua
 Generated/Map_3003.lua
+Generated/Map_3007.lua
 Generated/Map_3009.lua
 Generated/Map_3014.lua
 Generated/Map_3022.lua
 Generated/Map_3026.lua
 Generated/Map_3027.lua
 Generated/Map_3038.lua
+Generated/Map_3047.lua
 Generated/Map_3074.lua
+Generated/Map_3075.lua
+Generated/Map_3076.lua
 Generated/Map_7_DungeonExteriorNeltharionsLair.lua
 Generated/Map_8BoostExperienceAlliance.lua
 Generated/Map_8BoostExperienceHorde.lua
@@ -425,6 +429,7 @@ Generated/Map_DefenseOfKaraborScenario.lua
 Generated/Map_DefenseofMoongladeScenario.lua
 Generated/Map_DefenseOfTheAleHouseBG.lua
 Generated/Map_DesolaceBomb.lua
+Generated/Map_DevMapE.lua
 Generated/Map_DevMapG.lua
 Generated/Map_DireMaul.lua
 Generated/Map_DKMountScenario.lua

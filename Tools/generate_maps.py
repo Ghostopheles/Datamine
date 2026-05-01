@@ -12,7 +12,7 @@ ADDON_DIR = parent_directory / "Datamine_Maps"
 OUTPUT_DIR = ADDON_DIR / "Generated"
 
 WOW_DIR = "F:/Games/World of Warcraft"
-FLAVOR = "wow"
+FLAVOR = "wowxptr"
 
 TOC_FILE_LIST_LINE_NO = 19
 
