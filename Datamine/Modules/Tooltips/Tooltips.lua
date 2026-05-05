@@ -708,7 +708,7 @@ function Tooltips.OnTooltipSetUnitAura()
             Tooltips.Append("SourceUnit", aura.sourceUnit);
         end
 
-        if Tooltips.ShouldShow("TooltipAuraShowSourceName") then
+        if Tooltips.ShouldShow("TooltipAuraShowSourceName") and not issecretvalue(aura.sourceUnit) then
             Tooltips.Append("SourceName", UnitName(aura.sourceUnit));
         end
     end
