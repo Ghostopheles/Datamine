@@ -18,6 +18,9 @@ ignore:
   - Datamine/Libs/*/README.*
   - Datamine/Libs/*/tests
   - Datamine/Libs/*/.pkgmeta
+  - Tools/*
+  - pyproject.toml
+  - uv.lock
   - CHANGELOG.md
   - README.md
 
