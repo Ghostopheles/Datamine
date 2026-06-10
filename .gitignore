@@ -3,3 +3,4 @@ Tools/dm_tools/cache
 __pycache__
 .vscode
 Generated_old
+.venv

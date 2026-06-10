@@ -31,6 +31,7 @@ dependencies = [
     { name = "httpx", extra = ["http2"] },
     { name = "numpy" },
     { name = "pycasclib" },
+    { name = "wow-pytoc" },
 ]
 
 [package.metadata]
@@ -38,6 +39,7 @@ requires-dist = [
     { name = "httpx", extras = ["http2"], specifier = ">=0.28.1" },
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "pycasclib", git = "https://github.com/Ghostopheles/pycasc?rev=master" },
+    { name = "wow-pytoc", specifier = ">=0.8.0" },
 ]
 
 [[package]]
@@ -176,3 +178,12 @@ wheels = [
 name = "pycasclib"
 version = "0.0.2"
 source = { git = "https://github.com/Ghostopheles/pycasc?rev=master#cf310e70e941133be4a84a92cc40452058c51cd8" }
+
+[[package]]
+name = "wow-pytoc"
+version = "0.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/8d/75791c455c480d041a94a4a08f3ad98383ca936d78745d06e2fe94f41026/wow_pytoc-0.8.0.tar.gz", hash = "sha256:8fe9e1179b86aed855bead9b43584d3db7984b733ce5136151226f76dce3c43d", size = 11642, upload-time = "2026-04-30T01:32:42.309Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/65/72/be4d3087fac08f6acdaab799aa030e8afd998548f731a8014d6b6c1c8567/wow_pytoc-0.8.0-py3-none-any.whl", hash = "sha256:5ee3dc144fd8f8213ccf38afd743abccac19f2203f8eaf99614dd15159d81869", size = 14758, upload-time = "2026-04-30T01:32:41.4Z" },
+]

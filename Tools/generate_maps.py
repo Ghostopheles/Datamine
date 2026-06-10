@@ -2,6 +2,7 @@ import os
 import concurrent.futures
 
 from pathlib import Path
+from pytoc import TOCFile
 
 from dm_tools import WDTReader, WDT, MAP_DB2, Map
 
@@ -33,22 +34,17 @@ Datamine_Maps[{wdtFileDataID}] = {{
 def tabs(depth: int):
     return "\t" * depth
 
-
 def add_map_files_to_toc():
-    toc_path = os.path.join(ADDON_DIR, "Datamine_Maps.toc")
-    with open(toc_path, "r") as f:
-        toc_lines = f.readlines()
+	toc_path = Path(ADDON_DIR) / "Datamine_Maps.toc"
+	toc = TOCFile(toc_path)
+	generated_files = [f"Generated/{d.name}" for d in OUTPUT_DIR.iterdir() if d.name.endswith(".lua")]
 
-    with open(toc_path, "w") as f:
-        f.truncate()
-        f.writelines(toc_lines[:TOC_FILE_LIST_LINE_NO])
+	existing_files = set(toc.get_all_addon_file_names())
+	for file in generated_files:
+		if file not in existing_files:
+			toc.add_file(file)
 
-        for file in os.listdir(OUTPUT_DIR):
-            if file.endswith(".lua"):
-                f.write(f"Generated/{file}\n")
-            else:
-                os.remove(os.path.join(OUTPUT_DIR, file))
-
+	toc.export(toc_path, overwrite=True)
 
 def lua_format(wdtFileDataID: int, map_name: str, map_info: str):
     return LUA_FORMAT.format(

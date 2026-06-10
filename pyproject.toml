@@ -8,6 +8,7 @@ dependencies = [
     "httpx[http2]>=0.28.1",
     "numpy>=2.4.3",
     "pycasclib",
+    "wow-pytoc>=0.8.0",
 ]
 
 [tool.uv.sources]
