@@ -142,7 +142,7 @@ function DatamineItemViewerMixin:SetupHooks()
 end
 
 function DatamineItemViewerMixin:GLOBAL_MOUSE_UP()
-    if MouseIsOver(self) and DatamineUnifiedFrame:IsShown() then
+    if self:IsMouseOver() and DatamineUnifiedFrame:IsShown() then
         local explorer = self:GetParent();
         local searched = false;
 
