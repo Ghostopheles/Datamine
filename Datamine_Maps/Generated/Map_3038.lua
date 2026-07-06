@@ -5,14 +5,14 @@
 local _, Datamine_Maps = ...;
 
 Datamine_Maps[7536880] = {
-    MapName = "internalname",
+    MapName = "Gnarldor Isle",
     MapID = 3038,
     Directory = [[3038]],
     MapDescription0 = [[]],
     MapDescription1 = [[]],
     MapType = 1,
-    InstanceType = 0,
-    ExpansionID = 0,
+    InstanceType = 5,
+    ExpansionID = 11,
     ParentMapID = -1,
     CosmeticParentMapID = -1,
     Grids = {

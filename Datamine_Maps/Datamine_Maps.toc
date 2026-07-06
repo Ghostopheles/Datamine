@@ -771,3 +771,13 @@ Generated/Map_Zandalarraid.lua
 Generated/Map_Zul'gurub.lua
 Generated/Map_ZulAman.lua
 Generated/Map_Zul_Gurub5Man.lua
+Generated/Map_2916.lua
+Generated/Map_2993.lua
+Generated/Map_3004.lua
+Generated/Map_3040.lua
+Generated/Map_3053.lua
+Generated/Map_3077.lua
+Generated/Map_3079.lua
+Generated/Map_3081.lua
+Generated/Map_3099.lua
+Generated/Map_3105.lua

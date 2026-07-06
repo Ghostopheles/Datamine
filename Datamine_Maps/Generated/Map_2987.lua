@@ -5,13 +5,13 @@
 local _, Datamine_Maps = ...;
 
 Datamine_Maps[7148940] = {
-    MapName = "Renamed",
+    MapName = "The Tidebound Grotto",
     MapID = 2987,
     Directory = [[2987]],
     MapDescription0 = [[]],
     MapDescription1 = [[]],
     MapType = 1,
-    InstanceType = 0,
+    InstanceType = 2,
     ExpansionID = 11,
     ParentMapID = -1,
     CosmeticParentMapID = -1,
