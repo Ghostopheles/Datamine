@@ -972,12 +972,15 @@ end
 function Tooltips.OnTooltipSetOutfit()
 	local tooltip = Tooltips.GetCurrentTooltip();
 	local outfitID = tooltip:GetTooltipData().id;
+    local outfitInfo = C_TransmogOutfitInfo.GetOutfitInfo(outfitID);
+    if not outfitInfo then
+        return;
+    end
 
 	if Tooltips.ShouldShow("TooltipOutfitShowID") then
 		Tooltips.Append("OutfitID", outfitID);
 	end
 
-	local outfitInfo = C_TransmogOutfitInfo.GetOutfitInfo(outfitID);
 	if Tooltips.ShouldShow("TooltipOutfitShowIconID") then
 		Tooltips.Append("IconID", outfitInfo.icon);
 	end
