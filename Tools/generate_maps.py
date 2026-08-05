@@ -1,4 +1,3 @@
-import os
 import sys
 import yaml
 import atexit
@@ -28,8 +27,6 @@ logger = logging.getLogger(__name__)
 logger.info(
     f"Using Python version {sys.version}",
 )
-
-MAX_THREADS = os.cpu_count()
 
 parent_directory = Path.cwd()
 ADDON_DIR = parent_directory / "Datamine_Maps"
@@ -135,7 +132,7 @@ def write_map_file(map: Map, reader: WDTReader):
     map_info = format_map_info(map, map_grids_str)
 
     map_name = map.Directory.replace(" ", "")
-    output_file = os.path.join(OUTPUT_DIR, f"Map_{map_name}.lua")
+    output_file = OUTPUT_DIR / f"Map_{map_name}.lua"
     with open(output_file, "w") as f:
         f.write(lua_format(wdtFileDataID=fdid, map_name=map_name, map_info=map_info))
         logger.info(f"Wrote map file for {map.ID} ({map.MapName_lang}) with WDTFileDataID {fdid} to {output_file}")
