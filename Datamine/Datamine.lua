@@ -325,5 +325,10 @@ end
 ---@param locale string?
 function Datamine.Utils.GetStringTable(locale)
     locale = locale or GetLocale();
-    return stringTables[locale];
+    local tbl = stringTables[locale];
+    if not tbl then
+        Datamine.Utils.DebugError("No string table found for locale: %s", locale);
+        tbl = stringTables["enUS"];
+    end
+    return tbl;
 end
