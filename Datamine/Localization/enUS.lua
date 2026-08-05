@@ -1,5 +1,4 @@
-local AceLocale = LibStub("AceLocale-3.0");
-local L = AceLocale:NewLocale("Datamine", "enUS", true);
+local L = Datamine.Utils.CreateStringTable("enUS");
 
 -- BEGIN LOCALIZATION
 

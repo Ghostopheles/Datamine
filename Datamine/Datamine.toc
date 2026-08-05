@@ -33,11 +33,11 @@
 
 Libs/LibStub/LibStub.lua
 Libs/LibDevConsole/lib.xml
-Libs/AceLocale-3.0/AceLocale-3.0.xml
 
 Datamine.lua
 
 Localization/enUS.lua
+[AllowLoadTextLocale ruRU] Localization/ruRU.lua
 
 Core/Locale.lua
 Core/TableUtil.lua

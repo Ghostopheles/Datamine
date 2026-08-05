@@ -274,9 +274,9 @@ function Datamine.Utils.Debounce(timeout, callback)
 	end
 end
 
-function Datamine.Utils.DebugError(msg)
+function Datamine.Utils.DebugError(msg, ...)
     if Datamine.Debug.IsDebugEnabled() then
-        CallErrorHandler(msg);
+        CallErrorHandler(format(msg, ...));
     end
 end
 
@@ -292,4 +292,38 @@ function Datamine.Utils.AddToDevTool(obj, name, defer)
     else
         DevTool:AddData(obj, name);
     end
+end
+
+local stringTableMeta = {
+    __index = function(t, k)
+        Datamine.Utils.DebugError("Missing %s string for key: %s", GetLocale(), k);
+
+        local fallback = rawget(t, "__fallback");
+        if fallback then
+            local fallbackTable = Datamine.Utils.GetStringTable(fallback);
+            return fallbackTable[k];
+        end
+
+        return k;
+    end
+};
+
+local stringTables = {};
+
+function Datamine.Utils.CreateStringTable(locale, fallbackLocale)
+    assert(not stringTables[locale], "String table for locale " .. locale .. " already exists.");
+
+    local stringTable = {};
+    setmetatable(stringTable, stringTableMeta);
+    stringTable.__fallback = fallbackLocale;
+
+    stringTables[locale] = stringTable;
+
+    return stringTable;
+end
+
+---@param locale string?
+function Datamine.Utils.GetStringTable(locale)
+    locale = locale or GetLocale();
+    return stringTables[locale];
 end

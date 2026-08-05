@@ -1,5 +1,4 @@
-local AceLocale = LibStub("AceLocale-3.0");
-local L = AceLocale:NewLocale("Datamine", "ruRU", true);
+local L = Datamine.Utils.CreateStringTable("ruRU", "enUS");
 --Translation ZamestoTV
 -- BEGIN LOCALIZATION
 
