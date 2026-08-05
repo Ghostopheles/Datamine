@@ -5,8 +5,6 @@
 ## Version: @project-version@
 ## SavedVariables: DatamineConfig
 ## LoadSavedVariablesFirst: 1
-## AllowLoad: Game
-## AllowLoadGameType: mainline
 
 ## Group: Datamine
 
