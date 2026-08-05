@@ -5,7 +5,7 @@
 local _, Datamine_Maps = ...;
 
 Datamine_Maps[7744094] = {
-    MapName = "Tox'Atal",
+    MapName = "Venomfall Deeps",
     MapID = 3079,
     Directory = [[3079]],
     MapDescription0 = [[]],
