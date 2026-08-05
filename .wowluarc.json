@@ -1,5 +1,8 @@
 {
   "diagnostics": {
     "disable": ["create-global"]
+  },
+  "globals": {
+    "read": ["DevTool"]
   }
 }
