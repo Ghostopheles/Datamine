@@ -1,4 +1,5 @@
-# Datamine 2.5.1
+# Datamine 2.5.2
 
-#### Fixed
-- Fixed various secret-and-secret-adjacent errors relating to data collection
+### Fixed
+- Improved performance of setting lookups
+    - This might be noticable when viewing certain types of tooltips. Thanks Numy for pointing this out.
