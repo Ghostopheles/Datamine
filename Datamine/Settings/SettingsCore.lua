@@ -255,16 +255,48 @@ Settings.RegisterAddOnCategory(category);
 
 ------------
 
-function Datamine.Settings.GetSetting(name)
-    return Settings.GetValue(name);
+---@class SettingsCache
+local SettingsCache = {
+    ---@type table<string, AddOnSettingMixin>
+    cache = {},
+};
+
+---@param name string
+---@return AddOnSettingMixin?
+function SettingsCache:GetSettingObject(name)
+    if not self.cache[name] then
+        self.cache[name] = Settings.GetSetting(name);
+    end
+    return self.cache[name];
 end
 
+---@param name string
+---@return any?
+function SettingsCache:GetSetting(name)
+    local setting = self:GetSettingObject(name);
+    if setting then
+        return setting:GetValue();
+    end
+end
+
+------------
+
+---@param name string
+---@return AddOnSettingMixin?
 function Datamine.Settings.GetSettingObject(name)
-    return Settings.GetSetting(name);
+    return SettingsCache:GetSettingObject(name);
 end
 
+---@param name string
+---@return any?
+function Datamine.Settings.GetSetting(name)
+    return SettingsCache:GetSetting(name);
+end
+
+---@param name string
+---@return ColorMixin?
 function Datamine.Settings.GetColor(name)
-    local value = Settings.GetValue(name);
+    local value = Datamine.Settings.GetSetting(name);
     if value then
         return CreateColorFromHexString(value);
     end
