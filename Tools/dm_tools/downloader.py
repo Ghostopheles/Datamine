@@ -1,23 +1,28 @@
 import sys
 import httpx
+import logging
 
-from dm_tools import SHARED_CLIENT_HEADERS, logger
+from dm_tools import SHARED_CLIENT_HEADERS
+
+logger = logging.getLogger(__name__)
 
 
 class FileDownloader:
-    def __init__(self):
-        self.client = httpx.Client(
+    @staticmethod
+    def download(fdid: int) -> bytes:
+        logger.info(f"Downloading file {fdid} from wago.tools...")
+
+        client = httpx.Client(
             base_url="https://wago.tools/api",
             headers=SHARED_CLIENT_HEADERS,
             http2=True,
-            follow_redirects=True
+            timeout=httpx.Timeout(30.0, connect=5.0),
         )
 
-    def download(self, fdid: int) -> bytes:
-        logger.info(f"Downloading file {fdid} from wago.tools...")
-
-        res = self.client.get(f"/casc/{fdid}")
-        res.raise_for_status()
+        res = client.get(f"/casc/{fdid}")
+        if res.status_code != 200:
+            logger.error(f"Failed to download file {fdid} from wago.tools, status code: {res.status_code}")
+            return None
 
         data = res.read()
         if sys.getsizeof(data) == 0:

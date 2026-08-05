@@ -59,6 +59,7 @@ class DB2:
                 key = row.split(",")
                 continue
 
+            row = row.replace('"', "")
             row_data = dict(zip(key, row.split(",")))
             entry = self.row_type(**row_data)
             if not entry:

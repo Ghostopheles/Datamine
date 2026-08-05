@@ -1,22 +1,39 @@
 import os
 import sys
-import concurrent.futures
+import yaml
+import atexit
+import logging
+import logging.config
 
 from pathlib import Path
 from pytoc import TOCFile
 
 from dm_tools import WDTReader, WDT, MAP_DB2, Map
 
+self_path = Path(__file__).parent
+
+log_path = self_path / "logs"
+log_path.mkdir(parents=True, exist_ok=True)
+
+with open(self_path / "cfg.yaml") as f:
+    log_config = yaml.safe_load(f.read())
+logging.config.dictConfig(log_config)
+
+queue_handler = logging.getHandlerByName("queue_handler")
+if queue_handler is not None:
+    queue_handler.listener.start()
+    atexit.register(queue_handler.listener.stop)
+
+logger = logging.getLogger(__name__)
+logger.info(
+    f"Using Python version {sys.version}",
+)
+
 MAX_THREADS = os.cpu_count()
 
 parent_directory = Path.cwd()
 ADDON_DIR = parent_directory / "Datamine_Maps"
 OUTPUT_DIR = ADDON_DIR / "Generated"
-
-WOW_DIR = "F:/Games/World of Warcraft"
-FLAVOR = "wowt"
-
-TOC_FILE_LIST_LINE_NO = 19
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -100,18 +117,18 @@ def format_map_info(map: Map, map_grids_str: str) -> str:
     return map_info
 
 
-wdt_reader = WDTReader(wow_path=WOW_DIR, product=FLAVOR)
-maps = MAP_DB2
+def write_map_file(map: Map, reader: WDTReader):
+    if map.WdtFileDataID is None:
+        return
 
-
-def write_map_file(map: Map):
     fdid = int(map.WdtFileDataID)
     if fdid == 0:
         return
 
-    map_grids = wdt_reader.get_file_info(fdid)
+    map_grids = reader.get_file_info(fdid)
 
-    if not map_grids:
+    if not map_grids or len(map_grids) == 0:
+        logger.error(f"No grids found for map {map.ID} ({map.MapName_lang}) with WDTFileDataID {fdid}")
         return
 
     map_grids_str = format_map_grids(map_grids)
@@ -121,21 +138,28 @@ def write_map_file(map: Map):
     output_file = os.path.join(OUTPUT_DIR, f"Map_{map_name}.lua")
     with open(output_file, "w") as f:
         f.write(lua_format(wdtFileDataID=fdid, map_name=map_name, map_info=map_info))
+        logger.info(f"Wrote map file for {map.ID} ({map.MapName_lang}) with WDTFileDataID {fdid} to {output_file}")
 
 def main():
-    global FLAVOR, WOW_DIR
+    flavor = "wowt"
+    wow_dir = "F:/Games/World of Warcraft"
+    online = False
     if len(sys.argv) > 1:
-        FLAVOR = sys.argv[1]
+        flavor = sys.argv[1]
     if len(sys.argv) > 2:
-        WOW_DIR = sys.argv[2]
+        wow_dir = sys.argv[2]
+
+    wdt_reader = WDTReader(wow_path=wow_dir, product=flavor, online=online)
+    maps = MAP_DB2
 
     _maps = []
     for map in maps.read():
         _maps.append(map)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-        futures = [executor.submit(write_map_file, map) for map in _maps]
-        concurrent.futures.wait(futures)
+    logger.info(f"Generating minimaps for {len(_maps)} maps...")
+
+    for e in _maps:
+        write_map_file(e, wdt_reader)
 
     add_map_files_to_toc()
 

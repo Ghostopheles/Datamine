@@ -1,0 +1,30 @@
+version: 1
+disable_existing_loggers: false
+formatters:
+  simple:
+    format: '[%(levelname)s|%(module)s|L%(lineno)d] %(asctime)s: %(message)s'
+    datefmt: '%Y-%m-%dT%H:%M:%S%z'
+handlers:
+  stdout:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: simple
+    filename: Tools/logs/dm.log
+    maxBytes: 8000000
+    backupCount: 1
+loggers:
+    root:
+        level: DEBUG
+        handlers:
+        - stdout
+        - file
+    hpack:
+        propagate: false
+    _trace:
+        propagate: false
+

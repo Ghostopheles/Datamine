@@ -1,9 +1,12 @@
 import struct
+import logging
+import pycasclib.core as casc
 
 from dataclasses import dataclass
 
-from dm_tools import logger, FileReader, FileDownloader
+from dm_tools import FileDownloader
 
+logger = logging.getLogger(__name__)
 
 DEFAULT_MAP_SIZE_X = 64
 DEFAULT_MAP_SIZE_Y = 64
@@ -60,17 +63,35 @@ class WDT:
     def get_all(self):
         return self.__all.items()
 
-downloader = FileDownloader()
-
-class WDTReader(FileReader):
-    """Reader/Downloader for WDT files, outputs map grids in the form of a 2-dimensional numpy array"""
-
+class WDTReader:
     FORMAT = "IIIIIIII"
     TYPE = "WDT"
 
-    def __init__(self, wow_path: str, product: str):
-        self.PRODUCT = product
-        self.CASC_PATH = wow_path
+    def __init__(self, wow_path: str, product: str, online: bool = False):
+        self.product = product
+        self.casc_path = wow_path
+
+        is_online = online
+        locale = casc.LocaleFlags.CASC_LOCALE_ENUS
+        logger.info(
+            f"Opening Casc handle with locale={locale}, product={self.product}, online={is_online}"
+        )
+        self.casc = casc.CascHandler(
+            self.casc_path, locale, product=self.product, is_online=is_online
+        )
+
+    def unpack(self, obj: bytes):
+        return struct.unpack(self.FORMAT, obj)
+
+    def read_by_fdid(self, fdid: int) -> bytes:
+        open_flags = casc.FileOpenFlags.CASC_OPEN_BY_FILEID
+        if not self.casc.file_exists(fdid, open_flags):
+            logger.warning(f"File {fdid} does not exist in CASC")
+            return
+
+        logger.info(f"Reading file {fdid} from CASC...")
+        file = self.casc.read_file_by_id(fdid, open_flags)
+        return file.data
 
     def get_file_info(
         self,
@@ -78,17 +99,18 @@ class WDTReader(FileReader):
         size_x: int = DEFAULT_MAP_SIZE_X,
         size_y: int = DEFAULT_MAP_SIZE_Y,
     ) -> list[WDT]:
-        if int(fdid) == 0:
+        fdid = int(fdid)
+        if fdid == 0:
             return
 
-        logger.info(f"Extracting WDT {fdid}...")
+        logger.debug(f"Extracting WDT {fdid}...")
         obj = self.read_by_fdid(fdid)
 
         if not obj:
-            logger.warning(f"WDT {fdid} not found or is empty, attempting download")
-            obj = downloader.download(fdid)
+            logger.warning(f"WDT {fdid} not found or is empty, attempting download...")
+            obj = FileDownloader.download(fdid)
             if not obj:
-                logger.warning(f"File {fdid} not found")
+                logger.warning(f"File {fdid} failed to download")
                 return
 
         start = obj.find(WDT_FILE_INFO_MARKER) + WDT_FILE_INFO_MARKER_SIZE
@@ -107,6 +129,6 @@ class WDTReader(FileReader):
             return
 
         if map_grid:
-            logger.info(f"Extracted {len(map_grid)} grids from WDT {fdid}")
+            logger.debug(f"Extracted {len(map_grid)} grids from WDT {fdid}")
 
         return map_grid
