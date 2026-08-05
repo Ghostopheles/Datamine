@@ -8,6 +8,7 @@ logger = logging.getLogger("dm_tools")
 
 
 class FileReader:
+    casc = None
     FORMAT = None
     PRODUCT = None
     CASC_PATH = None
@@ -19,6 +20,12 @@ class FileReader:
 
         if not self.PRODUCT:
             self.PRODUCT = "wow_beta"
+
+        self.__init_casc()
+
+    def __init_casc(self):
+        if self.casc is not None:
+            return
 
         is_online = False
         locale = casc.LocaleFlags.CASC_LOCALE_ENUS

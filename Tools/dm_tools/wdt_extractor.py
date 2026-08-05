@@ -1,5 +1,3 @@
-"""Python script for extracting minimap textures from WDT files"""
-
 import struct
 
 from dataclasses import dataclass
@@ -62,6 +60,7 @@ class WDT:
     def get_all(self):
         return self.__all.items()
 
+downloader = FileDownloader()
 
 class WDTReader(FileReader):
     """Reader/Downloader for WDT files, outputs map grids in the form of a 2-dimensional numpy array"""
@@ -72,7 +71,6 @@ class WDTReader(FileReader):
     def __init__(self, wow_path: str, product: str):
         self.PRODUCT = product
         self.CASC_PATH = wow_path
-        super().__init__()
 
     def get_file_info(
         self,
@@ -83,16 +81,13 @@ class WDTReader(FileReader):
         if int(fdid) == 0:
             return
 
-        logger.info(f"Fetching map info for file {fdid}...")
+        logger.info(f"Extracting WDT {fdid}...")
         obj = self.read_by_fdid(fdid)
 
         if not obj:
-            logger.warning(f"File {fdid} not found or is empty, attempting download")
-            file_path = FileDownloader.download(fdid)
-            if file_path is not None:
-                with open(file_path, "rb") as f:
-                    obj = f.read()
-            else:
+            logger.warning(f"WDT {fdid} not found or is empty, attempting download")
+            obj = downloader.download(fdid)
+            if not obj:
                 logger.warning(f"File {fdid} not found")
                 return
 
@@ -110,5 +105,8 @@ class WDTReader(FileReader):
         except struct.error:
             logger.error(f"Error unpacking file {fdid}", exc_info=True)
             return
+
+        if map_grid:
+            logger.info(f"Extracted {len(map_grid)} grids from WDT {fdid}")
 
         return map_grid
