@@ -781,3 +781,5 @@ Generated/Map_3079.lua
 Generated/Map_3081.lua
 Generated/Map_3099.lua
 Generated/Map_3105.lua
+Generated/Map_HeartoftheOldGodScenario.lua
+Generated/Map_RuinsofTheramore.lua
