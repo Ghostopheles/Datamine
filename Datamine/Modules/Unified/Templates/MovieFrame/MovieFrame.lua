@@ -34,7 +34,14 @@ function DatamineMovieFrameMixin:OnEvent(event, ...)
 end
 
 function DatamineMovieFrameMixin:OnUpdate(deltaTime)
-    MovieFrame_OnUpdate(self, deltaTime);
+    if ( self.fadingAlpha ) then
+		self.fadingAlpha = self.fadingAlpha + ((deltaTime / self.fadeSpeed) * self.fadeDirection);
+		if ( self.fadingAlpha > 1.0 ) then
+			self.fadingAlpha = nil;
+		elseif ( self.fadingAlpha < 0.0 ) then
+			self.fadingAlpha = nil;
+		end
+	end
 end
 
 function DatamineMovieFrameMixin:OnMovieFinished()
