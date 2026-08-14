@@ -676,6 +676,10 @@ function Tooltips.OnTooltipSetUnitAura()
         Tooltips.Append("SpellID", spellID);
     end
 
+    if C_Secrets.ShouldAurasBeSecret() then
+        return;
+    end
+
     local args = tooltipInfo.getterArgs;
     local aura = C_UnitAuras.GetAuraDataByIndex(unpack(args));
 
